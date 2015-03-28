@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory>
+		<property name="hibernate.connection.datasource">java:/comp/env/jdbc/PropMgrDS</property>
+		<property name="dialect">org.hibernate.dialect.H2Dialect</property>
+         <!-- JDBC connection pool (use the built-in) -->
+		<property name="connection.pool_size">10</property>
+		<property name="show_sql">false</property>
+
+		<property name="hibernate.connection.release_mode">auto</property>
+		<property name="hibernate.current_session_context_class">thread</property>
+		<property name="hibernate.transaction.factory_class ">
+			org.hibernate.transaction.JDBCTransactionFactory
+		</property>
+		<property name="use_outer_join">true</property>
+		<property name="max_fetch_depth">3</property>
+		<property name="hibernate.jdbc.batch_size">50</property>
+		<property name="hibernate.jdbc.use_scrollable_resultsets">true</property>
+		<property name="hibernate.connection.isolation">1</property>
+		<property name="hibernate.session_factory_name">SessionFactory</property>
+
+		<mapping resource="com/propmgr/dao/Actionmaster.hbm.xml" />
+		<mapping resource="com/propmgr/dao/Actionrole.hbm.xml" />
+		<mapping resource="com/propmgr/dao/Address.hbm.xml" />
+		<mapping resource="com/propmgr/dao/Projectmaster.hbm.xml" />
+		<mapping resource="com/propmgr/dao/Amenity.hbm.xml" />
+		<mapping resource="com/propmgr/dao/Projectphase.hbm.xml" />
+		<mapping resource="com/propmgr/dao/Citymaster.hbm.xml" />
+		<mapping resource="com/propmgr/dao/Rolemaster.hbm.xml" />
+		<mapping resource="com/propmgr/dao/Contactinfo.hbm.xml" />
+		<mapping resource="com/propmgr/dao/Sourcemaster.hbm.xml" />
+		<mapping resource="com/propmgr/dao/Customermaster.hbm.xml" />
+		<mapping resource="com/propmgr/dao/Statemaster.hbm.xml" />
+		<mapping resource="com/propmgr/dao/Unitamenity.hbm.xml" />
+		<mapping resource="com/propmgr/dao/Enquiry.hbm.xml" />
+		<mapping resource="com/propmgr/dao/Unitbooking.hbm.xml" />
+		<mapping resource="com/propmgr/dao/Enquirycomment.hbm.xml" />
+		<mapping resource="com/propmgr/dao/Unitmaster.hbm.xml" />
+		<mapping resource="com/propmgr/dao/Organization.hbm.xml" />
+		<mapping resource="com/propmgr/dao/Unitpaymentschedule.hbm.xml" />
+		<mapping resource="com/propmgr/dao/Paymentmaster.hbm.xml" />
+		<mapping resource="com/propmgr/dao/Unitpricepolicy.hbm.xml" />
+		<mapping resource="com/propmgr/dao/Paymenttype.hbm.xml" />
+		<mapping resource="com/propmgr/dao/Unittype.hbm.xml" />
+		<mapping resource="com/propmgr/dao/Person.hbm.xml" />
+		<mapping resource="com/propmgr/dao/Usermaster.hbm.xml" />
+		<mapping resource="com/propmgr/dao/Projectbuilding.hbm.xml" />
+		<mapping resource="com/propmgr/dao/Userrole.hbm.xml" />
+		<mapping resource="com/propmgr/dao/Pagemaster.hbm.xml" />
+		<mapping resource="com/propmgr/dao/Paymentstatus.hbm.xml" />
+		<mapping resource="com/propmgr/dao/Paymentstate.hbm.xml" />
+		<mapping resource="com/propmgr/dao/Paymentstage.hbm.xml" />
+		<mapping resource="com/propmgr/dao/Refundmaster.hbm.xml" />
+	</session-factory>
+</hibernate-configuration>

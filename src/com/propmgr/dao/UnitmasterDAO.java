@@ -1,0 +1,207 @@
+package com.propmgr.dao;
+
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hibernate.Criteria;
+import org.hibernate.LockMode;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.criterion.Example;
+
+import com.propmgr.hibernate.SuperDAO;
+
+/**
+ * Home object for domain model class Unitmaster.
+ * @see com.propmgr.dao.Unitmaster
+ * @author Arvind Sharma
+ */
+public class UnitmasterDAO extends SuperDAO {
+
+	private static final Log log = LogFactory.getLog(UnitmasterDAO.class);
+
+	public void persist(Unitmaster transientInstance) {
+		log.debug("persisting Unitmaster instance");
+		try {
+			getSession().persist(transientInstance);
+			log.debug("persist successful");
+		} catch (RuntimeException re) {
+			log.error("persist failed", re);
+			throw re;
+		}
+	}
+
+	public void attachDirty(Unitmaster instance) {
+		log.debug("attaching dirty Unitmaster instance");
+		try {
+			getSession().saveOrUpdate(instance);
+			log.debug("attach successful");
+		} catch (RuntimeException re) {
+			log.error("attach failed", re);
+			throw re;
+		}
+	}
+
+	public void attachClean(Unitmaster instance) {
+		log.debug("attaching clean Unitmaster instance");
+		try {
+			getSession().lock(instance, LockMode.NONE);
+			log.debug("attach successful");
+		} catch (RuntimeException re) {
+			log.error("attach failed", re);
+			throw re;
+		}
+	}
+
+	public void delete(Unitmaster persistentInstance) {
+		log.debug("deleting Unitmaster instance");
+		try {
+			getSession().delete(persistentInstance);
+			log.debug("delete successful");
+		} catch (RuntimeException re) {
+			log.error("delete failed", re);
+			throw re;
+		}
+	}
+
+	public Unitmaster merge(Unitmaster detachedInstance) {
+		log.debug("merging Unitmaster instance");
+		try {
+			Unitmaster result = (Unitmaster) getSession()
+					.merge(detachedInstance);
+			log.debug("merge successful");
+			return result;
+		} catch (RuntimeException re) {
+			log.error("merge failed", re);
+			throw re;
+		}
+	}
+
+	public Unitmaster findById(long id) {
+		log.debug("getting Unitmaster instance with id: " + id);
+		try {
+			Unitmaster instance = (Unitmaster) getSession().get("com.propmgr.dao.Unitmaster", id);
+			if (instance == null) {
+				log.debug("get successful, no instance found");
+			} else {
+				log.debug("get successful, instance found");
+			}
+			return instance;
+		} catch (RuntimeException re) {
+			log.error("get failed", re);
+			throw re;
+		}
+	}
+
+	public List findByExample(Unitmaster instance) {
+		log.debug("finding Unitmaster instance by example");
+		try {
+			List results = getSession()
+					.createCriteria("com.propmgr.dao.Unitmaster")
+					.add(Example.create(instance)).list();
+			log.debug("find by example successful, result size: "
+					+ results.size());
+			return results;
+		} catch (RuntimeException re) {
+			log.error("find by example failed", re);
+			throw re;
+		}
+	}
+
+	public List<Unitmaster> findByProjectBuilding(long buildingId) {
+		Session hbmSession = getSession();
+		List<Unitmaster> resultList = null;
+		try {
+			String queryString = "from Unitmaster u where u.projectbuilding.projectbuildingid = " + buildingId;
+			Query query = hbmSession.createQuery(queryString);
+			resultList = query.list ();
+			
+			if (resultList.size() > 0) {
+				return resultList;
+			}
+		} catch (Exception e) {
+			log.error ("", e);
+		}
+		
+		return new ArrayList<Unitmaster>();
+	}
+	
+	public List<Unitmaster> findByProjectBuildingAndFloorNumber(long buildingId, int floorNumber) {
+		Session hbmSession = getSession();
+		List<Unitmaster> resultList = null;
+		try {
+			String queryString = "from Unitmaster u where u.projectbuilding.projectbuildingid = " 
+				+ buildingId + "and u.floornumber = " + floorNumber;
+			Query query = hbmSession.createQuery(queryString);
+			resultList = query.list ();
+			
+			if (resultList.size() > 0) {
+				return resultList;
+			}
+		} catch (Exception e) {
+			log.error ("", e);
+		}
+		
+		return new ArrayList<Unitmaster>();
+	}
+	
+	public Double findMaxFloorRiseByFloorNumberAndBuilding(int floorNumber, long buildingId) {
+		Session hbmSession = getSession();
+		List<Double> resultList = null;
+		try {
+			String queryString = "select max(floorRise) from unitMaster u where u.floorNumber = " + floorNumber +  " and u.projectBuilding = " + buildingId;
+			Query query = hbmSession.createSQLQuery(queryString);
+			resultList = query.list ();
+			
+			if (resultList!= null && resultList.size() > 0 && resultList.get(0) != null) {
+				return resultList.get(0);
+			}
+		} catch (Exception e) {
+			log.error ("", e);
+		}
+		
+		return new Double(0);
+	}
+	
+	public List<Unitmaster> findUnbookedByProjectBuilding(long buildingId) {
+		Session hbmSession = getSession();
+		List<Unitmaster> resultList = null;
+		List<Long> bookedUnits = new ArrayList<Long>();
+		UnitbookingDAO unitbookingDAO = new UnitbookingDAO();
+		
+		try {
+			List<Unitbooking> bookings = unitbookingDAO.findByBuilding(buildingId);
+			for (Unitbooking booking : bookings) {
+				bookedUnits.add(booking.getUnitmaster().getUnitid());
+			}
+			
+			String queryString = "from Unitmaster u where u.projectbuilding.projectbuildingid = " 
+					+ buildingId + " and unitid not in (:bookedunits)";
+			Query query = hbmSession.createQuery(queryString);
+			query.setParameterList("bookedunits", bookedUnits);
+			resultList = query.list ();
+			
+			if (resultList.size() > 0) {
+				return resultList;
+			}
+		} catch (Exception e) {
+			log.error ("", e);
+		}
+		
+		return new ArrayList<Unitmaster>();
+	}
+	
+	@Override
+	protected Object getPojoObj() {
+		return new Unitmaster();
+	}
+
+	@Override
+	protected Criteria createCriteria(Object obj) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+}
