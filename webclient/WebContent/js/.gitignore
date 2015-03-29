@@ -1,0 +1,4 @@
+# Ignore DOJO
+dojo_1.10.2
+# Except this file
+!.gitignore

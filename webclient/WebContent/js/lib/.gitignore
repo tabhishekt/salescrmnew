@@ -1,0 +1,4 @@
+# Ignore GridX
+gridx-1.3.6
+# Except this file
+!.gitignore
