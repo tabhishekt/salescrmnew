@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.hibernate.eclipse.launch.ConsoleConfigurationLaunchConfigurationType">
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="PropertyManager"/>
+<listEntry value="salescrmnew"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="4"/>
 </listAttribute>
-<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="PropertyManager"/>
-<stringAttribute key="org.hibernate.eclipse.launch.CFG_XML_FILE" value="\PropertyManager\src\hibernate.cfg.xml"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="salescrmnew"/>
+<stringAttribute key="org.hibernate.eclipse.launch.CFG_XML_FILE" value="\salescrmnew\src\hibernate.cfg.xml"/>
 <stringAttribute key="org.hibernate.eclipse.launch.CONFIGURATION_FACTORY" value="CORE"/>
 <stringAttribute key="org.hibernate.eclipse.launch.CONNECTION_PROFILE_NAME" value="H2 Database"/>
 <listAttribute key="org.hibernate.eclipse.launch.FILE_MAPPINGS"/>
