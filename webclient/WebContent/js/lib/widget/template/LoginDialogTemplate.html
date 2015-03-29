@@ -1,0 +1,30 @@
+<div class="dojoxDialog" tabindex="-1">
+	<div dojoAttachPoint="titleBar" class="dojoxDialogTitleBar">
+		<span dojoAttachPoint="titleNode" class="dojoxDialogTitle"
+			id="${id}_title">${title}</span>
+		<div dojoAttachPoint="closeButtonNode" class="dojoxDialogCloseIcon hiddenDialogCloseIcon"
+			dojoAttachEvent="onclick: onCancel">
+			<span dojoAttachPoint="closeText" class="closeText">x</span>
+		</div>
+	</div>
+	<div dojoAttachPoint="dojoxDialogWrapper">
+		<div dojoAttachPoint="containerNode" class="dojoxDialogPaneContent">
+			<div data-dojo-attach-point="loginForm" data-dojo-type="dijit/form/Form"
+				enctype="multipart/form-data" action="" method="POST">
+				<p></p>
+				<div data-dojo-type="dojox/layout/TableContainer" data-dojo-props="cols:1">
+			        <div data-dojo-type='dijit/form/ValidationTextBox' data-dojo-props='required:true' 
+			        	title="Username:" name="username"></div>
+			        <div data-dojo-type="dijit/form/ValidationTextBox" data-dojo-props="type:'password', required:true" title="Password:" name="password" value=""></div>
+			    </div>
+			</div>
+			<div align="right">
+				<div class="loginDialogMessage" data-dojo-attach-point="messageNode"></div>
+				<button data-dojo-type="dijit.form.Button" data-dojo-props=""
+					data-dojo-attach-point="submitButton" data-dojo-attach-event="onClick: onSubmit">Login</button>
+				<button data-dojo-type="dijit.form.Button" data-dojo-props=""
+					data-dojo-attach-point="cancelButton" data-dojo-attach-event="onClick: onCancel">Cancel</button>
+			</div>
+		</div>
+	</div>
+</div>

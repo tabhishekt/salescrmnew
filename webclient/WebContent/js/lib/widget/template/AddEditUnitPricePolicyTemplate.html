@@ -1,0 +1,159 @@
+<div class="dojoxDialog" tabindex="-1">
+	<div dojoAttachPoint="titleBar" class="dojoxDialogTitleBar">
+		<span dojoAttachPoint="titleNode" class="dojoxDialogTitle"
+			id="${id}_title">${title}</span>
+		<div dojoAttachPoint="closeButtonNode" class="dojoxDialogCloseIcon hiddenDialogCloseIcon"
+			dojoAttachEvent="onclick: onCancel">
+			<span dojoAttachPoint="closeText" class="closeText">x</span>
+		</div>
+	</div>
+	<div dojoAttachPoint="dojoxDialogWrapper">
+		<div dojoAttachPoint="containerNode" class="dojoxDialogPaneContent">
+			<div data-dojo-attach-point="codetableForm"
+				data-dojo-type="dijit/form/Form" enctype="multipart/form-data"
+				action="" method="POST">
+				<div>
+					<input data-dojo-type='dijit/form/TextBox' id="rowId" name="rowId" 
+					data-dojo-attach-point='rowId' class="hiddenInput" value=""></input>
+					<div>
+	 						<table align="left" style="width: 100%;">
+								<tr><td>
+									<table>
+										<tr><td><label for="policyname">Policy Name:</label></td></tr>
+										<tr><td><input id="policyname" name="policyname"
+												data-dojo-type='dijit/form/ValidationTextBox'
+												data-dojo-attach-point='policyname'
+												data-dojo-props="required:true"
+												type="text" /></td></tr>
+									</table>
+								</td><td>
+									<table>
+										<tr><td><label for="baserate">Base Rate:</label></td></tr>
+										<tr><td><input id="baserate" name="baserate"
+												data-dojo-type='dijit/form/ValidationTextBox'
+												data-dojo-attach-point='baserate'
+												data-dojo-props="required:true, regExp:'^[0-9]([0-9]{1,4})?(\.[1-9])?$', invalidMessage:'Enter valid decimal value upto 99999.9'"
+												type="text" /></td></tr>
+									</table>
+								</td></tr>
+							</table>
+	 					</div>
+					<fieldset style="width: 80%;">
+	 					<legend>Taxes:</legend>
+	 					<span>Tax values should be entered as percent of agreement value.</span>
+						<div>
+	 						<table align="left" style="width: 100%;">
+								<tr><td>
+									<table>
+										<tr><td><label for="stampduty">Stamp Duty:</label></td></tr>
+										<tr>
+											<td><input id="stampduty" name="stampduty"
+												data-dojo-type='dijit/form/ValidationTextBox'
+												data-dojo-attach-point='stampduty'
+												data-dojo-props="required:true, regExp:'100|(([1-9][0-9])|[0-9])(\.(([0-9][1-9])|[1-9]))?', invalidMessage:'Enter valid percent value.'"
+												type="text" /></td>
+										</tr>
+									</table>
+								</td><td>
+									<table>
+										<tr><td><label for="registrationcharge">Registration Charge:</label></td></tr>
+										<tr>
+											<td><input id="registrationcharge" name="registrationcharge"
+												data-dojo-type='dijit/form/ValidationTextBox'
+												data-dojo-attach-point='registrationcharge'
+												data-dojo-props="required:true, regExp:'100|(([1-9][0-9])|[0-9])(\.(([0-9][1-9])|[1-9]))?', invalidMessage:'Enter valid percent value.'"
+												type="text" /></td>
+										</tr>
+									</table>
+								</td></tr>
+								<tr><td>
+									<table>
+										<tr><td><label for="servicetax">Service Tax:</label></td></tr>
+										<tr>
+											<td><input id="servicetax" name="servicetax"
+												data-dojo-type='dijit/form/ValidationTextBox'
+												data-dojo-attach-point='servicetax'
+												data-dojo-props="required:true, regExp:'100|(([1-9][0-9])|[0-9])(\.(([0-9][1-9])|[1-9]))?', invalidMessage:'Enter valid percent value.'"
+												type="text" /></td>
+										</tr>
+									</table>
+								</td><td>
+									<table>
+										<tr><td><label for="valueaddedtax">Value Added Tax:</label></td></tr>
+										<tr>
+											<td><input id="valueaddedtax" name="valueaddedtax"
+												data-dojo-type='dijit/form/ValidationTextBox'
+												data-dojo-attach-point='valueaddedtax'
+												data-dojo-props="required:true, regExp:'100|(([1-9][0-9])|[0-9])(\.(([0-9][1-9])|[1-9]))?', invalidMessage:'Enter valid percent value.'"
+												type="text" /></td>
+										</tr>
+									</table>
+								</td></tr>
+							</table>
+	 					</div>
+					</fieldset>
+					<fieldset style="width: 80%;">
+	 					<legend>Charges:</legend>
+						<div>
+	 						<table align="left" style="width: 100%;">
+								<tr><td>
+									<table>
+										<tr><td><label for="maintenancecharge1">Maintenance Charge 1:</label></td></tr>
+										<tr>
+											<td><input id="maintenancecharge1" name="maintenancecharge1"
+												data-dojo-type='dijit/form/ValidationTextBox'
+												data-dojo-attach-point='maintenancecharge1'
+												data-dojo-props="required:true, regExp:'^[0-9]([0-9]{1,7})?(\.[1-9])?$', invalidMessage:'Enter valid decimal value upto 99999999.9'"
+												type="text" /></td>
+										</tr>
+									</table>
+								</td><td>
+									<table>
+										<tr><td><label for="maintenancecharge2">Maintenance Charge 2:</label></td></tr>
+										<tr>
+											<td><input id="maintenancecharge2" name="maintenancecharge2"
+												data-dojo-type='dijit/form/ValidationTextBox'
+												data-dojo-attach-point='maintenancecharge2'
+												data-dojo-props="required:true, regExp:'^[0-9]([0-9]{1,7})?(\.[1-9])?$', invalidMessage:'Enter valid decimal value upto 99999999.9'"
+												type="text" /></td>
+										</tr>
+									</table>
+								</td></tr>
+								<tr><td>
+									<table>
+										<tr><td><label for="legalcharge">Legal Charge:</label></td></tr>
+										<tr>
+											<td><input id="legalcharge" name="legalcharge"
+												data-dojo-type='dijit/form/ValidationTextBox'
+												data-dojo-attach-point='legalcharge'
+												data-dojo-props="required:true, regExp:'^[0-9]([0-9]{1,7})?(\.[1-9])?$', invalidMessage:'Enter valid decimal value upto 99999999.9'"
+												type="text" /></td>
+										</tr>
+									</table>
+								</td></tr>
+							</table>
+	 					</div>
+					</fieldset>
+				</div>
+				<div>
+					<table>
+						<tr>
+							<td>
+								<div class="dialogMessageSpan"
+									data-dojo-attach-point="messageNode"></div>
+							</td>
+							<td><div>
+									<button data-dojo-type="dijit.form.Button" data-dojo-props=""
+										data-dojo-attach-point="submitButton"
+										data-dojo-attach-event="onClick: onSubmit">Submit</button>
+									<button data-dojo-type="dijit.form.Button" data-dojo-props=""
+										data-dojo-attach-point="cancelButton"
+										data-dojo-attach-event="onClick: onCancel">Cancel</button>
+								</div></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

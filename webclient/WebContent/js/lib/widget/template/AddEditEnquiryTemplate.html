@@ -1,0 +1,113 @@
+<div class="dojoxDialog" tabindex="-1">
+	<div dojoAttachPoint="titleBar" class="dojoxDialogTitleBar">
+		<span dojoAttachPoint="titleNode" class="dojoxDialogTitle"
+			id="${id}_title">${title}</span>
+		<div dojoAttachPoint="closeButtonNode" class="dojoxDialogCloseIcon hiddenDialogCloseIcon"
+			dojoAttachEvent="onclick: onCancel">
+			<span dojoAttachPoint="closeText" class="closeText">x</span>
+		</div>
+	</div>
+	<div dojoAttachPoint="dojoxDialogWrapper">
+		<div dojoAttachPoint="containerNode" class="dojoxDialogPaneContent">
+			<div data-dojo-attach-point="codetableForm"
+				data-dojo-type="dijit/form/Form" enctype="multipart/form-data"
+				action="" method="POST">
+				<div>
+					<input data-dojo-type='dijit/form/TextBox' id="rowId" name="rowId" 
+					data-dojo-attach-point='rowId' class="hiddenInput" value=""></input>
+					<input data-dojo-type='dijit/form/TextBox' id="user" name="user" 
+					data-dojo-attach-point='user' class="hiddenInput" value=""></input>
+					<input data-dojo-type='dijit/form/TextBox' id="customer" name="customer" 
+					data-dojo-attach-point='customer' class="hiddenInput" value=""></input>
+					<fieldset style="width: 80%;">
+	 					<legend>Enquiry Details:</legend>
+	 					<div id="enquirydiv">
+	 						<table align="left" style="width: 100%;">
+								<tr><td>
+									<table>
+										<tr><td><label for="source">Source:</label></td></tr>
+										<tr><td><select id="source" name="source"
+										data-dojo-type="dijit/form/FilteringSelect" 
+										data-dojo-attach-point='source'
+										data-dojo-props="required:true"></select></td></tr>
+									</table>
+								</td></tr>
+								<tr><td>
+									<table>
+										<tr><td><label for="budget">Budget:</label></td></tr>
+										<tr><td><select id="budget" name="budget"
+										data-dojo-type="dijit/form/FilteringSelect" 
+										data-dojo-attach-point='budget'
+										data-dojo-props="required:true"></select></td></tr>
+									</table>
+								</td><td>
+									<table>
+										<tr><td><label for="unittype">Interest:</label></td></tr>
+										<tr><td><select id="unittype" name="unittype"
+										data-dojo-type="dijit/form/FilteringSelect" 
+										data-dojo-attach-point='unittype'
+										data-dojo-props="required:true"></select></td></tr>
+									</table>
+								</td></tr>
+								<tr><td>
+									<table>
+										<tr><td><label for="currenthomestatus">Current home status:</label></td></tr>
+										<tr><td><select id="currenthomestatus" name="currenthomestatus"
+										data-dojo-type="dijit/form/FilteringSelect" 
+										data-dojo-attach-point='currenthomestatus'
+										data-dojo-props="required:true"></select></td></tr>
+									</table>
+								</td><td>
+									<table>
+										<tr><td><label for="probability">Probability:</label></td></tr>
+										<tr><td><select id="probability" name="probability"
+										data-dojo-type="dijit/form/FilteringSelect" 
+										data-dojo-attach-point='probability'
+										data-dojo-props="required:true"></select></td></tr>
+									</table>
+								</td></tr>
+							</table>
+	 					</div>
+	 					<div id="enquirycommentdiv">
+	 						<table align="left" style="width: 100%;">
+								<tr><td>
+									<table>
+										<tr><td><label for="commenttext">Comment:</label></td></tr>
+										<tr><td><textarea id="commenttext" name="commenttext"
+										data-dojo-type="dijit/form/SimpleTextarea" rows="3"
+										data-dojo-attach-point='commenttext'></textarea></td></tr>
+									</table>
+								</td><td>
+									<table>
+										<tr><td><label for="followupdate">Folloup Date:</label></td></tr>
+										<tr><td><input id="followupdate" name="followupdate"
+										data-dojo-type="dijit/form/DateTextBox" 
+										data-dojo-attach-point='followupdate'></td></tr>
+									</table>
+								</td></tr>
+							</table>
+	 					</div>
+					</fieldset>
+				</div>
+				<div>
+					<table>
+						<tr>
+							<td>
+								<div class="dialogMessageSpan"
+									data-dojo-attach-point="messageNode"></div>
+							</td>
+							<td><div>
+									<button data-dojo-type="dijit.form.Button" data-dojo-props=""
+										data-dojo-attach-point="submitButton"
+										data-dojo-attach-event="onClick: onSubmit">Submit</button>
+									<button data-dojo-type="dijit.form.Button" data-dojo-props=""
+										data-dojo-attach-point="cancelButton"
+										data-dojo-attach-event="onClick: onCancel">Cancel</button>
+								</div></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

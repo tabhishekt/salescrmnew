@@ -1,0 +1,49 @@
+.hiddenInput {
+    display: none;
+}
+
+.dialogMessageSpan {
+    color: red !important;
+}
+
+.hiddenDialogCloseIcon {
+    display: none;
+}
+
+fieldset {
+	border: 1px solid #C0C0C0;
+}
+
+fieldset legend {
+	font-weight: bold;
+	font-size: 18px;
+	color: #6E6E6E;
+}
+
+.gridx { 
+    height: 338px;
+    width: 98%;
+}
+
+.messageSpanSuccess {
+	color: green !important;
+}
+
+.messageSpanFailure {
+	color: red !important;
+}
+
+.confirmDialogMessage {
+    font-weight: normal;
+	font-size: 16px;
+}
+
+.informationDialogMessage {
+    font-weight: normal;
+	font-size: 16px;
+}
+
+.printPageTableBorder {
+	border: 1px solid black;
+	border-style: ridge;	
+}

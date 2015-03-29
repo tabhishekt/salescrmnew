@@ -1,0 +1,72 @@
+<div class="dojoxDialog" tabindex="-1">
+	<div dojoAttachPoint="titleBar" class="dojoxDialogTitleBar">
+		<span dojoAttachPoint="titleNode" class="dojoxDialogTitle"
+			id="${id}_title">${title}</span>
+		<div dojoAttachPoint="closeButtonNode" class="dojoxDialogCloseIcon hiddenDialogCloseIcon"
+			dojoAttachEvent="onclick: onCancel">
+			<span dojoAttachPoint="closeText" class="closeText">x</span>
+		</div>
+	</div>
+	<div dojoAttachPoint="dojoxDialogWrapper">
+		<div dojoAttachPoint="containerNode" class="dojoxDialogPaneContent">
+			<div data-dojo-attach-point="codetableForm"
+				data-dojo-type="dijit/form/Form" enctype="multipart/form-data"
+				action="" method="POST">
+				<div>
+					<input data-dojo-type='dijit/form/TextBox' id="rowId" name="rowId" 
+					data-dojo-attach-point='rowId' class="hiddenInput" value=""></input>
+					<table style="width: 100%;">
+						<tr>
+							<td>
+								<table>
+									<tr>
+										<td><label for="code">Code:</label></td>
+									</tr>
+									<tr>
+										<td><input id="code" name="code"
+											data-dojo-type='dijit/form/ValidationTextBox'
+											data-dojo-attach-point='code'
+											data-dojo-props="required:true, regExp:'[A-Z]{2,7}', invalidMessage:'Upper case only. Min 2 and Max 7 Characters.'"
+											type="text" /></td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td><label for="name">Name:</label></td>
+									</tr>
+									<tr>
+										<td><input id="name" name="name"
+											data-dojo-type='dijit/form/ValidationTextBox' 
+											data-dojo-attach-point='name'
+											data-dojo-props='required:true'
+											type="text" /></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div>
+					<table>
+						<tr>
+							<td>
+								<div class="dialogMessageSpan"
+									data-dojo-attach-point="messageNode"></div>
+							</td>
+							<td><div>
+									<button data-dojo-type="dijit.form.Button" data-dojo-props=""
+										data-dojo-attach-point="submitButton"
+										data-dojo-attach-event="onClick: onSubmit">Submit</button>
+									<button data-dojo-type="dijit.form.Button" data-dojo-props=""
+										data-dojo-attach-point="cancelButton"
+										data-dojo-attach-event="onClick: onCancel">Cancel</button>
+								</div></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

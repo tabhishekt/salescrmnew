@@ -1,0 +1,75 @@
+<div>
+	<table style="width: 100%;">
+		<tr>
+			<td>
+				<table>
+					<tr>
+						<td><label for="addressline1">Address Line 1:</label></td>
+					</tr>
+					<tr>
+						<td><input id="addressline1" name="addressline1"
+							data-dojo-type='dijit/form/ValidationTextBox'
+							data-dojo-attach-point='addressline1'
+							data-dojo-props='required:true' type="text" /></td>
+					</tr>
+				</table>
+			</td>
+			<td>
+				<table>
+					<tr>
+						<td><label for="addressline2">Address Line 2:</label></td>
+					</tr>
+					<tr>
+						<td><input id="addressline2" name="addressline2"
+							data-dojo-type='dijit/form/ValidationTextBox'
+							data-dojo-attach-point='addressline2'
+							type="text" /></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<table>
+					<tr>
+						<td><label for="city">City:</label></td>
+					</tr>
+					<tr>
+						<td><select id="city" name="city" 
+						data-dojo-type="dijit/form/FilteringSelect" 
+						data-dojo-attach-point='city'
+						data-dojo-props='required:true'></select></td>
+					</tr>
+				</table>
+			</td>
+			<td>
+				<table>
+					<tr>
+						<td><label for="state">State:</label></td>
+					</tr>
+					<tr>
+						<td><select id="state" name="state"
+						data-dojo-type="dijit/form/FilteringSelect" 
+						data-dojo-attach-point='state'
+						data-dojo-props='required:true'></select></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<table>
+					<tr>
+						<td><label for="zipcode">ZipCode:</label></td>
+					</tr>
+					<tr>
+						<td><input id="zipcode" name="zipcode"
+							data-dojo-type='dijit/form/ValidationTextBox'
+							data-dojo-attach-point='zipcode'
+							data-dojo-props="required:true, regExp:'\\d{6}', invalidMessage:'Zip codes should be 6 digit number.'" type="text" /></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+</div>

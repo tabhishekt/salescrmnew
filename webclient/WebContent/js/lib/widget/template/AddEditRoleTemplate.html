@@ -1,0 +1,78 @@
+<div class="dojoxDialog" tabindex="-1">
+	<div dojoAttachPoint="titleBar" class="dojoxDialogTitleBar">
+		<span dojoAttachPoint="titleNode" class="dojoxDialogTitle"
+			id="${id}_title">${title}</span>
+		<div dojoAttachPoint="closeButtonNode" class="dojoxDialogCloseIcon hiddenDialogCloseIcon"
+			dojoAttachEvent="onclick: onCancel">
+			<span dojoAttachPoint="closeText" class="closeText">x</span>
+		</div>
+	</div>
+	<div dojoAttachPoint="dojoxDialogWrapper">
+		<div dojoAttachPoint="containerNode" class="dojoxDialogPaneContent">
+			<div data-dojo-attach-point="codetableForm"
+				data-dojo-type="dijit/form/Form" enctype="multipart/form-data"
+				action="" method="POST">
+				<div>
+					<input data-dojo-type='dijit/form/TextBox' id="rowId" name="rowId" 
+					data-dojo-attach-point='rowId' class="hiddenInput" value=""></input>
+					<fieldset style="width: 80%;">
+	 					<legend>Project Phase Details:</legend>
+	 					<div>
+	 						<table align="left" style="width: 100%;">
+								<tr><td>
+									<table>
+										<tr>
+											<td><label for="name">Name:</label></td>
+										</tr>
+										<tr>
+											<td><input id="name" name="name"
+												data-dojo-type='dijit/form/ValidationTextBox'
+												data-dojo-attach-point='name'
+												data-dojo-props="required:true"
+												type="text" /></td>
+										</tr>
+									</table>
+								</td><td>
+									<table>
+										<tr><td><label for="admin">Administrator:</label></td></tr>
+										<tr><td><input id="admin" name="admin" 
+										data-dojo-type="dijit/form/CheckBox" 
+										data-dojo-attach-point='admin'
+										data-dojo-props="required:true" />
+										</td></tr>
+									</table>
+								</td></tr>
+								<tr><td>
+									<table>
+										<tr><td><label for="description">Role Description:</label></td></tr>
+										<tr><td><textarea id="description" name="description"
+										data-dojo-type="dijit/form/SimpleTextarea" rows="3"
+										data-dojo-attach-point='description'></textarea></td></tr>
+									</table>
+								</td></tr>
+							</table>
+	 					</div>
+					</fieldset>
+				</div>
+				<div>
+					<table>
+						<tr>
+							<td>
+								<div class="dialogMessageSpan"
+									data-dojo-attach-point="messageNode"></div>
+							</td>
+							<td><div>
+									<button data-dojo-type="dijit.form.Button" data-dojo-props=""
+										data-dojo-attach-point="submitButton"
+										data-dojo-attach-event="onClick: onSubmit">Submit</button>
+									<button data-dojo-type="dijit.form.Button" data-dojo-props=""
+										data-dojo-attach-point="cancelButton"
+										data-dojo-attach-event="onClick: onCancel">Cancel</button>
+								</div></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

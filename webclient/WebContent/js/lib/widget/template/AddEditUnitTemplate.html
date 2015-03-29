@@ -1,0 +1,159 @@
+<div class="dojoxDialog" tabindex="-1">
+	<div dojoAttachPoint="titleBar" class="dojoxDialogTitleBar">
+		<span dojoAttachPoint="titleNode" class="dojoxDialogTitle"
+			id="${id}_title">${title}</span>
+		<div dojoAttachPoint="closeButtonNode" class="dojoxDialogCloseIcon hiddenDialogCloseIcon"
+			dojoAttachEvent="onclick: onCancel">
+			<span dojoAttachPoint="closeText" class="closeText">x</span>
+		</div>
+	</div>
+	<div dojoAttachPoint="dojoxDialogWrapper">
+		<div dojoAttachPoint="containerNode" class="dojoxDialogPaneContent">
+			<div data-dojo-attach-point="codetableForm"
+				data-dojo-type="dijit/form/Form" enctype="multipart/form-data"
+				action="" method="POST">
+				<div>
+					<input data-dojo-type='dijit/form/TextBox' id="rowId" name="rowId" 
+					data-dojo-attach-point='rowId' class="hiddenInput" value=""></input>
+					<input data-dojo-type='dijit/form/TextBox' id="projectbuilding" name="projectbuilding" 
+					data-dojo-attach-point='projectbuilding' class="hiddenInput" value=""></input>
+					<fieldset style="width: 80%;">
+	 					<legend>Unit Details:</legend>
+	 					<div>
+	 						<table align="left" style="width: 100%;">
+								<tr><td>
+									<table>
+										<tr><td><label for="number">Unit Number:</label></td></tr>
+										<tr><td><input id="number" name="number"
+												data-dojo-type='dijit/form/ValidationTextBox'
+												data-dojo-attach-point='number'
+												data-dojo-props="required:true, regExp:'\\d{1,5}', invalidMessage:'Enter upto five digit number only.'"
+												type="text" /></td></tr>
+									</table>
+								</td><td>
+									<table>
+										<tr><td><label for="unittype">Unit Type:</label></td></tr>
+										<tr><td><select id="unittype" name="unittype"
+										data-dojo-type="dijit/form/FilteringSelect" 
+										data-dojo-attach-point='unittype'
+										data-dojo-props="required:true"></select></td></tr>
+									</table>
+								</td></tr>
+								<tr><td>
+									<table>
+										<tr><td><label for="floornumber">Floor Number:</label></td></tr>
+										<tr>
+											<td><input id="floornumber" name="floornumber"
+												data-dojo-type='dijit/form/ValidationTextBox'
+												data-dojo-attach-point='floornumber'
+												data-dojo-props="required:true, regExp:'\\d{1,3}', invalidMessage:'Enter upto three digit number only.'"
+												type="text" /></td>
+										</tr>
+									</table>
+								</td><td>
+									<table>
+										<tr><td><label for="bookingamount">Booking Amount:</label></td></tr>
+										<tr><td><input id="bookingamount" name="bookingamount"
+												data-dojo-type='dijit/form/ValidationTextBox'
+												data-dojo-attach-point='bookingamount'
+												data-dojo-props="required:true, regExp:'^[0-9]([0-9]{1,7})?(\.[1-9])?$', invalidMessage:'Enter valid decimal value upto 99999999.9'"
+												type="text" /></td></tr>
+									</table>
+								</td></tr>
+								<tr><td>
+									<table>
+										<tr><td><label for="carpetarea">Carpet Area:</label></td></tr>
+										<tr>
+											<td><input id="carpetarea" name="carpetarea"
+												data-dojo-type='dijit/form/ValidationTextBox'
+												data-dojo-attach-point='carpetarea'
+												data-dojo-props="required:true, regExp:'\\d{1,5}', invalidMessage:'Enter upto five digit number only.'"
+												type="text" /></td>
+										</tr>
+									</table>
+								</td><td>
+									<table>
+										<tr><td><label for="saleablearea">Saleable Area:</label></td></tr>
+										<tr><td><input id="saleablearea" name="saleablearea"
+												data-dojo-type='dijit/form/ValidationTextBox'
+												data-dojo-attach-point='saleablearea'
+												data-dojo-props="required:true, regExp:'\\d{1,5}', invalidMessage:'Enter upto five digit number only.'"
+												type="text" /></td></tr>
+									</table>
+								</td></tr>
+								<tr><td>
+									<table>
+										<tr><td><label for="othercharges">Other Charges:</label></td></tr>
+										<tr><td><input id="othercharges" name="othercharges"
+												data-dojo-type='dijit/form/ValidationTextBox'
+												data-dojo-attach-point='othercharges'
+												data-dojo-props="required:true, regExp:'^[0-9]([0-9]{1,7})?(\.[1-9])?$', invalidMessage:'Enter valid decimal value upto 99999999.9'"
+												type="text" /></td></tr>
+									</table>
+								</td><td>
+									<table>
+										<tr><td>
+											<table>
+												<tr><td><input id="otheroptions" name="otheroptions" 
+												data-dojo-type="dijit/form/CheckBox" 
+												data-dojo-attach-point='otheroptions'
+												data-dojo-props="required:true" /></td>
+												<td><label for="otheroptions">Other Options:</label></td></tr>
+											</table>
+										</td></tr>
+									</table>
+								</td></tr>
+								<tr><td>
+									<table>
+										<tr><td><label for="amenities">Unit Amenities:</label></td></tr>
+										<tr><td><select id="amenities" name="amenities" 
+										data-dojo-type="dijit/form/MultiSelect" 
+										data-dojo-attach-point='amenities'  labelAttr="name" 
+										size=4></select></td>
+										</tr>
+									</table>
+								</td></tr>
+								<tr><td colspan="2">
+									<table>
+										<tr><td><input id="createmultipleeven" name="createmultipleeven" 
+										data-dojo-type="dijit/form/CheckBox" 
+										data-dojo-attach-point='createmultipleeven'/></td>
+										<td><label data-dojo-attach-point='createmultiplelabeleven' 
+											for="createmultipleeven">Create units at this position on even floors of building:</label></td></tr>
+									</table>
+								</td></tr>
+								<tr><td colspan="2">
+									<table>
+										<tr><td><input id="createmultipleodd" name="createmultipleodd" 
+										data-dojo-type="dijit/form/CheckBox" 
+										data-dojo-attach-point='createmultipleodd'/></td>
+										<td><label data-dojo-attach-point='createmultiplelabelodd' 
+											for="createmultipleodd">Create units at this position on odd floors of building:</label></td></tr>
+									</table>
+								</td></tr>
+							</table>
+	 					</div>
+					</fieldset>
+				</div>
+				<div>
+					<table>
+						<tr>
+							<td>
+								<div class="dialogMessageSpan"
+									data-dojo-attach-point="messageNode"></div>
+							</td>
+							<td><div>
+									<button data-dojo-type="dijit.form.Button" data-dojo-props=""
+										data-dojo-attach-point="submitButton"
+										data-dojo-attach-event="onClick: onSubmit">Submit</button>
+									<button data-dojo-type="dijit.form.Button" data-dojo-props=""
+										data-dojo-attach-point="cancelButton"
+										data-dojo-attach-event="onClick: onCancel">Cancel</button>
+								</div></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

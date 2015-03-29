@@ -1,0 +1,216 @@
+<div class="dojoxDialog" tabindex="-1">
+	<div dojoAttachPoint="titleBar" class="dojoxDialogTitleBar">
+		<span dojoAttachPoint="titleNode" class="dojoxDialogTitle"
+			id="${id}_title">${title}</span>
+		<div dojoAttachPoint="closeButtonNode" class="dojoxDialogCloseIcon hiddenDialogCloseIcon"
+			dojoAttachEvent="onclick: onCancel">
+			<span dojoAttachPoint="closeText" class="closeText">x</span>
+		</div>
+	</div>
+	<div dojoAttachPoint="dojoxDialogWrapper">
+		<div dojoAttachPoint="containerNode" class="dojoxDialogPaneContent">
+			<div data-dojo-attach-point="codetableForm"
+				data-dojo-type="dijit/form/Form" enctype="multipart/form-data"
+				action="" method="POST">
+				<div>
+					<input data-dojo-type='dijit/form/TextBox' id="rowId" name="rowId" 
+					data-dojo-attach-point='rowId' class="hiddenInput" value=""></input>
+					<input data-dojo-type='dijit/form/TextBox' id="unitbooking" name="unitbooking" 
+					data-dojo-attach-point='unitbooking' class="hiddenInput" value=""></input>
+					<input data-dojo-type='dijit/form/TextBox' id="user" name="user" 
+					data-dojo-attach-point='user' class="hiddenInput" value=""></input>
+					<input data-dojo-type='dijit/form/TextBox' id="receiptnumber" name="receiptnumber" 
+					data-dojo-attach-point='receiptnumber' class="hiddenInput" value=""></input>
+					<fieldset style="width: 80%;">
+	 					<legend>Payment Details:</legend>
+	 					<div>
+	 						<table align="left" style="width: 100%;">
+								<tr><td>
+									<table>
+										<tr><td><label for="receiptnumberdisplay">Receipt number:</label></td></tr>
+										<tr><td><input id="receiptnumberdisplay" name="receiptnumberdisplay"
+												data-dojo-type='dijit/form/TextBox'
+												data-dojo-attach-point='receiptnumberdisplay'
+												type="text" /></td></tr>
+									</table>
+								</td><td>
+									<table>
+										<tr><td><label for="altreceiptnumber">Alternate Receipt number:</label></td></tr>
+										<tr><td><input id="altreceiptnumber" name="altreceiptnumber"
+												data-dojo-type='dijit/form/ValidationTextBox'
+												data-dojo-attach-point='altreceiptnumber'
+												data-dojo-props="required:true, regExp:'\\d{1,8}', invalidMessage:'Enter upto eight digit number only.'"
+												type="text" /></td></tr>
+									</table>
+								</td></tr>
+								<tr><td>
+									<table>
+										<tr><td><label for="paymenttype">Payment type:</label></td></tr>
+										<tr><td><select id="paymenttype" name="paymenttype"
+										data-dojo-type="dijit/form/FilteringSelect" 
+										data-dojo-attach-point='paymenttype'
+										data-dojo-props="required:true"></select></td></tr>
+									</table>
+								</td><td>
+									<table>
+										<tr><td><label for="receiptamount">Payment amount:</label></td></tr>
+										<tr><td><input id="receiptamount" name="receiptamount"
+												data-dojo-type='dijit/form/ValidationTextBox'
+												data-dojo-attach-point='receiptamount'
+												data-dojo-props="required:true, regExp:'^[0-9]([0-9]{1,7})?(\.[1-9])?$', invalidMessage:'Enter valid decimal value upto 99999999.9'"
+												type="text" /></td></tr>
+									</table>
+								</td></tr>
+								<tr><td>
+									<table>
+										<tr><td><label for="receiptdate">Payment received date:</label></td></tr>
+										<tr><td><input id="receiptdate" name="receiptdate"
+												data-dojo-type='dijit/form/DateTextBox'
+												data-dojo-attach-point='receiptdate'
+												data-dojo-props="required:true"
+												type="text" /></td></tr>
+									</table>
+								</td><td>
+									<table>
+										<tr><td><label for="description">Payment description:</label></td></tr>
+										<tr><td><textarea id="description" name="description"
+										data-dojo-type="dijit/form/SimpleTextarea" rows="3"
+										data-dojo-attach-point='description'></textarea></td></tr>
+									</table>
+								</td></tr>
+								<tr><td>
+									<table>
+										<tr><td><label for="paymentstatus">Payment Status:</label></td></tr>
+										<tr><td><select id="paymentstatus" name="paymentstatus"
+										data-dojo-type="dijit/form/FilteringSelect" 
+										data-dojo-attach-point='paymentstatus'
+										data-dojo-props="required:true"></select></td></tr>
+									</table>
+								</td><td>
+									<table>
+										<tr><td><label for="paymentstatuscomment">Payment Status Comment:</label></td></tr>
+										<tr><td><textarea id="paymentstatuscomment" name="paymentstatuscomment"
+										data-dojo-type="dijit/form/SimpleTextarea" rows="3"
+										data-dojo-attach-point='paymentstatuscomment'></textarea></td></tr>
+									</table>
+								</td></tr>
+								<tr><td>
+									<table>
+										<tr><td><label for="paymentstage">Payment Stage:</label></td></tr>
+										<tr><td><select id="paymentstage" name="paymentstage" 
+										data-dojo-type="dijit/form/MultiSelect" 
+										data-dojo-attach-point='paymentstage'  labelAttr="name" 
+										size=4></select></td>
+										</tr>
+									</table>
+								</td></tr>
+							</table>
+	 					</div>
+					</fieldset>
+					<fieldset style="width: 80%;">
+	 					<legend>Cheque Details:</legend>
+	 					<div>
+	 						<table align="left" style="width: 100%;">
+								<tr><td>
+									<table>
+										<tr><td><label for="bankname">Bank name:</label></td></tr>
+										<tr><td><input id="bankname" name="bankname"
+												data-dojo-type='dijit/form/ValidationTextBox'
+												data-dojo-attach-point='bankname'
+												type="text" /></td></tr>
+									</table>
+								</td><td>
+									<table>
+										<tr><td><label for="bankbranch">Bank branch:</label></td></tr>
+										<tr><td><input id="bankbranch" name="bankbranch"
+												data-dojo-type='dijit/form/ValidationTextBox'
+												data-dojo-attach-point='bankbranch'
+												type="text" /></td></tr>
+									</table>
+								</td></tr>
+								<tr><td>
+									<table>
+										<tr><td><label for="chequenumber">Cheque number:</label></td></tr>
+										<tr><td><input id="chequenumber" name="chequenumber"
+												data-dojo-type='dijit/form/ValidationTextBox'
+												data-dojo-attach-point='chequenumber'
+												data-dojo-props="regExp:'\\d{5,8}', invalidMessage:'Cheque number should be min 5 and max 8 digit number.'"
+												type="text" /></td></tr>
+									</table>
+								</td><td>
+									<table>
+										<tr><td><label for="chequedate">Cheque date:</label></td></tr>
+										<tr><td><input id="chequedate" name="chequedate"
+												data-dojo-type='dijit/form/DateTextBox'
+												data-dojo-attach-point='chequedate'
+												type="text" /></td></tr>
+									</table>
+								</td></tr>
+							</table>
+	 					</div>
+					</fieldset>
+					<fieldset style="width: 80%;">
+	 					<legend>Card Details:</legend>
+	 					<div>
+	 						<table align="left" style="width: 100%;">
+								<tr><td>
+									<table>
+										<tr><td><label for="cardnumber">Card number:</label></td></tr>
+										<tr><td><input id="cardnumber" name="cardnumber"
+												data-dojo-type='dijit/form/ValidationTextBox'
+												data-dojo-attach-point='cardnumber'
+												data-dojo-props="regExp:'\\d{12,20}', invalidMessage:'Card number should be min 12 and max 20 digit number.'"
+												type="text" /></td></tr>
+									</table>
+								</td><td>
+									<table>
+										<tr><td><label for="cardexpirydate">Card expiry date:</label></td></tr>
+										<tr><td><input id="cardexpirydate" name="cardexpirydate"
+												data-dojo-type='dijit/form/ValidationTextBox'
+												data-dojo-attach-point='cardexpirydate'
+												type="text" /></td></tr>
+									</table>
+								</td></tr>
+								<tr><td>
+									<table>
+										<tr><td><label for="cardholdername">Card holder name:</label></td></tr>
+										<tr><td><input id="cardholdername" name="cardholdername"
+												data-dojo-type='dijit/form/ValidationTextBox'
+												data-dojo-attach-point='cardholdername'
+												type="text" /></td></tr>
+									</table>
+								</td><td>
+									<table>
+										<tr><td><label for="cardtype">Card type:</label></td></tr>
+										<tr><td><input id="cardtype" name="cardtype"
+												data-dojo-type='dijit/form/ValidationTextBox'
+												data-dojo-attach-point='cardtype'
+												type="text" /></td></tr>
+									</table>
+								</td></tr>
+							</table>
+	 					</div>
+					</fieldset>
+				</div>
+				<div>
+					<table>
+						<tr>
+							<td>
+								<div class="dialogMessageSpan"
+									data-dojo-attach-point="messageNode"></div>
+							</td>
+							<td><div>
+									<button data-dojo-type="dijit.form.Button" data-dojo-props=""
+										data-dojo-attach-point="submitButton"
+										data-dojo-attach-event="onClick: onSubmit">Submit</button>
+									<button data-dojo-type="dijit.form.Button" data-dojo-props=""
+										data-dojo-attach-point="cancelButton"
+										data-dojo-attach-event="onClick: onCancel">Cancel</button>
+								</div></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

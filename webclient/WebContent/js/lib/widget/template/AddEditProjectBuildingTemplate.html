@@ -1,0 +1,124 @@
+<div class="dojoxDialog" tabindex="-1">
+	<div dojoAttachPoint="titleBar" class="dojoxDialogTitleBar">
+		<span dojoAttachPoint="titleNode" class="dojoxDialogTitle"
+			id="${id}_title">${title}</span>
+		<div dojoAttachPoint="closeButtonNode" class="dojoxDialogCloseIcon hiddenDialogCloseIcon"
+			dojoAttachEvent="onclick: onCancel">
+			<span dojoAttachPoint="closeText" class="closeText">x</span>
+		</div>
+	</div>
+	<div dojoAttachPoint="dojoxDialogWrapper">
+		<div dojoAttachPoint="containerNode" class="dojoxDialogPaneContent">
+			<div data-dojo-attach-point="codetableForm"
+				data-dojo-type="dijit/form/Form" enctype="multipart/form-data"
+				action="" method="POST">
+				<div>
+					<input data-dojo-type='dijit/form/TextBox' id="rowId" name="rowId" 
+					data-dojo-attach-point='rowId' class="hiddenInput" value=""></input>
+					<input data-dojo-type='dijit/form/TextBox' id="project" name="project" 
+					data-dojo-attach-point='project' class="hiddenInput" value=""></input>
+					<fieldset style="width: 80%;">
+	 					<legend>Project Building Details:</legend>
+	 					<div id="buildingDetails">
+	 						<table align="left" style="width: 100%;">
+								<tr><td>
+									<table>
+										<tr><td><label for="name">Project building name:</label></td></tr>
+										<tr><td><input id="name" name="name"
+												data-dojo-type='dijit/form/ValidationTextBox'
+												data-dojo-attach-point='name'
+												data-dojo-props="required:true"
+												type="text" /></td></tr>
+									</table>
+								</td><td>
+									<table>
+										<tr><td><label for="projectphase">Project phase:</label></td></tr>
+										<tr><td><select id="projectphase" name="projectphase"
+										data-dojo-type="dijit/form/FilteringSelect" 
+										data-dojo-attach-point='projectphase'
+										data-dojo-props="required:true"></select></td></tr>
+									</table>
+								</td></tr>
+								<tr><td>
+									<table>
+										<tr><td><label for="wingname">Wing:</label></td></tr>
+										<tr><td><input id="wingname" name="wingname"
+												data-dojo-type='dijit/form/ValidationTextBox'
+												data-dojo-attach-point='wingname'
+												data-dojo-props="required:true"
+												type="text" /></td></tr>
+									</table>
+								</td><td>
+									<table>
+										<tr><td><label for="floorcount">Floor count:</label></td></tr>
+										<tr><td><input id="floorcount" name="floorcount"
+												data-dojo-type='dijit/form/ValidationTextBox'
+												data-dojo-attach-point='floorcount'
+												data-dojo-props="required:true, regExp:'^[0-9]{1,3}$', invalidMessage:'Enter upto three digit number only.'"
+												type="text" /></td></tr>
+									</table>
+								</td></tr>
+								<tr><td>
+									<table>
+										<tr><td><label for="type">Building type:</label></td></tr>
+										<tr><td><input id="type" name="type"
+												data-dojo-type='dijit/form/ValidationTextBox'
+												data-dojo-attach-point='type'
+												data-dojo-props="required:true"
+												type="text" /></td></tr>
+									</table>
+								</td><td>
+									<table>
+										<tr><td><label for="remarks">Remarks:</label></td></tr>
+										<tr><td><textarea id="remarks" name="remarks"
+										data-dojo-type="dijit/form/SimpleTextarea" rows="3"
+										data-dojo-attach-point='remarks'></textarea></td></tr>
+									</table>
+								</td></tr>
+							</table>
+	 					</div>
+	 					<div id="buildingStatus">
+	 						<table>
+	 							<tr><td>
+									<table>
+										<tr><td><label for="currentstatus">Current status:</label></td></tr>
+										<tr><td><select id="currentstatus" name="currentstatus"
+										data-dojo-type="dijit/form/FilteringSelect"
+										data-dojo-props="required:false" 
+										data-dojo-attach-point='currentstatus'></select></td></tr>
+									</table>
+								</td><td>
+									<table>
+										<tr><td><label for="expectedcompletiondate">Expected completion date:</label></td></tr>
+										<tr><td><input id="expectedcompletiondate" name="expectedcompletiondate"
+												data-dojo-type='dijit/form/DateTextBox'
+												data-dojo-attach-point='expectedcompletiondate'
+												type="text" /></td></tr>
+									</table>
+								</td></tr>
+	 						</table>
+	 					</div>
+					</fieldset>
+				</div>
+				<div>
+					<table>
+						<tr>
+							<td>
+								<div class="dialogMessageSpan"
+									data-dojo-attach-point="messageNode"></div>
+							</td>
+							<td><div>
+									<button data-dojo-type="dijit.form.Button" data-dojo-props=""
+										data-dojo-attach-point="submitButton"
+										data-dojo-attach-event="onClick: onSubmit">Submit</button>
+									<button data-dojo-type="dijit.form.Button" data-dojo-props=""
+										data-dojo-attach-point="cancelButton"
+										data-dojo-attach-event="onClick: onCancel">Cancel</button>
+								</div></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

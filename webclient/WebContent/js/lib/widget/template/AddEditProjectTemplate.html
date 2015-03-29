@@ -1,0 +1,159 @@
+<div class="dojoxDialog" tabindex="-1">
+	<div dojoAttachPoint="titleBar" class="dojoxDialogTitleBar">
+		<span dojoAttachPoint="titleNode" class="dojoxDialogTitle"
+			id="${id}_title">${title}</span>
+		<div dojoAttachPoint="closeButtonNode" class="dojoxDialogCloseIcon hiddenDialogCloseIcon"
+			dojoAttachEvent="onclick: onCancel">
+			<span dojoAttachPoint="closeText" class="closeText">x</span>
+		</div>
+	</div>
+	<div dojoAttachPoint="dojoxDialogWrapper">
+		<div dojoAttachPoint="containerNode" class="dojoxDialogPaneContent">
+			<div data-dojo-attach-point="codetableForm"
+				data-dojo-type="dijit/form/Form" enctype="multipart/form-data"
+				action="" method="POST">
+				<div>
+					<input data-dojo-type='dijit/form/TextBox' id="rowId" name="rowId" 
+					data-dojo-attach-point='rowId' class="hiddenInput" value=""></input>
+					<fieldset style="width: 80%;">
+	 					<legend>Project Basic Details:</legend>
+	 					<div>
+	 						<table align="left" style="width: 100%;">
+								<tr><td>
+									<table>
+										<tr><td><label for="name">Project name:</label></td></tr>
+										<tr><td><input id="name" name="name"
+												data-dojo-type='dijit/form/ValidationTextBox'
+												data-dojo-attach-point='name'
+												data-dojo-props="required:true"
+												type="text" /></td></tr>
+									</table>
+								</td><td>
+									<table>
+										<tr><td><label for="organization">Organization:</label></td></tr>
+										<tr><td><select id="organization" name="organization"
+										data-dojo-type="dijit/form/FilteringSelect" 
+										data-dojo-attach-point='organization'
+										data-dojo-props="required:true"></select></td></tr>
+									</table>
+								</td></tr>
+								<tr><td>
+									<table>
+										<tr><td><label for="description">Project Description:</label></td></tr>
+										<tr><td><textarea id="description" name="description"
+										data-dojo-type="dijit/form/SimpleTextarea" rows="3"
+										data-dojo-attach-point='description'></textarea></td></tr>
+									</table>
+								</td><td>
+									<table>
+										<tr><td><label for="totalphases">Total Phases:</label></td></tr>
+										<tr><td><input id="totalphases" name="totalphases" 
+										data-dojo-type='dijit/form/ValidationTextBox'
+										data-dojo-attach-point='totalphases'
+										data-dojo-props="required:true, regExp:'^[0-9]{1,3}$', invalidMessage:'Enter upto three digit number only.'" type="text" />
+										</td></tr>
+									</table>
+								</td></tr>
+							</table>
+	 					</div>
+					</fieldset>
+					<fieldset style="width: 80%;">
+	 					<legend>Project Address:</legend>
+						<div id="address" data-dojo-attach-point='address' 
+						data-dojo-type='lib/widget/AddressWidget'></div>
+					</fieldset>
+					<fieldset style="width: 80%;">
+	 					<legend>Project Bank Details:</legend>
+	 					<div>
+	 						<table align="left" style="width: 100%;">
+	 							<tr><td>
+									<table>
+										<tr><td><label for="accountholdername">Account holder name:</label></td></tr>
+										<tr><td><input id="accountholdername" name="accountholdername"
+												data-dojo-type='dijit/form/ValidationTextBox'
+												data-dojo-attach-point='accountholdername'
+												data-dojo-props="required:true"
+												type="text" /></td></tr>
+									</table>
+								</td></tr>
+								<tr><td>
+									<table>
+										<tr><td><label for="bankname">Bank name:</label></td></tr>
+										<tr><td><input id="bankname" name="bankname"
+												data-dojo-type='dijit/form/ValidationTextBox'
+												data-dojo-attach-point='bankname'
+												data-dojo-props="required:true"
+												type="text" /></td></tr>
+									</table>
+								</td><td>
+									<table>
+										<tr><td><label for="accountnumber">Account Number:</label></td></tr>
+										<tr><td><input id="accountnumber" name="accountnumber"
+										data-dojo-type='dijit/form/ValidationTextBox'
+										data-dojo-attach-point='accountnumber'
+										data-dojo-props="required:true"
+										type="text" /></td></tr>
+									</table>
+								</td></tr>
+								<tr><td>
+									<table>
+										<tr><td><label for="ifsccode">IFSC Code:</label></td></tr>
+										<tr><td><input id="ifsccode" name="ifsccode"
+												data-dojo-type='dijit/form/ValidationTextBox'
+												data-dojo-attach-point='ifsccode'
+												data-dojo-props="required:true"
+												type="text" /></td></tr>
+									</table>
+								</td><td>
+									<table>
+										<tr><td><label for="micrcode">MICR Code:</label></td></tr>
+										<tr><td><input id="micrcode" name="micrcode"
+										data-dojo-type='dijit/form/ValidationTextBox'
+										data-dojo-attach-point='micrcode'
+										data-dojo-props="required:true"
+										type="text" /></td></tr>
+									</table>
+								</td></tr>
+							</table>
+	 					</div>
+						<div id="bankaddress" data-dojo-attach-point='bankaddress' 
+						data-dojo-type='lib/widget/BankAddressWidget'></div>
+					</fieldset>
+					<fieldset style="width: 80%;">
+	 					<legend>Terms and Conditions:</legend>
+	 					<div>
+	 						<table align="left" style="width: 100%;">
+								<tr><td>
+									<table style="width: 90%;">
+										<tr><td><label for="termsandconditions">Put HTML of Terms and Conditions:</label></td></tr>
+										<tr><td><textarea id="termsandconditions" name="termsandconditions"
+										data-dojo-type="dijit/form/SimpleTextarea" rows="7"
+										data-dojo-attach-point='termsandconditions'></textarea></td></tr>
+									</table>
+								</td></tr>
+							</table>
+	 					</div>
+					</fieldset>
+				</div>
+				<div>
+					<table>
+						<tr>
+							<td>
+								<div class="dialogMessageSpan"
+									data-dojo-attach-point="messageNode"></div>
+							</td>
+							<td><div>
+									<button data-dojo-type="dijit.form.Button" data-dojo-props=""
+										data-dojo-attach-point="submitButton"
+										data-dojo-attach-event="onClick: onSubmit">Submit</button>
+									<button data-dojo-type="dijit.form.Button" data-dojo-props=""
+										data-dojo-attach-point="cancelButton"
+										data-dojo-attach-event="onClick: onCancel">Cancel</button>
+								</div></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

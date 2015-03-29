@@ -1,0 +1,57 @@
+<div class="dojoxDialog" tabindex="-1">
+	<div dojoAttachPoint="titleBar" class="dojoxDialogTitleBar">
+		<span dojoAttachPoint="titleNode" class="dojoxDialogTitle"
+			id="${id}_title">${title}</span>
+		<div dojoAttachPoint="closeButtonNode" class="dojoxDialogCloseIcon hiddenDialogCloseIcon"
+			dojoAttachEvent="onclick: onCancel">
+			<span dojoAttachPoint="closeText" class="closeText">x</span>
+		</div>
+	</div>
+	<div dojoAttachPoint="dojoxDialogWrapper">
+		<div dojoAttachPoint="containerNode" class="dojoxDialogPaneContent">
+			<div data-dojo-attach-point="codetableForm"
+				data-dojo-type="dijit/form/Form" enctype="multipart/form-data"
+				action="" method="POST">
+				<div>
+					<input data-dojo-type='dijit/form/TextBox' id="rowId" name="rowId" 
+					data-dojo-attach-point='rowId' class="hiddenInput" value=""></input>
+					<input data-dojo-type='dijit/form/TextBox' id="user" name="user" 
+					data-dojo-attach-point='user' class="hiddenInput" value=""></input>
+					<fieldset style="width: 80%;">
+					 	<legend>Personal Details:</legend>
+						<div id="personaldetails" data-dojo-attach-point='personaldetails' 
+						data-dojo-type='lib/widget/PersonWidget'></div>
+					</fieldset>
+					<fieldset style="width: 80%;">
+					 	<legend>Customer Address:</legend>
+						<div id="address" data-dojo-attach-point='address'
+						data-dojo-type='lib/widget/AddressWidget'></div>
+					</fieldset>
+					<fieldset style="width: 80%;">
+					 	<legend>Customer Contact Details:</legend>
+						<div id="contactinfo" data-dojo-attach-point='contactinfo' 
+						data-dojo-type='lib/widget/PersonContactInfoWidget'></div>
+					</fieldset>
+				</div>
+				<div>
+					<table>
+						<tr>
+							<td>
+								<div class="dialogMessageSpan"
+									data-dojo-attach-point="messageNode"></div>
+							</td>
+							<td><div>
+									<button data-dojo-type="dijit.form.Button" data-dojo-props=""
+										data-dojo-attach-point="submitButton"
+										data-dojo-attach-event="onClick: onSubmit">Submit</button>
+									<button data-dojo-type="dijit.form.Button" data-dojo-props=""
+										data-dojo-attach-point="cancelButton"
+										data-dojo-attach-event="onClick: onCancel">Cancel</button>
+								</div></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

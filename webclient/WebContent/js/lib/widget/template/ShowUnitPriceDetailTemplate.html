@@ -1,0 +1,161 @@
+<div class="dojoxDialog" tabindex="-1">
+	<div dojoAttachPoint="titleBar" class="dojoxDialogTitleBar">
+		<span dojoAttachPoint="titleNode" class="dojoxDialogTitle"
+			id="${id}_title">${title}</span>
+		<div dojoAttachPoint="closeButtonNode" class="dojoxDialogCloseIcon hiddenDialogCloseIcon"
+			dojoAttachEvent="onclick: onCancel">
+			<span dojoAttachPoint="closeText" class="closeText">x</span>
+		</div>
+	</div>
+	<div dojoAttachPoint="dojoxDialogWrapper">
+		<div dojoAttachPoint="containerNode" class="dojoxDialogPaneContent">
+			<div>
+				<table align="left" style="width: 100%;">
+					<tr><td>
+						<table>
+							<tr><td><label for="unitnumber">Unit Number:</label></td></tr>
+							<tr><td><span id="unitnumber" data-dojo-attach-point='unitnumber'></span></td></tr>
+						</table>
+					</td><td>
+						<table>
+							<tr><td><label for="displayprojectinfo">Building / Project:</label></td></tr>
+							<tr><td><span id="displayprojectinfo" data-dojo-attach-point='displayprojectinfo'></span></td></tr>
+						</table>
+					</td></tr>
+					<tr><td>
+						<table>
+							<tr><td><label for="saleablearea">Saleable Area:</label></td></tr>
+							<tr><td><span id="saleablearea" data-dojo-attach-point='saleablearea'></span></td></tr>
+						</table>
+					</td><td>
+						<table>
+							<tr><td><label for="carpetarea">Carpet Area:</label></td></tr>
+							<tr><td><span id="carpetarea" data-dojo-attach-point='carpetarea'></span></td></tr>
+						</table>
+					</td></tr>
+				</table>
+				<fieldset style="width: 80%;">
+ 					<legend>Price Details:</legend>
+ 					<div>
+ 						<table align="left" style="width: 100%;">
+							<tr><td>
+								<table>
+									<tr><td><label for="baserate">Base Rate:</label></td></tr>
+									<tr><td><span id="baserate" data-dojo-attach-point='baserate'></span></td></tr>
+								</table>
+							</td><td>
+								<table>
+									<tr><td><label for="ratediscount">Discount:</label></td></tr>
+									<tr><td><span id="ratediscount" data-dojo-attach-point='ratediscount'></span></td></tr>
+								</table>
+							</td><td>
+								<table>
+									<tr><td><label for="floorrise">Floor Rise:</label></td></tr>
+									<tr><td><span id="floorrise" data-dojo-attach-point='floorrise'></span></td></tr>
+								</table>
+							</td></tr>
+							<tr><td>
+								<table>
+									<tr><td><label for="totaltax">Total Tax:</label></td></tr>
+									<tr><td><span id="totaltax" data-dojo-attach-point='totaltax'></span></td></tr>
+								</table>
+							</td><td>
+								<table>
+									<tr><td><label for="totalcharges">Total Charges:</label></td></tr>
+									<tr><td><span id="totalcharges" data-dojo-attach-point='totalcharges'></span></td></tr>
+								</table>
+							</td></tr>
+							<tr><td>
+								<table>
+									<tr><td><label for="agreementvalue">Agreement Value:</label></td></tr>
+									<tr><td><span id="agreementvalue" data-dojo-attach-point='agreementvalue'></span></td></tr>
+								</table>
+							</td><td>
+								<table>
+									<tr><td><label for="totalcostwithtax">Total Cost with Tax:</label></td></tr>
+									<tr><td><span id="totalcostwithtax" data-dojo-attach-point='totalcostwithtax'></span></td></tr>
+								</table>
+							</td></tr>
+							<tr><td>
+								<table>
+									<tr><td><label for="totalcost">Total Cost:</label></td></tr>
+									<tr><td><span id="totalcost" data-dojo-attach-point='totalcost'></span></td></tr>
+								</table>
+							</td></tr>
+						</table>
+ 					</div>
+				</fieldset>
+				
+				<fieldset style="width: 80%;">
+ 					<legend>Tax Breakup:</legend>
+ 					<div>
+ 						<table align="left" style="width: 100%;">
+							<tr><td>
+								<table>
+									<tr><td><label for="stampduty">Stamp Duty:</label></td></tr>
+									<tr><td><span id="stampduty" data-dojo-attach-point='stampduty'></span></td></tr>
+								</table>
+							</td><td>
+								<table>
+									<tr><td><label for="registrationcharge">Registration Charge:</label></td></tr>
+									<tr><td><span id="registrationcharge" data-dojo-attach-point='registrationcharge'></span></td></tr>
+								</table>
+							</td></tr>
+							<tr><td>
+								<table>
+									<tr><td><label for="servicetax">Service Tax:</label></td></tr>
+									<tr><td><span id="servicetax" data-dojo-attach-point='servicetax'></span></td></tr>
+								</table>
+							</td><td>
+								<table>
+									<tr><td><label for="valueaddedtax">Value Added Tax:</label></td></tr>
+									<tr><td><span id="valueaddedtax" data-dojo-attach-point='valueaddedtax'></span></td></tr>
+								</table>
+							</td></tr>
+						</table>
+ 					</div>
+				</fieldset>
+				
+				<fieldset style="width: 80%;">
+ 					<legend>Charges Breakup:</legend>
+ 					<div>
+ 						<table align="left" style="width: 100%;">
+							<tr><td>
+								<table>
+									<tr><td><label for="maintenancecharge1">Maintenance Charge 1:</label></td></tr>
+									<tr><td><span id="maintenancecharge1" data-dojo-attach-point='maintenancecharge1'></span></td></tr>
+								</table>
+							</td><td>
+								<table>
+									<tr><td><label for="maintenancecharge2">Maintenance Charge 2:</label></td></tr>
+									<tr><td><span id="maintenancecharge2" data-dojo-attach-point='maintenancecharge2'></span></td></tr>
+								</table>
+							</td></tr>
+							<tr><td>
+								<table>
+									<tr><td><label for="legalcharge">Legal Charge:</label></td></tr>
+									<tr><td><span id="legalcharge" data-dojo-attach-point='legalcharge'></span></td></tr>
+								</table>
+							</td><td>
+								<table>
+									<tr><td><label for="othercharges">Other Charges:</label></td></tr>
+									<tr><td><span id="othercharges" data-dojo-attach-point='othercharges'></span></td></tr>
+								</table>
+							</td></tr>
+							<tr><td>
+								<table>
+									<tr><td><label for="deductionothercharges">Deduction on Other Charges:</label></td></tr>
+									<tr><td><span id="deductionothercharges" data-dojo-attach-point='deductionothercharges'></span></td></tr>
+								</table>
+							</td></tr>
+						</table>
+ 					</div>
+				</fieldset>
+			</div>
+			<div align="left">
+				<button data-dojo-type="dijit.form.Button" data-dojo-props=""
+					data-dojo-attach-point="submitButton" data-dojo-attach-event="onClick: onSubmit">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
