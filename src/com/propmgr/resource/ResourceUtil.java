@@ -123,7 +123,8 @@ public class ResourceUtil {
 		
 		while(iterator.hasNext()) {
 			Unitpaymentschedule aSchedule = iterator.next();
-			paymentSchedule.put(aSchedule.getPaymentscheduletype(), getUnitPaymentScheduleFromDAO(aSchedule));
+			paymentSchedule.put(aSchedule.getPaymentscheduletype() + "_" + aSchedule.getApplicableto(), 
+					getUnitPaymentScheduleFromDAO(aSchedule));
 		}
 		
 		if (projectBuilding.getUnitmasters().size() > 0) {
@@ -144,7 +145,7 @@ public class ResourceUtil {
 				projectPhase.getProjectphasename(), projectBuilding.getBuildingname(), projectBuilding.getWingname(),
 				projectBuilding.getFloorcount(), projectBuilding.getBuildingtype(), currentStatus,
 				convertDateToString(projectBuilding.getExpectedcompletiondate()), convertClobToString(projectBuilding.getRemarks()), 
-				paymentSchedule, floorRise, availability);
+				projectBuilding.isHasmultiplepaymentschedules(), paymentSchedule, floorRise, availability);
 	}
 	
 	public static UnitResource getUnitFromDAO(Unitmaster unit)  throws SQLException, IOException {
@@ -293,7 +294,7 @@ public class ResourceUtil {
 			result = new UnitPaymentScheduleResource(paymentSchedule.getUnitpaymentscheduleid(), 
 					projectbuilding.getProjectbuildingid(), projectbuilding.getBuildingname(), paymentSchedule.getPaymentscheduleposition(),
 					paymentSchedule.getPaymentscheduletype(), convertClobToString(paymentSchedule.getPaymentscheduledescription()), 
-					convertDateToString(paymentSchedule.getPaymentscheduledate()), 0, paymentSchedule.getPercentamount());
+					convertDateToString(paymentSchedule.getPaymentscheduledate()), 0, paymentSchedule.getPercentamount(), paymentSchedule.getApplicableto());
 			
 		}
 		
@@ -471,12 +472,12 @@ public class ResourceUtil {
 			double baseRate = unitpricepolicy.getBaserate();
 			double basicCost = baseRate*unit.getSaleablearea();
 			double totalRate = baseRate + floorRise - discount; 
-			double agreementValue = unit.getSaleablearea()*totalRate;
+			double otherCharges = unit.getOthercharges() - deductionOnOtherCharges;
+			double agreementValue = unit.getSaleablearea()*totalRate + otherCharges;
 			double maintainanceCharge1 = unitpricepolicy.getMaintenancecharge1();
 			double maintainanceCharge2 = unitpricepolicy.getMaintenancecharge2();
 			double logalCharge = unitpricepolicy.getLegalcharge();
-			double otherCharges = unit.getOthercharges() - deductionOnOtherCharges;
-			double totalCharges = maintainanceCharge1 + maintainanceCharge2 + logalCharge + otherCharges;
+			double totalCharges = maintainanceCharge1 + maintainanceCharge2 + logalCharge;
 			
 			double stampDuty = (unitpricepolicy.getStampduty()*agreementValue)/100;
 			double registrationCharge = (unitpricepolicy.getRegistrationcharge()*agreementValue)/100;
@@ -977,13 +978,13 @@ public class ResourceUtil {
 	 
 	 public static void saveUnitPriceInformation(Unitmaster unit, Unitpricepolicy unitpricepolicy, double floorRise) throws SQLException {
 		double baseRate = unitpricepolicy.getBaserate();
-		double agreementValue = unit.getSaleablearea()*(baseRate + floorRise);
+		double otherCharges = unit.getOthercharges();
+		double agreementValue = unit.getSaleablearea()*(baseRate + otherCharges + floorRise);
 		
 		double maintainanceCharge1 = unitpricepolicy.getMaintenancecharge1();
 		double maintainanceCharge2 = unitpricepolicy.getMaintenancecharge2();
 		double logalCharge = unitpricepolicy.getLegalcharge();
-		double otherCharges = unit.getOthercharges();
-		double totalCharges = maintainanceCharge1 + maintainanceCharge2 + logalCharge + otherCharges;
+		double totalCharges = maintainanceCharge1 + maintainanceCharge2 + logalCharge;
 		
 		double stampDuty = (unitpricepolicy.getStampduty()*agreementValue)/100;
 		double registrationCharge = (unitpricepolicy.getRegistrationcharge()*agreementValue)/100;
@@ -1001,32 +1002,36 @@ public class ResourceUtil {
 	 }
 	 
 	 public static void saveUnitPaymentSchedule(MultivaluedMap<String, String> formData, String typeFieldName, 
-			 String percentFieldName, String dateFieldName, String descFieldName) throws SQLException, ParseException {
+			 String percentFieldName, String dateFieldName, String descFieldName, int applicableTo) throws SQLException, ParseException {
 		 UnitpaymentscheduleDAO unitpaymentscheduleDAO = new UnitpaymentscheduleDAO();
 		 Unitpaymentschedule paymentSchedule;
 		 String paymentScheduleType = null;
 		 double percentAmount = 0.0;
 		 Projectbuilding projectBuilding = getProjectBuildingPOJO(formData);
 		 percentAmount = getFormDataValueAsDouble(formData, percentFieldName);
+		 paymentScheduleType = getFormDataValue(formData, typeFieldName);
+		 paymentSchedule = unitpaymentscheduleDAO.findByTypeAndBuilding(paymentScheduleType, projectBuilding.getProjectbuildingid(), applicableTo);
 		 
 		 if (percentAmount > 0) {
-			 paymentScheduleType = getFormDataValue(formData, typeFieldName);
-			 paymentSchedule = unitpaymentscheduleDAO.findByType(paymentScheduleType);
 			 if (paymentSchedule == null) {
 				 paymentSchedule = new Unitpaymentschedule();
 			 }
-	
 	
 			 paymentSchedule.setPaymentscheduleposition(getPaymentSchedulePosition(paymentScheduleType, (int)projectBuilding.getFloorcount()));
 			 paymentSchedule.setPaymentscheduledate(getFormDataValueAsDate(formData, dateFieldName));
 			 paymentSchedule.setPaymentscheduletype(paymentScheduleType);
 			 paymentSchedule.setPaymentscheduledescription(getFormDataValueAsClob(formData, descFieldName));
 			 paymentSchedule.setPercentamount(percentAmount);
+			 paymentSchedule.setApplicableto(applicableTo);
 			 paymentSchedule.setProjectbuilding(projectBuilding);
 			 unitpaymentscheduleDAO.save(paymentSchedule);
-			 
-			 unitpaymentscheduleDAO.flushSession();
+		 } else {
+			 if (paymentSchedule != null) {
+				 unitpaymentscheduleDAO.delete(paymentSchedule);
+			 }
 		 }
+		 
+		 unitpaymentscheduleDAO.flushSession();
 	 }
 	 
 	 public static void deleteContactInfo(Contactinfo contactInfo) throws SQLException {

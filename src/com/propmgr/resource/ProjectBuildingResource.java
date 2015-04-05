@@ -1,6 +1,5 @@
 package com.propmgr.resource;
 
-import java.util.Date;
 import java.util.Map;
 
 public class ProjectBuildingResource {
@@ -15,6 +14,7 @@ public class ProjectBuildingResource {
 	private CodeTableResource currentStatus;
 	private String expectedCompletionDate;
 	private String remarks;
+	private boolean hasMultiplePaymentSchedules;
 	private Map<String, UnitPaymentScheduleResource> paymentSchedule;
 	private Map<Integer, Double> floorRise;
 	private Map<Integer, Map<String, Boolean>> availability;
@@ -22,7 +22,8 @@ public class ProjectBuildingResource {
 	public ProjectBuildingResource(long id, long projectId, ProjectPhaseResource projectPhase,
 			String projectPhaseName, String name, String wingName,
 			long floorCount, String type, CodeTableResource currentStatus, 
-			String expectedCompletionDate, String remarks, Map<String, UnitPaymentScheduleResource> paymentSchedule, 
+			String expectedCompletionDate, String remarks, boolean hasMultiplePaymentSchedules, 
+			Map<String, UnitPaymentScheduleResource> paymentSchedule, 
 			Map<Integer, Double> floorRise, Map<Integer, Map<String, Boolean>> availability) {
 		super();
 		this.id = id;
@@ -39,6 +40,7 @@ public class ProjectBuildingResource {
 		this.paymentSchedule = paymentSchedule;
 		this.floorRise = floorRise;
 		this.availability = availability;
+		this.hasMultiplePaymentSchedules = hasMultiplePaymentSchedules;
 	}
 
 	public long getId() {
@@ -96,4 +98,12 @@ public class ProjectBuildingResource {
 	public Map<Integer, Map<String, Boolean>> getAvailability() {
 		return availability;
 	}
+
+	public boolean isHasMultiplePaymentSchedules() {
+		return hasMultiplePaymentSchedules;
+	}
+
+	public void setHasMultiplePaymentSchedules(boolean hasMultiplePaymentSchedules) {
+		this.hasMultiplePaymentSchedules = hasMultiplePaymentSchedules;
+	}	
 }

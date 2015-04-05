@@ -195,6 +195,7 @@ define(
             		this.definePaymentScheduleDialog.data = options.data;
             		this.definePaymentScheduleDialog.buildingId = options.buildingId;
             		this.definePaymentScheduleDialog.floorcount = options.floorcount;
+            		this.definePaymentScheduleDialog.hasMultiplePaymentSchedules = options.hasMultiplePaymentSchedules;
                 	this.definePaymentScheduleDialog.set("title", options.title);
         			this.definePaymentScheduleDialog.set("dimensions", [width, height]);  
         			this.definePaymentScheduleDialog.layout();

@@ -110,12 +110,13 @@ public class UnitpaymentscheduleDAO extends SuperDAO {
 		}
 	}
 
-	public Unitpaymentschedule findByType(String type) {
+	public Unitpaymentschedule findByTypeAndBuilding(String type, long buildingId, int applicableTo) {
 		Session hbmSession = getSession();
 		List<Unitpaymentschedule> resultList = null;
 		
 		try {
-			String queryString = "from Unitpaymentschedule u where u.paymentscheduletype = '" + type + "'";
+			String queryString = "from Unitpaymentschedule u where u.paymentscheduletype = '" + 
+						type + "' and u.projectbuilding.projectbuildingid = " + buildingId + "and u.applicableto = " + applicableTo;
 			Query query = hbmSession.createQuery(queryString);
 			resultList = query.list ();
 			

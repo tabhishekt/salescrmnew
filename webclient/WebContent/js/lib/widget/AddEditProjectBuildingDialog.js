@@ -32,6 +32,7 @@ define([
 			this.type.set("value", data.type);
 			this.expectedcompletiondate.set("value", data.expectedCompletionDate);
 			this.remarks.set("value", data.remarks);
+			this.hasmultiplepaymentschedule.set("value", data.hasMultiplePaymentSchedules);
 			this.projectphase.set("item", data.projectPhase	);
 		},
 		

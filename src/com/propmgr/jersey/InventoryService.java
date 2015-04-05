@@ -542,6 +542,7 @@ public class InventoryService {
 			projectbuilding.setFloorcount(ResourceUtil.getFormDataValueAsLong(formData, "floorcount"));
 			projectbuilding.setProjectphase(projectPhase);
 			projectbuilding.setRemarks(ResourceUtil.getFormDataValueAsClob(formData, "remarks"));
+			projectbuilding.setHasmultiplepaymentschedules(ResourceUtil.getFormDataValueAsBoolean(formData, "hasmultiplepaymentschedule"));
 			projectbuilding.setWingname(ResourceUtil.getFormDataValue(formData, "wingname"));
 			projectbuildingDAO.save(projectbuilding);
 			projectbuildingDAO.flushSession();
@@ -590,19 +591,53 @@ public class InventoryService {
 	public Response modifyProjectBuildingDefinePaymentSchedule(MultivaluedMap<String, String> formData) {
 		try {
 			Projectbuilding projectBuilding = ResourceUtil.getProjectBuildingPOJO(formData);
-			
-			ResourceUtil.saveUnitPaymentSchedule(formData, "type_reg", "percentamount_reg", "date_reg", "desc_reg");
-			ResourceUtil.saveUnitPaymentSchedule(formData, "type_pli", "percentamount_pli", "date_pli", "desc_pli");
-			
 			int floorCount = (int)projectBuilding.getFloorcount();
-			for (int i=0; i< floorCount; i++) {
-				ResourceUtil.saveUnitPaymentSchedule(formData, "type_" + (i+1), "percentamount_" + (i+1), "date_" + (i+1), "desc_" + (i+1));
-			}
 			
-			ResourceUtil.saveUnitPaymentSchedule(formData, "type_bri", "percentamount_bri", "date_bri", "desc_bri");
-			ResourceUtil.saveUnitPaymentSchedule(formData, "type_pla", "percentamount_pla", "date_pla", "desc_pla");
-			ResourceUtil.saveUnitPaymentSchedule(formData, "type_flo", "percentamount_flo", "date_flo", "desc_flo");
-			ResourceUtil.saveUnitPaymentSchedule(formData, "type_pos", "percentamount_pos", "date_pos", "desc_pos");
+			if (projectBuilding.isHasmultiplepaymentschedules()) {
+				// For even floors
+				ResourceUtil.saveUnitPaymentSchedule(formData, "type_even_reg", "percentamount_even_reg", "date_even_reg", "desc_even_reg", 1);
+				ResourceUtil.saveUnitPaymentSchedule(formData, "type_even_pli", "percentamount_even_pli", "date_even_pli", "desc_even_pli", 1);
+				
+				for (int i=0; i< floorCount; i++) {
+					int slab = i + 1;
+					if (slab % 2 == 0) {
+						ResourceUtil.saveUnitPaymentSchedule(formData, "type_even_" + slab, "percentamount_even_" + slab, "date_even_" + slab, "desc_even_" + slab, 1);
+					}
+				}
+				
+				ResourceUtil.saveUnitPaymentSchedule(formData, "type_even_bri", "percentamount_even_bri", "date_even_bri", "desc_even_bri", 1);
+				ResourceUtil.saveUnitPaymentSchedule(formData, "type_even_pla", "percentamount_even_pla", "date_even_pla", "desc_even_pla", 1);
+				ResourceUtil.saveUnitPaymentSchedule(formData, "type_even_flo", "percentamount_even_flo", "date_even_flo", "desc_even_flo", 1);
+				ResourceUtil.saveUnitPaymentSchedule(formData, "type_even_pos", "percentamount_even_pos", "date_even_pos", "desc_even_pos", 1);
+				
+				// For odd floors
+				ResourceUtil.saveUnitPaymentSchedule(formData, "type_odd_reg", "percentamount_odd_reg", "date_odd_reg", "desc_odd_reg", 2);
+				ResourceUtil.saveUnitPaymentSchedule(formData, "type_odd_pli", "percentamount_odd_pli", "date_odd_pli", "desc_odd_pli", 2);
+				
+				for (int i=0; i< floorCount; i++) {
+					int slab = i + 1;
+					if (slab % 2 != 0) {
+						ResourceUtil.saveUnitPaymentSchedule(formData, "type_odd_" + slab, "percentamount_odd_" + slab, "date_odd_" + slab, "desc_odd_" + slab, 2);
+					}
+				}
+				
+				ResourceUtil.saveUnitPaymentSchedule(formData, "type_odd_bri", "percentamount_odd_bri", "date_odd_bri", "desc_odd_bri", 2);
+				ResourceUtil.saveUnitPaymentSchedule(formData, "type_odd_pla", "percentamount_odd_pla", "date_odd_pla", "desc_odd_pla", 2);
+				ResourceUtil.saveUnitPaymentSchedule(formData, "type_odd_flo", "percentamount_odd_flo", "date_odd_flo", "desc_odd_flo", 2);
+				ResourceUtil.saveUnitPaymentSchedule(formData, "type_odd_pos", "percentamount_odd_pos", "date_odd_pos", "desc_odd_pos", 2);
+			} else {
+				ResourceUtil.saveUnitPaymentSchedule(formData, "type_reg", "percentamount_reg", "date_reg", "desc_reg", 0);
+				ResourceUtil.saveUnitPaymentSchedule(formData, "type_pli", "percentamount_pli", "date_pli", "desc_pli", 0);
+				
+				for (int i=0; i< floorCount; i++) {
+					ResourceUtil.saveUnitPaymentSchedule(formData, "type_" + (i+1), "percentamount_" + (i+1), "date_" + (i+1), "desc_" + (i+1), 0);
+				}
+				
+				ResourceUtil.saveUnitPaymentSchedule(formData, "type_bri", "percentamount_bri", "date_bri", "desc_bri", 0);
+				ResourceUtil.saveUnitPaymentSchedule(formData, "type_pla", "percentamount_pla", "date_pla", "desc_pla", 0);
+				ResourceUtil.saveUnitPaymentSchedule(formData, "type_flo", "percentamount_flo", "date_flo", "desc_flo", 0);
+				ResourceUtil.saveUnitPaymentSchedule(formData, "type_pos", "percentamount_pos", "date_pos", "desc_pos", 0);
+			}
 		}
 		catch (Exception e) {
 			logger.error("", e);
