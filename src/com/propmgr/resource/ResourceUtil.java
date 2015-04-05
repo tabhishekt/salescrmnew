@@ -979,7 +979,7 @@ public class ResourceUtil {
 	 public static void saveUnitPriceInformation(Unitmaster unit, Unitpricepolicy unitpricepolicy, double floorRise) throws SQLException {
 		double baseRate = unitpricepolicy.getBaserate();
 		double otherCharges = unit.getOthercharges();
-		double agreementValue = unit.getSaleablearea()*(baseRate + otherCharges + floorRise);
+		double agreementValue = unit.getSaleablearea()*(baseRate + floorRise) + otherCharges;
 		
 		double maintainanceCharge1 = unitpricepolicy.getMaintenancecharge1();
 		double maintainanceCharge2 = unitpricepolicy.getMaintenancecharge2();
@@ -1032,6 +1032,26 @@ public class ResourceUtil {
 		 }
 		 
 		 unitpaymentscheduleDAO.flushSession();
+	 }
+	 
+	 public static boolean isPaymentScheduleApplicableToUnit(Unitpaymentschedule paymentSchedule, Unitmaster unit) throws SQLException {
+		 boolean hasMultiplePaymentSchedule = unit.getProjectbuilding().isHasmultiplepaymentschedules();
+		 int floorType = unit.getFloortype();
+		 int applicableTo = paymentSchedule.getApplicableto();
+		 
+		 if (hasMultiplePaymentSchedule) {
+			 if (applicableTo == 1 && floorType == 0) {
+				 return true;
+			 } else  if (applicableTo == 2 && floorType == 1) {
+				 return true;
+			 }
+		 } else {
+			 if (applicableTo == 0) {
+				return true; 
+			 } 
+		 }
+		 
+		 return false;
 	 }
 	 
 	 public static void deleteContactInfo(Contactinfo contactInfo) throws SQLException {

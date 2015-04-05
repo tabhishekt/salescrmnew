@@ -835,15 +835,17 @@ public class InventoryService {
 				double bookingAmount =  (unit.getBookingamount() == null) ? 0.0 : unit.getBookingamount();
 				
 				for (Unitpaymentschedule paymentSchedule : paymentSchedules) {
-					double percentAmount = paymentSchedule.getPercentamount();
-					double amount = (percentAmount*totalCost) / 100;
-					
-					if (paymentSchedule.getPaymentscheduletype().equalsIgnoreCase("Registration payment")) {
-						amount -= bookingAmount; 
+					if (ResourceUtil.isPaymentScheduleApplicableToUnit(paymentSchedule, unit)) {
+						double percentAmount = paymentSchedule.getPercentamount();
+						double amount = (percentAmount*totalCost) / 100;
+						
+						if (paymentSchedule.getPaymentscheduletype().equalsIgnoreCase("Registration payment")) {
+							amount -= bookingAmount; 
+						}
+						UnitPaymentScheduleResource paymentScheduleRes = ResourceUtil.getUnitPaymentScheduleFromDAO(paymentSchedule);
+						paymentScheduleRes.setAmount(amount);
+						scheduleList.add(paymentScheduleRes);
 					}
-					UnitPaymentScheduleResource paymentScheduleRes = ResourceUtil.getUnitPaymentScheduleFromDAO(paymentSchedule);
-					paymentScheduleRes.setAmount(amount);
-					scheduleList.add(paymentScheduleRes);
 				}
 				
 				result = new UnitPaymentScheduleDetailsResource(unit.getUnitid(), unit.getUnitnumber(), priceDetails.getDisplayProjectInfo(), 
@@ -1272,15 +1274,17 @@ public class InventoryService {
 					}
 					
 					for (Unitpaymentschedule paymentSchedule : paymentSchedules) {
-						double percentAmount = paymentSchedule.getPercentamount();
-						double amount = (percentAmount*totalCost) / 100;
-						
-						if (paymentSchedule.getPaymentscheduletype().equalsIgnoreCase("Registration payment")) {
-							amount -= bookingAmount; 
+						if (ResourceUtil.isPaymentScheduleApplicableToUnit(paymentSchedule, unit)) {
+							double percentAmount = paymentSchedule.getPercentamount();
+							double amount = (percentAmount*totalCost) / 100;
+							
+							if (paymentSchedule.getPaymentscheduletype().equalsIgnoreCase("Registration payment")) {
+								amount -= bookingAmount; 
+							}
+							UnitPaymentScheduleResource paymentScheduleRes = ResourceUtil.getUnitPaymentScheduleFromDAO(paymentSchedule);
+							paymentScheduleRes.setAmount(amount);
+							scheduleList.add(paymentScheduleRes);
 						}
-						UnitPaymentScheduleResource paymentScheduleRes = ResourceUtil.getUnitPaymentScheduleFromDAO(paymentSchedule);
-						paymentScheduleRes.setAmount(amount);
-						scheduleList.add(paymentScheduleRes);
 					}
 					
 					double totalPaymentReceived = ResourceUtil.getTotalPaymentReceivedForBooking(unitbooking);

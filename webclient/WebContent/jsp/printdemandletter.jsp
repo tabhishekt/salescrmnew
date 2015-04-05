@@ -70,29 +70,51 @@
             	
             	this.projectbuildingcurrentstatus.innerHTML = data.buildingCurrentStatus.name;
             	this.balancepaymentcurrentstatus.innerHTML = this.formatCurrency(data.balancePaymentForCurrentStatus);
-            	this.unitbookingamount.innerHTML = this.formatCurrency(data.unit.bookingAmount);
             	this.totalpaymentreceived.innerHTML = this.formatCurrency(data.totalPaymentReceived);
             };
             
             populatePaymentSchedule = function(data) {
             	var currentPosition = data.buildingCurrentStatus.id;
             	if (data.scheduleList.length == 0) {
-            		this.createSpan(this.paymentScheduleDiv, "paymentschedulenotavailable", "No Payment Schedule Details available");
+            		this.createSpan(this.paymentScheduleDiv, "No Payment Schedule Details available");
             		return;
             	}
             	var tr, th1, th2, th3, th4, td1, td2, td3, td4;
 				var table = domConstruct.create("table", {"style": "width:100%"}, this.paymentScheduleDiv);
 				tr = domConstruct.create("tr", null, table);
 				th1 = domConstruct.create("th", null, tr);
-				this.createSpan(th1, "header_1", "Type");
+				this.createSpan(th1, "Type");
 				th2 = domConstruct.create("th", null, tr);
-				this.createSpan(th2, "header_2", "Percent Amount");
+				this.createSpan(th2, "Percent Amount");
 				th3 = domConstruct.create("th", null, tr);
-				this.createSpan(th3, "header_3", "Date");
+				this.createSpan(th3, "Date");
 				th4 = domConstruct.create("th", null, tr);
-				this.createSpan(th4, "header_4", "Amount");
+				this.createSpan(th4, "Amount");
 					
 				for (var i=0; i<data.scheduleList.length; i++) {
+					if (i == 0) {
+						tr = domConstruct.create("tr", {"bgcolor": "#999900"}, table);
+						td1 = domConstruct.create("td", null, tr);
+						td2 = domConstruct.create("td", null, tr);
+						td3 = domConstruct.create("td", null, tr);
+						td4 = domConstruct.create("td", null, tr);
+						
+						this.createSpan(td1, "Booking");
+						this.createSpan(td2, "Not available");
+						this.createSpan(td3, "Not available");
+						this.createSpan(td4, this.formatCurrency(data.unit.bookingAmount));
+					} else if (i == 2) {
+						tr = domConstruct.create("tr", {"bgcolor": "#999900"}, table);
+						td1 = domConstruct.create("td", null, tr);
+						td2 = domConstruct.create("td", null, tr);
+						td3 = domConstruct.create("td", null, tr);
+						td4 = domConstruct.create("td", null, tr);
+						
+						this.createSpan(td1, "Total taxes");
+						this.createSpan(td2, "Not available");
+						this.createSpan(td3, "Not available");
+						this.createSpan(td4, this.formatCurrency(data.priceDetails.totalTax));
+					}
 					var schedule = data.scheduleList[i];
 					if (schedule.position <= currentPosition) {
 						tr = domConstruct.create("tr", {"bgcolor": "#009900"}, table);	
@@ -106,39 +128,39 @@
 					td3 = domConstruct.create("td", null, tr);
 					td4 = domConstruct.create("td", null, tr);
 					
-					this.createSpan(td1, "type_" + i, schedule.type);
-					this.createSpan(td2, "percentamount" + i, schedule.percentamount);
-					this.createSpan(td3, "scheduledate_" + i, this.formatDate(schedule.scheduledate));
-					this.createSpan(td4, "amount_" + i, this.formatCurrency(schedule.amount));
+					this.createSpan(td1, schedule.type);
+					this.createSpan(td2, schedule.percentamount);
+					this.createSpan(td3, this.formatDate(schedule.scheduledate));
+					this.createSpan(td4, this.formatCurrency(schedule.amount));
 				}
             };
             
             populatePaymentDetails = function(data) {
             	if (data.paymentList.length == 0) {
-            		this.createSpan(this.paymentDetailsDiv, "paymentnotavailable", "No Payment Details available");
+            		this.createSpan(this.paymentDetailsDiv, "No Payment Details available");
             		return;
             	}
             	var tr, th1, th2, th3, th4, th5, th6, th7, th8, th9, td1, td2, td3, td4, td5, td6, td7, td8, td9;
 				var table = domConstruct.create("table", {"style": "width:100%"}, this.paymentDetailsDiv);
 				tr = domConstruct.create("tr", null, table);
 				th1 = domConstruct.create("th", null, tr);
-				this.createSpan(th1, "header_1", "Bank Name");
+				this.createSpan(th1, "Bank Name");
 				th2 = domConstruct.create("th", null, tr);
-				this.createSpan(th2, "header_2", "Branch");
+				this.createSpan(th2, "Branch");
 				th3 = domConstruct.create("th", null, tr);
-				this.createSpan(th3, "header_3", "Cheque Number");
+				this.createSpan(th3, "Cheque Number");
 				th4 = domConstruct.create("th", null, tr);
-				this.createSpan(th4, "header_4", "Cheque Date");
+				this.createSpan(th4, "Cheque Date");
 				th5 = domConstruct.create("th", null, tr);
-				this.createSpan(th5, "header_5", "Receipt Number");
+				this.createSpan(th5, "Receipt Number");
 				th6 = domConstruct.create("th", null, tr);
-				this.createSpan(th6, "header_6", "Alt Receipt Number");
+				this.createSpan(th6, "Alt Receipt Number");
 				th7 = domConstruct.create("th", null, tr);
-				this.createSpan(th7, "header_7", "Category");
+				this.createSpan(th7, "Category");
 				th8 = domConstruct.create("th", null, tr);
-				this.createSpan(th8, "header_8", "Amount");
+				this.createSpan(th8, "Amount");
 				th9 = domConstruct.create("th", null, tr);
-				this.createSpan(th9, "header_9", "Status");
+				this.createSpan(th9, "Status");
 				
 				for (var i=0; i<data.paymentList.length; i++) {
 					var payment = data.paymentList[i];
@@ -154,19 +176,19 @@
 					td8 = domConstruct.create("td", null, tr);
 					td9 = domConstruct.create("td", null, tr);
 					
-					this.createSpan(td1, "bank_" + i, payment.bankName);
-					this.createSpan(td2, "branch" + i, payment.bankBranch);
-					this.createSpan(td3, "chequenum_" + i, payment.chequeNumber);
-					this.createSpan(td4, "chequedt_" + i, this.formatDate(payment.chequeDate));
-					this.createSpan(td5, "receiptnum_" + i, payment.receiptNumber);
-					this.createSpan(td6, "altreceiptnum_" + i, payment.altReceiptNumber);
-					this.createSpan(td7, "category_" + i, payment.paymentTypeName);
-					this.createSpan(td8, "amount_" + i, this.formatCurrency(payment.receiptAmount));
-					this.createSpan(td9, "amount_" + i, payment.paymentStatus.name);
+					this.createSpan(td1, payment.bankName);
+					this.createSpan(td2, payment.bankBranch);
+					this.createSpan(td3, payment.chequeNumber);
+					this.createSpan(td4, this.formatDate(payment.chequeDate));
+					this.createSpan(td5, payment.receiptNumber);
+					this.createSpan(td6, payment.altReceiptNumber);
+					this.createSpan(td7, payment.paymentTypeName);
+					this.createSpan(td8, this.formatCurrency(payment.receiptAmount));
+					this.createSpan(td9, payment.paymentStatus.name);
 				}
             };
             
-            createSpan = function(column, id, value) {
+            createSpan = function(column, value) {
     			span = domConstruct.create("span", null, column);
     			if (value == null) {
     				value = "Not available";
@@ -253,9 +275,6 @@
 <div>
 			<div id="paymentScheduleDetailsDiv">
 				<table>
-					<tr><td>
-						Booking Amount: <span id="unitbookingamount" data-dojo-attach-point="unitbookingamount"></span>
-					</td></tr>
 					<tr><td valign="top">
 						<table>
 							<tr><td>
