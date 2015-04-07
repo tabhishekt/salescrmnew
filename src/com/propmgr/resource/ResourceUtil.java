@@ -185,10 +185,11 @@ public class ResourceUtil {
 			}
 			
 			boolean booked = (new UnitbookingDAO()).isBookingExistsForUnit(unit.getUnitid());
+			boolean registered = (unit.getRegistrationdone() != null) ? unit.getRegistrationdone().booleanValue() : false;
 			result = new UnitResource(unit.getUnitid(), unit.getProjectbuilding().getProjectbuildingid(), getUnitPricePolicyFromDAO(unit.getUnitpricepolicy()),
 					displayProjectInfo, unitType, unit.getUnitnumber(), unit.getFloornumber(), floorType, unit.getCarpetarea(), unit.getSaleablearea(),
 					floorRise, unit.isOtheroptions(), amenities, bookingAmount, otherCharges, agreementValue,
-					totalTax, totalCostWithTax, totalCost, !booked);
+					totalTax, totalCostWithTax, totalCost, !booked, registered);
 		}
 		
 		return result;

@@ -23,6 +23,7 @@ public class UnitResource {
 	private double totalCostWithTax;
 	private double totalCost;
 	private boolean available;
+	private boolean registered;
 	
 	public UnitResource(long id, long buildingId,
 			UnitPricePolicyResource unitPricePolicy, String displayProjectInfo,
@@ -30,7 +31,7 @@ public class UnitResource {
 			CodeTableResource floorType, long carpetArea, long saleableArea,
 			double floorRise, boolean otherOptions, List<CodeTableResource> amenities,
 			double bookingAmount, double otherCharges, double agreementvalue, double totalTax, 
-			double totalCostWithTax, double totalCost, boolean available) {
+			double totalCostWithTax, double totalCost, boolean available, boolean registered) {
 		super();
 		this.id = id;
 		this.buildingId = buildingId;
@@ -52,6 +53,7 @@ public class UnitResource {
 		this.totalCostWithTax = totalCostWithTax;
 		this.totalCost = totalCost;
 		this.available = available;
+		this.registered = registered;
 	}
 
 	public long getId() {
@@ -132,5 +134,9 @@ public class UnitResource {
 
 	public boolean isAvailable() {
 		return available;
+	}
+
+	public boolean isRegistered() {
+		return registered;
 	}
 }

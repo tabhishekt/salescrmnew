@@ -270,6 +270,8 @@ define(
     						window.location = "contentTabPage.jsp?page=" + action[0] + "&customerId=" + rowData.id + "&customerName=" + rowData.displayName;
     					} else if (action[0] == "createbooking") {
     						window.location = "createbooking.jsp?buildingId=" + rowData.id + "&buildingName=" + rowData.name;
+    					} else if (action[0] == "unitregistration") {
+    						window.location = "updateunitregistration.jsp?buildingId=" + rowData.id + "&buildingName=" + rowData.name;
     					} else if (action[0] == "unitbooking") {
     						window.location = "contentTabPage.jsp?page=" + action[0] + "&buildingId=" + rowData.id + "&buildingName=" + rowData.name;
     					} else if (action[0] == "cancelledbooking") {

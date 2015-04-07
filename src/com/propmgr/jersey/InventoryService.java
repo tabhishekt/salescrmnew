@@ -982,6 +982,24 @@ public class InventoryService {
 	    return Response.ok().build();
 	}
 	
+	@POST
+	@Path("/unit/post/markregistered")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response modifyUnitsUpdateRegistered(MultivaluedMap<String, String> formData) {
+		UnitmasterDAO unitmasterDAO = new UnitmasterDAO();
+		
+		try {
+			Unitmaster unit = ResourceUtil.getUnitPOJO(formData);
+			unit.setRegistrationdone(true);
+			unitmasterDAO.flushSession();
+		}
+		catch (Exception e) {
+			logger.error("", e);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
+		}
+	    return Response.ok().build();
+	}
+	
 	@GET
 	@Path("/unitpricepolicy/get/all")
 	@Produces(MediaType.APPLICATION_JSON)

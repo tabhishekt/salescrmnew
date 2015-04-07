@@ -79,6 +79,7 @@
             	                ["Create Unit Booking", "contentTabPage.jsp?page=projectbuilding*mode=createbookings"],
             	                ["Manage Unit Bookings", "contentTabPage.jsp?page=projectbuilding*mode=showbookings"],
             	                ["Update Unit Price for Building", "contentTabPage.jsp?page=projectbuilding*mode=updateprice"],
+            	                ["Manage Unit Registration", "contentTabPage.jsp?page=projectbuilding*mode=unitregistration"],
             	                ["Show Availability for Building", "contentTabPage.jsp?page=projectbuilding*mode=availability"]
             	               ];	
             	} 

@@ -105,6 +105,8 @@ define(
             	} else if (this.page == "projectbuilding") {
             		if (this.mode && this.mode == "createbookings") {
             			return {style : "width:30%"};
+            		} else if (this.mode && this.mode == "unitregistration") {
+            			return {style : "width:30%"};
             		} else if (this.mode && this.mode == "showbookings") {
             			return {style : "width:55%"};
             		} else if (this.mode && this.mode == "updateprice") {
@@ -143,7 +145,12 @@ define(
   	  				          ["refresh", "Refresh", "NewPage"],
   	  				          ["createbooking", "Create Bookings", "NewPage"]
   	  				       ];
-            		} else if (this.mode && this.mode == "showbookings") {
+            		} else if (this.mode && this.mode == "unitregistration") {
+            			return [
+    	  				          ["refresh", "Refresh", "NewPage"],
+    	  				          ["unitregistration", "Manage Unit Registration", "NewPage"]
+    	  				       ];
+              		} else if (this.mode && this.mode == "showbookings") {
             			return [
   	  				          ["refresh", "Refresh", "NewPage"],
   	  				          ["unitbooking", "Manage Active Bookings", "Copy"],
