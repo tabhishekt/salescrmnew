@@ -18,13 +18,15 @@ public class ProjectBuildingResource {
 	private Map<String, UnitPaymentScheduleResource> paymentSchedule;
 	private Map<Integer, Double> floorRise;
 	private Map<Integer, Map<String, Boolean>> availability;
+	private Map<String, Map<String, Double>> unitCharges;
 	
 	public ProjectBuildingResource(long id, long projectId, ProjectPhaseResource projectPhase,
 			String projectPhaseName, String name, String wingName,
 			long floorCount, String type, CodeTableResource currentStatus, 
 			String expectedCompletionDate, String remarks, boolean hasMultiplePaymentSchedules, 
 			Map<String, UnitPaymentScheduleResource> paymentSchedule, 
-			Map<Integer, Double> floorRise, Map<Integer, Map<String, Boolean>> availability) {
+			Map<Integer, Double> floorRise, Map<Integer, Map<String, Boolean>> availability,
+			Map<String, Map<String, Double>> unitCharges) {
 		super();
 		this.id = id;
 		this.projectId = projectId;
@@ -41,6 +43,7 @@ public class ProjectBuildingResource {
 		this.floorRise = floorRise;
 		this.availability = availability;
 		this.hasMultiplePaymentSchedules = hasMultiplePaymentSchedules;
+		this.unitCharges = unitCharges;
 	}
 
 	public long getId() {
@@ -105,5 +108,9 @@ public class ProjectBuildingResource {
 
 	public void setHasMultiplePaymentSchedules(boolean hasMultiplePaymentSchedules) {
 		this.hasMultiplePaymentSchedules = hasMultiplePaymentSchedules;
-	}	
+	}
+
+	public Map<String, Map<String, Double>> getUnitCharges() {
+		return unitCharges;
+	}
 }

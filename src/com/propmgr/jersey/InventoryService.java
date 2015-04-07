@@ -911,6 +911,46 @@ public class InventoryService {
 	}
 	
 	@POST
+	@Path("/unit/post/unitcharges")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response modifyUnitsUpdateUnitCharges(MultivaluedMap<String, String> formData) {
+		UnitmasterDAO unitmasterDAO = new UnitmasterDAO();
+		UnitbookingDAO unitbookingDAO = new UnitbookingDAO();
+		boolean updateMade = false;
+		
+		try {
+			Projectbuilding projectBuilding = ResourceUtil.getProjectBuildingPOJO(formData);
+			List<Unitmaster> units = unitmasterDAO.findUnbookedByProjectBuilding(projectBuilding.getProjectbuildingid());
+			
+			for (Unitmaster unit : units) {
+				String unitType = unit.getUnittype().getUnittypename().trim().toLowerCase().replaceAll(" ", "_");
+				double bookingAmount = ResourceUtil.getFormDataValueAsDouble(formData, "bookingamount_" + unitType);
+				double otherCharges = ResourceUtil.getFormDataValueAsDouble(formData, "othercharges_" + unitType);
+				if (bookingAmount != unit.getBookingamount().doubleValue()) {
+					updateMade = true;
+					unit.setBookingamount(bookingAmount);
+				}
+				if (otherCharges != unit.getOthercharges().doubleValue()) {
+					updateMade = true;
+					unit.setOthercharges(otherCharges);
+				}
+				unitmasterDAO.save(unit);
+			}
+			
+			if (!updateMade) {
+				return Response.status(Response.Status.NOT_IMPLEMENTED).entity(new ApplicationException("No updates has been made. "
+						+ "This could be due to the fact that no unit of building qualifies for updation unit charges.")).build();
+			}
+			unitmasterDAO.flushSession();
+		}
+		catch (Exception e) {
+			logger.error("", e);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
+		}
+	    return Response.ok().build();
+	}
+	
+	@POST
 	@Path("/unit/post/unitpricepolicy")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response modifyUnitsUpdatePricePolicy(MultivaluedMap<String, String> formData) {

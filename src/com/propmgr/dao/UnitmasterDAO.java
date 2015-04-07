@@ -166,6 +166,105 @@ public class UnitmasterDAO extends SuperDAO {
 		return new Double(0);
 	}
 	
+	public Double findMaxBookingAmountByUnitTypeAndBuilding(long unitTypeId, long buildingId) {
+		Session hbmSession = getSession();
+		List<Unitmaster> resultList = null;
+		List<Long> bookedUnits = new ArrayList<Long>();
+		UnitbookingDAO unitbookingDAO = new UnitbookingDAO();
+		double maxBookingAmount = 0;
+		
+		try {
+			List<Unitbooking> bookings = unitbookingDAO.findByBuilding(buildingId);
+			for (Unitbooking booking : bookings) {
+				bookedUnits.add(booking.getUnitmaster().getUnitid());
+			}
+			
+			String queryString = "from Unitmaster u where u.unittype.unittypeid = " + unitTypeId + 
+					" and u.projectbuilding.projectbuildingid = " 
+					+ buildingId + " and unitid not in (:bookedunits)";
+			Query query = hbmSession.createQuery(queryString);
+			query.setParameterList("bookedunits", bookedUnits);
+			resultList = query.list ();
+			
+			if (resultList.size() > 0) {
+				for (Unitmaster unit : resultList) {
+					double bookingAmount = unit.getBookingamount().doubleValue();
+					if (bookingAmount > maxBookingAmount) {
+						maxBookingAmount = bookingAmount;
+					}
+				}
+			}
+		} catch (Exception e) {
+			log.error ("", e);
+		}
+		
+		return maxBookingAmount;
+	}
+	
+	public Double findMaxOtherChargesByUnitTypeAndBuilding(long unitTypeId, long buildingId) {
+		Session hbmSession = getSession();
+		List<Unitmaster> resultList = null;
+		List<Long> bookedUnits = new ArrayList<Long>();
+		UnitbookingDAO unitbookingDAO = new UnitbookingDAO();
+		double maxOtherCharges = 0;
+		
+		try {
+			List<Unitbooking> bookings = unitbookingDAO.findByBuilding(buildingId);
+			for (Unitbooking booking : bookings) {
+				bookedUnits.add(booking.getUnitmaster().getUnitid());
+			}
+			
+			String queryString = "from Unitmaster u where u.unittype.unittypeid = " + unitTypeId + 
+					" and u.projectbuilding.projectbuildingid = " 
+					+ buildingId + " and unitid not in (:bookedunits)";
+			Query query = hbmSession.createQuery(queryString);
+			query.setParameterList("bookedunits", bookedUnits);
+			resultList = query.list ();
+			
+			if (resultList.size() > 0) {
+				for (Unitmaster unit : resultList) {
+					double otherCharges = unit.getOthercharges().doubleValue();
+					if (otherCharges > maxOtherCharges) {
+						maxOtherCharges = otherCharges;
+					}
+				}
+			}
+		} catch (Exception e) {
+			log.error ("", e);
+		}
+		
+		return maxOtherCharges;
+	}
+	
+	public boolean hasUnbookedByUnittypeAndProjectBuilding(long unitTypeId, long buildingId) {
+		Session hbmSession = getSession();
+		List<Unitmaster> resultList = null;
+		List<Long> bookedUnits = new ArrayList<Long>();
+		UnitbookingDAO unitbookingDAO = new UnitbookingDAO();
+		
+		try {
+			List<Unitbooking> bookings = unitbookingDAO.findByBuilding(buildingId);
+			for (Unitbooking booking : bookings) {
+				bookedUnits.add(booking.getUnitmaster().getUnitid());
+			}
+			
+			String queryString = "from Unitmaster u where u.unittype.unittypeid = " + unitTypeId + 
+					" and u.projectbuilding.projectbuildingid = " 
+					+ buildingId + " and unitid not in (:bookedunits)";
+			Query query = hbmSession.createQuery(queryString);
+			query.setParameterList("bookedunits", bookedUnits);
+			resultList = query.list ();
+			
+			if (resultList.size() > 0) {
+				return true;
+			}
+		} catch (Exception e) {
+			log.error ("", e);
+		}
+		
+		return false;
+	}
+	
 	public List<Unitmaster> findUnbookedByProjectBuilding(long buildingId) {
 		Session hbmSession = getSession();
 		List<Unitmaster> resultList = null;

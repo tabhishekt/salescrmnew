@@ -349,14 +349,7 @@ define([
 				widget.destroy();
 			}
 		},
-		
-		destroyRecursiveWidget: function (id) {
-			var widget = registry.byId(id);
-			if (widget) {
-				widget.destroyRecursive(true);
-			}
-		},
-		
+				
 		destroyScheduleRow: function (typeFieldId, percentFieldId, dateFieldId, descFieldId) {
 			this.destroyWidget(typeFieldId);
 			this.destroyWidget(percentFieldId);

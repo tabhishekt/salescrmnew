@@ -108,7 +108,7 @@ define(
             		} else if (this.mode && this.mode == "showbookings") {
             			return {style : "width:55%"};
             		} else if (this.mode && this.mode == "updateprice") {
-            			return {style : "width:55%"};
+            			return {style : "width:68%"};
             		} else if (this.mode && this.mode == "availability") {
             			return {style : "width:30%"};
             		}
@@ -154,6 +154,7 @@ define(
     	  				          ["refresh", "Refresh", "NewPage"],
     	  				          ["updateunitpricepolicy", "Update Unit Price Policy", "Copy"],
     	  				          ["updateunitfloorrise", "Update Unit Floor Rise", "Copy"],
+    	  				          ["updateunitcharges", "Update Unit Charges", "Copy"]
     	  				       ];
               		} else if (this.mode && this.mode == "availability") {
             			return [

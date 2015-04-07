@@ -309,6 +309,17 @@ define(
     		                    	gridHandler: this,
     		                }
     						this.dialogHandler.openOtherActionDialog(options, window.screen.width*0.50, window.screen.height*0.50);
+    					} else if (action[0] == "updateunitcharges") {
+    						var options = {
+    								action: action[0], 
+    		                    	title: "Update unit charges for building " + rowData.name,
+    		                    	buildingId: rowData.id,
+    		                    	data: rowData.unitCharges,
+    		                    	url: "../rest/json/data/inventory/unit/post/unitcharges",
+    		                    	mode: "edit",
+    		                    	gridHandler: this,
+    		                }
+    						this.dialogHandler.openOtherActionDialog(options, window.screen.width*0.50, window.screen.height*0.50);
     					} else if (action[0] == "cancelbooking") {
     						var options = {
     								action: action[0], 

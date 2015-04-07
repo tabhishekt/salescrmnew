@@ -9,6 +9,7 @@ define(
         'lib/widget/ShowUnitPriceDetailDialog',
         'lib/widget/AddEditUnitFloorRiseDialog',
         'lib/widget/AddEditUnitPriceDialog',
+        'lib/widget/AddEditUnitChargesDialog',
         'lib/widget/ShowUnitPaymentScheduleDialog',
         'lib/widget/DefineBuildingPaymentScheduleDialog',
         'lib/widget/ShowUnitAvailabilityDialog',
@@ -17,7 +18,7 @@ define(
     ],
     function (
         declare, lang, LoginDialog, ConfirmDialog, InformationDialog, ShowEnquiryCommentDialog, 
-        ShowUnitPriceDetailDialog, AddEditUnitFloorRiseDialog, AddEditUnitPriceDialog, 
+        ShowUnitPriceDetailDialog, AddEditUnitFloorRiseDialog, AddEditUnitPriceDialog, AddEditUnitChargesDialog,
         ShowUnitPaymentScheduleDialog, DefineBuildingPaymentScheduleDialog, ShowUnitAvailabilityDialog,
         CancelUnitBookingDialog, ShowCancelledBookingDetailDialog
     ) {
@@ -126,6 +127,18 @@ define(
         			this.updateUnitFloorRiseDialog.set("dimensions", [width, height]);  
         			this.updateUnitFloorRiseDialog.layout();
         			this.updateUnitFloorRiseDialog.show();
+            	} else if (options.action == "updateunitcharges") {
+            		if(!this.updateUnitChargesDialog) {
+                		options.draggable = false;
+                    	options.showTitle = true;	
+                		this.updateUnitChargesDialog = new AddEditUnitChargesDialog(options);
+                	}
+            		this.updateUnitChargesDialog.data = options.data;
+            		this.updateUnitChargesDialog.buildingId = options.buildingId;
+                	this.updateUnitChargesDialog.set("title", options.title);
+        			this.updateUnitChargesDialog.set("dimensions", [width, height]);  
+        			this.updateUnitChargesDialog.layout();
+        			this.updateUnitChargesDialog.show();
             	} else if (options.action == "cancelbooking") {
             		if(!this.cancelBookingDialog) {
                 		options.draggable = false;

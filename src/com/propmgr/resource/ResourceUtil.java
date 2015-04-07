@@ -111,12 +111,14 @@ public class ResourceUtil {
 	public static ProjectBuildingResource getProjectBuildingFromDAO(Projectbuilding projectBuilding)  throws SQLException, IOException {
 		UnitbookingDAO unitbookingDAO = new UnitbookingDAO();
 		UnitmasterDAO unitmasterDAO = new UnitmasterDAO();
+		UnittypeDAO unittypeDAO = new UnittypeDAO();
 		Projectphase projectPhase = projectBuilding.getProjectphase();
 		long projectId = projectPhase.getProjectmaster().getProjectid();
 		int floorCount = (int)projectBuilding.getFloorcount();
 		Map<Integer, Double> floorRise = null;
 		Map<Integer, Map<String, Boolean>> availability = null;
 		Map<String, UnitPaymentScheduleResource> paymentSchedule = new HashMap<String, UnitPaymentScheduleResource>();
+		Map<String, Map<String, Double>> unitCharges = null;
 		CodeTableResource currentStatus = getBuildingCurrentStatus(projectBuilding);
 			
 		Iterator<Unitpaymentschedule> iterator = projectBuilding.getUnitpaymentschedules().iterator();
@@ -130,6 +132,7 @@ public class ResourceUtil {
 		if (projectBuilding.getUnitmasters().size() > 0) {
 			floorRise = new HashMap<Integer, Double>();
 			availability = new HashMap<Integer, Map<String, Boolean>>();
+			unitCharges = new HashMap<String, Map<String, Double>>();
 			for (int i=0; i<floorCount; i++) {
 				Map<String, Boolean> floorAvailability = new HashMap<String, Boolean>();
 				List<Unitmaster> allUnitsForFloor = unitmasterDAO.findByProjectBuildingAndFloorNumber(projectBuilding.getProjectbuildingid(), i+1);
@@ -139,13 +142,23 @@ public class ResourceUtil {
 				floorRise.put(i+1, unitmasterDAO.findMaxFloorRiseByFloorNumberAndBuilding(i+1, projectBuilding.getProjectbuildingid()));
 				availability.put(i+1, floorAvailability);
 			}
+			
+			List<Unittype> allUnittypes = unittypeDAO.findAll(); 
+			for (Unittype aUnittype : allUnittypes) {
+				Map<String, Double> charges = new HashMap<String, Double>();
+				if (unitmasterDAO.hasUnbookedByUnittypeAndProjectBuilding(aUnittype.getUnittypeid(), projectBuilding.getProjectbuildingid())) {
+					charges.put("bookingAmount", unitmasterDAO.findMaxBookingAmountByUnitTypeAndBuilding(aUnittype.getUnittypeid(), projectBuilding.getProjectbuildingid()));
+					charges.put("otherCharges", unitmasterDAO.findMaxOtherChargesByUnitTypeAndBuilding(aUnittype.getUnittypeid(), projectBuilding.getProjectbuildingid()));
+					unitCharges.put(aUnittype.getUnittypename(), charges);
+				}
+			}
 		}
 		
 		return new ProjectBuildingResource(projectBuilding.getProjectbuildingid(), projectId, getProjectPhaseFromDAO(projectPhase), 
 				projectPhase.getProjectphasename(), projectBuilding.getBuildingname(), projectBuilding.getWingname(),
 				projectBuilding.getFloorcount(), projectBuilding.getBuildingtype(), currentStatus,
 				convertDateToString(projectBuilding.getExpectedcompletiondate()), convertClobToString(projectBuilding.getRemarks()), 
-				projectBuilding.isHasmultiplepaymentschedules(), paymentSchedule, floorRise, availability);
+				projectBuilding.isHasmultiplepaymentschedules(), paymentSchedule, floorRise, availability, unitCharges);
 	}
 	
 	public static UnitResource getUnitFromDAO(Unitmaster unit)  throws SQLException, IOException {
@@ -797,6 +810,9 @@ public class ResourceUtil {
 		 String projectbuildingId = getFormDataValue(formData, "projectbuilding");
 		 if (projectbuildingId == null || projectbuildingId.length() == 0) {
 			 projectbuildingId = getFormDataValue(formData, "projectbuilding1");
+		 }
+		 if (projectbuildingId == null || projectbuildingId.length() == 0) {
+			 projectbuildingId = getFormDataValue(formData, "projectbuilding2");
 		 }
 		 ProjectbuildingDAO dao = new ProjectbuildingDAO();
 		 return dao.findById(Long.parseLong(projectbuildingId));
