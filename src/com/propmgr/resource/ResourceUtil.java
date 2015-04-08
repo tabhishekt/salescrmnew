@@ -961,7 +961,7 @@ public class ResourceUtil {
 	 }
 	 
 	 public static void saveUnit(MultivaluedMap<String, String> formData, Unitmaster unit, Projectbuilding projectBuilding, 
-			 String unitNumber, int floorNumber, int floorType) throws SQLException {
+			 String unitNumber, int floorNumber, int floorType, boolean registered) throws SQLException {
 		 UnitmasterDAO unitmasterDAO = new UnitmasterDAO();
 		 UnitamenityDAO unitamenityDAO = new UnitamenityDAO();
 		 
@@ -980,6 +980,7 @@ public class ResourceUtil {
 		 unit.setOtheroptions(getFormDataValueAsBoolean(formData, "otheroptions"));
 		 unit.setBookingamount(getFormDataValueAsDouble(formData, "bookingamount"));
 		 unit.setOthercharges(getFormDataValueAsDouble(formData, "othercharges"));
+		 unit.setRegistrationdone(registered);
 		 unitmasterDAO.save(unit);
 
 		 List<Amenity> amenities = getAmenityPOJOList(formData);

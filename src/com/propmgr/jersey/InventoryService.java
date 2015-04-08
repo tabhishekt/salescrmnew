@@ -742,20 +742,21 @@ public class InventoryService {
 				if (unit == null) {
 					return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
 				}
-				ResourceUtil.saveUnit(formData, unit, projectBuilding, unitNumber, floorNumber, floorType);
+				ResourceUtil.saveUnit(formData, unit, projectBuilding, unitNumber, floorNumber, 
+						floorType, ResourceUtil.getFormDataValueAsBoolean(formData, "registered"));
 			} else {
 				boolean createmultipleeven = ResourceUtil.getFormDataValueAsBoolean(formData, "createmultipleeven");
 				boolean createmultipleodd = ResourceUtil.getFormDataValueAsBoolean(formData, "createmultipleodd");
 				int floorCount = (int)projectBuilding.getFloorcount();
 				String unitNumberSuffix = unitNumber.substring(1);
 				
-				ResourceUtil.saveUnit(formData, null, projectBuilding, unitNumber, floorNumber, floorType);
+				ResourceUtil.saveUnit(formData, null, projectBuilding, unitNumber, floorNumber, floorType, false);
 				
 				if (createmultipleeven) {
 					for (int i=1; i<=floorCount; i++) {
 						unitNumber = i +  unitNumberSuffix;
 						if (i%2 == 0 && i != floorNumber) {
-							ResourceUtil.saveUnit(formData, null, projectBuilding, unitNumber, i, 0);
+							ResourceUtil.saveUnit(formData, null, projectBuilding, unitNumber, i, 0, false);
 						} 
 					}
 				}
@@ -764,7 +765,7 @@ public class InventoryService {
 					for (int i=1; i<=floorCount; i++) {
 						unitNumber = i +  unitNumberSuffix;
 						if (i%2 != 0 && i != floorNumber) {
-							ResourceUtil.saveUnit(formData, null, projectBuilding, unitNumber, i, 1);
+							ResourceUtil.saveUnit(formData, null, projectBuilding, unitNumber, i, 1, false);
 						}
 					}
 				}

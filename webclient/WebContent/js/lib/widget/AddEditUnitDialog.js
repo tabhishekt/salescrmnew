@@ -14,6 +14,8 @@ define([
 			domClass.remove(this.createmultipleeven.domNode, "hiddenInput");
 			domClass.remove(this.createmultiplelabelodd, "hiddenInput");
 			domClass.remove(this.createmultipleodd.domNode, "hiddenInput");
+			domClass.add(this.registered.domNode, "hiddenInput");
+			domClass.add(dojo.byId("registeredlabel"), "hiddenInput");
 			
 			if (this.buildingId) {
 				this.projectbuilding.set("value", this.buildingId);
@@ -31,6 +33,7 @@ define([
 			this.saleablearea.set("value", data.saleableArea);
 			this.otheroptions.set("checked", data.otherOptions);
 			this.othercharges.set("value", data.otherCharges);
+			this.registered.set("checked", data.registered);
 			
 			var widget = this;
 			array.forEach(data.amenities, function (amenity)
@@ -43,6 +46,8 @@ define([
 				}
 			});
 			
+			domClass.remove(this.registered.domNode, "hiddenInput");
+			domClass.remove(dojo.byId("registeredlabel"), "hiddenInput");
 			domClass.add(this.createmultiplelabeleven, "hiddenInput");
 			domClass.add(this.createmultipleeven.domNode, "hiddenInput");
 			domClass.add(this.createmultiplelabelodd, "hiddenInput");
