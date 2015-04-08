@@ -139,14 +139,14 @@ define([
 			tr = domConstruct.create("tr", null, table);
 			td = domConstruct.create("td", {"colspan": 3}, tr);
 			var fieldset = domConstruct.create("fieldset", {"style": "width: 100%;"}, td);
-			var legend = domConstruct.create("legend", {"style": "font-size: 4px"}, fieldset).innerHTML = "Even floors schedule";
+			var legend = domConstruct.create("legend", {"style": "font-size: 14px"}, fieldset).innerHTML = "Even floors schedule";
 			this.createContentTabDiv(true, fieldset);
 			
 			this.createTotalPercentField(table, 2);
 			tr = domConstruct.create("tr", null, table);
 			td = domConstruct.create("td", {"colspan": 3}, tr);
 			fieldset = domConstruct.create("fieldset", {"style": "width: 100%;"}, td);
-			legend = domConstruct.create("legend", {"style": "font-size: 4px"}, fieldset).innerHTML = "Odd floors schedule";
+			legend = domConstruct.create("legend", {"style": "font-size: 14px"}, fieldset).innerHTML = "Odd floors schedule";
 			this.createContentTabDiv(false, fieldset);
 		},
 		
@@ -378,7 +378,7 @@ define([
 			tr = domConstruct.create("tr", null, table);
 			td = domConstruct.create("td", {"colspan": 3}, tr);
 			var fieldset = domConstruct.create("fieldset", {"style": "width: 100%;"}, td);
-			var legend = domConstruct.create("legend", {"style": "font-size: 8px"}, fieldset).innerHTML = value;
+			var legend = domConstruct.create("legend", {"style": "font-size: 12px"}, fieldset).innerHTML = value;
 			
 			return fieldset;
 		},
