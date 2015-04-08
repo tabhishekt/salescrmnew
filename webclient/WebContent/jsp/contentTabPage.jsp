@@ -12,11 +12,8 @@
 @import "../js/dojo_1.10.2/dojox/widget/Dialog/Dialog.css";
 @import "../js/lib/gridx-1.3.6/resources/claro/Gridx.css";
 @import "../css/contentPage.css";
-
-.claro .gridxRowSelected>.gridxRowTable {
-  background-color: "green"
-}
 </style>
+
 <script type="text/javascript" src="../js/common.js"></script>
 <script type="text/javascript" src="../js/dojo_1.10.2/dojo/dojo.js"></script>
 <script>
