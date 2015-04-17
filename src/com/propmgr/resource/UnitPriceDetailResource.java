@@ -28,7 +28,7 @@ public class UnitPriceDetailResource {
 	private double totalCost;
 	
 	public UnitPriceDetailResource(long id, String unitNumber, String displayProjectInfo, 
-			long carpetArea, long saleableArea, double baserate, double discount, double deductionOnOtherCharges, 
+			long saleableArea, long carpetArea, double baserate, double discount, double deductionOnOtherCharges, 
 			double floorrise, double totalrate, double stampduty, double registrationcharge, double servicetax,
 			double valueaddedtax, double maintenancecharge1, double maintenancecharge2, double legalcharge, 
 			double othercharges, double totalcharges, double basicCost, double agreementvalue, double totalTax, 
