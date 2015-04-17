@@ -62,6 +62,7 @@ import com.propmgr.dao.Unitpricepolicy;
 import com.propmgr.dao.UnitpricepolicyDAO;
 import com.propmgr.dao.Unittype;
 import com.propmgr.dao.Usermaster;
+import com.propmgr.hibernate.HibernateConnection;
 import com.propmgr.resource.CodeTableResource;
 import com.propmgr.resource.CustomerResource;
 import com.propmgr.resource.EnquiryCommentResource;
@@ -654,6 +655,7 @@ public class InventoryService {
 		List<UnitResource> result = new ArrayList<UnitResource>();
 		
 		try {
+			HibernateConnection.getSession().clear();
 			List<Unitmaster> allUnits = unitmasterDAO.findByProjectBuilding(Long.parseLong(buildingId));
 			for (Unitmaster unit : allUnits) {
 				result.add(ResourceUtil.getUnitFromDAO(unit));
@@ -663,7 +665,7 @@ public class InventoryService {
 			logger.error("", e);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
 		}
-		
+		HibernateConnection.getSession().clear();
 		int size = result.size();
 		return Response.ok(result).header("Content-Range", "items 0-" + (size - 1) + "/" + size).build();
 	}
@@ -959,6 +961,8 @@ public class InventoryService {
 		UnitbookingDAO unitbookingDAO = new UnitbookingDAO();
 		
 		try {
+			HibernateConnection.beginTransaction();
+			HibernateConnection.setSerializableIsolationLevel(HibernateConnection.getSession());
 			Projectbuilding projectBuilding = ResourceUtil.getProjectBuildingPOJO(formData);
 			Unitpricepolicy unitpricepolicy = ResourceUtil.getUnitpricepolicyPOJO(formData);
 			List<Unitmaster> units = unitmasterDAO.findUnbookedByProjectBuilding(projectBuilding.getProjectbuildingid());
@@ -974,7 +978,8 @@ public class InventoryService {
 				unitmasterDAO.save(unit);
 			}
 			
-			unitmasterDAO.flushSession();
+			HibernateConnection.getSession().flush();
+			HibernateConnection.commitTransaction();
 		}
 		catch (Exception e) {
 			logger.error("", e);

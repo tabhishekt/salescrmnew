@@ -1,11 +1,15 @@
 package com.propmgr.hibernate;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.jdbc.Work;
 
 public class HibernateConnection {
 
@@ -55,15 +59,34 @@ public class HibernateConnection {
         int il = 1; //default is dirty read. can be changed if required.
         try {
         	il = Integer.parseInt(isolationLevel);
+        	s.doWork(new Work() {
+        	    @Override
+        	    public void execute(Connection connection) throws SQLException {
+        	        //got a connection, finally!
+        	    	connection.getTransactionIsolation();
+        	    }
+        	});
         }catch(Exception e) {
-        	
+        	logger.warn("EXCEPTION: Could not set the isolation level ["+e.getMessage()+"]");
         }
-        try {
-			//s.connection().setTransactionIsolation(il); // Dirty read to avoid db locks
-		} catch (Exception e1) {
-			logger.warn("EXCEPTION: Could not set the isolation level ["+e1.getMessage()+"]");
-		} 
+        
         return il;
+    }
+    
+    public static void setSerializableIsolationLevel(Session s) {
+    	 try {
+        	s.doWork(new Work() {
+        	    @Override
+        	    public void execute(Connection connection) throws SQLException {
+        	        //connection, finally!
+        	    	connection.setTransactionIsolation(8);
+        	    	logger.info("***********Nikhil************* session isolation level is : " + connection.getTransactionIsolation());
+        	    }
+        	});
+        }catch(Exception e) {
+        	logger.warn("EXCEPTION: Could not set the isolation level ["+e.getMessage()+"]");
+        }       
+        
     }
 
     public static void closeSession() {

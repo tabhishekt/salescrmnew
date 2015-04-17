@@ -33,9 +33,9 @@ public abstract class SuperDAO {
 		try
         {
             retval = getSession().save(obj);
-            getSession().flush();
-            commitTransaction();
-            beginTransaction();
+//            getSession().flush();
+//            commitTransaction();
+//            beginTransaction();
         }
         catch(Exception e)
         {
