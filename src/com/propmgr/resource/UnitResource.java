@@ -13,6 +13,7 @@ public class UnitResource {
 	private CodeTableResource floorType;
 	private long carpetArea;
 	private long saleableArea;
+	private long carpetAreaForTerrace;
 	private double floorRise;
 	private boolean otherOptions;
 	private List<CodeTableResource> amenities;
@@ -28,7 +29,7 @@ public class UnitResource {
 	public UnitResource(long id, long buildingId,
 			UnitPricePolicyResource unitPricePolicy, String displayProjectInfo,
 			CodeTableResource unitType, String unitNumber, int floorNumber,
-			CodeTableResource floorType, long carpetArea, long saleableArea,
+			CodeTableResource floorType, long carpetArea, long saleableArea, long carpetAreaForTerrace,
 			double floorRise, boolean otherOptions, List<CodeTableResource> amenities,
 			double bookingAmount, double otherCharges, double agreementvalue, double totalTax, 
 			double totalCostWithTax, double totalCost, boolean available, boolean registered) {
@@ -43,6 +44,7 @@ public class UnitResource {
 		this.floorType = floorType;
 		this.carpetArea = carpetArea;
 		this.saleableArea = saleableArea;
+		this.carpetAreaForTerrace = carpetAreaForTerrace;
 		this.floorRise = floorRise;
 		this.otherOptions = otherOptions;
 		this.amenities = amenities;
@@ -94,6 +96,10 @@ public class UnitResource {
 
 	public long getSaleableArea() {
 		return saleableArea;
+	}
+
+	public long getCarpetAreaForTerrace() {
+		return carpetAreaForTerrace;
 	}
 
 	public double getFloorRise() {

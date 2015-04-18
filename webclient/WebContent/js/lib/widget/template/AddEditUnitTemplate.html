@@ -83,6 +83,15 @@
 								</td></tr>
 								<tr><td>
 									<table>
+										<tr><td><label for="carpetareaforterrace">Carpet Area for Terrace:</label></td></tr>
+										<tr><td><input id="carpetareaforterrace" name="carpetareaforterrace"
+												data-dojo-type='dijit/form/ValidationTextBox'
+												data-dojo-attach-point='carpetareaforterrace'
+												data-dojo-props="required:true, regExp:'\\d{1,5}', invalidMessage:'Enter upto five digit number only.'"
+												type="text" /></td></tr>
+									</table>
+								</td><td>
+									<table>
 										<tr><td><label for="othercharges">Other Charges:</label></td></tr>
 										<tr><td><input id="othercharges" name="othercharges"
 												data-dojo-type='dijit/form/ValidationTextBox'
@@ -90,10 +99,10 @@
 												data-dojo-props="required:true, regExp:'^[0-9]([0-9]{1,7})?(\.[1-9])?$', invalidMessage:'Enter valid decimal value upto 99999999.9'"
 												type="text" /></td></tr>
 									</table>
-								</td><td>
+								</td></tr>
+								<tr><td>
 									<table>
-										<tr><td>
-											<table>
+										<tr><td><table>
 												<tr><td><input id="otheroptions" name="otheroptions" 
 												data-dojo-type="dijit/form/CheckBox" 
 												data-dojo-attach-point='otheroptions'

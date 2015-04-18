@@ -188,7 +188,7 @@ public class ResourceUtil {
 			boolean registered = (unit.getRegistrationdone() != null) ? unit.getRegistrationdone().booleanValue() : false;
 			result = new UnitResource(unit.getUnitid(), unit.getProjectbuilding().getProjectbuildingid(), getUnitPricePolicyFromDAO(unit.getUnitpricepolicy()),
 					displayProjectInfo, unitType, unit.getUnitnumber(), unit.getFloornumber(), floorType, unit.getCarpetarea(), unit.getSaleablearea(),
-					floorRise, unit.isOtheroptions(), amenities, bookingAmount, otherCharges, agreementValue,
+					unit.getCarpetareaforterrace(), floorRise, unit.isOtheroptions(), amenities, bookingAmount, otherCharges, agreementValue,
 					totalTax, totalCostWithTax, totalCost, !booked, registered);
 		}
 		
@@ -977,6 +977,7 @@ public class ResourceUtil {
 
 		 unit.setCarpetarea(getFormDataValueAsLong(formData, "carpetarea"));
 		 unit.setSaleablearea(getFormDataValueAsLong(formData, "saleablearea"));
+		 unit.setCarpetareaforterrace(getFormDataValueAsLong(formData, "carpetareaforterrace"));
 		 unit.setOtheroptions(getFormDataValueAsBoolean(formData, "otheroptions"));
 		 unit.setBookingamount(getFormDataValueAsDouble(formData, "bookingamount"));
 		 unit.setOthercharges(getFormDataValueAsDouble(formData, "othercharges"));

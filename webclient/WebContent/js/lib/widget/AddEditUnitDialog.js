@@ -31,6 +31,7 @@ define([
 			this.bookingamount.set("value", data.bookingAmount);
 			this.carpetarea.set("value", data.carpetArea);
 			this.saleablearea.set("value", data.saleableArea);
+			this.carpetareaforterrace.set("value", data.carpetAreaForTerrace);
 			this.otheroptions.set("checked", data.otherOptions);
 			this.othercharges.set("value", data.otherCharges);
 			this.registered.set("checked", data.registered);
