@@ -22,12 +22,13 @@
              "dojo/on",
              "dojo/dom-form",
              "dojo/request",
+             "dojo/Deferred",
              "lib/DialogHandler",
 			 "lib/GridHandler",
 			 'lib/widget/AddEditCustomerDialog', 
 		     "dijit/form/Button",
 			 "dojo/domReady!"],
-        function(lang, registry, currency, on, domForm, request, DialogHandler, GridHandler, AddEditCustomerDialog, Button) {
+        function(lang, registry, currency, on, domForm, request, Deferred, DialogHandler, GridHandler, AddEditCustomerDialog, Button) {
             load = function () {
             	this.buildingId = this.getQueryVariable("buildingId");
             	this.dialogHandler = new DialogHandler();
@@ -141,8 +142,41 @@
 				}
             };
             
+            openBookingResultDialog = function (message, type) {
+            	var options = {
+    	        		title:"Booking result", 
+    	        		informationText: message
+    	        }
+            	if (type == "success") {
+            		options.title = "Booking creation success"
+            	} else if (type == "error") {
+            		options.title = "Booking creation error"
+            	}
+        		dialogHandler.setDimension({width:window.screen.width*0.50, height: window.screen.height*0.15});
+        		dialogHandler.openInformationDialog(options);	
+            };
+            
+            doBooking = function () {
+            	var promise = request.post("../rest/json/data/inventory/unitbooking/post", {
+     				data: domForm.toObject(registry.byId("createbookingForm").id),
+     				timeout: 2000,
+     				handleAs: "json"
+     			});
+     			
+     			promise.response.then(
+     				function(response) {
+     					this.unitGridHandler.refreshGrid();
+     					this.openBookingResultDialog("Booking with reference number " + response.data.bookingFormNumber + " created successfully.", "success");
+     				},
+     				function(error) {
+     					this.openBookingResultDialog(error.response.data.message, "error");
+     				}
+     			);
+            };
+            
             onSubmit = function (event) {
             	event.preventDefault(); 
+            	
             	var rowDataUnit = this.unitGridHandler.getSelectedRowData();
             	if (rowDataUnit == null) {
             		this.unitGridHandler.updateMessage("Please select a unit to create booking.", "error");
@@ -164,20 +198,35 @@
 					registry.byId("customer").set("value", rowDataCustomer.id); 
 				}
             	
-            	var promise = request.post("../rest/json/data/inventory/unitbooking/post", {
-     				data: domForm.toObject(registry.byId("createbookingForm").id),
-     				timeout: 2000,
-     				handleAs: "json"
-     			});
-     			
-     			promise.response.then(
-     				function(response) {
-     					this.unitGridHandler.updateMessage("Booking with reference number " + response.data.bookingFormNumber + " created successfully.", "success");
-     				},
-     				function(error) {
-     					this.unitGridHandler.updateMessage(error.response.data.message, "error");
-     				}
-     			);
+            	var booingdiscount = 0;
+            	if (dojo.byId("discount").value != "") {
+            		booingdiscount = parseInt(dojo.byId("discount").value);
+    			}
+            	var deductiononothercharges = 0;
+            	if (dojo.byId("deductiononothercharges").value != "") {
+            		deductiononothercharges = parseInt(dojo.byId("deductiononothercharges").value);
+    			}
+            	
+            	var confirmBookingText = "Unit " + rowDataUnit.unitNumber + ", " + 
+            		rowDataUnit.displayProjectInfo + " will be booked for " + rowDataCustomer.displayName +
+            		".<br>Agreement value is " + this.formatCurrency(rowDataUnit.agreementvalue) + " and discount offered is " + 
+            		this.formatCurrency(booingdiscount) + ".<br>Deduction on other charges is " + 
+            		this.formatCurrency(deductiononothercharges) + "<br>Do you want to create this booking?";
+            	
+				var deferred = new Deferred();
+	        	var options = {
+	        		title: "Confirm booking creation", 
+	        	    confirmText : confirmBookingText, 
+	        	    def: deferred
+	        	}
+	        	var dim = dialogHandler.dialogDimension; 
+	        	dialogHandler.setDimension({width:window.screen.width*0.50, height: window.screen.height*0.20});
+	        	dialogHandler.openConfirmDialog(options);
+	        	dialogHandler.setDimension(dim);
+	        	
+	        	deferred.then(function(res){
+	        		this.doBooking();
+	        	});	
    			};
         });
 </script>
