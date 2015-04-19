@@ -81,9 +81,9 @@
             	                ["Update Unit Price for Building", "contentTabPage.jsp?page=projectbuilding*mode=updateprice"],
             	                ["Manage Unit Registration", "contentTabPage.jsp?page=projectbuilding*mode=unitregistration"],
             	                ["Show Availability for Building", "contentTabPage.jsp?page=projectbuilding*mode=availability"]
-            	               ];	
+            	               ];
+            		aContainer.addChild(createAccordionContentPanel("Manage Inventory", linkData));
             	} 
-        	    aContainer.addChild(createAccordionContentPanel("Manage Inventory", linkData));
         	    
         	    if (this.userData) {
 	        	    linkData = [
@@ -184,9 +184,10 @@
             login = function() {	
             	var options = {
                     	title:"Enter your credentials",
-                    	url:"../rest/json/data/userrole/login/post"
+                    	url:"../rest/json/data/userrole/login/post",
+                    	mode: "new",
                 }
-            	dialogHandler.setDimension({width:window.screen.width*0.30, height: window.screen.height*0.15});
+            	dialogHandler.setDimension({width:window.screen.width*0.32, height: window.screen.height*0.15});
             	dialogHandler.openLoginDialog(options);
             };
             

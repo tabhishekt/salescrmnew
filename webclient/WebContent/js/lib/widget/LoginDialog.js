@@ -1,64 +1,55 @@
 define([
-    'dojo/_base/declare',
-    'dijit/_WidgetBase',
-    "dijit/_TemplatedMixin",
-    'dijit/_WidgetsInTemplateMixin',
-    'dojox/form/manager/_Mixin', 
-    'dojox/form/manager/_NodeMixin', 
-    'dojox/form/manager/_FormMixin', 
-    "dojo/_base/lang",
-    "dijit/registry",
-    "dojo/dom-form",
+    "dojo/_base/declare",
+    "dojo/_base/array",
     "dojo/request",
-    'dojox/widget/Dialog',
-    'dijit/form/Button',
-    'dijit/form/Form',
-    'dijit/form/ValidationTextBox',
-    'dojox/layout/TableContainer',
+    "dojo/dom-form",
+    "dojox/layout/TableContainer",
+    "lib/widget/AddEditDialog",
     "dojo/text!./template/LoginDialogTemplate.html"
-], function (declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, FormMgrMixin, FormMgrNodeMixin, FormMgrFormMixin, 
-		lang, registry, domForm, request, Dialog, Button, Form, ValidationTextBox, TableContainer, template) {
-    return declare([Dialog, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, FormMgrMixin, FormMgrNodeMixin, FormMgrFormMixin], {
+], function (declare, array, request, domForm, TableContainer, AddEditDialog, template) {
+    return declare([AddEditDialog], {
 		templateString: template,
 		
-		constructor: function(options){
-			lang.mixin(this, options);
+		setCookie: function (data) {
+			var d = new Date();
+		    d.setTime(d.getTime() + (24*60*60*1000));
+		    var expires = "expires="+d.toUTCString();
+		    document.cookie = "salescrm" + "=" + "{\"id\":\"" + data.id + 
+		    	"\", \"admin\":" + data.admin + ", \"name\":\"" + 
+		    	data.userName + "\"}; " + expires;
 		},
 		
-		onCancel: function() {
-			this.hide();
-		},
-		
-		onSubmit: function() {
+		reset : function () {
 			this.inherited(arguments);
+			this.messageNode.innerHTML = "";
+		},
+		
+		hide : function () {
+			this.inherited(arguments);
+			this.reset();
+		},
+		
+		onSubmit: function(){
 			var widget = this;
-            this.validate();
-            if (this.isValid()) {
-            	// Post the data to the server
+            if (this.validate()) {
     			var promise = request.post(this.url, {
-    				data: domForm.toObject(this.loginForm.id),
+    				data: domForm.toObject(this.codetableForm.id),
     				timeout: 2000,
     				handleAs: "json"
     			});
     			
     			promise.response.then(
     				function(response) {
-    					var data = response.data;
-    					var d = new Date();
-					    d.setTime(d.getTime() + (24*60*60*1000));
-					    var expires = "expires="+d.toUTCString();
-					    document.cookie = "salescrm" + "=" + "{\"id\":\"" + data.id + 
-					    	"\", \"admin\":" + data.admin + ", \"name\":\"" + 
-					    	data.userName + "\"}; " + expires;
-					    widget.hide();
-					    location.reload();
+    					widget.setCookie(response.data);
+    					widget.hide();
+    				    location.reload();
     				},
     				function(error) {
     					widget.messageNode.innerHTML = error.response.data.message;
     				}
     			);
             } else {
-            	widget.messageNode.innerHTML = "Invalid data.";
+            	widget.messageNode.innerHTML = "Data entered is invalid.";
             }
 		}
     });
