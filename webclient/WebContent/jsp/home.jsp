@@ -26,7 +26,12 @@
     		var dialogHandler = new DialogHandler();
     		
             load = function () {
-            	createLayout();
+            	var browser=get_browser_info();
+            	if (browser.name != 'Chrome') {
+            		alert("This application is currently supported only on Chrome browser.")
+            	} else {
+            		createLayout();	
+            	}
             };
             
             createLayout = function () {
