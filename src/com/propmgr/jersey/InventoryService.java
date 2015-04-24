@@ -915,12 +915,14 @@ public class InventoryService {
 		UnitPriceDetailResource result = null;
 		
 		try {
+			HibernateConnection.getSession().clear();
 			Unitmaster unit = unitmasterDAO.findById(Long.parseLong(rowId));
 			if (unit != null) {
 				result = ResourceUtil.getUnitPriceDetailResource(unit, Long.parseLong(discount), Long.parseLong(deductiononothercharges));
 			} else {
 				return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
 			}
+			HibernateConnection.getSession().clear();
 		} catch (Exception e) {
 			logger.error("", e);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
@@ -1421,7 +1423,8 @@ public class InventoryService {
 		List<ProjectBankAccountResource> projectBankAccounts = new ArrayList<ProjectBankAccountResource>();
 		
 		try {
-				Unitbooking unitbooking = unitbookingDAO.findById(Long.parseLong(rowId));
+				HibernateConnection.getSession().clear();
+			    Unitbooking unitbooking = unitbookingDAO.findById(Long.parseLong(rowId));
 				if (unitbooking != null) {
 					Unitmaster unit = unitbooking.getUnitmaster();
 					Projectbuilding projectbuilding = unit.getProjectbuilding();
@@ -1483,6 +1486,7 @@ public class InventoryService {
 				} else {
 					return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
 				}
+				HibernateConnection.getSession().clear();
 			
 		} catch (Exception e) {
 			logger.error("", e);
