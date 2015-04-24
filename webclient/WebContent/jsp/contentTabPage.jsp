@@ -34,6 +34,7 @@
             init = function() {
             	this.page = this.getQueryVariable("page");
             	this.mode = this.getQueryVariable("mode");
+            	this.projectId = this.getQueryVariable("projectId");
             	this.unitId = this.getQueryVariable("unitId");
             	this.buildingId = this.getQueryVariable("buildingId");
             	this.customerId = this.getQueryVariable("customerId");
@@ -69,6 +70,10 @@
             	this.gridHandler = new GridHandler({page: this.page, serviceName: pageParams.serviceName, userId: this.userData.id,
         			dialogTtileField: pageParams.dialogTtileField, dialogTtileString: pageParams.dialogTtileString,
         			dialogHandler: this.dialogHandler});
+            	
+            	if (this.projectId) {
+            		this.gridHandler.setProjectId(this.projectId);
+            	} 
             	
             	if (this.unitId) {
             		this.gridHandler.setUnitId(this.unitId);

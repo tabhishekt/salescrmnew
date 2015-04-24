@@ -9,6 +9,7 @@ define(
         'lib/widget/AddEditCodetableDialog',
 		'lib/widget/AddEditOrganizationDialog',
 		'lib/widget/AddEditProjectDialog',
+		'lib/widget/AddEditProjectBankAccountDialog',
 		'lib/widget/AddEditProjectPhaseDialog',
 		'lib/widget/AddEditProjectBuildingDialog',
 		'lib/widget/AddEditUnitDialog',
@@ -21,8 +22,8 @@ define(
 		'lib/widget/AddEditEnquiryDialog',
     ],
     function (
-        declare, lang, currency, locale, JsonRest, Memory, AddEditCodetableDialog, AddEditOrganizationDialog, 
-		AddEditProjectDialog, AddEditProjectPhaseDialog, AddEditProjectBuildingDialog, AddEditUnitDialog, AddEditUnitPricePolicyDialog, 
+        declare, lang, currency, locale, JsonRest, Memory, AddEditCodetableDialog, AddEditOrganizationDialog, AddEditProjectDialog, 
+        AddEditProjectBankAccountDialog, AddEditProjectPhaseDialog, AddEditProjectBuildingDialog, AddEditUnitDialog, AddEditUnitPricePolicyDialog, 
 		AddEditUnitPaymentScheduleDialog, AddEditPaymentDialog, AddEditCustomerDialog, AddEditUserDialog, AddEditRoleDialog,
 		AddEditEnquiryDialog
     ) {
@@ -133,6 +134,8 @@ define(
             		return {style : "width:23%"};
             	} else if (this.page == "unit") {
             		return {style : "width:75%"};
+            	} else if (this.page == "project") {
+            		return {style : "width:50%"};
             	}
             	
             	return {style : "width:32%"};
@@ -241,6 +244,14 @@ define(
     				          ["delete", "Delete", "Delete"],
     				          ["refresh", "Refresh", "NewPage"],
     				       ];
+              	} else if (this.page == "project") {
+            		return [
+    				          ["new", "New", "NewPage"],
+    				          ["edit", "Edit", "Copy"],
+    				          ["delete", "Delete", "Delete"],
+    				          ["refresh", "Refresh", "NewPage"],
+    				          ["projectbankaccount", "Manage Bank Accounts", "NewPage"]
+    				       ];
               	}
             	
             	return [
@@ -290,8 +301,8 @@ define(
             		  this.pageParams.GridDialog = AddEditOrganizationDialog;
             		  break;
             	  case "project": 
-            		  this.pageParams.dialogDimension.width = window.screen.width*0.60;
-            		  this.pageParams.dialogDimension.height = window.screen.height;
+            		  this.pageParams.dialogDimension.width = window.screen.width*0.50;
+            		  this.pageParams.dialogDimension.height = window.screen.height*0.70;
             		  this.pageParams.serviceName = "inventory";
             		  this.pageParams.gridLayout = [
                     	   							{field: "name",name: "Name",width: "auto"},
@@ -300,6 +311,20 @@ define(
                     	   	   			  		   ];
             		  this.pageParams.dialogTtileField = "name";
             		  this.pageParams.GridDialog = AddEditProjectDialog;
+            		  break;
+            	  case "projectbankaccount": 
+            		  this.pageParams.dialogDimension.width = window.screen.width*0.60;
+            		  this.pageParams.dialogDimension.height = window.screen.height*0.60;
+            		  this.pageParams.serviceName = "inventory";
+            		  this.pageParams.gridLayout = [
+                    	   							{field: "bankName",name: "Bank Name",width: "auto"},
+                    	   							{field: "accountNumber",name: "Account Number",width: "auto"},
+                    	   							{field: "accountHolderName",name: "Account Holder",width: "auto"},
+                    	   							{field: "accountTypeName",name: "Account Type",width: "auto"}
+                    	   	   			  		   ];
+            		  this.pageParams.dialogTtileField = "name";
+            		  this.pageParams.dialogTtileString = "project bank account";
+            		  this.pageParams.GridDialog = AddEditProjectBankAccountDialog;
             		  break;
             	  case "projectphase": 
             		  this.pageParams.dialogDimension.width = window.screen.width*0.35;
@@ -460,6 +485,18 @@ define(
                       	   								{field: "name",name: "Name",width: "auto"}
                     	   	   			  		   ];
             		  this.pageParams.dialogTtileField = "name";
+            		  this.pageParams.GridDialog = AddEditCodetableDialog;
+            		  break;
+            	  case "bankaccounttype":
+            		  this.pageParams.dialogDimension.width = window.screen.width*0.40;
+            		  this.pageParams.dialogDimension.height = window.screen.height*0.16;
+            		  this.pageParams.serviceName = "codetable";
+            		  this.pageParams.gridLayout = [
+                    	   								{field: "code",name: "Code",width: "auto"},
+                      	   								{field: "name",name: "Name",width: "auto"}
+                    	   	   			  		   ];
+            		  this.pageParams.dialogTtileField = "name";
+            		  this.pageParams.dialogTtileString = "bank account type";
             		  this.pageParams.GridDialog = AddEditCodetableDialog;
             		  break;
             	  case "paymenttype":

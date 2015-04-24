@@ -25,6 +25,8 @@ import com.propmgr.dao.Address;
 import com.propmgr.dao.AddressDAO;
 import com.propmgr.dao.Amenity;
 import com.propmgr.dao.AmenityDAO;
+import com.propmgr.dao.Bankaccounttype;
+import com.propmgr.dao.BankaccounttypeDAO;
 import com.propmgr.dao.Citymaster;
 import com.propmgr.dao.CitymasterDAO;
 import com.propmgr.dao.Contactinfo;
@@ -46,6 +48,7 @@ import com.propmgr.dao.Paymenttype;
 import com.propmgr.dao.PaymenttypeDAO;
 import com.propmgr.dao.Person;
 import com.propmgr.dao.PersonDAO;
+import com.propmgr.dao.Projectbankaccount;
 import com.propmgr.dao.Projectbuilding;
 import com.propmgr.dao.ProjectbuildingDAO;
 import com.propmgr.dao.Projectmaster;
@@ -88,16 +91,30 @@ public class ResourceUtil {
 	
 	public static ProjectResource getProjectFromDAO(Projectmaster project)  throws SQLException, IOException {
 		Organization org = project.getOrganization();
-		AddressResource address = getAddressFromDAO(project.getAddressByAddress());
-		AddressResource bankAddress = getAddressFromDAO(project.getAddressByBankaddress());
+		AddressResource address = getAddressFromDAO(project.getAddress());
 		
 		return new ProjectResource(project.getProjectid(), 
 				getOrganizationFromDAO(org), org.getOrgname(), project.getProjectname(), 
 				convertClobToString(project.getProjectdescription()), 
 				address, project.getTotalphases(), getDisplayAddressFromAddressResource(address),
-				project.getBankname(), project.getAccountnumber(), project.getAccountholdername(),
-				project.getIfsccode(), project.getMicrcode(), bankAddress, getDisplayAddressFromAddressResource(bankAddress),
 				convertClobToString(project.getTermsandconditions()));
+	}
+	
+	public static ProjectBankAccountResource getProjectBankAccountFromDAO(Projectbankaccount projectbankaccount) throws SQLException, IOException {
+		AddressResource address = getAddressFromDAO(projectbankaccount.getAddress());
+		CodeTableResource bankAccountType = getBankAccountTypeResourceFromDAO(projectbankaccount.getBankaccounttype());
+		String displayBankInformation = projectbankaccount.getAccountholdername() + ", " + projectbankaccount.getBankname();
+		displayBankInformation += ", Account # " + projectbankaccount.getAccountnumber();
+		displayBankInformation += ", IFSC Code " + projectbankaccount.getIfsccode();
+		displayBankInformation += ", MICR Code " + projectbankaccount.getMicrcode();
+		displayBankInformation += ", " + getDisplayAddressFromAddressResource(address);
+		
+		return new ProjectBankAccountResource(projectbankaccount.getProjectbankaccountid(), 
+				projectbankaccount.getProjectmaster().getProjectid(), address, 
+				bankAccountType, bankAccountType.getName(), 
+				projectbankaccount.getBankname(), projectbankaccount.getAccountnumber(), 
+				projectbankaccount.getAccountholdername(), projectbankaccount.getIfsccode(), 
+				projectbankaccount.getMicrcode(), displayBankInformation);
 	}
 	
 	public static ProjectPhaseResource getProjectPhaseFromDAO(Projectphase projectPhase)  throws SQLException, IOException {
@@ -458,6 +475,10 @@ public class ResourceUtil {
 				contactInfo, convertDateToString(person.getDateofbirth()), person.getProfession(), otherDetail);
 	}
 	
+	public static CodeTableResource getBankAccountTypeResourceFromDAO(Bankaccounttype bankaccounttype) {
+		return new CodeTableResource(bankaccounttype.getBankaccounttypeid(), bankaccounttype.getAccounttypecode(), bankaccounttype.getAccounttypename());
+	}
+	
 	public static CodeTableResource getUnittypeResourceFromDAO(Unittype unitType) {
 		return new CodeTableResource(unitType.getUnittypeid(), unitType.getUnittypecode(), unitType.getUnittypename());
 	}
@@ -759,20 +780,8 @@ public class ResourceUtil {
 		 return dao.findById(Long.parseLong(cityId));
 	 }
 	 
-	 public static Citymaster getBankCityPOJO(MultivaluedMap<String, String> formData) {
-		 String cityId = getFormDataValue(formData, "bankcity");
-		 CitymasterDAO dao = new CitymasterDAO();
-		 return dao.findById(Long.parseLong(cityId));
-	 }
-	 
 	 public static Statemaster getStatePOJO(MultivaluedMap<String, String> formData) {
 		 String stateId = getFormDataValue(formData, "state");
-		 StatemasterDAO dao = new StatemasterDAO();
-		 return dao.findById(Long.parseLong(stateId));
-	 }
-	 
-	 public static Statemaster getBankStatePOJO(MultivaluedMap<String, String> formData) {
-		 String stateId = getFormDataValue(formData, "bankstate");
 		 StatemasterDAO dao = new StatemasterDAO();
 		 return dao.findById(Long.parseLong(stateId));
 	 }
@@ -787,6 +796,12 @@ public class ResourceUtil {
 		 String paymenttypeId = getFormDataValue(formData, "paymenttype");
 		 PaymenttypeDAO dao = new PaymenttypeDAO();
 		 return dao.findById(Long.parseLong(paymenttypeId));
+	 }
+	 
+	 public static Bankaccounttype getBankAccountTypePOJO(MultivaluedMap<String, String> formData) {
+		 String bankaccounttypeId = getFormDataValue(formData, "bankaccounttype");
+		 BankaccounttypeDAO dao = new BankaccounttypeDAO();
+		 return dao.findById(Long.parseLong(bankaccounttypeId));
 	 }
 	 
 	 public static Projectmaster getProjectPOJO(MultivaluedMap<String, String> formData) {
@@ -905,19 +920,6 @@ public class ResourceUtil {
 		 address.setCitymaster(city);
 		 address.setStatemaster(state);
 		 address.setZipcode(getFormDataValue(formData, "zipcode"));
-		 addressDAO.save(address);
-	 }
-	 
-	 public static void saveBankAddress(MultivaluedMap<String, String> formData, Address address) throws SQLException {
-		 AddressDAO addressDAO = new AddressDAO();
-		 Citymaster city = getBankCityPOJO(formData);
-		 Statemaster state = getBankStatePOJO(formData);
-			
-		 address.setAddressline1(getFormDataValueAsClob(formData, "bankaddressline1"));
-		 address.setAddressline2(getFormDataValueAsClob(formData, "bankaddressline2"));
-		 address.setCitymaster(city);
-		 address.setStatemaster(state);
-		 address.setZipcode(getFormDataValue(formData, "bankzipcode"));
 		 addressDAO.save(address);
 	 }
 	 

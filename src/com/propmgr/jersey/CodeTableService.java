@@ -19,6 +19,8 @@ import org.hibernate.exception.ConstraintViolationException;
 
 import com.propmgr.dao.Amenity;
 import com.propmgr.dao.AmenityDAO;
+import com.propmgr.dao.Bankaccounttype;
+import com.propmgr.dao.BankaccounttypeDAO;
 import com.propmgr.dao.Citymaster;
 import com.propmgr.dao.CitymasterDAO;
 import com.propmgr.dao.Paymenttype;
@@ -556,6 +558,92 @@ public class CodeTableService {
 			paymenttype.setPaymenttypedescription(ResourceUtil.convertStringToClob(name));
 			paymenttypeDAO.save(paymenttype);
 			paymenttypeDAO.flushSession();
+		}
+		catch (Exception e) {
+			logger.error("", e);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
+		}
+	    return Response.ok().build();
+	}
+	
+	@GET
+	@Path("/bankaccounttype/get/all")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAllBankAccountTypes() {
+		List<CodeTableResource> result = new ArrayList<CodeTableResource>();
+		BankaccounttypeDAO bankaccounttypeDAO = new BankaccounttypeDAO();
+		
+		List<Bankaccounttype> allBankaccounttypes = bankaccounttypeDAO.findAll(); 
+		for (Bankaccounttype aBankaccounttype : allBankaccounttypes) {
+			result.add(new CodeTableResource(aBankaccounttype.getBankaccounttypeid(), aBankaccounttype.getAccounttypecode(), aBankaccounttype.getAccounttypename()));
+		}
+		int size = result.size();
+		
+	    return Response.ok(result).header("Content-Range", "items 0-" + (size - 1) + "/" + size).build();
+	}
+	
+	@GET
+	@Path("/bankaccounttype/get")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getBankAccountType(@QueryParam("rowId") String rowId) {
+		BankaccounttypeDAO bankaccounttypeDAO = new BankaccounttypeDAO();
+		long id = Long.parseLong(rowId);
+		CodeTableResource result = null;
+		
+		Bankaccounttype aBankaccounttype = bankaccounttypeDAO.findById(id);
+		if (aBankaccounttype != null) {
+			result = new CodeTableResource(aBankaccounttype.getBankaccounttypeid(), aBankaccounttype.getAccounttypecode(), aBankaccounttype.getAccounttypename());
+		} else {
+			return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
+		}
+
+	    return Response.ok(result).build();
+	}
+	
+	@DELETE
+	@Path("/bankaccounttype/delete")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response deleteBankAccountType(@QueryParam("rowId") String rowId) {		
+		BankaccounttypeDAO bankaccounttypeDAO = new BankaccounttypeDAO();
+		long id = Long.parseLong(rowId);
+		
+		try {
+			Bankaccounttype aBankaccounttype = bankaccounttypeDAO.findById(id);
+			if (aBankaccounttype != null) {
+				bankaccounttypeDAO.delete(aBankaccounttype);
+				bankaccounttypeDAO.flushSession();
+			} else {
+				return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
+			}
+		} catch (ConstraintViolationException cve) {
+			logger.error("", cve);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new 
+					ApplicationException("Record could not be deleted as it is being referenced by other data present on system. " + cve.getMessage())).build();
+		} catch (Exception e) {
+			logger.error("", e);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
+		}
+		
+	    return Response.ok().build();
+	}
+	
+	@POST
+	@Path("/bankaccounttype/post")
+	@Consumes("application/x-www-form-urlencoded")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response modifyBankAccountType(@FormParam("rowId") String rowId, @FormParam("code") String code, @FormParam("name") String name) {
+		BankaccounttypeDAO bankaccounttypeDAO = new BankaccounttypeDAO();
+		Bankaccounttype aBankaccounttype = null;
+		try {
+			if (rowId != null && rowId.length() > 0) {
+				aBankaccounttype = bankaccounttypeDAO.findById(Long.parseLong(rowId)); 
+			} else {
+				aBankaccounttype = new Bankaccounttype();
+			}
+			aBankaccounttype.setAccounttypecode(code);
+			aBankaccounttype.setAccounttypename(name);
+			bankaccounttypeDAO.save(aBankaccounttype);
+			bankaccounttypeDAO.flushSession();
 		}
 		catch (Exception e) {
 			logger.error("", e);

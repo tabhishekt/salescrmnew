@@ -115,6 +115,7 @@
 	        	                ["Manage Cities", "contentTabPage.jsp?page=city"],
 	        	                ["Manage States", "contentTabPage.jsp?page=state"],
 	        	                ["Manage Unit Types", "contentTabPage.jsp?page=unittype"],
+	        	                ["Manage Bank Account Types", "contentTabPage.jsp?page=bankaccounttype"],
 	        	                ["Manage Unit Amenities", "contentTabPage.jsp?page=amenity"],
 	        	                ["Manage Sources", "contentTabPage.jsp?page=source"],
 	        	                ["Manage Payment Types", "contentTabPage.jsp?page=paymenttype"]

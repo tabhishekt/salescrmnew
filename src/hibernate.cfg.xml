@@ -54,5 +54,7 @@
 		<mapping resource="com/propmgr/dao/Paymentstate.hbm.xml" />
 		<mapping resource="com/propmgr/dao/Paymentstage.hbm.xml" />
 		<mapping resource="com/propmgr/dao/Refundmaster.hbm.xml" />
+		<mapping resource="com/propmgr/dao/Bankaccounttype.hbm.xml" />
+		<mapping resource="com/propmgr/dao/Projectbankaccount.hbm.xml" />
 	</session-factory>
 </hibernate-configuration>

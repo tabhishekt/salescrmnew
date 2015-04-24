@@ -19,8 +19,8 @@ public class PrintBookingResource {
 	private String comment;
 	private UnitPriceDetailResource priceDetails;
 	private List<PaymentResource> paymentList;
+	private List<ProjectBankAccountResource> projectBankAccounts;
 	private double totalPaymentReceived;
-	private String displayBankInformation;
 	private String termsAndConditions;
 	private Set<UnitPaymentScheduleResource> scheduleList;
 	
@@ -30,7 +30,7 @@ public class PrintBookingResource {
 			CustomerResource customer, UnitResource unit, double discount, double deductionOnOtherCharges,
 			String comment, UnitPriceDetailResource priceDetails,
 			List<PaymentResource> paymentList, double totalPaymentReceived,
-			String displayBankInformation, String termsAndConditions,
+			List<ProjectBankAccountResource> projectBankAccounts, String termsAndConditions,
 			Set<UnitPaymentScheduleResource> scheduleList) {
 		super();
 		this.id = id;
@@ -48,7 +48,7 @@ public class PrintBookingResource {
 		this.priceDetails = priceDetails;
 		this.paymentList = paymentList;
 		this.totalPaymentReceived = totalPaymentReceived;
-		this.displayBankInformation = displayBankInformation;
+		this.projectBankAccounts = projectBankAccounts;
 		this.termsAndConditions = termsAndConditions;
 		this.scheduleList = scheduleList;
 	}
@@ -113,8 +113,8 @@ public class PrintBookingResource {
 		return totalPaymentReceived;
 	}
 
-	public String getDisplayBankInformation() {
-		return displayBankInformation;
+	public List<ProjectBankAccountResource> getProjectBankAccounts() {
+		return projectBankAccounts;
 	}
 
 	public String getTermsAndConditions() {

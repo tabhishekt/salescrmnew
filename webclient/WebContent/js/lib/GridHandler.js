@@ -260,6 +260,8 @@ define(
 	        	        	deferred.then(function(res){
 	        	        		gridHandler.deleteRecord(gridHandler.getURL(action[0]) + "?rowId=" + rowData.id);
 	        	        	});	
+    					} else if (action[0] == "projectbankaccount") {
+    						window.location = "contentTabPage.jsp?page=" + action[0] + "&projectId=" + rowData.id + "&projectName=" + rowData.name;
     					} else if (action[0] == "unit") {
     						window.location = "contentTabPage.jsp?page=" + action[0] + "&buildingId=" + rowData.id + "&buildingName=" + rowData.name;
     					} else if (action[0] == "unitpaymentschedule") {

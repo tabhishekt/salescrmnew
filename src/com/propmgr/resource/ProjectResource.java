@@ -9,21 +9,12 @@ public class ProjectResource {
 	private AddressResource address;
 	private long totalPhases;
 	private String displayAddress;
-	private String bankName;
-	private String accountNumber;
-	private String accountHolderName;
-	private String ifscCode;
-	private String micrCode;
-	private AddressResource bankAddress;
-	private String displayBankAddress;
 	private String termsAndConditions;
 	
 	public ProjectResource(long id, OrganizationResource organization,
 			String orgName, String name, String description,
-			AddressResource address, long totalPhases, String displayAddress,
-			String bankName, String accountNumber, String accountHolderName,
-			String ifscCode, String micrCode, AddressResource bankAddress,
-			String displayBankAddress, String termsAndConditions) {
+			AddressResource address, long totalPhases, String displayAddress, 
+			String termsAndConditions) {
 		super();
 		this.id = id;
 		this.organization = organization;
@@ -33,13 +24,6 @@ public class ProjectResource {
 		this.address = address;
 		this.totalPhases = totalPhases;
 		this.displayAddress = displayAddress;
-		this.bankName = bankName;
-		this.accountNumber = accountNumber;
-		this.accountHolderName = accountHolderName;
-		this.ifscCode = ifscCode;
-		this.micrCode = micrCode;
-		this.bankAddress = bankAddress;
-		this.displayBankAddress = displayBankAddress;
 		this.termsAndConditions = termsAndConditions;
 	}
 
@@ -73,34 +57,6 @@ public class ProjectResource {
 
 	public String getDisplayAddress() {
 		return displayAddress;
-	}
-
-	public String getBankName() {
-		return bankName;
-	}
-
-	public String getAccountNumber() {
-		return accountNumber;
-	}
-
-	public String getAccountHolderName() {
-		return accountHolderName;
-	}
-
-	public String getIfscCode() {
-		return ifscCode;
-	}
-
-	public String getMicrCode() {
-		return micrCode;
-	}
-
-	public AddressResource getBankAddress() {
-		return bankAddress;
-	}
-
-	public String getDisplayBankAddress() {
-		return displayBankAddress;
 	}
 
 	public String getTermsAndConditions() {

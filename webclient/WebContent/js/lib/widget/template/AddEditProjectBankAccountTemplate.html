@@ -15,67 +15,75 @@
 				<div>
 					<input data-dojo-type='dijit/form/TextBox' id="rowId" name="rowId" 
 					data-dojo-attach-point='rowId' class="hiddenInput" value=""></input>
+					<input data-dojo-type='dijit/form/TextBox' id="project" name="project" 
+					data-dojo-attach-point='project' class="hiddenInput" value=""></input>
 					<fieldset style="width: 80%;">
-	 					<legend>Project Basic Details:</legend>
+	 					<legend>Project Bank Account Details:</legend>
 	 					<div>
 	 						<table align="left" style="width: 100%;">
 								<tr><td>
 									<table>
-										<tr><td><label for="name">Project name:</label></td></tr>
-										<tr><td><input id="name" name="name"
+										<tr><td><label for="accountholdername">Account holder name:</label></td></tr>
+										<tr><td><input id="accountholdername" name="accountholdername"
 												data-dojo-type='dijit/form/ValidationTextBox'
-												data-dojo-attach-point='name'
+												data-dojo-attach-point='accountholdername'
 												data-dojo-props="required:true"
 												type="text" /></td></tr>
 									</table>
 								</td><td>
 									<table>
-										<tr><td><label for="organization">Organization:</label></td></tr>
-										<tr><td><select id="organization" name="organization"
+										<tr><td><label for="bankaccounttype">Bank Account Type:</label></td></tr>
+										<tr><td><select id="bankaccounttype" name="bankaccounttype"
 										data-dojo-type="dijit/form/FilteringSelect" 
-										data-dojo-attach-point='organization'
+										data-dojo-attach-point='bankaccounttype'
 										data-dojo-props="required:true"></select></td></tr>
 									</table>
 								</td></tr>
 								<tr><td>
 									<table>
-										<tr><td><label for="description">Project Description:</label></td></tr>
-										<tr><td><textarea id="description" name="description"
-										data-dojo-type="dijit/form/SimpleTextarea" rows="3"
-										data-dojo-attach-point='description'></textarea></td></tr>
+										<tr><td><label for="bankname">Bank name:</label></td></tr>
+										<tr><td><input id="bankname" name="bankname"
+												data-dojo-type='dijit/form/ValidationTextBox'
+												data-dojo-attach-point='bankname'
+												data-dojo-props="required:true"
+												type="text" /></td></tr>
 									</table>
 								</td><td>
 									<table>
-										<tr><td><label for="totalphases">Total Phases:</label></td></tr>
-										<tr><td><input id="totalphases" name="totalphases" 
+										<tr><td><label for="accountnumber">Account Number:</label></td></tr>
+										<tr><td><input id="accountnumber" name="accountnumber"
 										data-dojo-type='dijit/form/ValidationTextBox'
-										data-dojo-attach-point='totalphases'
-										data-dojo-props="required:true, regExp:'^[0-9]{1,3}$', invalidMessage:'Enter upto three digit number only.'" type="text" />
-										</td></tr>
+										data-dojo-attach-point='accountnumber'
+										data-dojo-props="required:true"
+										type="text" /></td></tr>
+									</table>
+								</td></tr>
+								<tr><td>
+									<table>
+										<tr><td><label for="ifsccode">IFSC Code:</label></td></tr>
+										<tr><td><input id="ifsccode" name="ifsccode"
+												data-dojo-type='dijit/form/ValidationTextBox'
+												data-dojo-attach-point='ifsccode'
+												data-dojo-props="required:true"
+												type="text" /></td></tr>
+									</table>
+								</td><td>
+									<table>
+										<tr><td><label for="micrcode">MICR Code:</label></td></tr>
+										<tr><td><input id="micrcode" name="micrcode"
+										data-dojo-type='dijit/form/ValidationTextBox'
+										data-dojo-attach-point='micrcode'
+										data-dojo-props="required:true"
+										type="text" /></td></tr>
 									</table>
 								</td></tr>
 							</table>
 	 					</div>
 					</fieldset>
 					<fieldset style="width: 80%;">
-	 					<legend>Project Address:</legend>
+	 					<legend>Bank Address:</legend>
 						<div id="address" data-dojo-attach-point='address' 
 						data-dojo-type='lib/widget/AddressWidget'></div>
-					</fieldset>
-					<fieldset style="width: 80%;">
-	 					<legend>Terms and Conditions:</legend>
-	 					<div>
-	 						<table align="left" style="width: 100%;">
-								<tr><td>
-									<table style="width: 90%;">
-										<tr><td><label for="termsandconditions">Put HTML of Terms and Conditions:</label></td></tr>
-										<tr><td><textarea id="termsandconditions" name="termsandconditions"
-										data-dojo-type="dijit/form/SimpleTextarea" rows="7"
-										data-dojo-attach-point='termsandconditions'></textarea></td></tr>
-									</table>
-								</td></tr>
-							</table>
-	 					</div>
 					</fieldset>
 				</div>
 				<div>

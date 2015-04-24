@@ -41,6 +41,8 @@ import com.propmgr.dao.Paymentstatus;
 import com.propmgr.dao.PaymentstatusDAO;
 import com.propmgr.dao.Paymenttype;
 import com.propmgr.dao.Person;
+import com.propmgr.dao.Projectbankaccount;
+import com.propmgr.dao.ProjectbankaccountDAO;
 import com.propmgr.dao.Projectbuilding;
 import com.propmgr.dao.ProjectbuildingDAO;
 import com.propmgr.dao.Projectmaster;
@@ -71,6 +73,7 @@ import com.propmgr.resource.OrganizationResource;
 import com.propmgr.resource.PaymentResource;
 import com.propmgr.resource.PaymentStateResource;
 import com.propmgr.resource.PrintBookingResource;
+import com.propmgr.resource.ProjectBankAccountResource;
 import com.propmgr.resource.ProjectBuildingResource;
 import com.propmgr.resource.ProjectPhaseResource;
 import com.propmgr.resource.ProjectResource;
@@ -255,13 +258,19 @@ public class InventoryService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteProject(@QueryParam("rowId") String rowId) {		
 		ProjectmasterDAO projectDAO = new ProjectmasterDAO();
+		ProjectbankaccountDAO projectbankaccountDAO = new ProjectbankaccountDAO();
 		
 		try {
 			Projectmaster project = projectDAO.findById(Long.parseLong(rowId));
 			if (project != null) {
+				List<Projectbankaccount> bankAccountList = projectbankaccountDAO.findByProject(project.getProjectid());
+				for (Projectbankaccount projectbankaccount : bankAccountList) {
+					projectbankaccountDAO.delete(projectbankaccount);
+				}
+				
 				projectDAO.delete(project);
-				ResourceUtil.deleteAddress(project.getAddressByAddress());
-				ResourceUtil.deleteAddress(project.getAddressByBankaddress());
+				ResourceUtil.deleteAddress(project.getAddress());
+				
 				projectDAO.flushSession();
 			} else {
 				return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
@@ -286,7 +295,6 @@ public class InventoryService {
 		ProjectmasterDAO projectDAO = new ProjectmasterDAO();
 		Projectmaster project = new Projectmaster();
 		Address address = new Address();
-		Address bankAddress = new Address();
 		
 		try {
 			Organization organization = ResourceUtil.getOrganizationPOJO(formData);
@@ -299,25 +307,126 @@ public class InventoryService {
 			} 
 			
 			ResourceUtil.saveAddress(formData, address);
-			project.setAddressByAddress(address);
-			
-			ResourceUtil.saveBankAddress(formData, bankAddress);
-			project.setAddressByBankaddress(bankAddress);
-			
+			project.setAddress(address);
+		
 			project.setProjectname(ResourceUtil.getFormDataValue(formData, "name"));
 			project.setProjectdescription(ResourceUtil.getFormDataValueAsClob(formData, "description"));
 			project.setOrganization(organization);
 			project.setTotalphases(ResourceUtil.getFormDataValueAsLong(formData, "totalphases"));
-			
-			project.setBankname(ResourceUtil.getFormDataValue(formData, "bankname"));
-			project.setAccountnumber(ResourceUtil.getFormDataValue(formData, "accountnumber"));
-			project.setAccountholdername(ResourceUtil.getFormDataValue(formData, "accountholdername"));
-			project.setIfsccode(ResourceUtil.getFormDataValue(formData, "ifsccode"));
-			project.setMicrcode(ResourceUtil.getFormDataValue(formData, "micrcode"));
 			project.setTermsandconditions(ResourceUtil.getFormDataValueAsClob(formData, "termsandconditions"));
 			
 			projectDAO.save(project);
 			projectDAO.flushSession();
+			
+		}
+		catch (Exception e) {
+			logger.error("", e);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
+		}
+	    return Response.ok().build();
+	}
+	
+	@GET
+	@Path("/projectbankaccount/get/all")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAllProjectBankAccountForProject(@QueryParam("projectId") String projectId) {
+		ProjectbankaccountDAO projectbankaccountDAO = new ProjectbankaccountDAO();
+		List<ProjectBankAccountResource> result = new ArrayList<ProjectBankAccountResource>();
+		
+		try {
+			List<Projectbankaccount> allProjectBankAccounts = projectbankaccountDAO.findByProject(Long.parseLong(projectId));
+			for (Projectbankaccount projectBankAccount : allProjectBankAccounts) {
+				result.add(ResourceUtil.getProjectBankAccountFromDAO(projectBankAccount));
+			} 
+		} catch (Exception e) {
+			logger.error("", e);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
+		}
+		
+		int size = result.size();
+		return Response.ok(result).header("Content-Range", "items 0-" + (size - 1) + "/" + size).build();
+	}
+	
+	@GET
+	@Path("/projectbankaccount/get")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getProjectBankAccount(@QueryParam("rowId") String rowId) {
+		ProjectbankaccountDAO projectbankaccountDAO = new ProjectbankaccountDAO();
+		ProjectBankAccountResource result = null;
+		
+		try {
+			Projectbankaccount projectBankAccount = projectbankaccountDAO.findById(Long.parseLong(rowId));
+			if (projectBankAccount != null) {
+				result = ResourceUtil.getProjectBankAccountFromDAO(projectBankAccount);
+			} else {
+				return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
+			}
+		} catch (Exception e) {
+			logger.error("", e);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
+		}
+
+	    return Response.ok(result).build();
+	}
+	
+	@DELETE
+	@Path("/projectbankaccount/delete")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response deleteProjectBankAccount(@QueryParam("rowId") String rowId) {		
+		ProjectbankaccountDAO projectbankaccountDAO = new ProjectbankaccountDAO();
+		
+		try {
+			Projectbankaccount projectBankAccount = projectbankaccountDAO.findById(Long.parseLong(rowId));
+			if (projectBankAccount != null) {
+				projectbankaccountDAO.delete(projectBankAccount);
+				projectbankaccountDAO.flushSession();
+			} else {
+				return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
+			}
+		} catch (ConstraintViolationException cve) {
+			logger.error("", cve);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new 
+					ApplicationException("Record could not be deleted as it is being referenced by other data present on system. " + cve.getMessage())).build();
+		} catch (Exception e) {
+			logger.error("", e);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
+		}
+		
+	    return Response.ok().build();
+	}
+	
+	@POST
+	@Path("/projectbankaccount/post")
+	@Consumes("application/x-www-form-urlencoded")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response modifyProjectBankAccount(MultivaluedMap<String, String> formData) {
+		ProjectbankaccountDAO projectbankaccountDAO = new ProjectbankaccountDAO();
+		Projectbankaccount projectBankAccount = new Projectbankaccount();
+		Address address = new Address();
+		
+		try {
+			Projectmaster project = ResourceUtil.getProjectPOJO(formData);
+			String rowId = ResourceUtil.getFormDataValue(formData, "rowId");
+			if (rowId != null && rowId.length() > 0) {
+				projectBankAccount = projectbankaccountDAO.findById(Long.parseLong(rowId));
+				if (projectBankAccount == null) {
+					return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
+				}
+			} 
+			
+			ResourceUtil.saveAddress(formData, address);
+			projectBankAccount.setAddress(address);
+			
+			projectBankAccount.setAccountholdername(ResourceUtil.getFormDataValue(formData, "accountholdername"));
+			projectBankAccount.setAccountnumber(ResourceUtil.getFormDataValue(formData, "accountnumber"));
+			projectBankAccount.setBankaccounttype(ResourceUtil.getBankAccountTypePOJO(formData));
+			projectBankAccount.setBankname(ResourceUtil.getFormDataValue(formData, "bankname"));
+			projectBankAccount.setIfsccode(ResourceUtil.getFormDataValue(formData, "ifsccode"));
+			projectBankAccount.setMicrcode(ResourceUtil.getFormDataValue(formData, "micrcode"));
+			projectBankAccount.setProjectmaster(project);
+			
+			projectbankaccountDAO.save(projectBankAccount);
+			projectbankaccountDAO.flushSession();
 			
 		}
 		catch (Exception e) {
@@ -1302,12 +1411,14 @@ public class InventoryService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getUnitbookingForPrint(@QueryParam("rowId") String rowId) {
 		UnitbookingDAO unitbookingDAO = new UnitbookingDAO();
+		ProjectbankaccountDAO projectbankaccountDAO = new ProjectbankaccountDAO();
 		PaymentstatusDAO paymentstatusDAO = new PaymentstatusDAO();
 		PrintBookingResource result = null;
 		PaymentmasterDAO paymentmasterDAO = new PaymentmasterDAO();
 		CustomerResource customer = null;
 		List<PaymentResource> paymentList = new ArrayList<PaymentResource>();
 		Set<UnitPaymentScheduleResource> scheduleList = new TreeSet<UnitPaymentScheduleResource>(new ScheduleComp());
+		List<ProjectBankAccountResource> projectBankAccounts = new ArrayList<ProjectBankAccountResource>();
 		
 		try {
 				Unitbooking unitbooking = unitbookingDAO.findById(Long.parseLong(rowId));
@@ -1351,15 +1462,16 @@ public class InventoryService {
 						}
 					}
 					
+					List<Projectbankaccount> bankAccountList = projectbankaccountDAO.findByProject(project.getProjectid());
+					for (Projectbankaccount bankAccount : bankAccountList) {
+						projectBankAccounts.add(ResourceUtil.getProjectBankAccountFromDAO(bankAccount));
+					}
+					
 					double totalPaymentReceived = ResourceUtil.getTotalPaymentReceivedForBooking(unitbooking);
 					double balancePaymentForCurrentStatus = ResourceUtil.getBalancePaymentForCurrentStatus(scheduleList, bookingAmount, totalPaymentReceived,
 							unitbooking, (int)buildingCurrentStatus.getId());
 					
-					String displayBankInformation = project.getAccountholdername() + ", " + project.getBankname();
-					displayBankInformation += ", Account # " + project.getAccountnumber();
-					displayBankInformation += ", IFSC Code " + project.getIfsccode();
-					displayBankInformation += ", MICR Code " + project.getMicrcode();
-					displayBankInformation += ", " + ResourceUtil.getDisplayAddressFromAddressResource(ResourceUtil.getAddressFromDAO(project.getAddressByBankaddress()));
+					
 					String termsAndConditions = ResourceUtil.convertClobToString(project.getTermsandconditions());		
 							
 					result = new PrintBookingResource(unitbooking.getUnitbookingid(), unitbooking.getBookingformnumber(), 
@@ -1367,7 +1479,7 @@ public class InventoryService {
 							buildingCurrentStatus, balancePaymentForCurrentStatus, 
 							ResourceUtil.getOrganizationFromDAO(org), customer, ResourceUtil.getUnitFromDAO(unit), bookingDiscount, deductionOnOtherCharges,
 							ResourceUtil.convertClobToString(unitbooking.getBookingcomment()), priceWithDiscount, paymentList, totalPaymentReceived, 
-							displayBankInformation, termsAndConditions, scheduleList);
+							projectBankAccounts, termsAndConditions, scheduleList);
 				} else {
 					return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
 				}
