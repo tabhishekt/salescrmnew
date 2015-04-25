@@ -201,10 +201,18 @@
             	var booingdiscount = 0;
             	if (dojo.byId("discount").value != "") {
             		booingdiscount = parseInt(dojo.byId("discount").value);
+            		if (booingdiscount > rowDataUnit.unitPricePolicy.baserate) {
+            			this.openBookingResultDialog("Booking discount cannot be more than base rate", "error");
+            			return;
+            		}
     			}
             	var deductiononothercharges = 0;
             	if (dojo.byId("deductiononothercharges").value != "") {
             		deductiononothercharges = parseInt(dojo.byId("deductiononothercharges").value);
+            		if (deductiononothercharges > rowDataUnit.otherCharges) {
+            			this.openBookingResultDialog("Deduction of other charges cannot be more than other charges", "error");
+            			return;
+            		}
     			}
             	
             	var confirmBookingText = "Unit " + rowDataUnit.unitNumber + ", " + 

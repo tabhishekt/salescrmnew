@@ -271,6 +271,8 @@ define(
             		pageLegendTitle += " for customer \"" + customerName + "\"";
             	} else if (this.buildingName != "undefined") {
             		pageLegendTitle += " for building \"" + buildingName + "\"";
+            	} else if (this.projectName != "undefined") {
+            		pageLegendTitle += " for project \"" + projectName + "\"";
             	}
             	
             	if (this.mode && this.mode == "select") {
@@ -322,7 +324,7 @@ define(
                     	   							{field: "accountHolderName",name: "Account Holder",width: "auto"},
                     	   							{field: "accountTypeName",name: "Account Type",width: "auto"}
                     	   	   			  		   ];
-            		  this.pageParams.dialogTtileField = "name";
+            		  this.pageParams.dialogTtileField = "accountNumber";
             		  this.pageParams.dialogTtileString = "project bank account";
             		  this.pageParams.GridDialog = AddEditProjectBankAccountDialog;
             		  break;

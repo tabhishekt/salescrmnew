@@ -42,6 +42,7 @@
             	this.unitInfo = decodeURIComponent(this.getQueryVariable("unitInfo"));
             	this.customerName = decodeURIComponent(this.getQueryVariable("customerName"));
             	this.buildingName = decodeURIComponent(this.getQueryVariable("buildingName"));
+            	this.projectName = decodeURIComponent(this.getQueryVariable("projectName"));
             	
             	this.initializeHandlers();
             	
