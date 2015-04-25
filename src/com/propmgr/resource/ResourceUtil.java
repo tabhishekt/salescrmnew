@@ -509,8 +509,8 @@ public class ResourceUtil {
 			double totalRate = baseRate + floorRise - discount; 
 			double otherCharges = unit.getOthercharges() - deductionOnOtherCharges;
 			double agreementValue = unit.getSaleablearea()*totalRate + otherCharges;
-			double maintainanceCharge1 = unitpricepolicy.getMaintenancecharge1();
-			double maintainanceCharge2 = unitpricepolicy.getMaintenancecharge2();
+			double maintainanceCharge1 = unitpricepolicy.getMaintenancecharge1()*unit.getSaleablearea();
+			double maintainanceCharge2 = unitpricepolicy.getMaintenancecharge2()*unit.getSaleablearea();
 			double logalCharge = unitpricepolicy.getLegalcharge();
 			double totalCharges = maintainanceCharge1 + maintainanceCharge2 + logalCharge;
 			
