@@ -120,8 +120,14 @@
 				} else {
 					if (rowDataUnit.unitPricePolicy && rowDataUnit.unitPricePolicy != null) {
 						var booingdiscount = 0;
+						var baseRate = 0;
 		            	if (dojo.byId("discount").value != "") {
 		            		booingdiscount = parseInt(dojo.byId("discount").value);
+		            		baseRate = parseInt(rowDataUnit.unitPricePolicy.baserate);
+            				if (booingdiscount > baseRate){
+            					this.unitGridHandler.updateMessage("Discount cannot be greater than Base Rate : " + baseRate, "error");
+            					return;
+            				}
 		    			}
 		            	var deductiononothercharges = 0;
 		            	if (dojo.byId("deductiononothercharges").value != "") {
@@ -272,7 +278,7 @@
 									</table>
 								</td><td>
 									<table>
-										<tr><td><label for="discount">Discount:</label></td></tr>
+										<tr><td><label for="discount">Discount on Base Rate:</label></td></tr>
 										<tr><td><input id="discount" name="discount"
 												data-dojo-type='dijit/form/TextBox'
 												type="text" /></td></tr>
