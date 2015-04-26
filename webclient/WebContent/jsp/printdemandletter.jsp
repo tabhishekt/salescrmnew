@@ -32,9 +32,7 @@
        			
        			promise.response.then(
        				function(response) {
-       					this.populateFormData(response.data);
-       					this.populatePaymentSchedule(response.data);
-       					this.populatePaymentDetails(response.data);
+       					this.populateData(response.data);
        				},
        				function(error) {
        					this.gridHandler.updateMessage("Problem occured fetching price details: " + error.response.data.message, "error");
@@ -42,160 +40,34 @@
        			);
             };
             
-            populateFormData = function(data) {
-            	this.orgname.innerHTML = data.organization.name;
-            	this.orgaddress.innerHTML = data.organization.displayAddress;
-            	this.orgphone.innerHTML = data.organization.contactInfo.phoneNumber + ", ";
-            	this.orgmobile.innerHTML = data.organization.contactInfo.mobileNumber + ", ";
-            	this.orgemailid.innerHTML = data.organization.contactInfo.emailID;
-            	this.dateSpan.innerHTML = this.formatDate(Date());
-            	
-            	this.bookingformnumber.innerHTML = data.bookingFormNumber;
+            populateData = function(data) {
+            	this.datespan.innerHTML = this.formatDate(data.currentDate);
             	this.customername.innerHTML = data.customer.displayName;
-            	this.customeraddress.innerHTML = data.customer.displayAddress;
-            	if (data.customer.person.contactInfo.phoneNumber) {
-            		this.customerphone.innerHTML = data.customer.person.contactInfo.phoneNumber;	
-            	} 
-            	
-            	if (data.customer.person.contactInfo.mobileNumber) {
-            		this.customermobile.innerHTML = data.customer.person.contactInfo.mobileNumber;	
-            	} 
-            	
-            	if (data.customer.person.contactInfo.emailID) {
-            		this.customeremailid.innerHTML = data.customer.person.contactInfo.emailID;	
-            	} 
-            	
+            	this.displayprojectinfo.innerHTML = data.displayProjectInfo;
             	this.unitnumber.innerHTML = data.unit.unitNumber;
-            	this.projectbuilding.innerHTML = data.unit.displayProjectInfo;
-            	
-            	this.projectbuildingcurrentstatus.innerHTML = data.buildingCurrentStatus.name;
-            	this.balancepaymentcurrentstatus.innerHTML = this.formatCurrency(data.balancePaymentForCurrentStatus);
+            	this.currentstage.innerHTML = data.buildingCurrentStatus.name;
+            	this.agreementvalue.innerHTML = this.formatCurrency(data.priceDetails.agreementvalue);
+            	this.totaldue.innerHTML = this.formatCurrency(data.totalDueForCurrentStatus);
             	this.totalpaymentreceived.innerHTML = this.formatCurrency(data.totalPaymentReceived);
+            	this.totaloutstanding.innerHTML = this.formatCurrency(data.balancePaymentForCurrentStatus);
+            	this.builderaccountinformation.innerHTML = data.projectBankAccounts["BLDRAC"];
+            	this.servicetax.innerHTML = this.formatCurrency(data.priceDetails.servicetax);
+            	this.servicetaxpercent.innerHTML = data.unit.unitPricePolicy.servicetax + "%";
+            	this.valueaddedtax.innerHTML = this.formatCurrency(data.priceDetails.valueaddedtax);
+            	this.valueaddedtaxpercent.innerHTML = data.unit.unitPricePolicy.valueaddedtax + "%";
+            	this.taxaccountinformation.innerHTML = data.projectBankAccounts["TAXAC"];
+            	this.baserate.innerHTML = this.formatCurrency(data.unit.unitPricePolicy.baserate);
+            	this.stampduty.innerHTML = this.formatCurrency(data.priceDetails.stampduty);
+            	this.stampdutypercent.innerHTML = "(" + data.unit.unitPricePolicy.stampduty + "%)";
+            	this.registration.innerHTML = this.formatCurrency(data.priceDetails.registrationcharge);
+            	this.registrationpercent.innerHTML = "(" + data.unit.unitPricePolicy.registrationcharge + "%)";
+            	this.legalcharges.innerHTML = this.formatCurrency(data.priceDetails.legalcharge);
+            	var total = data.priceDetails.stampduty + data.priceDetails.registrationcharge + data.priceDetails.legalcharge;  
+            	this.totaltaxcharges.innerHTML = this.formatCurrency(total);
+            	this.legalaccountinformation.innerHTML = data.projectBankAccounts["LEGAC"];
+            	this.orgname.innerHTML = data.organization.name;
             };
             
-            populatePaymentSchedule = function(data) {
-            	var currentPosition = data.buildingCurrentStatus.id;
-            	if (data.scheduleList.length == 0) {
-            		this.createSpan(this.paymentScheduleDiv, "No Payment Schedule Details available");
-            		return;
-            	}
-            	var tr, th1, th2, th3, th4, td1, td2, td3, td4;
-				var table = domConstruct.create("table", {"style": "width:100%"}, this.paymentScheduleDiv);
-				tr = domConstruct.create("tr", null, table);
-				th1 = domConstruct.create("th", null, tr);
-				this.createSpan(th1, "Type");
-				th2 = domConstruct.create("th", null, tr);
-				this.createSpan(th2, "Percent Amount");
-				th3 = domConstruct.create("th", null, tr);
-				this.createSpan(th3, "Date");
-				th4 = domConstruct.create("th", null, tr);
-				this.createSpan(th4, "Amount");
-					
-				for (var i=0; i<data.scheduleList.length; i++) {
-					if (i == 0) {
-						tr = domConstruct.create("tr", {"bgcolor": "#999900"}, table);
-						td1 = domConstruct.create("td", null, tr);
-						td2 = domConstruct.create("td", null, tr);
-						td3 = domConstruct.create("td", null, tr);
-						td4 = domConstruct.create("td", null, tr);
-						
-						this.createSpan(td1, "Booking");
-						this.createSpan(td2, "Not available");
-						this.createSpan(td3, "Not available");
-						this.createSpan(td4, this.formatCurrency(data.unit.bookingAmount));
-					} else if (i == 2) {
-						tr = domConstruct.create("tr", {"bgcolor": "#999900"}, table);
-						td1 = domConstruct.create("td", null, tr);
-						td2 = domConstruct.create("td", null, tr);
-						td3 = domConstruct.create("td", null, tr);
-						td4 = domConstruct.create("td", null, tr);
-						
-						this.createSpan(td1, "Total taxes");
-						this.createSpan(td2, "Not available");
-						this.createSpan(td3, "Not available");
-						this.createSpan(td4, this.formatCurrency(data.priceDetails.totalTax));
-					}
-					var schedule = data.scheduleList[i];
-					if (schedule.position <= currentPosition) {
-						tr = domConstruct.create("tr", {"bgcolor": "#009900"}, table);	
-					} else {
-						tr = domConstruct.create("tr", null, table);
-					}
-					
-					
-					td1 = domConstruct.create("td", null, tr);
-					td2 = domConstruct.create("td", null, tr);
-					td3 = domConstruct.create("td", null, tr);
-					td4 = domConstruct.create("td", null, tr);
-					
-					this.createSpan(td1, schedule.type);
-					this.createSpan(td2, schedule.percentamount);
-					this.createSpan(td3, this.formatDate(schedule.scheduledate));
-					this.createSpan(td4, this.formatCurrency(schedule.amount));
-				}
-            };
-            
-            populatePaymentDetails = function(data) {
-            	if (data.paymentList.length == 0) {
-            		this.createSpan(this.paymentDetailsDiv, "No Payment Details available");
-            		return;
-            	}
-            	var tr, th1, th2, th3, th4, th5, th6, th7, th8, th9, td1, td2, td3, td4, td5, td6, td7, td8, td9;
-				var table = domConstruct.create("table", {"style": "width:100%"}, this.paymentDetailsDiv);
-				tr = domConstruct.create("tr", null, table);
-				th1 = domConstruct.create("th", null, tr);
-				this.createSpan(th1, "Bank Name");
-				th2 = domConstruct.create("th", null, tr);
-				this.createSpan(th2, "Branch");
-				th3 = domConstruct.create("th", null, tr);
-				this.createSpan(th3, "Cheque Number");
-				th4 = domConstruct.create("th", null, tr);
-				this.createSpan(th4, "Cheque Date");
-				th5 = domConstruct.create("th", null, tr);
-				this.createSpan(th5, "Receipt Number");
-				th6 = domConstruct.create("th", null, tr);
-				this.createSpan(th6, "Alt Receipt Number");
-				th7 = domConstruct.create("th", null, tr);
-				this.createSpan(th7, "Category");
-				th8 = domConstruct.create("th", null, tr);
-				this.createSpan(th8, "Amount");
-				th9 = domConstruct.create("th", null, tr);
-				this.createSpan(th9, "Status");
-				
-				for (var i=0; i<data.paymentList.length; i++) {
-					var payment = data.paymentList[i];
-					tr = domConstruct.create("tr", null, table);
-					
-					td1 = domConstruct.create("td", null, tr);
-					td2 = domConstruct.create("td", null, tr);
-					td3 = domConstruct.create("td", null, tr);
-					td4 = domConstruct.create("td", null, tr);
-					td5 = domConstruct.create("td", null, tr);
-					td6 = domConstruct.create("td", null, tr);
-					td7 = domConstruct.create("td", null, tr);
-					td8 = domConstruct.create("td", null, tr);
-					td9 = domConstruct.create("td", null, tr);
-					
-					this.createSpan(td1, payment.bankName);
-					this.createSpan(td2, payment.bankBranch);
-					this.createSpan(td3, payment.chequeNumber);
-					this.createSpan(td4, this.formatDate(payment.chequeDate));
-					this.createSpan(td5, payment.receiptNumber);
-					this.createSpan(td6, payment.altReceiptNumber);
-					this.createSpan(td7, payment.paymentTypeName);
-					this.createSpan(td8, this.formatCurrency(payment.receiptAmount));
-					this.createSpan(td9, payment.paymentStatus.name);
-				}
-            };
-            
-            createSpan = function(column, value) {
-    			span = domConstruct.create("span", null, column);
-    			if (value == null) {
-    				value = "Not available";
-    			}
-    			span.innerHTML = value;
-    		};
-    		
     		formatDate = function (value) {
 				try {
 				    if (value) {
@@ -229,76 +101,99 @@
 </script>
 </head>
 <body class="claro"  onload="this.load()">
-<div>	
-			<div id="orgDetailsDiv">
-				<table style="width: 100%;">
-				<tr><td colspan="3"><span id="orgname" data-dojo-attach-point="orgname"></span></td></tr>
-				<tr><td colspan="3"><span id="orgaddress" data-dojo-attach-point="orgaddress"></span></td></tr>
-				<tr><td><span id="orgphone" data-dojo-attach-point="orgphone"></span></td>
-				<td><span id="orgmobile" data-dojo-attach-point="orgmobile"></span></td>
-				<td><span id="orgemailid" data-dojo-attach-point="orgemailid"></span></td></tr>
-				</table>
-			</div>
-			Date: <span id="dateSpan" data-dojo-attach-point="dateSpan"></span>
-			<br><br>
-			Booking Ref: <span id="bookingformnumber" data-dojo-attach-point="bookingformnumber"></span><br><br>
-			<div id = "customerDetailsDiv">
-				<span id="customername" data-dojo-attach-point="customername"></span><br>
-				<span id="customeraddress" data-dojo-attach-point="customeraddress"></span><br>
-				<span id="customerphone" data-dojo-attach-point="customerphone"></span><br>
-				<span id="customermobile" data-dojo-attach-point="customermobile"></span><br>
-				<span id="customeremailid" data-dojo-attach-point="customeremailid"></span><br>
-			</div>
-			<br><br>
-			<div id="letterSubjectDiv">
-				Sub: Demand Letter for payment towards 
-				<span id="unitnumber" data-dojo-attach-point="unitnumber"></span>
-				<span id="projectbuilding" data-dojo-attach-point="projectbuilding"></span>
-			</div>
-			<br>
-			<div id="letterBodyDiv">
-				Dear Sir / Madam,<br><br>
-				
-				We are pleased to inform you that current status of your building is 
-				"<span id="projectbuildingcurrentstatus" data-dojo-attach-point="projectbuildingcurrentstatus"></span>".<br><br>
-				As per the agreed advance disbursement plan with you, you are requested to kindly arrange for the payment of
-				<span id="balancepaymentcurrentstatus" data-dojo-attach-point="balancepaymentcurrentstatus"></span>
-				<br><br>
-				
-				Thanking you in anticipation of your prompt response and co-operation.<br><br>
-				
-				Yours truly<br><br><br><br><br><br>
-				Authorized Signature
-			</div>
+<div class="containerDiv">
+	<div class="printPageSpan" id="headerDiv">
+		<table>
+			<tr><td><span id="datespan" data-dojo-attach-point="datespan"></span></td></tr>
+			<tr><td><span>Dear Mr/Mrs</span></td><td><span id="customername" data-dojo-attach-point="customername"></span></td></tr>
+		</table>
+		<br>
+		<span class="printPageSpan">Sub: Outstanding Payment request</span><br><br>
+		<span class="printPageSpan">Dear Sir/Madam</span><br>
+		<span class="printPageSpan">Request your kind attention towards payments for your purchase of Flat at </span>
+		<span id="displayprojectinfo" data-dojo-attach-point="displayprojectinfo"></span>
+	</div>
+	<br><br>
+	<div id="demandDiv1">
+		<table class="demandLetterTable printPageSpan">
+			<tr>
+				<td class="demandLetterTableColLabel"><span>Flat No</span></td>
+				<td class="demandLetterTableCol"><span id="unitnumber" data-dojo-attach-point="unitnumber"></span></td>
+			</tr>
+			<tr>
+				<td class="demandLetterTableColLabel"><span>Current Construction Stage</span></td>
+				<td class="demandLetterTableCol"><span id="currentstage" data-dojo-attach-point="currentstage"></span></td>
+			</tr>
+			<tr>
+				<td class="demandLetterTableColLabel"><span>Agreement Value</span></td>
+				<td class="demandLetterTableCol"><span id="agreementvalue" data-dojo-attach-point="agreementvalue"></span></td>
+			</tr>
+			<tr>
+				<td class="demandLetterTableColLabel"><span>Total Due till Date</span></td>
+				<td class="demandLetterTableCol"><span id="totaldue" data-dojo-attach-point="totaldue"></span></td>
+			</tr>
+			<tr>
+				<td class="demandLetterTableColLabel"><span>Payment Received Till Date</span></td>
+				<td class="demandLetterTableCol"><span id="totalpaymentreceived" data-dojo-attach-point="totalpaymentreceived"></span></td>
+			</tr>
+			<tr>
+				<td class="demandLetterTableColLabel"><span>Total Outstanding Till Date</span></td>
+				<td class="demandLetterTableCol"><span id="totaloutstanding" data-dojo-attach-point="totaloutstanding"></span></td>
+			</tr>
+		</table><br>
+		<span class="printPageSpan">We hereby request you to send Cheque/DD/NEFT/RTGS/Cash to following bank account</span><br>
+		<span class="printPageSpanSmall" id="builderaccountinformation" data-dojo-attach-point="builderaccountinformation"></span>
+	</div><br>
+	<div id="demandDiv2">
+		<table class="demandLetterTable printPageSpan">
+			<tr>
+				<td class="demandLetterTableColLabel"><span>Service Tax</span></td>
+				<td class="demandLetterTableCol"><span id=servicetax data-dojo-attach-point="servicetax"></span></td>
+				<td class="demandLetterTableCol"><span id="servicetaxpercent" data-dojo-attach-point="servicetaxpercent"></span></td>
+			</tr>
+			<tr>
+				<td class="demandLetterTableColLabel"><span>VAT</span></td>
+				<td class="demandLetterTableCol"><span id="valueaddedtax" data-dojo-attach-point="valueaddedtax"></span></td>
+				<td class="demandLetterTableCol"><span id="valueaddedtaxpercent" data-dojo-attach-point="valueaddedtaxpercent"></span></td>
+			</tr>
+		</table><br>
+		<span class="printPageSpan">We hereby request you to send Cheque/DD/NEFT/RTGS/Cash to following bank account</span><br>
+		<span class="printPageSpanSmall" id="taxaccountinformation" data-dojo-attach-point="taxaccountinformation"></span>
+	</div><br>
+	<div id="demandDiv3">
+		<table class="demandLetterTable printPageSpan">
+			<tr>
+				<td class="demandLetterTableColLabel"><span>Ready Reckoner Rate per sq.ft</span></td>
+				<td class="demandLetterTableCol"><span id="baserate" data-dojo-attach-point="baserate"></span></td>
+			</tr>
+			<tr>
+				<td class="demandLetterTableColLabel"><span>Stamp Duty </span><span id="stampdutypercent" data-dojo-attach-point="stampdutypercent"></span></td>
+				<td class="demandLetterTableCol"><span id="stampduty" data-dojo-attach-point="stampduty"></span></td>
+			</tr>
+			<tr>
+				<td class="demandLetterTableColLabel"><span>Registration </span><span id="registrationpercent" data-dojo-attach-point="registrationpercent"></span></td>
+				<td class="demandLetterTableCol"><span id="registration" data-dojo-attach-point="registration"></span></td>
+			</tr>
+			<tr>
+				<td class="demandLetterTableColLabel"><span>Legal Charges</span></td>
+				<td class="demandLetterTableCol"><span id="legalcharges" data-dojo-attach-point="legalcharges"></span></td>
+			</tr>
+			<tr>
+				<td class="demandLetterTableColLabel"><span>Total</span></td>
+				<td class="demandLetterTableCol"><span id="totaltaxcharges" data-dojo-attach-point="totaltaxcharges"></span></td>
+			</tr>
+		</table><br>
+		<span class="printPageSpan">We hereby request you to send Cheque/DD/NEFT/RTGS/Cash to following bank account</span><br>
+		<span class="printPageSpanSmall" id="legalaccountinformation" data-dojo-attach-point="legalaccountinformation"></span>
+	</div><br>
+	<div  class="printPageSpan" id="footerDiv">
+		<span>You are requested to arrange the payments within seven days of this letter otherwise interest at the rate of 24% will be applicable thereafter.</span><br>
+		<span>Thanking you</span>
+		<br><br><br><br>
+		<span>Your Faithfully</span><br>
+		<span>Authorized Signatory</span><br>
+		<span id="orgname" data-dojo-attach-point="orgname"></span>
+	</div>
 </div>
-<p style="page-break-before:always;"></p>
-<div>
-			<div id="paymentScheduleDetailsDiv">
-				<table>
-					<tr><td valign="top">
-						<table>
-							<tr><td>
-								<fieldset style="width: 100%;">
-					 				<legend>Payment Schedule:</legend>
-									<div id="paymentScheduleDiv" data-dojo-attach-point="paymentScheduleDiv"></div>
-								</fieldset>
-							</td></tr>
-							<tr><td>
-								<fieldset style="width: 100%;">
-					 				<legend>Payment Details:</legend>
-									<div id="paymentDetailsDiv" data-dojo-attach-point="paymentDetailsDiv"></div>
-								</fieldset>
-							</td></tr>
-						</table>
-					</td></tr>
-					<tr><td>
-						Total Payment Received: <span id="totalpaymentreceived" data-dojo-attach-point="totalpaymentreceived"></span>
-					</td></tr>
-			</table>
-			</div>
-</div>
-<p>		
-<div><input type="button" value="Print this page" onClick="window.print()"></div>
-<br><br>
 </body>
 </html>

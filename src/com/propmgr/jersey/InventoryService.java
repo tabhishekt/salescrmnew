@@ -3,8 +3,10 @@ package com.propmgr.jersey;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -1414,13 +1416,13 @@ public class InventoryService {
 	public Response getUnitbookingForPrint(@QueryParam("rowId") String rowId) {
 		UnitbookingDAO unitbookingDAO = new UnitbookingDAO();
 		ProjectbankaccountDAO projectbankaccountDAO = new ProjectbankaccountDAO();
-		PaymentstatusDAO paymentstatusDAO = new PaymentstatusDAO();
 		PrintBookingResource result = null;
 		PaymentmasterDAO paymentmasterDAO = new PaymentmasterDAO();
 		CustomerResource customer = null;
 		List<PaymentResource> paymentList = new ArrayList<PaymentResource>();
 		Set<UnitPaymentScheduleResource> scheduleList = new TreeSet<UnitPaymentScheduleResource>(new ScheduleComp());
-		List<ProjectBankAccountResource> projectBankAccounts = new ArrayList<ProjectBankAccountResource>();
+		Map<String, String> projectBankAccounts = new HashMap<String, String>();
+		String currentDate = ResourceUtil.convertDateToString(Calendar.getInstance().getTime());
 		
 		try {
 				HibernateConnection.getSession().clear();
@@ -1438,6 +1440,7 @@ public class InventoryService {
 					double bookingAmount =  (unit.getBookingamount() == null) ? 0.0 : unit.getBookingamount();
 					UnitPriceDetailResource priceWithDiscount = ResourceUtil.getUnitPriceDetailResource(unit, bookingDiscount, deductionOnOtherCharges);
 					CodeTableResource buildingCurrentStatus = ResourceUtil.getBuildingCurrentStatus(projectbuilding);
+					String displayProjectInfo = ResourceUtil.getProjectDisplayName(unit);
 					
 					Customermaster customerPOJO = unitbooking.getCustomermaster();
 					if (customerPOJO != null) {
@@ -1467,20 +1470,25 @@ public class InventoryService {
 					
 					List<Projectbankaccount> bankAccountList = projectbankaccountDAO.findByProject(project.getProjectid());
 					for (Projectbankaccount bankAccount : bankAccountList) {
-						projectBankAccounts.add(ResourceUtil.getProjectBankAccountFromDAO(bankAccount));
+						ProjectBankAccountResource res = ResourceUtil.getProjectBankAccountFromDAO(bankAccount);
+						projectBankAccounts.put(res.getBankAccountType().getCode(), res.getDisplayBankInformation());
 					}
 					
 					double totalPaymentReceived = ResourceUtil.getTotalPaymentReceivedForBooking(unitbooking);
-					double balancePaymentForCurrentStatus = ResourceUtil.getBalancePaymentForCurrentStatus(scheduleList, bookingAmount, totalPaymentReceived,
+					double totalDueForCurrentStatus = ResourceUtil.getTotalDueForCurrentStatus(scheduleList, bookingAmount, 
 							unitbooking, (int)buildingCurrentStatus.getId());
+					double balancePaymentForCurrentStatus = totalDueForCurrentStatus - totalPaymentReceived;
+					if (balancePaymentForCurrentStatus < 0) {
+						balancePaymentForCurrentStatus = 0;
+					}
 					
 					
 					String termsAndConditions = ResourceUtil.convertClobToString(project.getTermsandconditions());		
 							
 					result = new PrintBookingResource(unitbooking.getUnitbookingid(), unitbooking.getBookingformnumber(), 
-							ResourceUtil.getUserDisplayName(user), ResourceUtil.convertDateToString(unitbooking.getBookingdate()), 
-							buildingCurrentStatus, balancePaymentForCurrentStatus, 
-							ResourceUtil.getOrganizationFromDAO(org), customer, ResourceUtil.getUnitFromDAO(unit), bookingDiscount, deductionOnOtherCharges,
+							ResourceUtil.getUserDisplayName(user), currentDate, ResourceUtil.convertDateToString(unitbooking.getBookingdate()), 
+							buildingCurrentStatus, totalDueForCurrentStatus, balancePaymentForCurrentStatus, ResourceUtil.getOrganizationFromDAO(org), displayProjectInfo,
+							customer, ResourceUtil.getUnitFromDAO(unit), bookingDiscount, deductionOnOtherCharges,
 							ResourceUtil.convertClobToString(unitbooking.getBookingcomment()), priceWithDiscount, paymentList, totalPaymentReceived, 
 							projectBankAccounts, termsAndConditions, scheduleList);
 				} else {

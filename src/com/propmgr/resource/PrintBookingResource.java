@@ -1,6 +1,7 @@
 package com.propmgr.resource;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 
@@ -8,10 +9,13 @@ public class PrintBookingResource {
 	private long id;
 	private long bookingFormNumber;
 	private String userDisplayName;
+	private String currentDate;
 	private String bookingDate;
 	private CodeTableResource buildingCurrentStatus;
+	private double totalDueForCurrentStatus;
 	private double balancePaymentForCurrentStatus;
 	private OrganizationResource organization;
+	private String displayProjectInfo;
 	private CustomerResource customer;
 	private UnitResource unit;
 	private double discount;
@@ -19,27 +23,30 @@ public class PrintBookingResource {
 	private String comment;
 	private UnitPriceDetailResource priceDetails;
 	private List<PaymentResource> paymentList;
-	private List<ProjectBankAccountResource> projectBankAccounts;
+	private Map<String, String> projectBankAccounts;
 	private double totalPaymentReceived;
 	private String termsAndConditions;
 	private Set<UnitPaymentScheduleResource> scheduleList;
 	
-	public PrintBookingResource(long id, long bookingFormNumber,
-			String userDisplayName, String bookingDate, CodeTableResource buildingCurrentStatus,
-			double balancePaymentForCurrentStatus, OrganizationResource organization,
+	public PrintBookingResource(long id, long bookingFormNumber, String userDisplayName, String currentDate, 
+			String bookingDate, CodeTableResource buildingCurrentStatus, double totalDueForCurrentStatus,
+			double balancePaymentForCurrentStatus, OrganizationResource organization, String displayProjectInfo,
 			CustomerResource customer, UnitResource unit, double discount, double deductionOnOtherCharges,
 			String comment, UnitPriceDetailResource priceDetails,
 			List<PaymentResource> paymentList, double totalPaymentReceived,
-			List<ProjectBankAccountResource> projectBankAccounts, String termsAndConditions,
+			Map<String, String> projectBankAccounts, String termsAndConditions,
 			Set<UnitPaymentScheduleResource> scheduleList) {
 		super();
 		this.id = id;
 		this.bookingFormNumber = bookingFormNumber;
 		this.userDisplayName = userDisplayName;
+		this.currentDate = currentDate;
 		this.bookingDate = bookingDate;
 		this.buildingCurrentStatus = buildingCurrentStatus;
+		this.totalDueForCurrentStatus = totalDueForCurrentStatus;
 		this.balancePaymentForCurrentStatus = balancePaymentForCurrentStatus;
 		this.organization = organization;
+		this.displayProjectInfo = displayProjectInfo;
 		this.customer = customer;
 		this.unit = unit;
 		this.discount = discount;
@@ -65,12 +72,20 @@ public class PrintBookingResource {
 		return userDisplayName;
 	}
 
+	public String getCurrentDate() {
+		return currentDate;
+	}
+
 	public String getBookingDate() {
 		return bookingDate;
 	}
 
 	public CodeTableResource getBuildingCurrentStatus() {
 		return buildingCurrentStatus;
+	}
+
+	public double getTotalDueForCurrentStatus() {
+		return totalDueForCurrentStatus;
 	}
 
 	public double getBalancePaymentForCurrentStatus() {
@@ -80,7 +95,11 @@ public class PrintBookingResource {
 	public OrganizationResource getOrganization() {
 		return organization;
 	}
-
+	
+	public String getDisplayProjectInfo() {
+		return displayProjectInfo;
+	}
+	
 	public CustomerResource getCustomer() {
 		return customer;
 	}
@@ -113,7 +132,7 @@ public class PrintBookingResource {
 		return totalPaymentReceived;
 	}
 
-	public List<ProjectBankAccountResource> getProjectBankAccounts() {
+	public Map<String, String> getProjectBankAccounts() {
 		return projectBankAccounts;
 	}
 

@@ -557,22 +557,16 @@ public class ResourceUtil {
 		return currentStatus;
 	}
 	
-	public static double getBalancePaymentForCurrentStatus(Set<UnitPaymentScheduleResource> scheduleList, 
-			double bookingAmount, double totalPaymentReceived, Unitbooking unitbooking, int currentStatus) {
-		double balancePaymentForCurrentStatus = 0.0;
-		double totalAmountToPay = bookingAmount;
+	public static double getTotalDueForCurrentStatus(Set<UnitPaymentScheduleResource> scheduleList, 
+			double bookingAmount, Unitbooking unitbooking, int currentStatus) {
+		double totalDueForCurrentStatus = bookingAmount;
 		for (UnitPaymentScheduleResource paymentSchedule : scheduleList) {
 			if (paymentSchedule.getPosition() <= currentStatus) {
-				totalAmountToPay += paymentSchedule.getAmount();
+				totalDueForCurrentStatus += paymentSchedule.getAmount();
 			}
 		}
 		
-		balancePaymentForCurrentStatus = totalAmountToPay - totalPaymentReceived;
-		if (balancePaymentForCurrentStatus < 0) {
-			balancePaymentForCurrentStatus = 0.0;
-		}
-		
-		return balancePaymentForCurrentStatus;
+		return totalDueForCurrentStatus;
 	}
 	
 	public static double getTotalPaymentReceivedForBooking(Unitbooking unitbooking) {
