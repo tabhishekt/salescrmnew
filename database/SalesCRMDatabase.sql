@@ -3,24 +3,24 @@
 
 DROP TABLE actionRole;
 DROP TABLE actionMaster;
-DROP TABLE projectBankAccount;
+DROP TABLE enquiryComment;
+DROP TABLE enquiry;
 DROP TABLE refundMaster;
 DROP TABLE paymentStatus;
 DROP TABLE paymentStage;
 DROP TABLE paymentMaster;
 DROP TABLE unitBooking;
+DROP TABLE customerMaster;
 DROP TABLE unitAmenity;
 DROP TABLE unitMaster;
 DROP TABLE unitPaymentSchedule;
 DROP TABLE projectBuilding;
 DROP TABLE projectPhase;
+DROP TABLE projectBankAccount;
 DROP TABLE projectMaster;
-DROP TABLE enquiryComment;
-DROP TABLE enquiry;
-DROP TABLE customerMaster;
+DROP TABLE organization;
 DROP TABLE userRole;
 DROP TABLE userMaster;
-DROP TABLE organization;
 DROP TABLE address;
 DROP TABLE amenity;
 DROP TABLE bankAccountType;
@@ -33,6 +33,7 @@ DROP TABLE paymentType;
 DROP TABLE roleMaster;
 DROP TABLE sourceMaster;
 DROP TABLE stateMaster;
+DROP TABLE unitClassificationMaster;
 DROP TABLE unitPricePolicy;
 DROP TABLE unitType;
 
@@ -43,7 +44,7 @@ DROP TABLE unitType;
 
 CREATE TABLE actionMaster
 (
-	actionMasterID bigint auto_increment NOT NULL UNIQUE,
+	actionMasterID bigint NOT NULL UNIQUE,
 	pageMasterID bigint NOT NULL,
 	actionName varchar(64) NOT NULL,
 	actionDescription clob,
@@ -53,7 +54,7 @@ CREATE TABLE actionMaster
 
 CREATE TABLE actionRole
 (
-	actionRoleID bigint auto_increment NOT NULL UNIQUE,
+	actionRoleID bigint NOT NULL UNIQUE,
 	actionMasterID bigint NOT NULL,
 	roleMasterID bigint NOT NULL,
 	PRIMARY KEY (actionRoleID)
@@ -62,7 +63,7 @@ CREATE TABLE actionRole
 
 CREATE TABLE address
 (
-	addressID bigint auto_increment NOT NULL UNIQUE,
+	addressID bigint NOT NULL UNIQUE,
 	addressLine1 clob,
 	addressLine2 clob,
 	city bigint NOT NULL,
@@ -74,7 +75,7 @@ CREATE TABLE address
 
 CREATE TABLE amenity
 (
-	amenityID bigint auto_increment NOT NULL UNIQUE,
+	amenityID bigint NOT NULL UNIQUE,
 	amenityCode varchar(8) NOT NULL,
 	amenityDescription varchar(128),
 	PRIMARY KEY (amenityID)
@@ -83,7 +84,7 @@ CREATE TABLE amenity
 
 CREATE TABLE bankAccountType
 (
-	bankAccountTypeID bigint auto_increment NOT NULL UNIQUE,
+	bankAccountTypeID bigint NOT NULL UNIQUE,
 	accountTypeCode varchar(8) NOT NULL,
 	accountTypeName varchar(64) NOT NULL,
 	PRIMARY KEY (bankAccountTypeID)
@@ -92,7 +93,7 @@ CREATE TABLE bankAccountType
 
 CREATE TABLE cityMaster
 (
-	cityMasterID bigint auto_increment NOT NULL UNIQUE,
+	cityMasterID bigint NOT NULL UNIQUE,
 	cityCode varchar(8) NOT NULL,
 	cityName varchar(64) NOT NULL,
 	PRIMARY KEY (cityMasterID)
@@ -101,7 +102,7 @@ CREATE TABLE cityMaster
 
 CREATE TABLE contactInfo
 (
-	contactInfoID bigint auto_increment NOT NULL UNIQUE,
+	contactInfoID bigint NOT NULL UNIQUE,
 	phoneNumber varchar(64),
 	alternateNumber varchar(64),
 	mobileNumber varchar(64),
@@ -112,7 +113,7 @@ CREATE TABLE contactInfo
 
 CREATE TABLE customerMaster
 (
-	customerID bigint auto_increment NOT NULL UNIQUE,
+	customerID bigint NOT NULL UNIQUE,
 	personDetail bigint NOT NULL,
 	address bigint NOT NULL,
 	createdBy bigint NOT NULL,
@@ -122,7 +123,7 @@ CREATE TABLE customerMaster
 
 CREATE TABLE enquiry
 (
-	enquiryID bigint auto_increment NOT NULL UNIQUE,
+	enquiryID bigint NOT NULL UNIQUE,
 	orgUser bigint NOT NULL,
 	customer bigint NOT NULL,
 	sourceName bigint NOT NULL,
@@ -137,7 +138,7 @@ CREATE TABLE enquiry
 
 CREATE TABLE enquiryComment
 (
-	enquiryCommentID bigint auto_increment NOT NULL UNIQUE,
+	enquiryCommentID bigint NOT NULL UNIQUE,
 	enquiry bigint NOT NULL,
 	orgUser bigint NOT NULL,
 	visitComment clob,
@@ -149,7 +150,7 @@ CREATE TABLE enquiryComment
 
 CREATE TABLE organization
 (
-	orgID bigint auto_increment NOT NULL UNIQUE,
+	orgID bigint NOT NULL UNIQUE,
 	orgName varchar(64) NOT NULL,
 	orgAddress bigint NOT NULL,
 	contactInfo bigint NOT NULL,
@@ -160,7 +161,7 @@ CREATE TABLE organization
 
 CREATE TABLE pageMaster
 (
-	pageMasterID bigint auto_increment NOT NULL UNIQUE,
+	pageMasterID bigint NOT NULL UNIQUE,
 	pageName varchar(64) NOT NULL,
 	pageDescription clob,
 	PRIMARY KEY (pageMasterID)
@@ -169,7 +170,7 @@ CREATE TABLE pageMaster
 
 CREATE TABLE paymentMaster
 (
-	paymentID bigint auto_increment NOT NULL UNIQUE,
+	paymentID bigint NOT NULL UNIQUE,
 	unitBooking bigint NOT NULL,
 	paymentType bigint NOT NULL,
 	orgUser bigint NOT NULL,
@@ -193,7 +194,7 @@ CREATE TABLE paymentMaster
 
 CREATE TABLE paymentStage
 (
-	paymentStageID bigint auto_increment NOT NULL UNIQUE,
+	paymentStageID bigint NOT NULL UNIQUE,
 	paymentStageType int NOT NULL,
 	paymentID bigint NOT NULL,
 	PRIMARY KEY (paymentStageID)
@@ -202,7 +203,7 @@ CREATE TABLE paymentStage
 
 CREATE TABLE paymentState
 (
-	paymentStateID bigint auto_increment NOT NULL UNIQUE,
+	paymentStateID bigint NOT NULL UNIQUE,
 	paymentStateName varchar(64) NOT NULL,
 	allowStateChange boolean NOT NULL,
 	PRIMARY KEY (paymentStateID)
@@ -211,7 +212,7 @@ CREATE TABLE paymentState
 
 CREATE TABLE paymentStatus
 (
-	paymentStatusID bigint auto_increment NOT NULL UNIQUE,
+	paymentStatusID bigint NOT NULL UNIQUE,
 	paymentID bigint NOT NULL,
 	paymentStateID bigint NOT NULL,
 	statusDate date NOT NULL,
@@ -223,7 +224,7 @@ CREATE TABLE paymentStatus
 
 CREATE TABLE paymentType
 (
-	paymentTypeID bigint auto_increment NOT NULL UNIQUE,
+	paymentTypeID bigint NOT NULL UNIQUE,
 	paymentTypeCode varchar(8),
 	paymentTypeDescription clob NOT NULL,
 	PRIMARY KEY (paymentTypeID)
@@ -232,7 +233,7 @@ CREATE TABLE paymentType
 
 CREATE TABLE person
 (
-	personID bigint auto_increment NOT NULL UNIQUE,
+	personID bigint NOT NULL UNIQUE,
 	firstName varchar(64),
 	middleName varchar(64),
 	lastName varchar(64),
@@ -246,7 +247,7 @@ CREATE TABLE person
 
 CREATE TABLE projectBankAccount
 (
-	projectBankAccountID bigint auto_increment NOT NULL UNIQUE,
+	projectBankAccountID bigint NOT NULL UNIQUE,
 	project bigint NOT NULL,
 	bankName varchar(64),
 	bankAddress bigint NOT NULL,
@@ -261,7 +262,7 @@ CREATE TABLE projectBankAccount
 
 CREATE TABLE projectBuilding
 (
-	projectBuildingID bigint auto_increment NOT NULL UNIQUE,
+	projectBuildingID bigint NOT NULL UNIQUE,
 	projectPhase bigint NOT NULL,
 	buildingName varchar(64) NOT NULL,
 	wingName varchar(64),
@@ -277,7 +278,7 @@ CREATE TABLE projectBuilding
 
 CREATE TABLE projectMaster
 (
-	projectID bigint auto_increment NOT NULL UNIQUE,
+	projectID bigint NOT NULL UNIQUE,
 	orgnization bigint NOT NULL,
 	address bigint NOT NULL,
 	projectName varchar(64) NOT NULL,
@@ -290,7 +291,7 @@ CREATE TABLE projectMaster
 
 CREATE TABLE projectPhase
 (
-	projectPhaseID bigint auto_increment NOT NULL UNIQUE,
+	projectPhaseID bigint NOT NULL UNIQUE,
 	project bigint NOT NULL,
 	projectPhaseName varchar(64) NOT NULL,
 	projectPhaseDescription clob,
@@ -300,7 +301,7 @@ CREATE TABLE projectPhase
 
 CREATE TABLE refundMaster
 (
-	refundMasterID bigint auto_increment NOT NULL UNIQUE,
+	refundMasterID bigint NOT NULL UNIQUE,
 	unitBookingID bigint NOT NULL,
 	refundAmount double,
 	refundDate date,
@@ -314,7 +315,7 @@ CREATE TABLE refundMaster
 
 CREATE TABLE roleMaster
 (
-	roleMasterID bigint auto_increment NOT NULL UNIQUE,
+	roleMasterID bigint NOT NULL UNIQUE,
 	roleName varchar(64) NOT NULL,
 	roleDescription clob,
 	isAdmin boolean NOT NULL,
@@ -324,7 +325,7 @@ CREATE TABLE roleMaster
 
 CREATE TABLE sourceMaster
 (
-	sourceMasterID bigint auto_increment NOT NULL UNIQUE,
+	sourceMasterID bigint NOT NULL UNIQUE,
 	sourceCode varchar(8),
 	sourceName varchar(64),
 	PRIMARY KEY (sourceMasterID)
@@ -333,7 +334,7 @@ CREATE TABLE sourceMaster
 
 CREATE TABLE stateMaster
 (
-	stateMasterID bigint auto_increment NOT NULL UNIQUE,
+	stateMasterID bigint NOT NULL UNIQUE,
 	stateCode varchar(8),
 	stateName varchar(64),
 	PRIMARY KEY (stateMasterID)
@@ -342,7 +343,7 @@ CREATE TABLE stateMaster
 
 CREATE TABLE unitAmenity
 (
-	unitAmenityID bigint auto_increment NOT NULL UNIQUE,
+	unitAmenityID bigint NOT NULL UNIQUE,
 	unit bigint NOT NULL,
 	amenity bigint NOT NULL,
 	PRIMARY KEY (unitAmenityID)
@@ -351,7 +352,7 @@ CREATE TABLE unitAmenity
 
 CREATE TABLE unitBooking
 (
-	unitBookingID bigint auto_increment NOT NULL UNIQUE,
+	unitBookingID bigint NOT NULL UNIQUE,
 	unit bigint NOT NULL,
 	customer bigint NOT NULL,
 	bookedBy bigint NOT NULL,
@@ -369,9 +370,19 @@ CREATE TABLE unitBooking
 );
 
 
+CREATE TABLE unitClassificationMaster
+(
+	unitClassId  bigint auto_increment NOT NULL UNIQUE,
+	-- clss code
+	unitClassCode varchar(10) NOT NULL,
+	unitClassDesc varchar(30),
+	PRIMARY KEY (unitClassId)
+);
+
+
 CREATE TABLE unitMaster
 (
-	unitID bigint auto_increment NOT NULL UNIQUE,
+	unitID bigint NOT NULL UNIQUE,
 	projectBuilding bigint NOT NULL,
 	unitType bigint NOT NULL,
 	unitPricePolicyID bigint,
@@ -396,7 +407,7 @@ CREATE TABLE unitMaster
 
 CREATE TABLE unitPaymentSchedule
 (
-	unitPaymentScheduleID bigint auto_increment NOT NULL UNIQUE,
+	unitPaymentScheduleID bigint NOT NULL UNIQUE,
 	projectBuildingID bigint NOT NULL,
 	paymentSchedulePosition int NOT NULL,
 	paymentScheduleType varchar(64) NOT NULL,
@@ -410,7 +421,7 @@ CREATE TABLE unitPaymentSchedule
 
 CREATE TABLE unitPricePolicy
 (
-	unitPricePolicyID bigint auto_increment NOT NULL UNIQUE,
+	unitPricePolicyID bigint NOT NULL UNIQUE,
 	policyName varchar(64) NOT NULL,
 	baseRate double NOT NULL,
 	stampDuty double NOT NULL,
@@ -426,7 +437,7 @@ CREATE TABLE unitPricePolicy
 
 CREATE TABLE unitType
 (
-	unitTypeID bigint auto_increment NOT NULL UNIQUE,
+	unitTypeID bigint NOT NULL UNIQUE,
 	unitTypeCode varchar(8),
 	unitTypeName varchar(64),
 	PRIMARY KEY (unitTypeID)
@@ -435,7 +446,7 @@ CREATE TABLE unitType
 
 CREATE TABLE userMaster
 (
-	userMasterID bigint auto_increment NOT NULL UNIQUE,
+	userMasterID bigint NOT NULL UNIQUE,
 	personDetail bigint NOT NULL,
 	userAddress bigint NOT NULL,
 	loginName varchar(64) NOT NULL,
@@ -447,7 +458,7 @@ CREATE TABLE userMaster
 
 CREATE TABLE userRole
 (
-	userRoleID bigint auto_increment NOT NULL UNIQUE,
+	userRoleID bigint NOT NULL UNIQUE,
 	orgUser bigint NOT NULL,
 	role bigint NOT NULL,
 	PRIMARY KEY (userRoleID)
@@ -460,6 +471,22 @@ CREATE TABLE userRole
 ALTER TABLE actionRole
 	ADD FOREIGN KEY (actionMasterID)
 	REFERENCES actionMaster (actionMasterID)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE customerMaster
+	ADD FOREIGN KEY (address)
+	REFERENCES address (addressID)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE organization
+	ADD FOREIGN KEY (orgAddress)
+	REFERENCES address (addressID)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
 ;
@@ -481,24 +508,8 @@ ALTER TABLE projectMaster
 ;
 
 
-ALTER TABLE customerMaster
-	ADD FOREIGN KEY (address)
-	REFERENCES address (addressID)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
-;
-
-
 ALTER TABLE userMaster
 	ADD FOREIGN KEY (userAddress)
-	REFERENCES address (addressID)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
-;
-
-
-ALTER TABLE organization
-	ADD FOREIGN KEY (orgAddress)
 	REFERENCES address (addressID)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
@@ -529,7 +540,7 @@ ALTER TABLE address
 ;
 
 
-ALTER TABLE organization
+ALTER TABLE person
 	ADD FOREIGN KEY (contactInfo)
 	REFERENCES contactInfo (contactInfoID)
 	ON UPDATE RESTRICT
@@ -537,7 +548,7 @@ ALTER TABLE organization
 ;
 
 
-ALTER TABLE person
+ALTER TABLE organization
 	ADD FOREIGN KEY (contactInfo)
 	REFERENCES contactInfo (contactInfoID)
 	ON UPDATE RESTRICT
@@ -681,16 +692,16 @@ ALTER TABLE projectBuilding
 ;
 
 
-ALTER TABLE userRole
-	ADD FOREIGN KEY (role)
+ALTER TABLE actionRole
+	ADD FOREIGN KEY (roleMasterID)
 	REFERENCES roleMaster (roleMasterID)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
 ;
 
 
-ALTER TABLE actionRole
-	ADD FOREIGN KEY (roleMasterID)
+ALTER TABLE userRole
+	ADD FOREIGN KEY (role)
 	REFERENCES roleMaster (roleMasterID)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
@@ -753,6 +764,14 @@ ALTER TABLE unitMaster
 ;
 
 
+ALTER TABLE enquiry
+	ADD FOREIGN KEY (interest)
+	REFERENCES unitType (unitTypeID)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
 ALTER TABLE unitMaster
 	ADD FOREIGN KEY (unitType)
 	REFERENCES unitType (unitTypeID)
@@ -762,55 +781,7 @@ ALTER TABLE unitMaster
 
 
 ALTER TABLE enquiry
-	ADD FOREIGN KEY (interest)
-	REFERENCES unitType (unitTypeID)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
-;
-
-
-ALTER TABLE unitBooking
-	ADD FOREIGN KEY (bookedBy)
-	REFERENCES userMaster (userMasterID)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
-;
-
-
-ALTER TABLE enquiryComment
 	ADD FOREIGN KEY (orgUser)
-	REFERENCES userMaster (userMasterID)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
-;
-
-
-ALTER TABLE paymentStatus
-	ADD FOREIGN KEY (updatedBy)
-	REFERENCES userMaster (userMasterID)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
-;
-
-
-ALTER TABLE paymentMaster
-	ADD FOREIGN KEY (orgUser)
-	REFERENCES userMaster (userMasterID)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
-;
-
-
-ALTER TABLE enquiry
-	ADD FOREIGN KEY (orgUser)
-	REFERENCES userMaster (userMasterID)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
-;
-
-
-ALTER TABLE unitBooking
-	ADD FOREIGN KEY (cancelledBy)
 	REFERENCES userMaster (userMasterID)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
@@ -826,6 +797,46 @@ ALTER TABLE customerMaster
 
 
 ALTER TABLE userRole
+	ADD FOREIGN KEY (orgUser)
+	REFERENCES userMaster (userMasterID)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE unitBooking
+	ADD FOREIGN KEY (cancelledBy)
+	REFERENCES userMaster (userMasterID)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE paymentStatus
+	ADD FOREIGN KEY (updatedBy)
+	REFERENCES userMaster (userMasterID)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE enquiryComment
+	ADD FOREIGN KEY (orgUser)
+	REFERENCES userMaster (userMasterID)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE unitBooking
+	ADD FOREIGN KEY (bookedBy)
+	REFERENCES userMaster (userMasterID)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE paymentMaster
 	ADD FOREIGN KEY (orgUser)
 	REFERENCES userMaster (userMasterID)
 	ON UPDATE RESTRICT
