@@ -36,10 +36,10 @@ INSERT INTO cityMaster (cityMasterID, cityCode, cityName) VALUES ('1', 'BLR', 'B
 INSERT INTO cityMaster (cityMasterID, cityCode, cityName) VALUES ('2', 'PNQ', 'Pune');
 
 -- bankAccountType
-INSERT INTO bankAccountType (bankAccountTypeID, accountTypeCode, accountTypeName) VALUES ('1', 'BLDRACCT', 'Builder Account');
-INSERT INTO bankAccountType (bankAccountTypeID, accountTypeCode, accountTypeName) VALUES ('2', 'TAXACCT', 'Tax Account');
-INSERT INTO bankAccountType (bankAccountTypeID, accountTypeCode, accountTypeName) VALUES ('3', 'LEGACCT', 'Legal Account');
-INSERT INTO bankAccountType (bankAccountTypeID, accountTypeCode, accountTypeName) VALUES ('4', 'SOCACCT', 'Society Account');
+INSERT INTO bankAccountType (bankAccountTypeID, accountTypeCode, accountTypeName) VALUES ('1', 'BLDRAC', 'Builder Account');
+INSERT INTO bankAccountType (bankAccountTypeID, accountTypeCode, accountTypeName) VALUES ('2', 'TAXAC', 'Tax Account');
+INSERT INTO bankAccountType (bankAccountTypeID, accountTypeCode, accountTypeName) VALUES ('3', 'LEGAC', 'Legal Account');
+INSERT INTO bankAccountType (bankAccountTypeID, accountTypeCode, accountTypeName) VALUES ('4', 'SOCAC', 'Society Account');
 
 INSERT INTO contactInfo (contactInfoID, phoneNumber, alternateNumber, mobileNumber, emailID) VALUES ('1', '080-12345678', '', '1234567890', 'arvind@gmail.com');
 
