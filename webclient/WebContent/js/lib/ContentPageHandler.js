@@ -513,6 +513,18 @@ define(
             		  this.pageParams.dialogTtileString = "payment type";
             		  this.pageParams.GridDialog = AddEditCodetableDialog;
             		  break;
+            	  case "unitclassification":
+            		  this.pageParams.dialogDimension.width = window.screen.width*0.40;
+            		  this.pageParams.dialogDimension.height = window.screen.height*0.16;
+            		  this.pageParams.serviceName = "codetable";
+            		  this.pageParams.gridLayout = [
+                    	   								{field: "code",name: "Code",width: "auto"},
+                      	   								{field: "name",name: "Name",width: "auto"}
+                    	   	   			  		   ];
+            		  this.pageParams.dialogTtileField = "name";
+            		  this.pageParams.dialogTtileString = "Unit Classification";
+            		  this.pageParams.GridDialog = AddEditCodetableDialog;
+            		  break;
             	  case "enquiry":
             		  this.pageParams.dialogDimension.width = window.screen.width*0.40;
             		  this.pageParams.dialogDimension.height = window.screen.height*0.50;

@@ -29,6 +29,8 @@ import com.propmgr.dao.Sourcemaster;
 import com.propmgr.dao.SourcemasterDAO;
 import com.propmgr.dao.Statemaster;
 import com.propmgr.dao.StatemasterDAO;
+import com.propmgr.dao.UnitClassificationmasterDAO;
+import com.propmgr.dao.Unitclassificationmaster;
 import com.propmgr.dao.Unittype;
 import com.propmgr.dao.UnittypeDAO;
 import com.propmgr.resource.CodeTableResource;
@@ -651,4 +653,95 @@ public class CodeTableService {
 		}
 	    return Response.ok().build();
 	}
+	
+	
+/** Addition By Abhishek for new code table for unit classifiaction **/
+	
+	@GET
+	@Path("/unitclassification/get/all")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAllUnitClassification() {
+		List<CodeTableResource> result = new ArrayList<CodeTableResource>();
+		UnitClassificationmasterDAO unitClassDAO = new UnitClassificationmasterDAO();
+		
+		List<Unitclassificationmaster> allUnitClassifications = unitClassDAO.findAll(); 
+		for (Unitclassificationmaster unitclassificationmaster : allUnitClassifications) {
+			result.add(new CodeTableResource(unitclassificationmaster.getUnitclassid(), unitclassificationmaster.getUnitclasscode(), unitclassificationmaster.getUnitclassdesc()));
+		}
+		int size = result.size();
+		
+	    return Response.ok(result).header("Content-Range", "items 0-" + (size - 1) + "/" + size).build();
+	}
+	
+	@GET
+	@Path("/unitclassification/get")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getUnitClassification(@QueryParam("rowId") String rowId) {
+		UnitClassificationmasterDAO unitClassDAO = new UnitClassificationmasterDAO();
+		long id = Long.parseLong(rowId);
+		CodeTableResource result = null;
+		
+		Unitclassificationmaster unitclassificationmaster = unitClassDAO.findById(id);
+		if (unitclassificationmaster != null) {
+			result = new CodeTableResource(unitclassificationmaster.getUnitclassid(), unitclassificationmaster.getUnitclasscode(), unitclassificationmaster.getUnitclassdesc());
+		} else {
+			return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
+		}
+
+	    return Response.ok(result).build();
+	}
+	
+	@DELETE
+	@Path("/unitclassification/delete")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response deleteunitClassification(@QueryParam("rowId") String rowId) {		
+		UnitClassificationmasterDAO unitClassDAO = new UnitClassificationmasterDAO();
+		long id = Long.parseLong(rowId);
+		
+		try {
+			Unitclassificationmaster unitclassificationmaster = unitClassDAO.findById(id);
+			if (unitclassificationmaster != null) {
+				unitClassDAO.delete(unitclassificationmaster);
+				unitClassDAO.flushSession();
+			} else {
+				return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
+			}
+		} catch (ConstraintViolationException cve) {
+			logger.error("", cve);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new 
+					ApplicationException("Record could not be deleted as it is being referenced by other data present on system. " + cve.getMessage())).build();
+		} catch (Exception e) {
+			logger.error("", e);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
+		}
+		
+	    return Response.ok().build();
+	}
+	
+	@POST
+	@Path("/unitclassification/post")
+	@Consumes("application/x-www-form-urlencoded")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response modifyunitClassification(@FormParam("rowId") String rowId, @FormParam("code") String code, @FormParam("name") String name) {
+		UnitClassificationmasterDAO unitClassDAO = new UnitClassificationmasterDAO();
+		Unitclassificationmaster unitclassificationmaster = null;
+		try {
+			if (rowId != null && rowId.length() > 0) {
+				unitclassificationmaster = unitClassDAO.findById(Long.parseLong(rowId)); 
+			} else {
+				unitclassificationmaster = new Unitclassificationmaster();
+			}
+			unitclassificationmaster.setUnitclasscode(code);
+			unitclassificationmaster.setUnitclassdesc(name);
+			unitClassDAO.save(unitclassificationmaster);
+			unitClassDAO.flushSession();
+		}
+		catch (Exception e) {
+			logger.error("", e);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
+		}
+	    return Response.ok().build();
+	}
+	
+	/** Addition by Abhishek ends *********/
 }
