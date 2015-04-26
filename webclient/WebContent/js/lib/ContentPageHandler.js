@@ -136,6 +136,8 @@ define(
             		return {style : "width:75%"};
             	} else if (this.page == "project") {
             		return {style : "width:50%"};
+            	} else if (this.page == "payment") {
+            		return {style : "width:45%"};
             	}
             	
             	return {style : "width:32%"};
@@ -252,7 +254,15 @@ define(
     				          ["refresh", "Refresh", "NewPage"],
     				          ["projectbankaccount", "Manage Bank Accounts", "NewPage"]
     				       ];
-              	}
+              	} else if (this.page == "payment") {
+            		return [
+  				          ["new", "New", "NewPage"],
+  				          ["edit", "Edit", "Copy"],
+  				          ["delete", "Delete", "Delete"],
+  				          ["refresh", "Refresh", "NewPage"],
+  				          ["printreceipt", "Print Receipt", "NewPage"]
+  				       ];
+            	}
             	
             	return [
 				          ["new", "New", "NewPage"],

@@ -55,7 +55,7 @@ fieldset legend {
 .printPageSpan { 
 	font-family: arial-body;
 	font-size: 15px; 
-	font-style: n	ormal;
+	font-style: normal;
 }
 
 .printPageSpanSmall { 
@@ -87,4 +87,56 @@ fieldset legend {
 .demandLetterTableCol {
 	border:1px solid black;
 	text-align: center;
+}
+
+.receiptSpanText { 
+	font-family: arial-body;
+	font-size: 20px; 
+	font-style: normal;
+}
+
+.receiptFooterText { 
+	font-family: arial-body;
+	font-size: 16px; 
+	font-style: normal;
+}
+
+.receiptTopDiv {
+	text-align: center;
+	font-family: arial-body;
+	font-size: 40px; 
+	font-style: bold;
+	color: white; 
+	background-color: black; 
+	width:200px;
+	height:40px;
+	border:1px solid #000;"	
+}
+
+.receiptAmountDiv {
+	text-align: center;
+	font-family: arial-body;
+	font-size: 30px; 
+	font-style: bold;
+	color: black; 
+	width:200px;
+	height:40px;
+	border:1px solid #000;"	
+}
+
+.receiptSignDiv {
+	text-align: center;
+	font-family: arial-body;
+	font-size: 40px; 
+	font-style: bold;
+	color: black;  
+	width:250px;
+	height:60px;
+	border:1px solid #000;"	
+}
+
+.logo {
+    height: 100px;
+    width: 200px;
+    text-align: center;
 }

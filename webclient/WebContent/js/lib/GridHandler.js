@@ -391,6 +391,8 @@ define(
     						window.open("printbookingform.jsp?unitbookingId=" + rowData.id);
     					} else if (action[0] == "printdemandletter") {
     						window.open("printdemandletter.jsp?unitbookingId=" + rowData.id);
+    					} else if (action[0] == "printreceipt") {
+    						window.open("printreceipt.jsp?paymentId=" + rowData.id);
     					}
     				}
     			}

@@ -1,5 +1,6 @@
 package com.propmgr.jersey;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
@@ -71,10 +72,12 @@ import com.propmgr.resource.CodeTableResource;
 import com.propmgr.resource.CustomerResource;
 import com.propmgr.resource.EnquiryCommentResource;
 import com.propmgr.resource.EnquiryResource;
+import com.propmgr.resource.NumberToWords;
 import com.propmgr.resource.OrganizationResource;
 import com.propmgr.resource.PaymentResource;
 import com.propmgr.resource.PaymentStateResource;
 import com.propmgr.resource.PrintBookingResource;
+import com.propmgr.resource.PrintReceiptResource;
 import com.propmgr.resource.ProjectBankAccountResource;
 import com.propmgr.resource.ProjectBuildingResource;
 import com.propmgr.resource.ProjectPhaseResource;
@@ -1729,6 +1732,52 @@ public class InventoryService {
 		}
 
 	    return Response.ok(result).build();
+	}
+	
+	@GET
+	@Path("/payment/get/print")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getPaymentForPrint(@QueryParam("rowId") String rowId) {
+		PaymentmasterDAO paymentmasterDAO = new PaymentmasterDAO();
+		UnitbookingDAO unitbookingDAO = new UnitbookingDAO();
+		PaymentResource paymentInformation = null;
+		CustomerResource customer = null;
+		PrintReceiptResource result = null;
+		
+		try {
+				HibernateConnection.getSession().clear();
+				Paymentmaster payment = paymentmasterDAO.findById(Long.parseLong(rowId));
+				if (payment != null) {
+					paymentInformation = ResourceUtil.getPaymentFromDAO(payment);
+					Unitbooking unitbooking = unitbookingDAO.findById(paymentInformation.getUnitbookingId());
+					Unitmaster unit = unitbooking.getUnitmaster();
+					Projectbuilding projectbuilding = unit.getProjectbuilding();
+					ProjectResource project = ResourceUtil.getProjectFromDAO(projectbuilding.getProjectphase().getProjectmaster());
+					Organization org = projectbuilding.getProjectphase().getProjectmaster().getOrganization();
+					
+					String projectName = project.getName();
+					String buildingName = projectbuilding.getBuildingname();
+					String projectAddress = project.getDisplayAddress();
+					
+					Customermaster customerPOJO = unitbooking.getCustomermaster();
+					if (customerPOJO != null) {
+						customer = ResourceUtil.getCustomerFromDAO(customerPOJO);
+					}
+					
+					result = new PrintReceiptResource(ResourceUtil.getOrganizationFromDAO(org), projectName, 
+							buildingName, projectAddress, customer, ResourceUtil.getUnitFromDAO(unit), paymentInformation, 
+							NumberToWords.convertNumberToWords(new BigDecimal(paymentInformation.getReceiptAmount())));
+				} else {
+					return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
+				}
+				HibernateConnection.getSession().clear();
+			
+		} catch (Exception e) {
+			logger.error("", e);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
+		}
+
+		return Response.ok(result).build();
 	}
 	
 	@DELETE
