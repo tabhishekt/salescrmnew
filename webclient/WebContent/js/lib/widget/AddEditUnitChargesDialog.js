@@ -112,7 +112,7 @@ define([
 			tr = domConstruct.create("tr", null, table);
 			td = domConstruct.create("td", {"colspan": 3}, tr);
 			var fieldset = domConstruct.create("fieldset", {"style": "width: 100%;"}, td);
-			var legend = domConstruct.create("legend", {"style": "font-size: 4px"}, fieldset).innerHTML = value;
+			var legend = domConstruct.create("legend", {"style": "font-size: 14px"}, fieldset).innerHTML = value;
 			
 			return fieldset;
 		},
