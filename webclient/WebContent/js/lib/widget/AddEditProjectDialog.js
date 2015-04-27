@@ -3,9 +3,8 @@ define([
     "dijit/registry",
     "lib/widget/AddEditDialog",
     'lib/widget/AddressWidget',
-    'lib/widget/BankAddressWidget',
     "dojo/text!./template/AddEditProjectTemplate.html"
-], function (declare, registry, AddEditDialog, AddressWidget, BankAddressWidget, template) {
+], function (declare, registry, AddEditDialog, AddressWidget, template) {
     return declare([AddEditDialog], {
 		templateString: template,
 		
