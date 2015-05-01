@@ -85,7 +85,7 @@ public class ResourceUtil {
 		ContactInfoResource contactInfo = getContactInfoFromDAO(org.getContactinfo());
 		PersonResource contactPerson = getPersonResourceFromDAO(org.getPerson());
 
-		return new OrganizationResource(org.getOrgid(), org.getOrgname(), 
+		return new OrganizationResource(org.getOrgid(), org.getOrgname(), org.getLogofilename(),
 				contactInfo, address, contactPerson, getDisplayAddressFromAddressResource(address));
 	}
 	
@@ -95,7 +95,7 @@ public class ResourceUtil {
 		
 		return new ProjectResource(project.getProjectid(), 
 				getOrganizationFromDAO(org), org.getOrgname(), project.getProjectname(), 
-				convertClobToString(project.getProjectdescription()), 
+				project.getLogofilename(), convertClobToString(project.getProjectdescription()), 
 				address, project.getTotalphases(), getDisplayAddressFromAddressResource(address),
 				convertClobToString(project.getTermsandconditions()));
 	}

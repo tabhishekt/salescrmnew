@@ -195,6 +195,7 @@ public class InventoryService {
 			} 
 			
 			organization.setOrgname(ResourceUtil.getFormDataValue(formData, "orgname"));
+			organization.setLogofilename(ResourceUtil.getFormDataValue(formData, "logofilename"));
 			
 			ResourceUtil.saveAddress(formData, address);
 			organization.setAddress(address);
@@ -315,6 +316,7 @@ public class InventoryService {
 			project.setAddress(address);
 		
 			project.setProjectname(ResourceUtil.getFormDataValue(formData, "name"));
+			project.setLogofilename(ResourceUtil.getFormDataValue(formData, "logofilename"));
 			project.setProjectdescription(ResourceUtil.getFormDataValueAsClob(formData, "description"));
 			project.setOrganization(organization);
 			project.setTotalphases(ResourceUtil.getFormDataValueAsLong(formData, "totalphases"));
@@ -1754,18 +1756,15 @@ public class InventoryService {
 					Projectbuilding projectbuilding = unit.getProjectbuilding();
 					ProjectResource project = ResourceUtil.getProjectFromDAO(projectbuilding.getProjectphase().getProjectmaster());
 					Organization org = projectbuilding.getProjectphase().getProjectmaster().getOrganization();
-					
-					String projectName = project.getName();
 					String buildingName = projectbuilding.getBuildingname();
-					String projectAddress = project.getDisplayAddress();
 					
 					Customermaster customerPOJO = unitbooking.getCustomermaster();
 					if (customerPOJO != null) {
 						customer = ResourceUtil.getCustomerFromDAO(customerPOJO);
 					}
 					
-					result = new PrintReceiptResource(ResourceUtil.getOrganizationFromDAO(org), projectName, 
-							buildingName, projectAddress, customer, ResourceUtil.getUnitFromDAO(unit), paymentInformation, 
+					result = new PrintReceiptResource(ResourceUtil.getOrganizationFromDAO(org), project, 
+							buildingName, customer, ResourceUtil.getUnitFromDAO(unit), paymentInformation, 
 							NumberToWords.convertNumberToWords(new BigDecimal(paymentInformation.getReceiptAmount())));
 				} else {
 					return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();

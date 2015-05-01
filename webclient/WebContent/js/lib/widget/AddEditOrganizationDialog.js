@@ -14,6 +14,7 @@ define([
 		setData: function (data) {
 			this.rowId.set("value", data.id);
 			this.orgname.set("value", data.name);
+			this.logofilename.set("value", data.logoFileName);
 			
 			this.orgcontactinfo.phone.set("value", data.contactInfo.phoneNumber);
 			this.orgcontactinfo.altphone.set("value", data.contactInfo.alternateNumber);

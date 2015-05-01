@@ -17,12 +17,13 @@
     require(["dojo/_base/lang",
              "dijit/registry",
              "dojo/on",
-             "dojo/request", 
+             "dojo/request",
+             "dojo/dom-construct",
              "dojo/currency",
              "dojo/date/locale",
              "dojo/dom-construct",
 			 "dojo/domReady!"],
-        function(lang, registry, on, request, currency, locale, domConstruct) {
+        function(lang, registry, on, request, domConstruct, currency, locale, domConstruct) {
             load = function () {
             	this.paymentId = this.getQueryVariable("paymentId");
             	var promise = request.get("../rest/json/data/inventory/payment/get/print?rowId=" + this.paymentId, {
@@ -41,6 +42,9 @@
             };
             
             populateData = function(data) {
+            	this.loadLogoFile(this.projectLogo, data.project.name, "../images/" + data.project.logoFileName);
+            	this.loadLogoFile(this.orgLogo, data.organization.name, "../images/" + data.organization.logoFileName);
+            	
             	this.datespan.innerHTML = this.formatDate(data.paymentInformation.receiptDate);
             	this.customername.innerHTML = data.customer.displayName;
             	this.receiptnumber.innerHTML = "No. " + data.paymentInformation.receiptNumber;
@@ -48,18 +52,34 @@
             	this.chequenumber.innerHTML = data.paymentInformation.chequeNumber;
             	this.bankname.innerHTML = data.paymentInformation.bankName;
             	this.bankbranch.innerHTML = data.paymentInformation.bankBranch;
-            	this.chequedate.innerHTML = data.paymentInformation.chequeDate;
-            	this.projectname.innerHTML = data.projectName;
+            	this.chequedate.innerHTML = this.formatDate(data.paymentInformation.chequeDate);
+            	this.projectname.innerHTML = data.project.name;
             	this.unitnumber.innerHTML = data.unit.unitNumber;
             	this.buildingname.innerHTML = data.buildingName;
             	this.floornumber.innerHTML = data.unit.floorNumber + " floor";
-            	this.projectaddress.innerHTML = data.projectAddress;
+            	this.projectaddress.innerHTML = data.project.displayAddress;
             	this.receiptamount.innerHTML = this.formatCurrency(data.paymentInformation.receiptAmount);
             	this.orgname.innerHTML = data.organization.name;
             	this.orgaddress.innerHTML = data.organization.displayAddress;
-            	this.orgphone.innerHTML = data.organization.contactInfo.phoneNumber + ", ";
-            	this.orgmobile.innerHTML = data.organization.contactInfo.mobileNumber + ", ";
-            	this.orgemailid.innerHTML = data.organization.contactInfo.emailID;
+            	this.orgcontact.innerHTML = data.organization.contactInfo.phoneNumber
+            								+ ", " + data.organization.contactInfo.mobileNumber
+            								+ ", " + data.organization.contactInfo.emailID;
+            };
+            
+            loadLogoFile = function (node, name, url) {
+            	var promise = request.get(url, {
+       				timeout: 2000,
+       				handleAs: "image"
+       			});
+       			
+       			promise.response.then(
+       				function(response) {
+       					domConstruct.create("img", {"class":"logo", "src": url, "alt": name}, node);
+       				},
+       				function(error) {
+       					domConstruct.create("span", {"class":"logoAltText"}, node).innerHTML = name;
+       				}
+       			);
             };
             
     		formatDate = function (value) {
@@ -97,22 +117,22 @@
 <body class="claro"  onload="this.load()">
 <div class="containerDiv">
 	<div id="headerDiv">
-		<table width="90%" align="center">
-			<tr><td><img class="logo" src="../images/ostia_logo.png" alt="Ostia"></td>
-			<td><div class="receiptTopDiv">RECEIPT</div></td>
-			<td><img class="logo" src="../images/drg_logo.png" alt="DRG Landmarks"></td></tr>
+		<table width="100%" align="center">
+			<tr><td align="center" width="40%"><div id="projectLogo" data-dojo-attach-point="projectLogo"></div></td>
+			<td align="center" width="20%"><div class="receiptTopDiv">RECEIPT</div></td>
+			<td align="center" width="40%"><div id="orgLogo" data-dojo-attach-point="orgLogo"></div></td></tr>
 		</table>
 	</div>
 	<br><br>
 	<div class="receiptSpanText" id="receiptDiv1">
-		<table width="90%" align="center">
+		<table width="95%" align="center">
 			<tr><td><span>Received with thank from Mr./Mrs.:</span></td>
 			<td><span id="datespan" data-dojo-attach-point="datespan"></span></td></tr>
 			<tr><td><span style="text-decoration: underline;" id="customername" data-dojo-attach-point="customername"></span></td>
 			<td><span id="receiptnumber" data-dojo-attach-point="receiptnumber"></span></td></tr>
 		</table>
 		<br>
-		<table width="90%" align="center"><tr><td>
+		<table width="95%" align="center"><tr><td>
 			<span>The sum of </span><span style="text-decoration: underline;" id="amountinwords" data-dojo-attach-point="amountinwords"></span>
 		</td></tr>
 		<tr><td>
@@ -135,12 +155,12 @@
 	</div>
 	<br><br>
 	<div class="receiptSpanText" id="receiptDiv2">
-		<table width="90%" align="center"><tr>
+		<table width="100%" align="center"><tr>
 			<td>
 				<table>
 					<tr><td><div class="receiptAmountDiv"><span id="receiptamount" data-dojo-attach-point="receiptamount"></span></div></td></tr>
-					<tr><td>
-						<ul class="list-horizontal">
+					<tr><td class="receiptListText">
+						<ul>
     						<li>Pune Jurisdiction</li>
     						<li>Subject to realisation of cheque/s</li>
   						</ul>
@@ -148,7 +168,7 @@
 				</table>
 			</td>
 			<td>
-				<table>
+				<table align="right">
 					<tr><td><span>Signature</span></td></tr>
 					<tr><td><div class="receiptSignDiv"></div></td></tr>
 					<tr><td><span id="orgname" data-dojo-attach-point="orgname"></span></td></tr>
@@ -160,9 +180,7 @@
 		<table style="width: 100%;">
 			<tr><td colspan="3"><span id="orgaddress" data-dojo-attach-point="orgaddress"></span></td></tr>
 			<tr>
-				<td><span id="orgphone" data-dojo-attach-point="orgphone"></span></td>
-				<td><span id="orgmobile" data-dojo-attach-point="orgmobile"></span></td>
-				<td><span id="orgemailid" data-dojo-attach-point="orgemailid"></span></td>
+				<td><span id="orgcontact" data-dojo-attach-point="orgcontact"></span></td>
 			</tr>
 		</table>
 	</div>

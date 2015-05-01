@@ -5,6 +5,7 @@ public class ProjectResource {
 	private OrganizationResource organization;
 	private String orgName;
 	private String name;
+	private String logoFileName;
 	private String description;
 	private AddressResource address;
 	private long totalPhases;
@@ -12,7 +13,7 @@ public class ProjectResource {
 	private String termsAndConditions;
 	
 	public ProjectResource(long id, OrganizationResource organization,
-			String orgName, String name, String description,
+			String orgName, String name, String logoFileName, String description,
 			AddressResource address, long totalPhases, String displayAddress, 
 			String termsAndConditions) {
 		super();
@@ -20,6 +21,7 @@ public class ProjectResource {
 		this.organization = organization;
 		this.orgName = orgName;
 		this.name = name;
+		this.logoFileName = logoFileName;
 		this.description = description;
 		this.address = address;
 		this.totalPhases = totalPhases;
@@ -41,6 +43,10 @@ public class ProjectResource {
 
 	public String getName() {
 		return name;
+	}
+	
+	public String getLogoFileName() {
+		return logoFileName;
 	}
 
 	public String getDescription() {

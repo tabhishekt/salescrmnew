@@ -11,6 +11,7 @@ define([
 		setData: function (data) {
 			this.rowId.set("value", data.id);
 			this.name.set("value", data.name);
+			this.logofilename.set("value", data.logoFileName);
 			this.description.set("value", data.description);
 			this.totalphases.set("value", data.totalPhases);
 			this.organization.set("item", data.organization);

@@ -135,8 +135,19 @@ fieldset legend {
 	border:1px solid #000;"	
 }
 
+.receiptListText {
+	font-size: 14px;
+}
+
 .logo {
     height: 100px;
     width: 200px;
     text-align: center;
+}
+
+.logoAltText {
+    font-family: arial-body;
+	font-size: 30px; 
+	font-style: bold;
+	color: black;  
 }

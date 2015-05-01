@@ -275,13 +275,13 @@ define(
             getPageLegendTitle : function () {
             	var pageLegendTitle = (this.mode && this.mode == "select") ? "Select " : "Manage ";
             	pageLegendTitle += (this.pageParams.dialogTtileString) ? this.pageParams.dialogTtileString : this.page;
-            	if (this.unitInfo != "undefined") {
+            	if (this.unitInfo != undefined && this.unitInfo != "undefined") {
             		pageLegendTitle += " for unit \"" + unitInfo + "\"";
-            	} else if (this.customerName != "undefined") {
+            	} else if (this.customerName != undefined && this.customerName != "undefined") {
             		pageLegendTitle += " for customer \"" + customerName + "\"";
-            	} else if (this.buildingName != "undefined") {
+            	} else if (this.buildingName != undefined && this.buildingName != "undefined") {
             		pageLegendTitle += " for building \"" + buildingName + "\"";
-            	} else if (this.projectName != "undefined") {
+            	} else if (this.projectName != undefined && this.projectName != "undefined") {
             		pageLegendTitle += " for project \"" + projectName + "\"";
             	}
             	
@@ -314,7 +314,7 @@ define(
             		  break;
             	  case "project": 
             		  this.pageParams.dialogDimension.width = window.screen.width*0.50;
-            		  this.pageParams.dialogDimension.height = window.screen.height*0.70;
+            		  this.pageParams.dialogDimension.height = window.screen.height;
             		  this.pageParams.serviceName = "inventory";
             		  this.pageParams.gridLayout = [
                     	   							{field: "name",name: "Name",width: "auto"},
