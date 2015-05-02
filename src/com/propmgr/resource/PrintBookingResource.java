@@ -15,6 +15,9 @@ public class PrintBookingResource {
 	private double totalDueForCurrentStatus;
 	private double balancePaymentForCurrentStatus;
 	private OrganizationResource organization;
+	private String projectName;
+	private String projectPhaseName;
+	private String projectBuildingName;
 	private String displayProjectInfo;
 	private CustomerResource customer;
 	private UnitResource unit;
@@ -31,8 +34,8 @@ public class PrintBookingResource {
 	public PrintBookingResource(long id, long bookingFormNumber, String userDisplayName, String currentDate, 
 			String bookingDate, CodeTableResource buildingCurrentStatus, double totalDueForCurrentStatus,
 			double balancePaymentForCurrentStatus, OrganizationResource organization, String displayProjectInfo,
-			CustomerResource customer, UnitResource unit, double discount, double deductionOnOtherCharges,
-			String comment, UnitPriceDetailResource priceDetails,
+			String projectName, String projectPhaseName, String projectBuildingName, CustomerResource customer, UnitResource unit, 
+			double discount, double deductionOnOtherCharges, String comment, UnitPriceDetailResource priceDetails,
 			List<PaymentResource> paymentList, double totalPaymentReceived,
 			Map<String, String> projectBankAccounts, String termsAndConditions,
 			Set<UnitPaymentScheduleResource> scheduleList) {
@@ -47,6 +50,9 @@ public class PrintBookingResource {
 		this.balancePaymentForCurrentStatus = balancePaymentForCurrentStatus;
 		this.organization = organization;
 		this.displayProjectInfo = displayProjectInfo;
+		this.projectName = projectName;
+		this.projectPhaseName = projectPhaseName;
+		this.projectBuildingName = projectBuildingName;
 		this.customer = customer;
 		this.unit = unit;
 		this.discount = discount;
@@ -100,6 +106,18 @@ public class PrintBookingResource {
 		return displayProjectInfo;
 	}
 	
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public String getProjectPhaseName() {
+		return projectPhaseName;
+	}
+
+	public String getProjectBuildingName() {
+		return projectBuildingName;
+	}
+
 	public CustomerResource getCustomer() {
 		return customer;
 	}

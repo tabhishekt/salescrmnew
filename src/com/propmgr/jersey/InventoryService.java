@@ -1493,6 +1493,7 @@ public class InventoryService {
 					result = new PrintBookingResource(unitbooking.getUnitbookingid(), unitbooking.getBookingformnumber(), 
 							ResourceUtil.getUserDisplayName(user), currentDate, ResourceUtil.convertDateToString(unitbooking.getBookingdate()), 
 							buildingCurrentStatus, totalDueForCurrentStatus, balancePaymentForCurrentStatus, ResourceUtil.getOrganizationFromDAO(org), displayProjectInfo,
+							project.getProjectname(), projectbuilding.getProjectphase().getProjectphasename(), projectbuilding.getBuildingname(),
 							customer, ResourceUtil.getUnitFromDAO(unit), bookingDiscount, deductionOnOtherCharges,
 							ResourceUtil.convertClobToString(unitbooking.getBookingcomment()), priceWithDiscount, paymentList, totalPaymentReceived, 
 							projectBankAccounts, termsAndConditions, scheduleList);

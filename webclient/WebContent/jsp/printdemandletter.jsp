@@ -102,15 +102,15 @@
 </head>
 <body class="claro"  onload="this.load()">
 <div class="containerDiv">
-	<div class="printPageSpan" id="headerDiv">
+	<div class="printDemandLetterText" id="headerDiv">
 		<table>
 			<tr><td><span id="datespan" data-dojo-attach-point="datespan"></span></td></tr>
 			<tr><td><span>Dear Mr/Mrs</span></td><td><span id="customername" data-dojo-attach-point="customername"></span></td></tr>
 		</table>
 		<br>
-		<span class="printPageSpan">Sub: Outstanding Payment request</span><br><br>
-		<span class="printPageSpan">Dear Sir/Madam</span><br>
-		<span class="printPageSpan">Request your kind attention towards payments for your purchase of Flat at </span>
+		<span class="printDemandLetterText">Sub: Outstanding Payment request</span><br><br>
+		<span class="printDemandLetterText">Dear Sir/Madam</span><br>
+		<span class="printDemandLetterText">Request your kind attention towards payments for your purchase of Flat at </span>
 		<span id="displayprojectinfo" data-dojo-attach-point="displayprojectinfo"></span>
 	</div>
 	<br><br>
@@ -141,11 +141,11 @@
 				<td class="demandLetterTableCol"><span id="totaloutstanding" data-dojo-attach-point="totaloutstanding"></span></td>
 			</tr>
 		</table><br>
-		<span class="printPageSpan">We hereby request you to send Cheque/DD/NEFT/RTGS/Cash to following bank account</span><br>
-		<span class="printPageSpanSmall" id="builderaccountinformation" data-dojo-attach-point="builderaccountinformation"></span>
+		<span class="printDemandLetterText">We hereby request you to send Cheque/DD/NEFT/RTGS/Cash to following bank account</span><br>
+		<span class="rintDemandLetterTextSmall" id="builderaccountinformation" data-dojo-attach-point="builderaccountinformation"></span>
 	</div><br>
 	<div id="demandDiv2">
-		<table class="demandLetterTable printPageSpan">
+		<table class="demandLetterTable printDemandLetterText">
 			<tr>
 				<td class="demandLetterTableColLabel"><span>Service Tax</span></td>
 				<td class="demandLetterTableCol"><span id=servicetax data-dojo-attach-point="servicetax"></span></td>
@@ -157,11 +157,11 @@
 				<td class="demandLetterTableCol"><span id="valueaddedtaxpercent" data-dojo-attach-point="valueaddedtaxpercent"></span></td>
 			</tr>
 		</table><br>
-		<span class="printPageSpan">We hereby request you to send Cheque/DD/NEFT/RTGS/Cash to following bank account</span><br>
-		<span class="printPageSpanSmall" id="taxaccountinformation" data-dojo-attach-point="taxaccountinformation"></span>
+		<span class="printDemandLetterText">We hereby request you to send Cheque/DD/NEFT/RTGS/Cash to following bank account</span><br>
+		<span class="rintDemandLetterTextSmall" id="taxaccountinformation" data-dojo-attach-point="taxaccountinformation"></span>
 	</div><br>
 	<div id="demandDiv3">
-		<table class="demandLetterTable printPageSpan">
+		<table class="demandLetterTable printDemandLetterText">
 			<tr>
 				<td class="demandLetterTableColLabel"><span>Ready Reckoner Rate per sq.ft</span></td>
 				<td class="demandLetterTableCol"><span id="baserate" data-dojo-attach-point="baserate"></span></td>
@@ -183,10 +183,10 @@
 				<td class="demandLetterTableCol"><span id="totaltaxcharges" data-dojo-attach-point="totaltaxcharges"></span></td>
 			</tr>
 		</table><br>
-		<span class="printPageSpan">We hereby request you to send Cheque/DD/NEFT/RTGS/Cash to following bank account</span><br>
-		<span class="printPageSpanSmall" id="legalaccountinformation" data-dojo-attach-point="legalaccountinformation"></span>
+		<span class="printDemandLetterText">We hereby request you to send Cheque/DD/NEFT/RTGS/Cash to following bank account</span><br>
+		<span class="rintDemandLetterTextSmall" id="legalaccountinformation" data-dojo-attach-point="legalaccountinformation"></span>
 	</div><br>
-	<div  class="printPageSpan" id="footerDiv">
+	<div  class="printDemandLetterText" id="footerDiv">
 		<span>You are requested to arrange the payments within seven days of this letter otherwise interest at the rate of 24% will be applicable thereafter.</span><br>
 		<span>Thanking you</span>
 		<br><br><br><br>

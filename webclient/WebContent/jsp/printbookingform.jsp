@@ -45,16 +45,19 @@
             populateFormData = function(data) {
             	this.orgname.innerHTML = data.organization.name;
             	this.orgaddress.innerHTML = data.organization.displayAddress;
-            	this.orgphone.innerHTML = data.organization.contactInfo.phoneNumber + ", ";
-            	this.orgmobile.innerHTML = data.organization.contactInfo.mobileNumber + ", ";
-            	this.orgemailid.innerHTML = data.organization.contactInfo.emailID;
+            	this.orgcontact.innerHTML = data.organization.contactInfo.phoneNumber
+						+ ", " + data.organization.contactInfo.mobileNumber
+						+ ", " + data.organization.contactInfo.emailID;
             	
             	this.bookingformnumber.innerHTML = data.bookingFormNumber;
             	this.user.innerHTML = data.userDisplayName;
             	this.bookingdate.innerHTML = this.formatDate(data.bookingDate);
             	
-            	this.customername.innerHTML = data.customer.displayName;
-            	this.customerdob.innerHTML = data.customer.person.dateOfBirth;
+            	var customerDisplayName = data.customer.displayName.split(" ");
+            	this.firstname.innerHTML = customerDisplayName[0];
+            	this.middlename.innerHTML = customerDisplayName[1];
+            	this.lastname.innerHTML = customerDisplayName[2];
+            	this.customerdob.innerHTML = this.formatDate(data.customer.person.dateOfBirth);
             	this.customerage.innerHTML = this.getAgerFromDOB(data.customer.person.dateOfBirth);
             	this.customeraddress.innerHTML = data.customer.displayAddress;
             	this.customerprofession.innerHTML = data.customer.person.profession;
@@ -77,30 +80,42 @@
             		this.customeremailid.innerHTML = "Not available";
             	}
             	
-            	
-            	this.projectbuilding.innerHTML = data.unit.displayProjectInfo;
+            	this.project.innerHTML = data.projectName;
+            	this.projectphase.innerHTML = data.projectPhaseName;
+            	this.projectbuilding.innerHTML = data.projectBuildingName;
             	this.saleablearea.innerHTML = data.unit.saleableArea;
             	this.baserate.innerHTML = this.formatCurrency(data.priceDetails.baserate);
             	this.discount.innerHTML = this.formatCurrency(data.priceDetails.discount);
-            	this.amenitiesfacing.innerHTML = data.unit.amenitiesFacing;
             	this.unitnumber.innerHTML = data.unit.unitNumber;
+            	if (data.unit.floorRise > 0) {
+            		this.floorrisebool.innerHTML = "Yes" 
+            	} else {
+            		this.floorrisebool.innerHTML = "No"
+            	}
             	this.floorrise.innerHTML = this.formatCurrency(data.unit.floorRise);
             	this.unittype.innerHTML = data.unit.unitType.name;
             	this.floortype.innerHTML = data.unit.floorType.name;
-            	this.otheroptions.innerHTML = data.unit.otherOptions;
+            	if (data.unit.otherOptions) {
+            		this.otheroptions.innerHTML = "Yes";
+            	} else {
+            		this.otheroptions.innerHTML = "No";	
+            	}
             	this.floornumber.innerHTML = data.unit.floorNumber;
             	this.totalrate.innerHTML = this.formatCurrency(data.priceDetails.totalrate);
+            	this.infracharges.innerHTML = this.formatCurrency(data.unit.otherCharges);
             	
             	this.basiccost.innerHTML = this.formatCurrency(data.priceDetails.basicCost);
             	this.totaltax.innerHTML = this.formatCurrency(data.priceDetails.totalTax);
-            	this.maintenance1.innerHTML = this.formatCurrency(data.priceDetails.maintenancecharge1);
-            	this.othercharges.innerHTML = this.formatCurrency(data.priceDetails.othercharges);
+            	this.maintenance1.innerHTML = this.formatCurrency(data.unit.unitPricePolicy.maintenancecharge1);
+            	this.maintenance1amt.innerHTML = this.formatCurrency(data.priceDetails.maintenancecharge1);
+            	this.othercharges.innerHTML = this.formatCurrency(data.unit.otherCharges);
             	this.legalcharges.innerHTML = this.formatCurrency(data.priceDetails.legalcharge);
-            	this.maintenance2.innerHTML = this.formatCurrency(data.priceDetails.maintenancecharge2);
+            	this.maintenance2.innerHTML = this.formatCurrency(data.unit.unitPricePolicy.maintenancecharge2);
+            	this.maintenance2amt.innerHTML = this.formatCurrency(data.priceDetails.maintenancecharge2);
             	this.agreementvalue.innerHTML = this.formatCurrency(data.priceDetails.agreementvalue);
             	this.totalwithtax.innerHTML = this.formatCurrency(data.priceDetails.totalCostWithTax);
             	this.totalcost.innerHTML = this.formatCurrency(data.priceDetails.totalCost);
-            	this.bankdetails.innerHTML = data.displayBankInformation;
+            	this.builderaccountinformation.innerHTML = data.projectBankAccounts["BLDRAC"];
             	
             	this.stampdutypercent.innerHTML = data.unit.unitPricePolicy.stampduty + "%";
             	this.stampduty.innerHTML = this.formatCurrency(data.priceDetails.stampduty);
@@ -113,8 +128,31 @@
             	this.sumtaxpercent.innerHTML = data.unit.unitPricePolicy.totaltax + "%";
             	this.sumtax.innerHTML = this.formatCurrency(data.priceDetails.totalTax);
             	
+            	this.basiccostrr.innerHTML = this.formatCurrency(data.priceDetails.basicCost);
+            	this.totaltaxrr.innerHTML = this.formatCurrency(data.priceDetails.totalTax);
+            	this.maintenance1rr.innerHTML = this.formatCurrency(data.unit.unitPricePolicy.maintenancecharge1);
+            	this.maintenance1amtrr.innerHTML = this.formatCurrency(data.priceDetails.maintenancecharge1);
+            	this.otherchargesrr.innerHTML = this.formatCurrency(data.unit.otherCharges);
+            	this.legalchargesrr.innerHTML = this.formatCurrency(data.priceDetails.legalcharge);
+            	this.maintenance2rr.innerHTML = this.formatCurrency(data.unit.unitPricePolicy.maintenancecharge2);
+            	this.maintenance2amtrr.innerHTML = this.formatCurrency(data.priceDetails.maintenancecharge2);
+            	this.agreementvaluerr.innerHTML = this.formatCurrency(data.priceDetails.agreementvalue);
+            	this.totalwithtaxrr.innerHTML = this.formatCurrency(data.priceDetails.totalCostWithTax);
+            	this.totalcostrr.innerHTML = this.formatCurrency(data.priceDetails.totalCost);
+            	this.builderaccountinformationrr.innerHTML = data.projectBankAccounts["BLDRAC"];
+            	
+            	this.stampdutypercentrr.innerHTML = data.unit.unitPricePolicy.stampduty + "%";
+            	this.stampdutyrr.innerHTML = this.formatCurrency(data.priceDetails.stampduty);
+            	this.valueaddedtaxpercentrr.innerHTML = data.unit.unitPricePolicy.valueaddedtax + "%";
+            	this.valueaddedtaxrr.innerHTML = this.formatCurrency(data.priceDetails.valueaddedtax);
+            	this.servicetaxpercentrr.innerHTML = data.unit.unitPricePolicy.servicetax + "%";
+            	this.servicetaxrr.innerHTML = this.formatCurrency(data.priceDetails.servicetax);
+            	this.registrationpercentrr.innerHTML = data.unit.unitPricePolicy.registrationcharge + "%";
+            	this.registrationrr.innerHTML = this.formatCurrency(data.priceDetails.registrationcharge);
+            	this.sumtaxpercentrr.innerHTML = data.unit.unitPricePolicy.totaltax + "%";
+            	this.sumtaxrr.innerHTML = this.formatCurrency(data.priceDetails.totalTax);
+            	
             	this.termsandconditions.innerHTML = data.termsAndConditions;
-            	this.totalpaymentreceived.innerHTML = this.formatCurrency(data.totalPaymentReceived);
             };
             
             populatePaymentSchedule = function(data) {
@@ -124,41 +162,59 @@
             		return;
             	}
             	var tr, th1, th2, th3, th4, td1, td2, td3, td4;
-				var table = domConstruct.create("table", {"style": "width:100%"}, this.paymentScheduleDiv);
+				var table = domConstruct.create("table", {"style": "width:100%", "class": "printPageTableBorder"}, this.paymentScheduleDiv);
 				tr = domConstruct.create("tr", null, table);
-				th1 = domConstruct.create("th", null, tr);
-				this.createSpan(th1, "Type");
-				th2 = domConstruct.create("th", null, tr);
-				this.createSpan(th2, "Percent Amount");
-				th3 = domConstruct.create("th", null, tr);
-				this.createSpan(th3, "Date");
-				th4 = domConstruct.create("th", null, tr);
+				th1 = domConstruct.create("th", {"width":"30%"}, tr);
+				this.createSpan(th1, "Description");
+				th2 = domConstruct.create("th", {"width":"10%"}, tr);
+				this.createSpan(th2, " ");
+				th3 = domConstruct.create("th", {"width":"20%"}, tr);
+				this.createSpan(th3, "Due Date");
+				th4 = domConstruct.create("th", {"width":"30%"}, tr);
 				this.createSpan(th4, "Amount");
+				th5 = domConstruct.create("th", {"width":"10%"}, tr);
+				this.createSpan(th5, "Floor Rise");
 					
+				tr = domConstruct.create("tr", {"bgcolor": "#999900"}, table);
+				td1 = domConstruct.create("td", {"align": "left"}, tr);
+				td2 = domConstruct.create("td", {"align": "center"}, tr);
+				td3 = domConstruct.create("td", {"align": "right"}, tr);
+				td4 = domConstruct.create("td", {"align": "right"}, tr);
+				td5 = domConstruct.create("td", {"align": "left"}, tr);
+				
+				this.createSpan(td1, "Agreement Value");
+				this.createSpan(td2, " ");
+				this.createSpan(td3, " ");
+				this.createSpan(td4, this.formatCurrency(data.priceDetails.agreementvalue));
+				this.createSpan(td5, " ");
+				
+				tr = domConstruct.create("tr", {"bgcolor": "#999900"}, table);
+				td1 = domConstruct.create("td", {"align": "left"}, tr);
+				td2 = domConstruct.create("td", {"align": "center"}, tr);
+				td3 = domConstruct.create("td", {"align": "right"}, tr);
+				td4 = domConstruct.create("td", {"align": "right"}, tr);
+				td5 = domConstruct.create("td", {"align": "left"}, tr);
+				
+				this.createSpan(td1, "Booking Amount");
+				this.createSpan(td2, " ");
+				this.createSpan(td3, " ");
+				this.createSpan(td4, this.formatCurrency(data.unit.bookingAmount));
+				this.createSpan(td5, " ");
+				
+				tr = domConstruct.create("tr", {"bgcolor": "#999900"}, table);
+				td1 = domConstruct.create("td", {"align": "left"}, tr);
+				td2 = domConstruct.create("td", {"align": "center"}, tr);
+				td3 = domConstruct.create("td", {"align": "right"}, tr);
+				td4 = domConstruct.create("td", {"align": "right"}, tr);
+				td5 = domConstruct.create("td", {"align": "left"}, tr);
+				
+				this.createSpan(td1, "Total Taxes and Legal");
+				this.createSpan(td2, " ");
+				this.createSpan(td3, " ");
+				this.createSpan(td4, this.formatCurrency(data.priceDetails.totalTax));
+				this.createSpan(td5, " ");
+				
 				for (var i=0; i<data.scheduleList.length; i++) {
-					if (i == 0) {
-						tr = domConstruct.create("tr", {"bgcolor": "#999900"}, table);
-						td1 = domConstruct.create("td", null, tr);
-						td2 = domConstruct.create("td", null, tr);
-						td3 = domConstruct.create("td", null, tr);
-						td4 = domConstruct.create("td", null, tr);
-						
-						this.createSpan(td1, "Booking");
-						this.createSpan(td2, "Not available");
-						this.createSpan(td3, "Not available");
-						this.createSpan(td4, this.formatCurrency(data.unit.bookingAmount));
-					} else if (i == 2) {
-						tr = domConstruct.create("tr", {"bgcolor": "#999900"}, table);
-						td1 = domConstruct.create("td", null, tr);
-						td2 = domConstruct.create("td", null, tr);
-						td3 = domConstruct.create("td", null, tr);
-						td4 = domConstruct.create("td", null, tr);
-						
-						this.createSpan(td1, "Total taxes");
-						this.createSpan(td2, "Not available");
-						this.createSpan(td3, "Not available");
-						this.createSpan(td4, this.formatCurrency(data.priceDetails.totalTax));
-					}
 					var schedule = data.scheduleList[i];
 					if (schedule.position <= currentPosition) {
 						tr = domConstruct.create("tr", {"bgcolor": "#009900"}, table);	
@@ -167,16 +223,31 @@
 					}
 					
 					
-					td1 = domConstruct.create("td", null, tr);
-					td2 = domConstruct.create("td", null, tr);
-					td3 = domConstruct.create("td", null, tr);
-					td4 = domConstruct.create("td", null, tr);
+					td1 = domConstruct.create("td", {"align": "left"}, tr);
+					td2 = domConstruct.create("td", {"align": "center"}, tr);
+					td3 = domConstruct.create("td", {"align": "right"}, tr);
+					td4 = domConstruct.create("td", {"align": "right"}, tr);
+					td5 = domConstruct.create("td", {"align": "left"}, tr);
 					
 					this.createSpan(td1, schedule.type);
-					this.createSpan(td2, schedule.percentamount);
+					this.createSpan(td2, schedule.percentamount + "%");
 					this.createSpan(td3, this.formatDate(schedule.scheduledate));
 					this.createSpan(td4, this.formatCurrency(schedule.amount));
+					this.createSpan(td5, " ");
 				}
+				
+				tr = domConstruct.create("tr", {"bgcolor": "#999900"}, table);
+				td1 = domConstruct.create("td", {"align": "left"}, tr);
+				td2 = domConstruct.create("td", {"align": "center"}, tr);
+				td3 = domConstruct.create("td", {"align": "right"}, tr);
+				td4 = domConstruct.create("td", {"align": "right"}, tr);
+				td5 = domConstruct.create("td", {"align": "left"}, tr);
+				
+				this.createSpan(td1, "Total");
+				this.createSpan(td2, "100%");
+				this.createSpan(td3, " ");
+				this.createSpan(td4, this.formatCurrency(data.priceDetails.agreementvalue));
+				this.createSpan(td5, " ");
             };
             
             populatePaymentDetails = function(data) {
@@ -185,7 +256,7 @@
             		return;
             	}
             	var tr, th1, th2, th3, th4, th5, th6, th7, th8, th9, td1, td2, td3, td4, td5, td6, td7, td8, td9;
-				var table = domConstruct.create("table", {"style": "width:100%"}, this.paymentDetailsDiv);
+				var table = domConstruct.create("table", {"style": "width:100%", "class": "printPageTableBorder"}, this.paymentDiv);
 				tr = domConstruct.create("tr", null, table);
 				th1 = domConstruct.create("th", null, tr);
 				this.createSpan(th1, "Bank Name");
@@ -285,171 +356,330 @@
 </script>
 </head>
 <body class="claro"  onload="this.load()">
-<div>	
-	<table><tr>
-			<td width="50%"><table>
-				<tr><td><div id="orgDetailsDiv">
-					<table style="width: 100%;">
-					<tr><td colspan="3"><span id="orgname" data-dojo-attach-point="orgname"></span></td></tr>
-					<tr><td colspan="3"><span id="orgaddress" data-dojo-attach-point="orgaddress"></span></td></tr>
-					<tr><td><span id="orgphone" data-dojo-attach-point="orgphone"></span></td>
-					<td><span id="orgmobile" data-dojo-attach-point="orgmobile"></span></td>
-					<td><span id="orgemailid" data-dojo-attach-point="orgemailid"></span></td></tr>
-					</table>
-				</div></td></tr>
-				<tr><td>
-					<fieldset style="width: 98%;">
-	 					<legend>Booking Form:</legend>
-							<div id="bookingDetailsDiv">
-								<table style="width: 100%;">
-								<tr><td><label for="bookingformnumber">Sr. No.:</label></td><td><span id="bookingformnumber" data-dojo-attach-point="bookingformnumber"></span></td>
-								<td><label for="bookingdate">Booking Date:</label></td><td><span id="bookingdate" data-dojo-attach-point="bookingdate"></span></td></tr>
-								<tr><td><label for="user">Sales Executive:</label></td><td colspan="3"><span id="user" data-dojo-attach-point="user"></span></td></tr>
-								</table>
-							</div>
-					</fieldset>
-				</td></tr>
-				<tr><td>
-					<fieldset style="width: 98%;">
-	 					<legend>Personal Details:</legend>
-						<div id="customerDetailsDiv">
-							<table style="width: 100%;">
-							<tr><td><label for="customername">Customer Name:</label></td><td><span id="customername" data-dojo-attach-point="customername"></span></td></tr>
-							<tr><td><label for="customerdob">Date Of Birth:</label></td><td><span id="customerdob" data-dojo-attach-point="customerdob"></span></td>
-							<td><label for="customerage">Age:</label></td><td><span id="customerage" data-dojo-attach-point="customerage"></span></td></tr>
-							<tr><td><label for="customerprofession">Profession:</label></td><td><span id="customerprofession" data-dojo-attach-point="customerprofession"></span></td>
-							<td><label for="customerotherdetails">Details:</label></td><td><span id="customerotherdetails" data-dojo-attach-point="customerotherdetails"></span></td></tr>
-							<tr><td><label for="customerphone">Phone:</label></td><td><span id="customerphone" data-dojo-attach-point="customerphone"></span></td>
-							<td><label for="customermobile">Mobile:</label></td><td><span id="customermobile" data-dojo-attach-point="customermobile"></span></td></tr>
-							<tr><td><label for="customeremailid">Email Id:</label></td><td colspan="3"><span id="customeremailid" data-dojo-attach-point="customeremailid"></span></td></tr>
-							<tr><td><label for="customeraddress">Address:</label></td><td colspan="5"><span id="customeraddress" data-dojo-attach-point="customeraddress"></span></td></tr>
-							</table>
-						</div>
-					</fieldset>
-				</td></tr>
-				<tr><td>
-					<fieldset style="width: 98%;">
-	 					<legend>Flat Details:</legend>
-						<div id="unitDetailsDiv">
-							<table style="width: 100%;">
-							<tr><td><label for="projectbuilding">Project:</label></td><td colspan="5"><span id="projectbuilding" data-dojo-attach-point="projectbuilding"></span></td></tr>
-							<tr><td><label for="unitnumber">Flat Number.:</label></td><td><span id="unitnumber" data-dojo-attach-point="unitnumber"></span></td>
-							<td><label for="floornumber">Floor Number:</label></td><td><span id="floornumber" data-dojo-attach-point="floornumber"></span></td></tr>
-							<tr><td><label for="saleablearea">Saleable Area:</label></td><td><span id="saleablearea" data-dojo-attach-point="saleablearea"></span></td>
-							<td><label for="baserate">Base Rate:</label></td><td><span id="baserate" data-dojo-attach-point="baserate"></span></td></tr>
-							<tr><td><label for="floorrise">Floor Rise:</label></td><td><span id="floorrise" data-dojo-attach-point="floorrise"></span></td>
-							<td><label for="discount">Discount:</label></td><td><span id="discount" data-dojo-attach-point="discount"></span></td></tr><tr>
-							<tr><td><label for="unittype">Flat Type:</label></td><td><span id="unittype" data-dojo-attach-point="unittype"></span></td>
-							<td><label for="floortype">Floor Type:</label></td><td><span id="floortype" data-dojo-attach-point="floortype"></span></td></tr>
-							<tr><td><label for="amenitiesfacing">Amenities Facing:</label></td><td><span id="amenitiesfacing" data-dojo-attach-point="amenitiesfacing"></span></td>
-							<td><label for="otheroptions">Other Options:</label></td><td><span id="otheroptions" data-dojo-attach-point="otheroptions"></span></td></tr>
-							<tr><td><label for="totalrate">Total Rate:</label></td><td><span id="totalrate" data-dojo-attach-point="totalrate"></span></td></tr>
-							</table>
-						</div>
-					</fieldset>
-				</td></tr>
-				<tr><td>
-					<fieldset style="width: 98%;">
-	 					<legend>Financial Details:</legend>
-						<div id="unitPriceDetailsDiv">
-							<table style="width: 100%;">
-							<tr><td><label for="basiccost">Basic Cost:</label></td><td><span id="basiccost" data-dojo-attach-point="basiccost"></span></td>
-							<td><label for="totaltax">Total Tax:</label></td><td><span id="totaltax" data-dojo-attach-point="totaltax"></span></td></tr>
-							<tr><td><label for="maintenance1">Maintenance 1:</label></td><td><span id="maintenance1" data-dojo-attach-point="maintenance1"></span></td>
-							<td><label for="othercharges">Other Charges:</label></td><td><span id="othercharges" data-dojo-attach-point="othercharges"></span></td></tr>
-							<tr><td><label for="maintenance2">Maintenance 2:</label></td><td><span id="maintenance2" data-dojo-attach-point="maintenance2"></span></td>
-							<td><label for="legalcharges">Legal Charges:</label></td><td><span id="legalcharges" data-dojo-attach-point="legalcharges"></span></td></tr>
-							<tr><td><label for="agreementvalue">Agreement Value:</label></td><td><span id="agreementvalue" data-dojo-attach-point="agreementvalue"></span></td>
-							<td><label for="totalwithtax">Total Cost with Tax:</label></td><td><span id="totalwithtax" data-dojo-attach-point="totalwithtax"></span></td></tr>
-							<tr><td><label for="totalcost">Total Cost:</label></td><td><span id="totalcost" data-dojo-attach-point="totalcost"></span></td></tr>
-							</table>
-						</div>
-					</fieldset>
-				</td></tr>
-				<tr><td>
-					<fieldset style="width: 98%;">
-	 					<legend>Bank Details:</legend>
-						<div id="bankDetailsDiv">
-						<table style="width: 100%;">
-							<tr><td><span id="bankdetails" data-dojo-attach-point="bankdetails"></span></td></tr>
-						</table>
-						</div>
-					</fieldset>
-				</td></tr>
-				<tr><td>
-					<fieldset style="width: 98%;">
-	 					<legend>Tax Calculation:</legend>
-						<div id="unitTaxDetailsDiv">
-							<table style="width: 100%;">
-							<tr><td><label for="stampduty">Stamp Duty:</label></td><td><span id="stampdutypercent" data-dojo-attach-point="stampdutypercent"></span>
-								</td><td><span id="stampduty" data-dojo-attach-point="stampduty"></span></td>
-							<td><label for="valueaddedtax">VAT:</label></td><td><span id="valueaddedtaxpercent" data-dojo-attach-point="valueaddedtaxpercent"></span></td>
-								<td><span id="valueaddedtax" data-dojo-attach-point="valueaddedtax"></span></td></tr>
-							<tr><td><label for="servicetax">Service Tax:</label></td><td><span id="servicetaxpercent" data-dojo-attach-point="servicetaxpercent"></span></td>
-								<td><span id="servicetax" data-dojo-attach-point="servicetax"></span></td>
-							<td><label for="registration">Registration:</label></td><td><span id="registrationpercent" data-dojo-attach-point="registrationpercent"></span></td>
-								<td><span id="registration" data-dojo-attach-point="registration"></span></td></tr>
-							<tr><td><label for="sumtax">Total Tax:</label></td><td><span id="sumtaxpercent" data-dojo-attach-point="sumtaxpercent"></span></td>
-								<td><span id="sumtax" data-dojo-attach-point="sumtax"></span></td></tr>
-							</table>
-						</div>
-					</fieldset>
-				</td></tr>
-			</table></td>
-	</tr></table>
+<div class="containerDiv">
+	<div id="headerDiv">
+		<table width="100%" align="center">
+			<tr><td align="center"><span style="font-weight: bold; font-size: 18px;" id="orgname" data-dojo-attach-point="orgname"></span></td></tr>
+			<tr><td align="center"><span style="font-size: 12px;" id="orgaddress" data-dojo-attach-point="orgaddress"></span></td></tr>
+			<tr><td align="center"><span style="font-size: 12px;" id="orgcontact" data-dojo-attach-point="orgcontact"></span></td></tr>
+		</table>
+	</div>
+	<br>
+	<div class="printBookingFormText" id="bookingFormDiv">
+		<table class="printPageTableBorder" align="center">
+			<tr><th width="14%"></th>
+			<th width="17%"></th>
+			<th width="14%"></th>
+			<th width="16%"></th>
+			<th width="14%"></th>
+			<th width="16%"></th>
+			<th width="14%"></th></tr>
+			
+			<tr><td><span>Finance Id</span></td>
+			<td><span id="financeid" data-dojo-attach-point="financeid"></span></td>
+			<td colspan="2" align="center" style="font-weight: bold; font-size: 18px;"><span>Booking Form</span></td>
+			<td><span id="bookingformnumber" data-dojo-attach-point="bookingformnumber"></span></td>
+			<td><span id="bookingformversion" data-dojo-attach-point="bookingformversion"></span></td>
+			<td><span></span></td><tr>
+			
+			<tr><td><span>Source</span></td>
+			<td><span id="source" data-dojo-attach-point="source"></span></td>
+			<td><span>Sales Exec</span></td>
+			<td><span id="user" data-dojo-attach-point="user"></span></td>
+			<td><span>Booking Date</span></td>
+			<td><span id="bookingdate" data-dojo-attach-point="bookingdate"></span></td>
+			<td><span></span></td><tr>
+			
+			<tr><td colspan="7" align="center" style="font-weight: bold; font-size: 18px;"><span>Personal Details</span></td><tr>
+			
+			<tr><td><span>First Name</span></td>
+			<td><span id="firstname" data-dojo-attach-point="firstname"></span></td>
+			<td><span>Middle Name</span></td>
+			<td><span id="middlename" data-dojo-attach-point="middlename"></span></td>
+			<td><span>Last Name</span></td>
+			<td><span id="lastname" data-dojo-attach-point="lastname"></span></td>
+			<td><span></span></td><tr>
+			
+			<tr><td><span>Birth Date</span></td>
+			<td><span id="customerdob" data-dojo-attach-point="customerdob"></span></td>
+			<td><span>Age</span></td>
+			<td><span id="customerage" data-dojo-attach-point="customerage"></span></td>
+			<td><span></span></td>
+			<td><span></span></td>
+			<td><span></span></td><tr>
+			
+			<tr><td><span>Address</span></td>
+			<td colspan="5"><span id="customeraddress" data-dojo-attach-point="customeraddress"></span></td>
+			<td><span></span></td><tr>
+			
+			<tr><td><span>Profession</span></td>
+			<td><span id="customerprofession" data-dojo-attach-point="customerprofession"></span></td>
+			<td><span>Details</span></td>
+			<td colspan="3"><span id="customerotherdetails" data-dojo-attach-point="customerotherdetails"></span></td>
+			<td><span></span></td><tr>
+			
+			<tr><td><span>Mobile</span></td>
+			<td><span id="customermobile" data-dojo-attach-point="customermobile"></span></td>
+			<td><span>Landline</span></td>
+			<td><span id="customerphone" data-dojo-attach-point="customerphone"></span></td>
+			<td><span>PAN Card</span></td>
+			<td><span id="customerpan" data-dojo-attach-point="customerpan"></span></td>
+			<td><span></span></td><tr>
+			
+			<tr><td><span>Email</span></td>
+			<td colspan="2"><span id="customeremailid" data-dojo-attach-point="customeremailid"></span></td>
+			<td><span>Category</span></td>
+			<td><span id="customercategory" data-dojo-attach-point="customercategory"></span></td>
+			<td><span></span></td>
+			<td><span></span></td><tr>
+			
+			<tr><td colspan="7" align="center" style="font-weight: bold; font-size: 18px;"><span>Flat Details</span></td><tr>
+			
+			<tr><td><span>Project Name</span></td>
+			<td><span id="project" data-dojo-attach-point="project"></span></td>
+			<td><span>Saleable</span></td>
+			<td><span id="saleablearea" data-dojo-attach-point="saleablearea"></span></td>
+			<td><span>Base Rate</span></td>
+			<td><span id="baserate" data-dojo-attach-point="baserate"></span></td>
+			<td><span></span></td><tr>
+			
+			<tr><td><span>Phase</span></td>
+			<td><span id="projectphase" data-dojo-attach-point="projectphase"></span></td>
+			<td><span></span></td>
+			<td><span></span></td>
+			<td><span>Discount</span></td>
+			<td><span id="discount" data-dojo-attach-point="discount"></span></td>
+			<td><span></span></td><tr>
+			
+			<tr><td><span>Wing/Bldg</span></td>
+			<td><span id="projectbuilding" data-dojo-attach-point="projectbuilding"></span></td>
+			<td><span>Amenities Facing</span></td>
+			<td><span id="amenitiesfacing" data-dojo-attach-point="amenitiesfacing"></span></td>
+			<td><span></span></td>
+			<td><span></span></td>
+			<td><span></span></td><tr>
+			
+			<tr><td><span>Flat No.</span></td>
+			<td><span id="unitnumber" data-dojo-attach-point="unitnumber"></span></td>
+			<td><span>Floor Rise</span></td>
+			<td><span id="floorrisebool" data-dojo-attach-point="floorrisebool"></span></td>
+			<td><span></span></td>
+			<td><span id="floorrise" data-dojo-attach-point="floorrise"></span></td>
+			<td><span></span></td><tr>
+			
+			<tr><td><span>Flat Type</span></td>
+			<td><span id="unittype" data-dojo-attach-point="unittype"></span></td>
+			<td colspan="4"><span></span></td>
+			<td><span></span></td><tr>
+			
+			<tr><td><span>Floor Type</span></td>
+			<td><span id="floortype" data-dojo-attach-point="floortype"></span></td>
+			<td><span>Other Options</span></td>
+			<td><span id="otheroptions" data-dojo-attach-point="otheroptions"></span></td>
+			<td><span></span></td>
+			<td><span></span></td>
+			<td><span></span></td><tr>
+			
+			<tr><td><span>Floor No.</span></td>
+			<td><span id="floornumber" data-dojo-attach-point="floornumber"></span></td>
+			<td><span>Total Rate</span></td>
+			<td><span id="totalrate" data-dojo-attach-point="totalrate"></span></td>
+			<td><span>Reckoner Rate</span></td>
+			<td><span id="reckonerrate" data-dojo-attach-point="reckonerrate"></span></td>
+			<td><span></span></td><tr>
+			
+			<tr><td><span>Extra Bkng Amt</span></td>
+			<td><span id="extrabookingamount" data-dojo-attach-point="extrabookingamount"></span></td>
+			<td><span>Infra Charges</span></td>
+			<td><span id="infracharges" data-dojo-attach-point="infracharges"></span></td>
+			<td><span></span></td>
+			<td><span></span></td>
+			<td><span></span></td><tr>
+			
+			<tr><td colspan="7" align="center" style="font-weight: bold; font-size: 18px;"><span>Financial Details</span></td><tr>
+			
+			<tr><td><span>Basic Cost</span></td>
+			<td><span id="basiccost" data-dojo-attach-point="basiccost"></span></td>
+			<td><span>Total Tax</span></td>
+			<td><span id="totaltax" data-dojo-attach-point="totaltax"></span></td>
+			<td><span>Maintenance 1</span></td>
+			<td><span id="maintenance1amt" data-dojo-attach-point="maintenance1amt"></span></td>
+			<td><span id="maintenance1" data-dojo-attach-point="maintenance1"></span></td><tr>
+			
+			<tr><td><span>Other Charges</span></td>
+			<td><span id="othercharges" data-dojo-attach-point="othercharges"></span></td>
+			<td><span>Legal Charges</span></td>
+			<td><span id="legalcharges" data-dojo-attach-point="legalcharges"></span></td>
+			<td><span>Maintenance 2</span></td>
+			<td><span id="maintenance2amt" data-dojo-attach-point="maintenance2amt"></span></td>
+			<td><span id="maintenance2" data-dojo-attach-point="maintenance2"></span></td><tr>
+			
+			<tr><td><span>Agrmnt Value</span></td>
+			<td><span id="agreementvalue" data-dojo-attach-point="agreementvalue"></span></td>
+			<td><span>Total with Tax</span></td>
+			<td><span id="totalwithtax" data-dojo-attach-point="totalwithtax"></span></td>
+			<td><span>Total Cost</span></td>
+			<td><span id="totalcost" data-dojo-attach-point="totalcost"></span></td>
+			<td><span></span></td><tr>
+			
+			<tr><td><span>Bank Details</span></td>
+			<td colspan="6"><span id="builderaccountinformation" data-dojo-attach-point="builderaccountinformation"></span></td><tr>
+			
+			<tr><td colspan="7" align="center" style="font-weight: bold; font-size: 18px;"><span>Tax Calculations</span></td><tr>
+			
+			<tr><td><span>Stamp Duty</span></td>
+			<td><span id="stampdutypercent" data-dojo-attach-point="stampdutypercent"></span></td>
+			<td><span id="stampduty" data-dojo-attach-point="stampduty"></span></td>
+			<td><span>VAT</span></td>
+			<td><span id="valueaddedtaxpercent" data-dojo-attach-point="valueaddedtaxpercent"></span></td>
+			<td><span id="valueaddedtax" data-dojo-attach-point="valueaddedtax"></span></td>
+			<td><span></span></td><tr>
+			
+			<tr><td><span>Service Tax</span></td>
+			<td><span id="servicetaxpercent" data-dojo-attach-point="servicetaxpercent"></span></td>
+			<td><span id="servicetax" data-dojo-attach-point="servicetax"></span></td>
+			<td><span>Registration</span></td>
+			<td><span id="registrationpercent" data-dojo-attach-point="registrationpercent"></span></td>
+			<td><span id="registration" data-dojo-attach-point="registration"></span></td>
+			<td><span></span></td><tr>
+			
+			<tr><td><span>Total</span></td>
+			<td><span id="sumtaxpercent" data-dojo-attach-point="sumtaxpercent"></span></td>
+			<td><span id="sumtax" data-dojo-attach-point="sumtax"></span></td>
+			<td><span></span></td>
+			<td><span></span></td>
+			<td><span></span></td>
+			<td><span></span></td><tr>
+			
+			<tr><td colspan="7" align="center" style="font-weight: bold; font-size: 18px;"><span>Financial Details (Ready Reckoner)</span></td><tr>
+			
+			<tr><td><span>Basic Cost</span></td>
+			<td><span id="basiccostrr" data-dojo-attach-point="basiccostrr"></span></td>
+			<td><span>Total Tax</span></td>
+			<td><span id="totaltaxrr" data-dojo-attach-point="totaltaxrr"></span></td>
+			<td><span>Maintenance 1</span></td>
+			<td><span id="maintenance1amtrr" data-dojo-attach-point="maintenance1amtrr"></span></td>
+			<td><span id="maintenance1rr" data-dojo-attach-point="maintenance1rr"></span></td><tr>
+
+			<tr><td><span>Other Charges</span></td>
+			<td><span id="otherchargesrr" data-dojo-attach-point="otherchargesrr"></span></td>
+			<td><span>Legal Charges</span></td>
+			<td><span id="legalchargesrr" data-dojo-attach-point="legalchargesrr"></span></td>
+			<td><span>Maintenance 2</span></td>
+			<td><span id="maintenance2amtrr" data-dojo-attach-point="maintenance2amtrr"></span></td>
+			<td><span id="maintenance2rr" data-dojo-attach-point="maintenance2rr"></span></td><tr>
+			
+			<tr><td><span>Agrmnt Value</span></td>
+			<td><span id="agreementvaluerr" data-dojo-attach-point="agreementvaluerr"></span></td>
+			<td><span>Total with Tax</span></td>
+			<td><span id="totalwithtaxrr" data-dojo-attach-point="totalwithtaxrr"></span></td>
+			<td><span>Total Cost</span></td>
+			<td><span id="totalcostrr" data-dojo-attach-point="totalcostrr"></span></td>
+			<td><span></span></td><tr>
+			
+			<tr><td><span>Bank Details</span></td>
+			<td colspan="6"><span id="builderaccountinformationrr" data-dojo-attach-point="builderaccountinformationrr"></span></td><tr>
+				
+			<tr><td colspan="7" align="center" style="font-weight: bold; font-size: 18px;"><span>Tax Calculations (Ready Reckoner)</span></td><tr>
+			
+			<tr><td><span>Stamp Duty</span></td>
+			<td><span id="stampdutypercentrr" data-dojo-attach-point="stampdutypercentrr"></span></td>
+			<td><span id="stampdutyrr" data-dojo-attach-point="stampdutyrr"></span></td>
+			<td><span>VAT</span></td>
+			<td><span id="valueaddedtaxpercentrr" data-dojo-attach-point="valueaddedtaxpercentrr"></span></td>
+			<td><span id="valueaddedtaxrr" data-dojo-attach-point="valueaddedtaxrr"></span></td>
+			<td><span></span></td><tr>
+			
+			<tr><td><span>Service Tax</span></td>
+			<td><span id="servicetaxpercentrr" data-dojo-attach-point="servicetaxpercentrr"></span></td>
+			<td><span id="servicetaxrr" data-dojo-attach-point="servicetaxrr"></span></td>
+			<td><span>Registration</span></td>
+			<td><span id="registrationpercentrr" data-dojo-attach-point="registrationpercentrr"></span></td>
+			<td><span id="registrationrr" data-dojo-attach-point="registrationrr"></span></td>
+			<td><span></span></td><tr>
+			
+			<tr><td><span>Total</span></td>
+			<td><span id="sumtaxpercentrr" data-dojo-attach-point="sumtaxpercentrr"></span></td>
+			<td><span id="sumtaxrr" data-dojo-attach-point="sumtaxrr"></span></td>
+			<td><span></span></td>
+			<td><span></span></td>
+			<td><span></span></td>
+			<td><span></span></td><tr>
+		</table>
+	</div>
+	<br>
+	<div id="footerDiv">
+		<table width="100%" align="center"><tr>
+			<td>
+				<table align="left">
+					<tr><td><span>Customer Signature</span></td></tr>
+					<tr><td><div class="receiptSignDiv"></div></td></tr>
+				</table>
+			</td>
+			<td>
+				<table align="right">
+					<tr><td><span>Sales Executive Signature</span></td></tr>
+					<tr><td><div class="receiptSignDiv"></div></td></tr>
+				</table>
+			</td>
+		</tr></table>
+	</div>
 </div>
 <p style="page-break-before:always;"></p>
-<div>
-<table>
-<tr><td><div id="termsAndConditionsDiv">
-			<table>
+<div class="containerDiv">
+	<div id="paymentScheduleDetailsDiv">
+		<table width="100%">
+			<tr><td align="center"><span style="font-weight: bold; font-size: 18px;">Payment Schedule</span></td></tr>
+			<tr><td><div style="font-family: arial-body; font-size: 13px;" id="paymentScheduleDiv" data-dojo-attach-point="paymentScheduleDiv"></div></td></tr>
+		</table>
+	</div>
+	<br>
+	<div id="termsAndConditionsDiv">
+		<table>
 			<tr><td><span>Terms & Conditions</span></td></tr>
 			<tr><td><span>&nbsp;</span></td></tr>
 			<tr><td><span>We accept the following terms and conditions to book above mentioned flat</span></td></tr>
-			</table>
-			<span id="termsandconditions" data-dojo-attach-point="termsandconditions"></span>
-			<span id="tandc">I/We have read all above terms and conditions and abide to the same</span>
-			<table>
-			<tr><td><span>&nbsp;</span></td></tr>
-			<tr><td><span>&nbsp;</span></td></tr>
-			<tr><td><span>&nbsp;</span></td></tr>
-			<tr><td><label>Customer Signature:</label></td>
-			<td><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
-			<td><label>Sales Executive Signature:</label></td>
-			</tr></table>
-		</div></td></tr>
-		<tr><td><div id="signature"></div></td></tr>
-</table>
-</div>
-<p style="page-break-before:always;"></p>
-<div>
-	<div id="paymentScheduleDetailsDiv">
-		<table>
-			<tr><td valign="top">
-				<table>
-					<tr><td>
-						<fieldset style="width: 100%;">
-			 				<legend>Payment Schedule:</legend>
-							<div id="paymentScheduleDiv" data-dojo-attach-point="paymentScheduleDiv"></div>
-						</fieldset>
-					</td></tr>
-					<tr><td>
-						<fieldset style="width: 100%;">
-			 				<legend>Payment Details:</legend>
-							<div id="paymentDetailsDiv" data-dojo-attach-point="paymentDetailsDiv"></div>
-						</fieldset>
-					</td></tr>
+		</table>
+		<span id="termsandconditions" data-dojo-attach-point="termsandconditions"></span>
+		<span id="tandc">I/We have read all above terms and conditions and abide to the same</span>
+	</div>
+	
+	<div id="footerDiv">
+		<table width="100%" align="center"><tr>
+			<td>
+				<table align="left">
+					<tr><td><span>Customer Signature</span></td></tr>
+					<tr><td><div class="receiptSignDiv"></div></td></tr>
 				</table>
-			</td></tr>
-			<tr><td>
-				Total Payment Received: <span id="totalpaymentreceived" data-dojo-attach-point="totalpaymentreceived"></span>
-			</td></tr>
-	</table>
+			</td>
+			<td>
+				<table align="right">
+					<tr><td><span>Sales Executive Signature</span></td></tr>
+					<tr><td><div class="receiptSignDiv"></div></td></tr>
+				</table>
+			</td>
+		</tr></table>
 	</div>
 </div>
-<BR>		
-<div><input type="button" value="Print this page" onClick="window.print()"></div>
-<br><br>
+<p style="page-break-before:always;"></p>
+<div class="containerDiv">
+	<div id="paymentDetailsDiv">
+		<table width="100%">
+			<tr><td align="center"><span style="font-weight: bold; font-size: 18px;">Sales Team - Payment Received - Instrument Details</span></td></tr>
+			<tr><td><div style="font-family: arial-body; font-size: 13px;" id="paymentDiv" data-dojo-attach-point="paymentDiv"></div></td></tr>
+		</table>
+	</div>
+	<br>
+	<div id="footerDiv">
+		<table width="100%" align="center"><tr>
+			<td>
+				<table align="left">
+					<tr><td><span>Remarks</span></td></tr>
+					<tr><td><div class="printBookingFormRemarksDiv"></div></td></tr>
+				</table>
+			</td>
+		</tr></table>
+	</div>
+</div>
 </body>
 </html>
