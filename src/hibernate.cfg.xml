@@ -57,5 +57,7 @@
 		<mapping resource="com/propmgr/dao/Bankaccounttype.hbm.xml" />
 		<mapping resource="com/propmgr/dao/Projectbankaccount.hbm.xml" />
 		<mapping resource="com/propmgr/dao/Unitclassificationmaster.hbm.xml" />
+		<mapping resource="com/propmgr/dao/Parkingtype.hbm.xml" />
+		<mapping resource="com/propmgr/dao/Parkingmaster.hbm.xml" />
 	</session-factory>
 </hibernate-configuration>

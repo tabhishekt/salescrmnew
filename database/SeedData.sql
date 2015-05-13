@@ -17,6 +17,10 @@ INSERT INTO paymentType (paymentTypeID, paymentTypeCode, paymentTypeDescription)
 INSERT INTO paymentType (paymentTypeID, paymentTypeCode, paymentTypeDescription) VALUES ('3', 'DCRD', 'Debit Card');
 INSERT INTO paymentType (paymentTypeID, paymentTypeCode, paymentTypeDescription) VALUES ('4', 'BCHQ', 'Bank Cheque');
 
+-- parkingType
+INSERT INTO parkingType (parkingTypeId, parkingCode, parkingName) VALUES ('1', 'COV', 'Covered Parking');
+INSERT INTO parkingType (parkingTypeId, parkingCode, parkingName) VALUES ('2', 'OPEN', 'Open Parking');
+INSERT INTO parkingType (parkingTypeId, parkingCode, parkingName) VALUES ('3', 'BSMT', 'Basement Parking');
 
 -- sourceMaster
 INSERT INTO sourceMaster (sourceMasterID, sourceCode, sourceName) VALUES ('1', 'NNA', 'www.99acres.com');

@@ -119,7 +119,8 @@
 	        	                ["Manage Unit Amenities", "contentTabPage.jsp?page=amenity"],
 	        	                ["Manage Sources", "contentTabPage.jsp?page=source"],
 	        	                ["Manage Payment Types", "contentTabPage.jsp?page=paymenttype"],
-	        	                 ["Manage Unit Classification", "contentTabPage.jsp?page=unitclassification"]
+	        	                ["Manage Parking Types", "contentTabPage.jsp?page=parkingtype"],
+	        	                ["Manage Unit Classification", "contentTabPage.jsp?page=unitclassification"]
 	        	           ];
 	        	    aContainer.addChild(createAccordionContentPanel("Code Table", linkData));
         	    }

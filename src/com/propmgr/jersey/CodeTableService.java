@@ -23,6 +23,8 @@ import com.propmgr.dao.Bankaccounttype;
 import com.propmgr.dao.BankaccounttypeDAO;
 import com.propmgr.dao.Citymaster;
 import com.propmgr.dao.CitymasterDAO;
+import com.propmgr.dao.Parkingtype;
+import com.propmgr.dao.ParkingtypeDAO;
 import com.propmgr.dao.Paymenttype;
 import com.propmgr.dao.PaymenttypeDAO;
 import com.propmgr.dao.Sourcemaster;
@@ -744,4 +746,89 @@ public class CodeTableService {
 	}
 	
 	/** Addition by Abhishek ends *********/
+	
+	@GET
+	@Path("/parkingtype/get/all")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAllParkingTypes() {
+		List<CodeTableResource> result = new ArrayList<CodeTableResource>();
+		ParkingtypeDAO parkingtypeDAO = new ParkingtypeDAO();
+		
+		List<Parkingtype> allParkingtypes = parkingtypeDAO.findAll(); 
+		for (Parkingtype aParkingtype : allParkingtypes) {
+			result.add(new CodeTableResource(aParkingtype.getParkingtypeid(), aParkingtype.getParkingcode(), aParkingtype.getParkingname()));
+		}
+		int size = result.size();
+		
+	    return Response.ok(result).header("Content-Range", "items 0-" + (size - 1) + "/" + size).build();
+	}
+	
+	@GET
+	@Path("/parkingtype/get")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getParkingType(@QueryParam("rowId") String rowId) {
+		ParkingtypeDAO parkingtypeDAO = new ParkingtypeDAO();
+		CodeTableResource result = null;
+		
+		Parkingtype aParkingtype = parkingtypeDAO.findById(Long.parseLong(rowId));
+		if (aParkingtype != null) {
+			result = new CodeTableResource(aParkingtype.getParkingtypeid(), aParkingtype.getParkingcode(), aParkingtype.getParkingname());
+		} else {
+			return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
+		}
+
+	    return Response.ok(result).build();
+	}
+	
+	@DELETE
+	@Path("/parkingtype/delete")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response deleteParkingType(@QueryParam("rowId") String rowId) {		
+		ParkingtypeDAO parkingtypeDAO = new ParkingtypeDAO();
+		long id = Long.parseLong(rowId);
+		
+		try {
+			Parkingtype aParkingtype = parkingtypeDAO.findById(id);
+			if (aParkingtype != null) {
+				parkingtypeDAO.delete(aParkingtype);
+				parkingtypeDAO.flushSession();
+			} else {
+				return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
+			}
+		} catch (ConstraintViolationException cve) {
+			logger.error("", cve);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new 
+					ApplicationException("Record could not be deleted as it is being referenced by other data present on system. " + cve.getMessage())).build();
+		} catch (Exception e) {
+			logger.error("", e);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
+		}
+		
+	    return Response.ok().build();
+	}
+	
+	@POST
+	@Path("/parkingtype/post")
+	@Consumes("application/x-www-form-urlencoded")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response modifyParkingType(@FormParam("rowId") String rowId, @FormParam("code") String code, @FormParam("name") String name) {
+		ParkingtypeDAO parkingtypeDAO = new ParkingtypeDAO();
+		Parkingtype aParkingtype = null;
+		try {
+			if (rowId != null && rowId.length() > 0) {
+				aParkingtype = parkingtypeDAO.findById(Long.parseLong(rowId));
+			} else {
+				aParkingtype = new Parkingtype();
+			}
+			aParkingtype.setParkingcode(code);
+			aParkingtype.setParkingname(name);
+			parkingtypeDAO.save(aParkingtype);
+			parkingtypeDAO.flushSession();
+		}
+		catch (Exception e) {
+			logger.error("", e);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
+		}
+	    return Response.ok().build();
+	}
 }
