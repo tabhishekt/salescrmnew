@@ -38,6 +38,10 @@ import com.propmgr.dao.Enquirycomment;
 import com.propmgr.dao.EnquirycommentDAO;
 import com.propmgr.dao.Organization;
 import com.propmgr.dao.OrganizationDAO;
+import com.propmgr.dao.Parkingmaster;
+import com.propmgr.dao.ParkingmasterDAO;
+import com.propmgr.dao.Parkingtype;
+import com.propmgr.dao.ParkingtypeDAO;
 import com.propmgr.dao.Paymentmaster;
 import com.propmgr.dao.PaymentmasterDAO;
 import com.propmgr.dao.Paymentstage;
@@ -129,27 +133,40 @@ public class ResourceUtil {
 		UnitbookingDAO unitbookingDAO = new UnitbookingDAO();
 		UnitmasterDAO unitmasterDAO = new UnitmasterDAO();
 		UnittypeDAO unittypeDAO = new UnittypeDAO();
+		ParkingmasterDAO parkingmasterDAO = new ParkingmasterDAO();
+		ParkingtypeDAO parkingtypeDAO = new ParkingtypeDAO();
+		
 		Projectphase projectPhase = projectBuilding.getProjectphase();
 		long projectId = projectPhase.getProjectmaster().getProjectid();
 		int floorCount = (int)projectBuilding.getFloorcount();
 		Map<Integer, Double> floorRise = null;
 		Map<Integer, Map<String, Boolean>> availability = null;
 		Map<String, UnitPaymentScheduleResource> paymentSchedule = new HashMap<String, UnitPaymentScheduleResource>();
+		Map<String, ParkingResource> parking = new HashMap<String, ParkingResource>();
 		Map<String, Map<String, Double>> unitCharges = null;
 		CodeTableResource currentStatus = getBuildingCurrentStatus(projectBuilding);
 			
 		Iterator<Unitpaymentschedule> iterator = projectBuilding.getUnitpaymentschedules().iterator();
-		
 		while(iterator.hasNext()) {
 			Unitpaymentschedule aSchedule = iterator.next();
 			paymentSchedule.put(aSchedule.getPaymentscheduletype() + "_" + aSchedule.getApplicableto(), 
 					getUnitPaymentScheduleFromDAO(aSchedule));
 		}
 		
+		List<Parkingtype> allParkingtypes = parkingtypeDAO.findAll(); 
+		for (Parkingtype aParkingtype : allParkingtypes) {
+			Parkingmaster parkingmaster = parkingmasterDAO.findByProjectBuildingAndType(projectBuilding.getProjectbuildingid(), aParkingtype.getParkingcode());
+			ParkingResource res = (parkingmaster == null) ? new ParkingResource(-1, projectBuilding.getProjectbuildingid(), 
+					new CodeTableResource(aParkingtype.getParkingtypeid(), aParkingtype.getParkingcode(), aParkingtype.getParkingname()), 
+					0, 0, 0) : getParkingFromDAO(parkingmaster);
+			parking.put(res.getParkingType().getName(), res);
+		}
+		
 		if (projectBuilding.getUnitmasters().size() > 0) {
 			floorRise = new HashMap<Integer, Double>();
 			availability = new HashMap<Integer, Map<String, Boolean>>();
 			unitCharges = new HashMap<String, Map<String, Double>>();
+					
 			for (int i=0; i<floorCount; i++) {
 				Map<String, Boolean> floorAvailability = new HashMap<String, Boolean>();
 				List<Unitmaster> allUnitsForFloor = unitmasterDAO.findByProjectBuildingAndFloorNumber(projectBuilding.getProjectbuildingid(), i+1);
@@ -175,7 +192,7 @@ public class ResourceUtil {
 				projectPhase.getProjectphasename(), projectBuilding.getBuildingname(), projectBuilding.getWingname(),
 				projectBuilding.getFloorcount(), projectBuilding.getBuildingtype(), currentStatus,
 				convertDateToString(projectBuilding.getExpectedcompletiondate()), convertClobToString(projectBuilding.getRemarks()), 
-				projectBuilding.isHasmultiplepaymentschedules(), paymentSchedule, floorRise, availability, unitCharges);
+				projectBuilding.isHasmultiplepaymentschedules(), paymentSchedule, floorRise, availability, unitCharges, parking);
 	}
 	
 	public static UnitResource getUnitFromDAO(Unitmaster unit)  throws SQLException, IOException {
@@ -244,6 +261,13 @@ public class ResourceUtil {
 			bookingDiscount, deductionOnOtherCharges, convertClobToString(unitbooking.getBookingcomment()), priceWithoutDiscount.getTotalCost(),
 			priceWithDiscount.getTotalCost(), totalPaymentReceived, balancePayment, unitbooking.getIscancelled(), cancelUserDisplayName,
 			cancelDeduction, cancellationDate, cancellationComment, refundDetails);
+	}
+	
+	public static ParkingResource getParkingFromDAO(Parkingmaster parking)  throws SQLException, IOException {
+		Parkingtype aParkingtype = parking.getParkingtype();
+		CodeTableResource parkingType = new CodeTableResource(aParkingtype.getParkingtypeid(), aParkingtype.getParkingcode(), aParkingtype.getParkingname());
+		return new ParkingResource(parking.getParkingmasterid(), parking.getProjectbuilding().getProjectbuildingid(), 
+				parkingType, parking.getTotal(), parking.getAvailable(), parking.getBooked());
 	}
 	
 	public static PaymentResource getPaymentFromDAO(Paymentmaster payment)  throws SQLException, IOException {

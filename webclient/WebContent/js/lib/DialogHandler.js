@@ -14,13 +14,14 @@ define(
         'lib/widget/DefineBuildingPaymentScheduleDialog',
         'lib/widget/ShowUnitAvailabilityDialog',
         'lib/widget/CancelUnitBookingDialog',
-        'lib/widget/ShowCancelledBookingDetailDialog'
+        'lib/widget/ShowCancelledBookingDetailDialog',
+        'lib/widget/DefineBuildingParkingDialog'
     ],
     function (
         declare, lang, LoginDialog, ConfirmDialog, InformationDialog, ShowEnquiryCommentDialog, 
         ShowUnitPriceDetailDialog, AddEditUnitFloorRiseDialog, AddEditUnitPriceDialog, AddEditUnitChargesDialog,
         ShowUnitPaymentScheduleDialog, DefineBuildingPaymentScheduleDialog, ShowUnitAvailabilityDialog,
-        CancelUnitBookingDialog, ShowCancelledBookingDetailDialog
+        CancelUnitBookingDialog, ShowCancelledBookingDetailDialog, DefineBuildingParkingDialog
     ) {
         return declare([], {
             
@@ -213,6 +214,18 @@ define(
         			this.definePaymentScheduleDialog.set("dimensions", [width, height]);  
         			this.definePaymentScheduleDialog.layout();
         			this.definePaymentScheduleDialog.show();
+            	} else if (options.action == "defineparking") {
+            		if(!this.defineParkingDialog) {
+                		options.draggable = false;
+                    	options.showTitle = true;	
+                		this.defineParkingDialog = new DefineBuildingParkingDialog(options);
+                	}
+            		this.defineParkingDialog.data = options.data;
+            		this.defineParkingDialog.buildingId = options.buildingId;
+                	this.defineParkingDialog.set("title", options.title);
+        			this.defineParkingDialog.set("dimensions", [width, height]);  
+        			this.defineParkingDialog.layout();
+        			this.defineParkingDialog.show();
             	} else if (options.action == "showunitavailability") {
             		if(!this.showUnitAvailabilityDialog) {
                 		options.draggable = false;

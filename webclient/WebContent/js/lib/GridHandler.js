@@ -301,6 +301,17 @@ define(
     		                    	gridHandler: this,
     		                }
     						this.dialogHandler.openOtherActionDialog(options, window.screen.width*0.50, window.screen.height);
+    					} else if (action[0] == "defineparking") {
+    						var options = {
+    								action: action[0], 
+    		                    	title: "Define parking for building " + rowData.name,
+    		                    	buildingId: rowData.id,
+    		                    	data: rowData.parking,
+    		                    	url: "../rest/json/data/inventory/projectbuilding/post/parking",
+    		                    	mode: "edit",
+    		                    	gridHandler: this,
+    		                }
+    						this.dialogHandler.openOtherActionDialog(options, window.screen.width*0.50, window.screen.height*0.50);
     					} else if (action[0] == "updateunitfloorrise") {
     						var options = {
     								action: action[0], 

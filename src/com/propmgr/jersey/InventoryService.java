@@ -34,6 +34,10 @@ import com.propmgr.dao.Enquirycomment;
 import com.propmgr.dao.EnquirycommentDAO;
 import com.propmgr.dao.Organization;
 import com.propmgr.dao.OrganizationDAO;
+import com.propmgr.dao.Parkingmaster;
+import com.propmgr.dao.ParkingmasterDAO;
+import com.propmgr.dao.Parkingtype;
+import com.propmgr.dao.ParkingtypeDAO;
 import com.propmgr.dao.Paymentmaster;
 import com.propmgr.dao.PaymentmasterDAO;
 import com.propmgr.dao.Paymentstage;
@@ -755,6 +759,45 @@ public class InventoryService {
 				ResourceUtil.saveUnitPaymentSchedule(formData, "type_flo", "percentamount_flo", "date_flo", "desc_flo", 0);
 				ResourceUtil.saveUnitPaymentSchedule(formData, "type_pos", "percentamount_pos", "date_pos", "desc_pos", 0);
 			}
+		}
+		catch (Exception e) {
+			logger.error("", e);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
+		}
+	    return Response.ok().build();
+	}
+	
+	@POST
+	@Path("/projectbuilding/post/parking")
+	@Consumes("application/x-www-form-urlencoded")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response modifyProjectBuildingDefineParking(MultivaluedMap<String, String> formData) {
+		ParkingmasterDAO parkingmasterDAO = new ParkingmasterDAO();
+		ParkingtypeDAO parkingtypeDAO = new ParkingtypeDAO();
+		Parkingmaster parkingmaster = null;
+		
+		try {
+			Projectbuilding projectBuilding = ResourceUtil.getProjectBuildingPOJO(formData);
+			List<Parkingtype> allParkingtypes = parkingtypeDAO.findAll(); 
+			for (Parkingtype aParkingtype : allParkingtypes) {
+				parkingmaster = parkingmasterDAO.findByProjectBuildingAndType(projectBuilding.getProjectbuildingid(), aParkingtype.getParkingcode());
+				if (parkingmaster == null) {
+					parkingmaster = new Parkingmaster();
+					parkingmaster.setBooked(0);
+					parkingmaster.setProjectbuilding(projectBuilding);
+					parkingmaster.setParkingtype(aParkingtype);
+				}
+				
+				String parkingType = aParkingtype.getParkingname().trim().toLowerCase().replaceAll(" ", "_");
+				int available = ResourceUtil.getFormDataValueAsInt(formData, "available_" + parkingType);
+				int total = available + parkingmaster.getBooked();
+				
+				parkingmaster.setAvailable(available);
+				parkingmaster.setTotal(total);
+				parkingmasterDAO.save(parkingmaster);
+			}
+			
+			parkingmasterDAO.flushSession();
 		}
 		catch (Exception e) {
 			logger.error("", e);

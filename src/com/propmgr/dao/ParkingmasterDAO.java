@@ -1,5 +1,6 @@
 package com.propmgr.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.naming.InitialContext;
@@ -8,6 +9,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.LockMode;
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
 
@@ -110,6 +113,44 @@ public class ParkingmasterDAO extends SuperDAO {
 		}
 	}
 
+	public List<Parkingmaster> findByProjectBuilding(long buildingId) {
+		Session hbmSession = getSession();
+		List<Parkingmaster> resultList = null;
+		try {
+			String queryString = "from Parkingmaster u where u.projectbuilding.projectbuildingid = " + buildingId;
+			Query query = hbmSession.createQuery(queryString);
+			resultList = query.list ();
+			
+			if (resultList.size() > 0) {
+				return resultList;
+			}
+		} catch (Exception e) {
+			log.error ("", e);
+		}
+		
+		return new ArrayList<Parkingmaster>();
+	}
+	
+	public Parkingmaster findByProjectBuildingAndType(long buildingId, String parkingTypeCode) {
+		Session hbmSession = getSession();
+		List<Parkingmaster> resultList = null;
+		
+		try {
+			String queryString = "from Parkingmaster u where u.projectbuilding.projectbuildingid = " + buildingId
+					+ " and u.parkingtype.parkingcode = '" + parkingTypeCode + "'";
+			Query query = hbmSession.createQuery(queryString);
+			resultList = query.list ();
+			
+			if (resultList.size() > 0) {
+				return resultList.get(0);
+			}
+		} catch (Exception e) {
+			log.error ("", e);
+		}
+		
+		return null;
+	}
+	
 	@Override
 	protected Object getPojoObj() {
 		return new Parkingmaster();

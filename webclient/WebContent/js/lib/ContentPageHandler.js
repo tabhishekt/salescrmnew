@@ -115,7 +115,7 @@ define(
             		} else if (this.mode && this.mode == "availability") {
             			return {style : "width:30%"};
             		}
-            		return {style : "width:65%"};
+            		return {style : "width:80%"};
             	} else if (this.page == "customer") {
             		if (this.mode && this.mode == "select") {
 	            		if (this.userData) {
@@ -180,7 +180,8 @@ define(
   				          ["delete", "Delete", "Delete"],
   				          ["refresh", "Refresh", "NewPage"],
   	       				  ["unit", "Manage Units", "NewPage"],
-  	       				  ["definepaymentschedule", "Define Payment Schedule", "NewPage"]
+  	       				  ["definepaymentschedule", "Define Payment Schedule", "NewPage"],
+  	       				  ["defineparking", "Define Parkings", "NewPage"]
   				       ];
             	} else if (this.page == "enquiry") {
             		if (this.userData) {

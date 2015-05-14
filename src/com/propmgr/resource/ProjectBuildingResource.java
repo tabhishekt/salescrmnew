@@ -19,6 +19,7 @@ public class ProjectBuildingResource {
 	private Map<Integer, Double> floorRise;
 	private Map<Integer, Map<String, Boolean>> availability;
 	private Map<String, Map<String, Double>> unitCharges;
+	private Map<String, ParkingResource> parking;
 	
 	public ProjectBuildingResource(long id, long projectId, ProjectPhaseResource projectPhase,
 			String projectPhaseName, String name, String wingName,
@@ -26,7 +27,7 @@ public class ProjectBuildingResource {
 			String expectedCompletionDate, String remarks, boolean hasMultiplePaymentSchedules, 
 			Map<String, UnitPaymentScheduleResource> paymentSchedule, 
 			Map<Integer, Double> floorRise, Map<Integer, Map<String, Boolean>> availability,
-			Map<String, Map<String, Double>> unitCharges) {
+			Map<String, Map<String, Double>> unitCharges, Map<String, ParkingResource> parking) {
 		super();
 		this.id = id;
 		this.projectId = projectId;
@@ -44,6 +45,7 @@ public class ProjectBuildingResource {
 		this.availability = availability;
 		this.hasMultiplePaymentSchedules = hasMultiplePaymentSchedules;
 		this.unitCharges = unitCharges;
+		this.parking = parking;
 	}
 
 	public long getId() {
@@ -112,5 +114,9 @@ public class ProjectBuildingResource {
 
 	public Map<String, Map<String, Double>> getUnitCharges() {
 		return unitCharges;
+	}
+
+	public Map<String, ParkingResource> getParking() {
+		return parking;
 	}
 }
