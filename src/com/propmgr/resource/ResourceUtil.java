@@ -140,7 +140,7 @@ public class ResourceUtil {
 		long projectId = projectPhase.getProjectmaster().getProjectid();
 		int floorCount = (int)projectBuilding.getFloorcount();
 		Map<Integer, Double> floorRise = null;
-		Map<Integer, Map<String, Boolean>> availability = null;
+		Map<Integer, List<UnitAvailabilityResource>> availability = null;
 		Map<String, UnitPaymentScheduleResource> paymentSchedule = new HashMap<String, UnitPaymentScheduleResource>();
 		Map<String, ParkingResource> parking = new HashMap<String, ParkingResource>();
 		Map<String, Map<String, Double>> unitCharges = null;
@@ -164,14 +164,26 @@ public class ResourceUtil {
 		
 		if (projectBuilding.getUnitmasters().size() > 0) {
 			floorRise = new HashMap<Integer, Double>();
-			availability = new HashMap<Integer, Map<String, Boolean>>();
+			availability = new HashMap<Integer, List<UnitAvailabilityResource>>();
 			unitCharges = new HashMap<String, Map<String, Double>>();
 					
 			for (int i=0; i<floorCount; i++) {
-				Map<String, Boolean> floorAvailability = new HashMap<String, Boolean>();
+				List<UnitAvailabilityResource> floorAvailability = new ArrayList<UnitAvailabilityResource>();
 				List<Unitmaster> allUnitsForFloor = unitmasterDAO.findByProjectBuildingAndFloorNumber(projectBuilding.getProjectbuildingid(), i+1);
 				for (Unitmaster unit : allUnitsForFloor) {
-					floorAvailability.put(unit.getUnitnumber(), unitbookingDAO.isBookingExistsForUnit(unit.getUnitid()));
+					Unitbooking unitbooking = unitbookingDAO.findByUnit(unit);
+					boolean unitAvailable = (unitbooking == null) ? true : false;
+					UnitAvailabilityResource res = null; 
+					if (unitAvailable) {
+						res = new UnitAvailabilityResource(unit.getUnitnumber(), unit.getUnittype().getUnittypename(), null, null, null, unitAvailable);
+					} else {
+						Parkingmaster parkingForBooking = unitbooking.getParkingmaster();
+						String parkingName = (parkingForBooking == null) ? "No parking chosen" : parkingForBooking.getParkingtype().getParkingname();
+						res = new UnitAvailabilityResource(unit.getUnitnumber(), unit.getUnittype().getUnittypename(), 
+								parkingName, getCustomerDisplayName(unitbooking.getCustomermaster()), 
+								getUserDisplayName(unitbooking.getUsermasterByBookedby()), unitAvailable);
+					}
+					floorAvailability.add(res);
 				}
 				floorRise.put(i+1, unitmasterDAO.findMaxFloorRiseByFloorNumberAndBuilding(i+1, projectBuilding.getProjectbuildingid()));
 				availability.put(i+1, floorAvailability);
@@ -808,6 +820,16 @@ public class ResourceUtil {
 		 String unittypeId = getFormDataValue(formData, "unittype");
 		 UnittypeDAO dao = new UnittypeDAO();
 		 return dao.findById(Long.parseLong(unittypeId));
+	 }
+	 
+	 public static Parkingtype getParkingtypePOJO(MultivaluedMap<String, String> formData) {
+		 String parkingtypeId = getFormDataValue(formData, "parkingtype");
+		 if (parkingtypeId == null || parkingtypeId.length() == 0) {
+			 return null;
+		 }
+		 
+		 ParkingtypeDAO dao = new ParkingtypeDAO();
+		 return dao.findById(Long.parseLong(parkingtypeId));
 	 }
 	 
 	 public static Paymenttype getPaymenttypePOJO(MultivaluedMap<String, String> formData) {

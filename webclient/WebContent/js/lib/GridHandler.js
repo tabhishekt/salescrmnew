@@ -397,7 +397,7 @@ define(
     		                    	floorcount: rowData.floorCount,
     		                    	availability: rowData.availability
     		                }
-    						this.dialogHandler.openOtherActionDialog(options, window.screen.width*0.40, window.screen.height*0.50);
+    						this.dialogHandler.openOtherActionDialog(options, window.screen.width, window.screen.height);
     					} else if (action[0] == "printbookingform") {
     						window.open("printbookingform.jsp?unitbookingId=" + rowData.id);
     					} else if (action[0] == "printdemandletter") {

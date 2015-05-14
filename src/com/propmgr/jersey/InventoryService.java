@@ -1587,17 +1587,34 @@ public class InventoryService {
 		UnitbookingDAO unitbookingDAO = new UnitbookingDAO();
 		Unitbooking unitbooking = new Unitbooking();
 		UnitBookingResource result = null;
+		ParkingmasterDAO parkingmasterDAO = new ParkingmasterDAO();
+		Parkingmaster parkingmaster = null;
 		
 		try {
 			Unitmaster unit = ResourceUtil.getUnitPOJO(formData);
 			Usermaster user = ResourceUtil.getBookingUserPOJO(formData);
 			Customermaster customer = ResourceUtil.getCustomerPOJO(formData);
+			Parkingtype parkingType = ResourceUtil.getParkingtypePOJO(formData);
 			
 			Unitbooking existingBooking = unitbookingDAO.findByUnit(unit);
 			if (existingBooking != null) {
 				String errorMessage = "Unit " + ResourceUtil.getUnitDisplayName(unit)
 						+ " is already booked by " + ResourceUtil.getCustomerDisplayName(existingBooking.getCustomermaster());
 				return Response.status(Response.Status.CONFLICT).entity(new ApplicationException(errorMessage)).build();
+			}
+			
+			if (parkingType != null) {
+				parkingmaster = parkingmasterDAO.findByProjectBuildingAndType(unit.getProjectbuilding().getProjectbuildingid(), 
+						parkingType.getParkingcode());
+				if (parkingmaster == null || parkingmaster.getAvailable() == 0) {
+					String errorMessage = "Either parking of type " + parkingType.getParkingname()
+							+ " not defined in system or no available parking for this type.";
+					return Response.status(Response.Status.CONFLICT).entity(new ApplicationException(errorMessage)).build();
+				} else {
+					parkingmaster.setAvailable(parkingmaster.getAvailable() - 1);
+					parkingmaster.setBooked(parkingmaster.getBooked() + 1);
+					parkingmasterDAO.save(parkingmaster);
+				}
 			}
 			
 			long bookingFormNumber = unitbookingDAO.getMaxBookingFormNumber();
@@ -1610,7 +1627,8 @@ public class InventoryService {
 			unitbooking.setBookingformnumber(bookingFormNumber);
 			unitbooking.setUnitmaster(unit );
 			unitbooking.setCustomermaster(customer);
-			unitbooking.setUsermasterByBookedby(user);;
+			unitbooking.setUsermasterByBookedby(user);
+			unitbooking.setParkingmaster(parkingmaster);
 			unitbooking.setBookingcomment(ResourceUtil.getFormDataValueAsClob(formData, "comment"));
 			unitbooking.setBookingdiscount(ResourceUtil.getFormDataValueAsDouble(formData, "discount"));
 			unitbooking.setDeductiononothercharges(ResourceUtil.getFormDataValueAsDouble(formData, "deductiononothercharges"));

@@ -23,20 +23,41 @@
              "dojo/dom-form",
              "dojo/request",
              "dojo/Deferred",
+             "dojo/store/JsonRest",
+             "dojo/store/Memory",
              "lib/DialogHandler",
 			 "lib/GridHandler",
 			 'lib/widget/AddEditCustomerDialog', 
 		     "dijit/form/Button",
 			 "dojo/domReady!"],
-        function(lang, registry, currency, on, domForm, request, Deferred, DialogHandler, GridHandler, AddEditCustomerDialog, Button) {
+        function(lang, registry, currency, on, domForm, request, Deferred, JsonRest, Memory, DialogHandler, GridHandler, AddEditCustomerDialog, Button) {
             load = function () {
             	this.buildingId = this.getQueryVariable("buildingId");
             	this.dialogHandler = new DialogHandler();
             	this.createUnitGrid();
             	this.createCustomerGrid();
+            	this.setDataToDropdown('../rest/json/data/codetable/parkingtype/get/all', registry.byId("parkingtype"));
+            	
             	on(registry.byId("createbookingForm"), "submit", lang.hitch(this,"onSubmit"));
             	on(registry.byId("showdiscountprice"), "click", lang.hitch(this,"onShowDiscountPrice"));  
             	registry.byId("bookinguser").set("value", this.userData.id);
+            };
+            
+            setDataToDropdown = function (url, node) {
+            	var dialog = this;
+            	var store = new JsonRest ({
+             		target: url,
+             		idProperty:'id'
+         		});
+       		
+            	store.query("", {
+    				handleAs : "json"
+    			}).then(function(data) {
+    				datastore = new Memory({
+    					data : data
+    				});
+    				node.set("store", datastore);
+    			});
             };
             
             formatCurrency = function (value) {
@@ -271,13 +292,6 @@
 	 						<table align="left" style="width: 100%;">
 								<tr><td>
 									<table>
-										<tr><td><label for="comment">Comment:</label></td></tr>
-										<tr><td><textarea id="comment" name="comment"
-										data-dojo-type="dijit/form/SimpleTextarea" rows="3"></textarea></td>
-										</tr>
-									</table>
-								</td><td>
-									<table>
 										<tr><td><label for="discount">Discount on Base Rate:</label></td></tr>
 										<tr><td><input id="discount" name="discount"
 												data-dojo-type='dijit/form/TextBox'
@@ -289,6 +303,22 @@
 										<tr><td><input id="deductiononothercharges" name="deductiononothercharges"
 												data-dojo-type='dijit/form/TextBox'
 												type="text" /></td></tr>
+									</table>
+								</td></tr>
+								<tr><td>
+									<table>
+										<tr><td><label for="parkingtype">Parking Type:</label></td></tr>
+										<tr><td><select id="parkingtype" name="parkingtype"
+										data-dojo-type="dijit/form/FilteringSelect" 
+										data-dojo-attach-point='parkingtype'
+										data-dojo-props="required:true"></select></td></tr>
+									</table>
+								</td><td>
+									<table>
+										<tr><td><label for="comment">Comment:</label></td></tr>
+										<tr><td><textarea id="comment" name="comment"
+										data-dojo-type="dijit/form/SimpleTextarea" rows="3"></textarea></td>
+										</tr>
 									</table>
 								</td></tr>
 							</table>

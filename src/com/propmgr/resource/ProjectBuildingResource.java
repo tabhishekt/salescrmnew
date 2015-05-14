@@ -1,5 +1,6 @@
 package com.propmgr.resource;
 
+import java.util.List;
 import java.util.Map;
 
 public class ProjectBuildingResource {
@@ -17,7 +18,7 @@ public class ProjectBuildingResource {
 	private boolean hasMultiplePaymentSchedules;
 	private Map<String, UnitPaymentScheduleResource> paymentSchedule;
 	private Map<Integer, Double> floorRise;
-	private Map<Integer, Map<String, Boolean>> availability;
+	private Map<Integer, List<UnitAvailabilityResource>> availability;
 	private Map<String, Map<String, Double>> unitCharges;
 	private Map<String, ParkingResource> parking;
 	
@@ -26,7 +27,7 @@ public class ProjectBuildingResource {
 			long floorCount, String type, CodeTableResource currentStatus, 
 			String expectedCompletionDate, String remarks, boolean hasMultiplePaymentSchedules, 
 			Map<String, UnitPaymentScheduleResource> paymentSchedule, 
-			Map<Integer, Double> floorRise, Map<Integer, Map<String, Boolean>> availability,
+			Map<Integer, Double> floorRise, Map<Integer, List<UnitAvailabilityResource>> availability,
 			Map<String, Map<String, Double>> unitCharges, Map<String, ParkingResource> parking) {
 		super();
 		this.id = id;
@@ -100,7 +101,7 @@ public class ProjectBuildingResource {
 		return floorRise;
 	}
 	
-	public Map<Integer, Map<String, Boolean>> getAvailability() {
+	public Map<Integer, List<UnitAvailabilityResource>> getAvailability() {
 		return availability;
 	}
 

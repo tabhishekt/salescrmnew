@@ -37,17 +37,23 @@ define([
 				if (this.availability.hasOwnProperty(property)) {
 					tr = domConstruct.create("tr", null, mainTable);
 					var floorAvailability = this.availability[property];
-					for (var prop in floorAvailability) {
-						if (floorAvailability.hasOwnProperty(prop)) {
-							var booked = floorAvailability[prop];
-							if (booked) {
-								td = domConstruct.create("td", {style:"font-weight: bold; background-color: #FF0000; color: #ffffff"}, tr);
-							} else {
-								td = domConstruct.create("td", {style:"font-weight: bold; background-color: #009900; color: #ffffff"}, tr);
-							}
-							domConstruct.create("span", null, td).innerHTML = prop;
+					array.forEach(floorAvailability, function (unitAvailability)
+					{
+						if (unitAvailability.available) {
+							td = domConstruct.create("td", {style:"font-weight: bold; background-color: #009900; color: #ffffff"}, tr);
+							domConstruct.create("span", null, td).innerHTML = 
+								"Type: " + unitAvailability.unitType + "<br>" + 
+								"Number: " + unitAvailability.unitNumber + "<br>"
+						} else {
+							td = domConstruct.create("td", {style:"font-weight: bold; background-color: #FF0000; color: #ffffff"}, tr);
+							domConstruct.create("span", null, td).innerHTML = 
+								"Type: " + unitAvailability.unitType + "<br>" + 
+								"Number: " + unitAvailability.unitNumber + "<br>" +
+								"Parking: " + unitAvailability.parkingName + "<br>" + 
+								"Booked by: " + unitAvailability.customerName + "<br>" +
+								"Booked for: " + unitAvailability.userName;
 						}
-					}
+					});
 				}
 			}
 		},
