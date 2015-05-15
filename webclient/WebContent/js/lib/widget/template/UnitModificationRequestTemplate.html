@@ -1,0 +1,85 @@
+<div class="dojoxDialog" tabindex="-1">
+	<div dojoAttachPoint="titleBar" class="dojoxDialogTitleBar">
+		<span dojoAttachPoint="titleNode" class="dojoxDialogTitle"
+			id="${id}_title">${title}</span>
+		<div dojoAttachPoint="closeButtonNode" class="dojoxDialogCloseIcon hiddeenDialogCloseIcon hiddenInput"
+			dojoAttachEvent="onclick: onCancel">
+			<span dojoAttachPoint="closeText" class="closeText">x</span>
+		</div>
+	</div>
+	<div dojoAttachPoint="dojoxDialogWrapper">
+		<div dojoAttachPoint="containerNode" class="dojoxDialogPaneContent">
+			<div data-dojo-attach-point="codetableForm"
+				data-dojo-type="dijit/form/Form" enctype="multipart/form-data"
+				action="" method="POST">
+				<div>
+					<input data-dojo-type='dijit/form/TextBox' id="unitbooking" name="unitbooking" 
+					data-dojo-attach-point='unitbooking' class="hiddenInput" value=""></input>
+					<input data-dojo-type='dijit/form/TextBox' id="user" name="user" 
+					data-dojo-attach-point='user' class="hiddenInput" value=""></input>
+					<fieldset style="width: 80%;">
+	 					<legend>Booking Details:</legend>
+							Customer Name: <span id="customerDisplayName" data-dojo-attach-point="customerDisplayName"></span><br>
+							Unit: <span id="unitDisplayName" data-dojo-attach-point="unitDisplayName"></span><br>
+							Total cost with discount: <span id="totalUnitCostWithDiscount" data-dojo-attach-point="totalUnitCostWithDiscount"></span><br>
+							Total Payment Received: <span id="totalPaymentReceived" data-dojo-attach-point="totalPaymentReceived"></span><br>
+							Balance Payment: <span id="balancePayment" data-dojo-attach-point="balancePayment"></span><br>
+					</fieldset>
+					<fieldset style="width: 80%;">
+	 					<legend>Unit Modification Request:</legend>
+	 					<div>
+	 						<table align="left" style="width: 100%;">
+	 							<tr><td colspan="2">
+									<table style="width: 80%;">
+										<tr><td><label for="unitmodificationdetails">Unit Modifications Details:</label></td></tr>
+										<tr><td><textarea id="unitmodificationdetails" name="unitmodificationdetails"
+										data-dojo-type="dijit/form/SimpleTextarea" rows="10"
+										data-dojo-attach-point='unitmodificationdetails'></textarea></td></tr>
+									</table>
+								</td></tr>
+							</table>
+						</div>
+						<div id="unitmodificationstatusdiv" data-dojo-attach-point="unitmodificationstatusdiv">
+							<table>
+								<tr><td>
+									<table>
+										<tr><td><label for="unitmodificationstatus">Unit Modification Status:</label></td></tr>
+										<tr><td><select id="unitmodificationstatus" name="unitmodificationstatus"
+										data-dojo-type="dijit/form/FilteringSelect" 
+										data-dojo-attach-point='unitmodificationstatus'
+										data-dojo-props="required:false"></select></td></tr>
+									</table>
+								</td><td>
+									<table>
+										<tr><td><label for="unitmodificationstatuscomment">Unit Modification Status Comment:</label></td></tr>
+										<tr><td><textarea id="unitmodificationstatuscomment" name="unitmodificationstatuscomment"
+										data-dojo-type="dijit/form/SimpleTextarea" rows="3"
+										data-dojo-attach-point='unitmodificationstatuscomment'></textarea></td></tr>
+									</table>
+								</td></tr>
+							</table>
+	 					</div>
+					</fieldset>
+				</div>
+				<div>
+					<table>
+						<tr>
+							<td>
+								<div class="dialogMessageSpan"
+									data-dojo-attach-point="messageNode"></div>
+							</td>
+							<td><div>
+									<button data-dojo-type="dijit.form.Button" data-dojo-props=""
+										data-dojo-attach-point="submitButton"
+										data-dojo-attach-event="onClick: onSubmit">Submit</button>
+									<button data-dojo-type="dijit.form.Button" data-dojo-props=""
+										data-dojo-attach-point="cancelButton"
+										data-dojo-attach-event="onClick: onCancel">Cancel</button>
+								</div></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

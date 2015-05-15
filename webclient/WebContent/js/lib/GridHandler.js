@@ -346,6 +346,17 @@ define(
     		                    	gridHandler: this,
     		                }
     						this.dialogHandler.openOtherActionDialog(options, window.screen.width*0.50, window.screen.height*0.50);
+    					} else if (action[0] == "unitmodificationrequest") {
+    						var options = {
+    								action: action[0], 
+    		                    	title: "Unit modification request for booking " + rowData.id,
+    		                    	data: rowData,
+    		                    	userId: this.userId,
+    		                    	url: "../rest/json/data/inventory/unitbooking/post/unitmodification",
+    		                    	mode: "edit",
+    		                    	gridHandler: this,
+    		                }
+    						this.dialogHandler.openOtherActionDialog(options, window.screen.width*0.50, window.screen.height*0.75);
     					} else if (action[0] == "showcomments") {
     						var options = {
     								action: action[0],

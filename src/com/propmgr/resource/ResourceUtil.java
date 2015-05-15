@@ -72,6 +72,9 @@ import com.propmgr.dao.Unitbooking;
 import com.propmgr.dao.UnitbookingDAO;
 import com.propmgr.dao.Unitmaster;
 import com.propmgr.dao.UnitmasterDAO;
+import com.propmgr.dao.Unitmodificationstate;
+import com.propmgr.dao.Unitmodificationstatus;
+import com.propmgr.dao.UnitmodificationstatusDAO;
 import com.propmgr.dao.Unitpaymentschedule;
 import com.propmgr.dao.UnitpaymentscheduleDAO;
 import com.propmgr.dao.Unitpricepolicy;
@@ -242,6 +245,7 @@ public class ResourceUtil {
 	}
 	
 	public static UnitBookingResource getUnitbookingFromDAO(Unitbooking unitbooking)  throws SQLException, IOException {
+		UnitmodificationstatusDAO unitmodificationstatusDAO = new UnitmodificationstatusDAO();
 		Unitmaster unit = unitbooking.getUnitmaster();
 		long buildingId = unit.getProjectbuilding().getProjectbuildingid();
 		Customermaster customer = unitbooking.getCustomermaster();
@@ -267,12 +271,23 @@ public class ResourceUtil {
 					refundMaster.getChequenumber(), convertDateToString(refundMaster.getChequedate()));
 		}
 		
+		Unitmodificationstatus unitmodificationstatus = unitmodificationstatusDAO.findLatestByBookingId(unitbooking.getUnitbookingid());
+		String unitModificationStatusDate = (unitmodificationstatus != null) ? convertDateToString(unitmodificationstatus.getStatusdate()) : null;
+		String unitModificationStatusComment = (unitmodificationstatus != null) ? convertClobToString(unitmodificationstatus.getStatuscomment()) : null;
+		UnitModificationStateResource unitModificationState = null;
+		if (unitmodificationstatus != null) {
+			Unitmodificationstate aUnitmodificationState = unitmodificationstatus.getUnitmodificationstate();
+			unitModificationState = new UnitModificationStateResource(aUnitmodificationState.getUnitmodificationstateid(), 
+					aUnitmodificationState.getUnitmodificationstatename());
+		}
+				
 		return new UnitBookingResource(unitbooking.getUnitbookingid(), buildingId, unitbooking.getBookingformnumber(),
 			getCustomerDisplayName(customer), getUnitDisplayName(unit), 
 			getUserDisplayName(user), convertDateToString(unitbooking.getBookingdate()), 
 			bookingDiscount, deductionOnOtherCharges, convertClobToString(unitbooking.getBookingcomment()), priceWithoutDiscount.getTotalCost(),
 			priceWithDiscount.getTotalCost(), totalPaymentReceived, balancePayment, unitbooking.getIscancelled(), cancelUserDisplayName,
-			cancelDeduction, cancellationDate, cancellationComment, refundDetails);
+			cancelDeduction, cancellationDate, cancellationComment, refundDetails, convertClobToString(unitbooking.getUnitmodificationdetails()),
+			unitModificationState, unitModificationStatusDate, unitModificationStatusComment);
 	}
 	
 	public static ParkingResource getParkingFromDAO(Parkingmaster parking)  throws SQLException, IOException {

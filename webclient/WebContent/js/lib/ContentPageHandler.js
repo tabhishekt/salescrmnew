@@ -126,7 +126,7 @@ define(
             		}
             	} else if (this.page == "unitbooking") {
             		if (this.userData) {
-    	   	   			return {style : "width:83%"}
+    	   	   			return {style : "width:100%"}
     	   	   		} else {
     	   	   			return {style : "width:20%"};
     	   	   		}
@@ -218,6 +218,7 @@ define(
  	   	   			           ["delete", "Delete", "Delete"],
  	   	   			           ["payment", "Manage Payment", "NewPage"],
  	   	   			           ["cancelbooking", "Cancel Booking", "NewPage"],
+ 	   	   			           ["unitmodificationrequest", "Unit Modification Request", "NewPage"],
  	   	   			           ["printbookingform", "Print Booking Form", "NewPage"],
  	   	   			           ["printdemandletter", "Print Demand Letter", "NewPage"],
  	   	   			           ["refresh", "Refresh", "NewPage"]

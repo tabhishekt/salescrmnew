@@ -10,6 +10,10 @@ INSERT INTO paymentState (paymentStateID, paymentStateName, allowStateChange) VA
 INSERT INTO paymentState (paymentStateID, paymentStateName, allowStateChange) VALUES ('3', 'Cleared', 'false');
 INSERT INTO paymentState (paymentStateID, paymentStateName, allowStateChange) VALUES ('4', 'Bounced', 'false');
 
+-- unitModificationState
+INSERT INTO unitModificationState (unitModificationStateID, unitModificationStateName) VALUES ('1', 'Request submitted');
+INSERT INTO unitModificationState (unitModificationStateID, unitModificationStateName) VALUES ('2', 'Request approved');
+INSERT INTO unitModificationState (unitModificationStateID, unitModificationStateName) VALUES ('3', 'Request declined');
 
 -- paymentType
 INSERT INTO paymentType (paymentTypeID, paymentTypeCode, paymentTypeDescription) VALUES ('1', 'CASH', 'Cash');

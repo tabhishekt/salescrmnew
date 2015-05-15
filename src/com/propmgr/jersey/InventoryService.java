@@ -65,6 +65,10 @@ import com.propmgr.dao.Unitbooking;
 import com.propmgr.dao.UnitbookingDAO;
 import com.propmgr.dao.Unitmaster;
 import com.propmgr.dao.UnitmasterDAO;
+import com.propmgr.dao.Unitmodificationstate;
+import com.propmgr.dao.UnitmodificationstateDAO;
+import com.propmgr.dao.Unitmodificationstatus;
+import com.propmgr.dao.UnitmodificationstatusDAO;
 import com.propmgr.dao.Unitpaymentschedule;
 import com.propmgr.dao.UnitpaymentscheduleDAO;
 import com.propmgr.dao.Unitpricepolicy;
@@ -88,6 +92,7 @@ import com.propmgr.resource.ProjectPhaseResource;
 import com.propmgr.resource.ProjectResource;
 import com.propmgr.resource.ResourceUtil;
 import com.propmgr.resource.UnitBookingResource;
+import com.propmgr.resource.UnitModificationStateResource;
 import com.propmgr.resource.UnitPaymentScheduleDetailsResource;
 import com.propmgr.resource.UnitPaymentScheduleResource;
 import com.propmgr.resource.UnitPriceDetailResource;
@@ -1686,6 +1691,67 @@ public class InventoryService {
 			logger.error("", e);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
 		} 
+	    return Response.ok().build();
+	}
+	
+	@GET
+	@Path("/unitbooking/get/unitmodificationstates")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAllUnitModificationStates() {
+		List<UnitModificationStateResource> result = new ArrayList<UnitModificationStateResource>();
+		UnitmodificationstateDAO unitmodificationstateDAO = new UnitmodificationstateDAO();
+		
+		List<Unitmodificationstate> allUnitModificationStates = unitmodificationstateDAO.findAll(); 
+		for (Unitmodificationstate aUnitmodificationState : allUnitModificationStates) {
+			result.add(new UnitModificationStateResource(aUnitmodificationState.getUnitmodificationstateid(), 
+					aUnitmodificationState.getUnitmodificationstatename()));
+		}
+		int size = result.size();
+		
+	    return Response.ok(result).header("Content-Range", "items 0-" + (size - 1) + "/" + size).build();
+	}
+	
+	@POST
+	@Path("/unitbooking/post/unitmodification")
+	@Consumes("application/x-www-form-urlencoded")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response modifyUnitModificationRequest(MultivaluedMap<String, String> formData) {
+		UnitmodificationstateDAO unitmodificationstateDAO = new UnitmodificationstateDAO();
+		UnitmodificationstatusDAO unitmodificationstatusDAO = new UnitmodificationstatusDAO();
+		UnitbookingDAO unitbookingDAO = new UnitbookingDAO();
+		
+		try {
+			Unitbooking unitbooking = ResourceUtil.getUnitbookingPOJO(formData);
+			Usermaster user = ResourceUtil.getUserPOJO(formData);
+			long unitmodificationstateID = 1;
+			Unitmodificationstatus unitmodificationstatus = null;
+			
+			String unitModificationStatusFormValue = ResourceUtil.getFormDataValue(formData, "unitmodificationstatus");
+			if (unitModificationStatusFormValue != null && unitModificationStatusFormValue.length() > 0) {
+				unitmodificationstateID = ResourceUtil.getFormDataValueAsLong(formData, "unitmodificationstatus");
+				unitmodificationstatus = unitmodificationstatusDAO.findLatestByBookingIdAndState(unitbooking.getUnitbookingid(), unitmodificationstateID);
+			} else {
+				unitbooking.setUnitmodificationdetails(ResourceUtil.getFormDataValueAsClob(formData, "unitmodificationdetails"));
+				unitbookingDAO.save(unitbooking);
+			}
+			
+			if (unitmodificationstatus == null) {
+				unitmodificationstatus = new Unitmodificationstatus();
+			}
+			Unitmodificationstate unitmodificationstate = unitmodificationstateDAO.findById(unitmodificationstateID);
+			unitmodificationstatus.setUnitbooking(unitbooking);;
+			unitmodificationstatus.setUnitmodificationstate(unitmodificationstate);
+			unitmodificationstatus.setStatusdate(Calendar.getInstance().getTime());
+			unitmodificationstatus.setStatuscomment(ResourceUtil.getFormDataValueAsClob(formData, "unitmodificationstatuscomment"));
+			unitmodificationstatus.setUsermaster(user);
+			unitmodificationstatusDAO.save(unitmodificationstatus);
+			
+			unitmodificationstatusDAO.flushSession();
+		}
+		catch (Exception e) {
+			logger.error("", e);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
+		}
 	    return Response.ok().build();
 	}
 	

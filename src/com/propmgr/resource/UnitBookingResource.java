@@ -1,7 +1,5 @@
 package com.propmgr.resource;
 
-
-
 public class UnitBookingResource {
 	private long id;
 	private long buildingId;
@@ -23,6 +21,10 @@ public class UnitBookingResource {
 	private String cancellationDate;
 	private String cancellationComment;
 	private RefundResource refundDetails;
+	private String unitModificationDetails;
+	private UnitModificationStateResource unitModificationStatus;
+	private String unitModificationStatusDate;
+	private String unitModificationStatusComment;
 	
 	public UnitBookingResource(long id, long buildingId, long bookingFormNumber,
 			String customerDisplayName, String unitDisplayName,
@@ -31,7 +33,9 @@ public class UnitBookingResource {
 			double totalUnitCostWithDiscount, double totalPaymentReceived,
 			double balancePayment, boolean cancelled, String cancelUserDisplayName, 
 			double cancelDeduction, String cancellationDate, String cancellationComment,
-			RefundResource refundDetails) {
+			RefundResource refundDetails, String unitModificationDetails, 
+			UnitModificationStateResource unitModificationStatus, String unitModificationStatusDate, 
+			String unitModificationStatusComment) {
 		super();
 		this.id = id;
 		this.buildingId = buildingId;
@@ -53,6 +57,10 @@ public class UnitBookingResource {
 		this.cancellationDate = cancellationDate;
 		this.cancellationComment = cancellationComment;
 		this.refundDetails = refundDetails;
+		this.unitModificationDetails = unitModificationDetails;
+		this.unitModificationStatus = unitModificationStatus;
+		this.unitModificationStatusDate = unitModificationStatusDate;
+		this.unitModificationStatusComment = unitModificationStatusComment;
 	}
 
 	public long getId() {
@@ -149,5 +157,21 @@ public class UnitBookingResource {
 
 	public RefundResource getRefundDetails() {
 		return refundDetails;
+	}
+
+	public String getUnitModificationDetails() {
+		return unitModificationDetails;
+	}
+
+	public UnitModificationStateResource getUnitModificationStatus() {
+		return unitModificationStatus;
+	}
+
+	public String getUnitModificationStatusDate() {
+		return unitModificationStatusDate;
+	}
+
+	public String getUnitModificationStatusComment() {
+		return unitModificationStatusComment;
 	}
 }

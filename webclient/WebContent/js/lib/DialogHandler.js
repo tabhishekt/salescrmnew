@@ -15,13 +15,14 @@ define(
         'lib/widget/ShowUnitAvailabilityDialog',
         'lib/widget/CancelUnitBookingDialog',
         'lib/widget/ShowCancelledBookingDetailDialog',
-        'lib/widget/DefineBuildingParkingDialog'
+        'lib/widget/DefineBuildingParkingDialog',
+        'lib/widget/UnitModificationRequestDialog'
     ],
     function (
         declare, lang, LoginDialog, ConfirmDialog, InformationDialog, ShowEnquiryCommentDialog, 
         ShowUnitPriceDetailDialog, AddEditUnitFloorRiseDialog, AddEditUnitPriceDialog, AddEditUnitChargesDialog,
         ShowUnitPaymentScheduleDialog, DefineBuildingPaymentScheduleDialog, ShowUnitAvailabilityDialog,
-        CancelUnitBookingDialog, ShowCancelledBookingDetailDialog, DefineBuildingParkingDialog
+        CancelUnitBookingDialog, ShowCancelledBookingDetailDialog, DefineBuildingParkingDialog, UnitModificationRequestDialog
     ) {
         return declare([], {
             
@@ -145,6 +146,18 @@ define(
                 		options.draggable = false;
                     	options.showTitle = true;	
                 		this.cancelBookingDialog = new CancelUnitBookingDialog(options);
+                	}
+            		this.cancelBookingDialog.data = options.data;
+            		this.cancelBookingDialog.userId = options.userId;
+                	this.cancelBookingDialog.set("title", options.title);
+        			this.cancelBookingDialog.set("dimensions", [width, height]);  
+        			this.cancelBookingDialog.layout();
+        			this.cancelBookingDialog.show();
+            	} else if (options.action == "unitmodificationrequest") {
+            		if(!this.cancelBookingDialog) {
+                		options.draggable = false;
+                    	options.showTitle = true;	
+                		this.cancelBookingDialog = new UnitModificationRequestDialog(options);
                 	}
             		this.cancelBookingDialog.data = options.data;
             		this.cancelBookingDialog.userId = options.userId;
