@@ -1,11 +1,13 @@
 define([
     'dojo/_base/declare',
     "dijit/registry",
+    "dojo/request",
     "dojo/_base/array",
+    "dojo/currency",
     "lib/widget/AddEditDialog",
     'lib/widget/AddressWidget',
     "dojo/text!./template/AddEditPaymentTemplate.html"
-], function (declare, registry, array, AddEditDialog, AddressWidget, template) {
+], function (declare, registry, request, array, currency, AddEditDialog, AddressWidget, template) {
     return declare([AddEditDialog], {
 		templateString: template,
 		
@@ -21,12 +23,47 @@ define([
 				this.receiptnumber.set("value", this.receiptNumber);
 				this.receiptnumberdisplay.set("value", this.receiptNumber);
 			}
+			
+			this.updateBookingDetails();
+		},
+		
+		formatCurrency : function (value) {
+			  if (value) { 
+			    var formattedCurrency = currency.format(value, {currency: "Rs "});
+			    return formattedCurrency;   
+			  } 
+			  
+			  return "Rs " + 0;
+		},
+		
+		updateBookingDetails : function () {
+			var widget = this;
+			var promise = request.get('../rest/json/data/inventory/unitbooking/get?rowId=' + this.unitbookingId, {
+ 				timeout: 2000,
+ 				handleAs: "json"
+ 			});
+ 			
+ 			promise.response.then (
+ 				function(response) {
+ 					var data = response.data;
+ 					widget.customerDisplayName.innerHTML = data.customerDisplayName;
+ 					widget.unitDisplayName.innerHTML = data.unitDisplayName;
+ 					widget.bookingAmount.innerHTML = widget.formatCurrency(data.bookingAmount);
+ 					widget.totalUnitCostWithDiscount.innerHTML = widget.formatCurrency(data.totalUnitCostWithDiscount);
+ 					widget.totalPaymentReceived.innerHTML = widget.formatCurrency(data.totalPaymentReceived);
+ 					widget.balancePayment.innerHTML = widget.formatCurrency(data.balancePayment);
+ 				},
+ 				function(error) {
+ 					console.log("Problem occured fetching booking details");
+ 				}
+ 			);
 		},
 		
 		setData: function (data) {
 			this.rowId.set("value", data.id);
 			this.unitbooking.set("value", data.unitbookingId);
 			this.user.set("value", data.userId);
+			this.updateBookingDetails();
 			
 			this.receiptnumber.set("value", data.receiptNumber);
 			this.receiptnumberdisplay.set("value", data.receiptNumber);

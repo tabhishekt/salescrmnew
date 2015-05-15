@@ -283,7 +283,7 @@ public class ResourceUtil {
 				
 		return new UnitBookingResource(unitbooking.getUnitbookingid(), buildingId, unitbooking.getBookingformnumber(),
 			getCustomerDisplayName(customer), getUnitDisplayName(unit), 
-			getUserDisplayName(user), convertDateToString(unitbooking.getBookingdate()), 
+			getUserDisplayName(user), convertDateToString(unitbooking.getBookingdate()), unit.getBookingamount(), 
 			bookingDiscount, deductionOnOtherCharges, convertClobToString(unitbooking.getBookingcomment()), priceWithoutDiscount.getTotalCost(),
 			priceWithDiscount.getTotalCost(), totalPaymentReceived, balancePayment, unitbooking.getIscancelled(), cancelUserDisplayName,
 			cancelDeduction, cancellationDate, cancellationComment, refundDetails, convertClobToString(unitbooking.getUnitmodificationdetails()),

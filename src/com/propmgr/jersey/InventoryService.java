@@ -1045,7 +1045,6 @@ public class InventoryService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response modifyUnitsUpdateFloorRise(MultivaluedMap<String, String> formData) {
 		UnitmasterDAO unitmasterDAO = new UnitmasterDAO();
-		UnitbookingDAO unitbookingDAO = new UnitbookingDAO();
 		boolean updateMade = false;
 		
 		try {

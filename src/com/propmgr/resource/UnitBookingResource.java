@@ -8,6 +8,7 @@ public class UnitBookingResource {
 	private String unitDisplayName;
 	private String userDisplayName;
 	private String bookingDate;
+	private double bookingAmount;
 	private double discount;
 	private double deductionOnOtherCharges;
 	private String comment;
@@ -28,7 +29,7 @@ public class UnitBookingResource {
 	
 	public UnitBookingResource(long id, long buildingId, long bookingFormNumber,
 			String customerDisplayName, String unitDisplayName,
-			String userDisplayName, String bookingDate, double discount,
+			String userDisplayName, String bookingDate, double bookingAmount, double discount,
 			double deductionOnOtherCharges, String comment, double totalUnitCost,
 			double totalUnitCostWithDiscount, double totalPaymentReceived,
 			double balancePayment, boolean cancelled, String cancelUserDisplayName, 
@@ -44,6 +45,7 @@ public class UnitBookingResource {
 		this.unitDisplayName = unitDisplayName;
 		this.userDisplayName = userDisplayName;
 		this.bookingDate = bookingDate;
+		this.bookingAmount = bookingAmount;
 		this.deductionOnOtherCharges = deductionOnOtherCharges;
 		this.discount = discount;
 		this.comment = comment;
@@ -91,6 +93,10 @@ public class UnitBookingResource {
 		return bookingDate;
 	}
 
+	public double getBookingAmount() {
+		return bookingAmount;
+	}
+	
 	public double getDiscount() {
 		return discount;
 	}
