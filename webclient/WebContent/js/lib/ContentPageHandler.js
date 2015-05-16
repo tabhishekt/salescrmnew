@@ -383,7 +383,7 @@ define(
             		  break;
             	  case "unitpricepolicy": 
             		  this.pageParams.dialogDimension.width = window.screen.width*0.40;
-            		  this.pageParams.dialogDimension.height = window.screen.height*0.45;
+            		  this.pageParams.dialogDimension.height = window.screen.height*0.55;
             		  this.pageParams.serviceName = "inventory";
             		  this.pageParams.gridLayout = [
 													{field: "policyName",name: "Policy Name",width: "auto"},

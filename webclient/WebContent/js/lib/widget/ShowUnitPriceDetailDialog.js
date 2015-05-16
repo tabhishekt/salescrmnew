@@ -40,27 +40,31 @@ define([
    					dialog.unitnumber.innerHTML = response.data.unitNumber;
    					dialog.displayprojectinfo.innerHTML = response.data.displayProjectInfo;
    					
-   					dialog.maintenancecharge1.innerHTML = dialog.formatCurrency(response.data.maintenancecharge1);
-   					dialog.maintenancecharge2.innerHTML = dialog.formatCurrency(response.data.maintenancecharge2);
+   					dialog.maintenancecharge1.innerHTML = dialog.formatCurrency(response.data.maintenancecharge1) + " (Rs. " + response.data.pricePolicy.maintenancecharge1 + " per sq ft)";
+   					dialog.maintenancecharge2.innerHTML = dialog.formatCurrency(response.data.maintenancecharge2) + " (Rs. " + response.data.pricePolicy.maintenancecharge2 + " per sq ft)";;
    					dialog.legalcharge.innerHTML = dialog.formatCurrency(response.data.legalcharge);
    					dialog.othercharges.innerHTML = dialog.formatCurrency(response.data.othercharges);
    					dialog.deductionothercharges.innerHTML = dialog.formatCurrency(response.data.deductionOnOtherCharges);
    					dialog.totalcharges.innerHTML = dialog.formatCurrency(response.data.totalcharges);
    					
-   					dialog.stampduty.innerHTML = dialog.formatCurrency(response.data.stampduty);
-   					dialog.registrationcharge.innerHTML = dialog.formatCurrency(response.data.registrationcharge);
-   					dialog.servicetax.innerHTML = dialog.formatCurrency(response.data.servicetax);
-   					dialog.valueaddedtax.innerHTML = dialog.formatCurrency(response.data.valueaddedtax);
+   					dialog.stampduty.innerHTML = dialog.formatCurrency(response.data.stampduty) + " (" + response.data.pricePolicy.stampduty + "%)";
+   					dialog.registrationcharge.innerHTML = dialog.formatCurrency(response.data.registrationcharge) + " (" + response.data.pricePolicy.registrationcharge + "%)";
+   					dialog.servicetax.innerHTML = dialog.formatCurrency(response.data.servicetax) + " (" + response.data.pricePolicy.servicetax + "%)";
+   					dialog.valueaddedtax.innerHTML = dialog.formatCurrency(response.data.valueaddedtax) + " (" + response.data.pricePolicy.valueaddedtax + "%)";
    					dialog.totaltax.innerHTML = dialog.formatCurrency(response.data.totalTax);
    					
    					dialog.saleablearea.innerHTML = response.data.saleableArea;
    					dialog.carpetarea.innerHTML = response.data.carpetArea;
    					dialog.baserate.innerHTML = dialog.formatCurrency(response.data.baserate);
+   					dialog.readyreckonerrate.innerHTML = dialog.formatCurrency(response.data.readyreckonerrate);
    					dialog.ratediscount.innerHTML = dialog.formatCurrency(response.data.discount);
    					dialog.floorrise.innerHTML = dialog.formatCurrency(response.data.floorrise);
    					dialog.agreementvalue.innerHTML = dialog.formatCurrency(response.data.agreementvalue);
+   					dialog.agreementvaluereadyreckoner.innerHTML = dialog.formatCurrency(response.data.agreementvalueReadyReckoner);
    					dialog.totalcostwithtax.innerHTML = dialog.formatCurrency(response.data.totalCostWithTax);
+   					dialog.totalcostwithtaxreadyreckoner.innerHTML = dialog.formatCurrency(response.data.totalCostWithTaxReadyReckoner);
    					dialog.totalcost.innerHTML = dialog.formatCurrency(response.data.totalCost);
+   					dialog.totalcostreadyreckoner.innerHTML = dialog.formatCurrency(response.data.totalCostReadyReckoner);
    				},
    				function(error) {
    					this.gridHandler.updateMessage("Problem occured fetching price details: " + error.response.data.message, "error");

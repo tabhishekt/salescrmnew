@@ -5,6 +5,7 @@ public class UnitPricePolicyResource {
 	private long id;
 	private String policyName;
 	private double baserate;
+	private double readyreckonerrate;
 	private double stampduty;
 	private double registrationcharge;
 	private double servicetax;
@@ -15,13 +16,14 @@ public class UnitPricePolicyResource {
 	private double legalcharge;
 	private String assignedToProjects;
 	
-	public UnitPricePolicyResource(Long id, String policyName, double baserate, double stampduty, 
+	public UnitPricePolicyResource(Long id, String policyName, double baserate, double readyreckonerrate, double stampduty, 
 			double registrationcharge, double servicetax, double valueaddedtax, double totaltax, 
 			double maintenancecharge1,double maintenancecharge2, double legalcharge, String assignedToProjects) {
 		super();
 		this.id = id;
 		this.policyName = policyName;
 		this.baserate = baserate;
+		this.readyreckonerrate = readyreckonerrate;
 		this.stampduty = stampduty;
 		this.registrationcharge = registrationcharge;
 		this.servicetax = servicetax;
@@ -45,6 +47,10 @@ public class UnitPricePolicyResource {
 		return baserate;
 	}
 	
+	public double getReadyreckonerrate() {
+		return readyreckonerrate;
+	}
+
 	public double getStampduty() {
 		return stampduty;
 	}

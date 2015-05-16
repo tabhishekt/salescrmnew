@@ -5,9 +5,11 @@ public class UnitPriceDetailResource {
 	private long id;
 	private String unitNumber;
 	private String displayProjectInfo;
+	private UnitPricePolicyResource pricePolicy;
 	private long carpetArea;
 	private long saleableArea;
 	private double baserate;
+	private double readyreckonerrate;
 	private double discount;
 	private double deductionOnOtherCharges;
 	private double floorrise;
@@ -22,24 +24,31 @@ public class UnitPriceDetailResource {
 	private double othercharges;
 	private double totalcharges;
 	private double basicCost;
+	private double basicCostReadyReckoner;
 	private double agreementvalue;
+	private double agreementvalueReadyReckoner;
 	private double totalTax;
 	private double totalCostWithTax;
+	private double totalCostWithTaxReadyReckoner;
 	private double totalCost;
+	private double totalCostReadyReckoner;
 	
-	public UnitPriceDetailResource(long id, String unitNumber, String displayProjectInfo, 
-			long saleableArea, long carpetArea, double baserate, double discount, double deductionOnOtherCharges, 
+	public UnitPriceDetailResource(long id, String unitNumber, String displayProjectInfo, UnitPricePolicyResource pricePolicy, 
+			long saleableArea, long carpetArea, double baserate, double readyreckonerrate, double discount, double deductionOnOtherCharges, 
 			double floorrise, double totalrate, double stampduty, double registrationcharge, double servicetax,
 			double valueaddedtax, double maintenancecharge1, double maintenancecharge2, double legalcharge, 
-			double othercharges, double totalcharges, double basicCost, double agreementvalue, double totalTax, 
-			double totalCostWithTax, double totalCost) {
+			double othercharges, double totalcharges, double basicCost, double basicCostReadyReckoner, double agreementvalue, 
+			double agreementvalueReadyReckoner, double totalTax, double totalCostWithTax, double totalCostWithTaxReadyReckoner,
+			double totalCost, double totalCostReadyReckoner) {
 		super();
 		this.id = id;
 		this.unitNumber = unitNumber;
 		this.displayProjectInfo = displayProjectInfo;
+		this.pricePolicy = pricePolicy;
 		this.saleableArea = saleableArea;
 		this.carpetArea = carpetArea;
 		this.baserate = baserate;
+		this.readyreckonerrate = readyreckonerrate;
 		this.discount = discount;
 		this.deductionOnOtherCharges = deductionOnOtherCharges;
 		this.floorrise = floorrise;
@@ -58,6 +67,10 @@ public class UnitPriceDetailResource {
 		this.totalTax = totalTax;
 		this.totalCostWithTax = totalCostWithTax;
 		this.totalCost = totalCost;
+		this.basicCostReadyReckoner = basicCostReadyReckoner;
+		this.agreementvalueReadyReckoner = agreementvalueReadyReckoner;
+		this.totalCostWithTaxReadyReckoner = totalCostWithTaxReadyReckoner;
+		this.totalCostReadyReckoner = totalCostReadyReckoner;
 	}
 
 	public long getId() {
@@ -72,6 +85,10 @@ public class UnitPriceDetailResource {
 		return displayProjectInfo;
 	}
 
+	public UnitPricePolicyResource getPricePolicy() {
+		return pricePolicy;
+	}
+
 	public long getSaleableArea() {
 		return saleableArea;
 	}
@@ -84,6 +101,10 @@ public class UnitPriceDetailResource {
 		return baserate;
 	}
 
+	public double getReadyreckonerrate() {
+		return readyreckonerrate;
+	}
+	
 	public double getDiscount() {
 		return discount;
 	}
@@ -154,5 +175,21 @@ public class UnitPriceDetailResource {
 
 	public double getTotalCost() {
 		return totalCost;
+	}
+
+	public double getBasicCostReadyReckoner() {
+		return basicCostReadyReckoner;
+	}
+
+	public double getAgreementvalueReadyReckoner() {
+		return agreementvalueReadyReckoner;
+	}
+
+	public double getTotalCostWithTaxReadyReckoner() {
+		return totalCostWithTaxReadyReckoner;
+	}
+
+	public double getTotalCostReadyReckoner() {
+		return totalCostReadyReckoner;
 	}
 }

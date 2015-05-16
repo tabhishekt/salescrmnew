@@ -1265,6 +1265,7 @@ public class InventoryService {
 			
 			unitPricePolicy.setPolicyname(policyName);
 			unitPricePolicy.setBaserate(ResourceUtil.getFormDataValueAsDouble(formData, "baserate"));
+			unitPricePolicy.setReadyreckonerrate(ResourceUtil.getFormDataValueAsDouble(formData, "readyreckonerrate"));
 			
 			unitPricePolicy.setServicetax(ResourceUtil.getFormDataValueAsDouble(formData, "servicetax"));
 			unitPricePolicy.setValueaddedtax(ResourceUtil.getFormDataValueAsDouble(formData, "valueaddedtax"));

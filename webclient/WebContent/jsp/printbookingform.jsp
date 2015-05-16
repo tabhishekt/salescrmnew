@@ -84,7 +84,8 @@
             	this.projectphase.innerHTML = data.projectPhaseName;
             	this.projectbuilding.innerHTML = data.projectBuildingName;
             	this.saleablearea.innerHTML = data.unit.saleableArea;
-            	this.baserate.innerHTML = this.formatCurrency(data.priceDetails.baserate);
+            	this.baserate.innerHTML = this.formatCurrency(data.priceDetails.baserate) + " /sq ft";
+            	this.reckonerrate.innerHTML = this.formatCurrency(data.priceDetails.readyreckonerrate) + " /sq mt";
             	this.discount.innerHTML = this.formatCurrency(data.priceDetails.discount);
             	this.unitnumber.innerHTML = data.unit.unitNumber;
             	if (data.unit.floorRise > 0) {
@@ -106,11 +107,11 @@
             	
             	this.basiccost.innerHTML = this.formatCurrency(data.priceDetails.basicCost);
             	this.totaltax.innerHTML = this.formatCurrency(data.priceDetails.totalTax);
-            	this.maintenance1.innerHTML = this.formatCurrency(data.unit.unitPricePolicy.maintenancecharge1);
+            	this.maintenance1.innerHTML = this.formatCurrency(data.unit.unitPricePolicy.maintenancecharge1) + " /sq ft";
             	this.maintenance1amt.innerHTML = this.formatCurrency(data.priceDetails.maintenancecharge1);
             	this.othercharges.innerHTML = this.formatCurrency(data.unit.otherCharges);
             	this.legalcharges.innerHTML = this.formatCurrency(data.priceDetails.legalcharge);
-            	this.maintenance2.innerHTML = this.formatCurrency(data.unit.unitPricePolicy.maintenancecharge2);
+            	this.maintenance2.innerHTML = this.formatCurrency(data.unit.unitPricePolicy.maintenancecharge2) + " /sq ft";
             	this.maintenance2amt.innerHTML = this.formatCurrency(data.priceDetails.maintenancecharge2);
             	this.agreementvalue.innerHTML = this.formatCurrency(data.priceDetails.agreementvalue);
             	this.totalwithtax.innerHTML = this.formatCurrency(data.priceDetails.totalCostWithTax);
@@ -128,17 +129,17 @@
             	this.sumtaxpercent.innerHTML = data.unit.unitPricePolicy.totaltax + "%";
             	this.sumtax.innerHTML = this.formatCurrency(data.priceDetails.totalTax);
             	
-            	this.basiccostrr.innerHTML = this.formatCurrency(data.priceDetails.basicCost);
+            	this.basiccostrr.innerHTML = this.formatCurrency(data.priceDetails.basicCostReadyReckoner);
             	this.totaltaxrr.innerHTML = this.formatCurrency(data.priceDetails.totalTax);
-            	this.maintenance1rr.innerHTML = this.formatCurrency(data.unit.unitPricePolicy.maintenancecharge1);
+            	this.maintenance1rr.innerHTML = this.formatCurrency(data.unit.unitPricePolicy.maintenancecharge1) + " /sq ft";
             	this.maintenance1amtrr.innerHTML = this.formatCurrency(data.priceDetails.maintenancecharge1);
             	this.otherchargesrr.innerHTML = this.formatCurrency(data.unit.otherCharges);
             	this.legalchargesrr.innerHTML = this.formatCurrency(data.priceDetails.legalcharge);
-            	this.maintenance2rr.innerHTML = this.formatCurrency(data.unit.unitPricePolicy.maintenancecharge2);
+            	this.maintenance2rr.innerHTML = this.formatCurrency(data.unit.unitPricePolicy.maintenancecharge2) + " /sq ft";
             	this.maintenance2amtrr.innerHTML = this.formatCurrency(data.priceDetails.maintenancecharge2);
-            	this.agreementvaluerr.innerHTML = this.formatCurrency(data.priceDetails.agreementvalue);
-            	this.totalwithtaxrr.innerHTML = this.formatCurrency(data.priceDetails.totalCostWithTax);
-            	this.totalcostrr.innerHTML = this.formatCurrency(data.priceDetails.totalCost);
+            	this.agreementvaluerr.innerHTML = this.formatCurrency(data.priceDetails.agreementvalueReadyReckoner);
+            	this.totalwithtaxrr.innerHTML = this.formatCurrency(data.priceDetails.totalCostWithTaxReadyReckoner);
+            	this.totalcostrr.innerHTML = this.formatCurrency(data.priceDetails.totalCostReadyReckoner);
             	this.builderaccountinformationrr.innerHTML = data.projectBankAccounts["BLDRAC"];
             	
             	this.stampdutypercentrr.innerHTML = data.unit.unitPricePolicy.stampduty + "%";

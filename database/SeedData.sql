@@ -87,7 +87,7 @@ INSERT INTO projectBuilding (projectBuildingID, projectPhase, buildingName, wing
 
 
 -- unitPricePolicy
-INSERT INTO unitPricePolicy (unitPricePolicyID, policyName, baseRate, stampDuty, registrationCharge, serviceTax, valueAddedTax, maintenanceCharge1, maintenanceCharge2, legalCharge) VALUES ('1', 'Ostia5000', '5000', '6', '1', '3', '1', '50', '50', '10000');
+INSERT INTO unitPricePolicy (unitPricePolicyID, policyName, baseRate, readyReckonerRate, stampDuty, registrationCharge, serviceTax, valueAddedTax, maintenanceCharge1, maintenanceCharge2, legalCharge) VALUES ('1', 'Ostia5000', '5000', '4000', '6', '1', '3', '1', '50', '50', '10000');
 
 
 -- customerMaster
