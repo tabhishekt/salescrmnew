@@ -174,14 +174,14 @@
 				th4 = domConstruct.create("th", {"width":"30%"}, tr);
 				this.createSpan(th4, "Amount");
 				th5 = domConstruct.create("th", {"width":"10%"}, tr);
-				this.createSpan(th5, "Floor Rise");
+				this.createSpan(th5, "Floor Rise (/sq ft)");
 					
 				tr = domConstruct.create("tr", {"bgcolor": "#999900"}, table);
 				td1 = domConstruct.create("td", {"align": "left"}, tr);
 				td2 = domConstruct.create("td", {"align": "center"}, tr);
 				td3 = domConstruct.create("td", {"align": "right"}, tr);
 				td4 = domConstruct.create("td", {"align": "right"}, tr);
-				td5 = domConstruct.create("td", {"align": "left"}, tr);
+				td5 = domConstruct.create("td", {"align": "center"}, tr);
 				
 				this.createSpan(td1, "Agreement Value");
 				this.createSpan(td2, " ");
@@ -194,7 +194,7 @@
 				td2 = domConstruct.create("td", {"align": "center"}, tr);
 				td3 = domConstruct.create("td", {"align": "right"}, tr);
 				td4 = domConstruct.create("td", {"align": "right"}, tr);
-				td5 = domConstruct.create("td", {"align": "left"}, tr);
+				td5 = domConstruct.create("td", {"align": "center"}, tr);
 				
 				this.createSpan(td1, "Booking Amount");
 				this.createSpan(td2, " ");
@@ -207,7 +207,7 @@
 				td2 = domConstruct.create("td", {"align": "center"}, tr);
 				td3 = domConstruct.create("td", {"align": "right"}, tr);
 				td4 = domConstruct.create("td", {"align": "right"}, tr);
-				td5 = domConstruct.create("td", {"align": "left"}, tr);
+				td5 = domConstruct.create("td", {"align": "center"}, tr);
 				
 				this.createSpan(td1, "Total Taxes and Legal");
 				this.createSpan(td2, " ");
@@ -228,13 +228,13 @@
 					td2 = domConstruct.create("td", {"align": "center"}, tr);
 					td3 = domConstruct.create("td", {"align": "right"}, tr);
 					td4 = domConstruct.create("td", {"align": "right"}, tr);
-					td5 = domConstruct.create("td", {"align": "left"}, tr);
+					td5 = domConstruct.create("td", {"align": "center"}, tr);
 					
 					this.createSpan(td1, schedule.type);
 					this.createSpan(td2, schedule.percentamount + "%");
 					this.createSpan(td3, this.formatDate(schedule.scheduledate));
 					this.createSpan(td4, this.formatCurrency(schedule.amount));
-					this.createSpan(td5, " ");
+					this.createSpan(td5, this.formatCurrency(schedule.floorRise));
 				}
 				
 				tr = domConstruct.create("tr", {"bgcolor": "#999900"}, table);
@@ -242,7 +242,7 @@
 				td2 = domConstruct.create("td", {"align": "center"}, tr);
 				td3 = domConstruct.create("td", {"align": "right"}, tr);
 				td4 = domConstruct.create("td", {"align": "right"}, tr);
-				td5 = domConstruct.create("td", {"align": "left"}, tr);
+				td5 = domConstruct.create("td", {"align": "center"}, tr);
 				
 				this.createSpan(td1, "Total");
 				this.createSpan(td2, "100%");

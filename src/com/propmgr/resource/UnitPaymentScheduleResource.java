@@ -13,10 +13,12 @@ public class UnitPaymentScheduleResource {
 	private String scheduledate;
 	private double amount;
 	private double percentamount;
+	private double floorRise;
 	private int applicableTo;
 	
 	public UnitPaymentScheduleResource(Long id, long buildingId, String buildingName, int position,
-			String type, String description, String scheduledate, double amount, double percentamount, int applicableTo) {
+			String type, String description, String scheduledate, double amount, double percentamount, 
+			double floorRise, int applicableTo) {
 		super();
 		this.id = id;
 		this.buildingId = buildingId;
@@ -27,6 +29,7 @@ public class UnitPaymentScheduleResource {
 		this.scheduledate = scheduledate;
 		this.amount = amount;
 		this.percentamount = percentamount;
+		this.floorRise = floorRise;
 		this.applicableTo = applicableTo;
 	}
 	
@@ -68,6 +71,14 @@ public class UnitPaymentScheduleResource {
 	
 	public double getPercentamount() {
 		return percentamount;
+	}
+
+	public double getFloorRise() {
+		return floorRise;
+	}
+
+	public void setFloorRise(double floorRise) {
+		this.floorRise = floorRise;
 	}
 
 	public int getApplicableTo() {

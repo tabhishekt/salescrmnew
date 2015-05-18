@@ -376,7 +376,7 @@ public class ResourceUtil {
 			result = new UnitPaymentScheduleResource(paymentSchedule.getUnitpaymentscheduleid(), 
 					projectbuilding.getProjectbuildingid(), projectbuilding.getBuildingname(), paymentSchedule.getPaymentscheduleposition(),
 					paymentSchedule.getPaymentscheduletype(), convertClobToString(paymentSchedule.getPaymentscheduledescription()), 
-					convertDateToString(paymentSchedule.getPaymentscheduledate()), 0, paymentSchedule.getPercentamount(), paymentSchedule.getApplicableto());
+					convertDateToString(paymentSchedule.getPaymentscheduledate()), 0, paymentSchedule.getPercentamount(), 0, paymentSchedule.getApplicableto());
 			
 		}
 		
@@ -1202,5 +1202,18 @@ public class ResourceUtil {
 		 }
 		 
 		 return 0;
+	 }
+	 
+	 public static double getFloorRisePaymentSchedule(String type, long buildingId) {
+		 double floorRise = 0;
+		 UnitmasterDAO unitmasterDAO = new UnitmasterDAO();
+		 
+		 if (type.startsWith("Slab")) {
+			 StringTokenizer sTok = new StringTokenizer(type, " ");
+			 sTok.nextToken();
+			 floorRise = unitmasterDAO.findMaxFloorRiseByFloorNumberAndBuilding(Integer.parseInt(sTok.nextToken()), buildingId);
+		 } 
+		 
+		 return floorRise;
 	 }
 }

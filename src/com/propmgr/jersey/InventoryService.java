@@ -1511,12 +1511,13 @@ public class InventoryService {
 						if (ResourceUtil.isPaymentScheduleApplicableToUnit(paymentSchedule, unit)) {
 							double percentAmount = paymentSchedule.getPercentamount();
 							double amount = (percentAmount*totalCost) / 100;
-							
+							double floorRise = ResourceUtil.getFloorRisePaymentSchedule(paymentSchedule.getPaymentscheduletype(), projectbuilding.getProjectbuildingid());
 							if (paymentSchedule.getPaymentscheduletype().equalsIgnoreCase("Registration payment")) {
 								amount -= bookingAmount; 
 							}
 							UnitPaymentScheduleResource paymentScheduleRes = ResourceUtil.getUnitPaymentScheduleFromDAO(paymentSchedule);
 							paymentScheduleRes.setAmount(amount);
+							paymentScheduleRes.setFloorRise(floorRise);
 							scheduleList.add(paymentScheduleRes);
 						}
 					}
