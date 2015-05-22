@@ -4,25 +4,25 @@
 DROP TABLE actionRole;
 DROP TABLE actionMaster;
 DROP TABLE projectBankAccount;
-DROP TABLE unitAmenity;
+DROP TABLE unitPaymentSchedule;
+DROP TABLE refundMaster;
 DROP TABLE paymentStage;
 DROP TABLE paymentStatus;
 DROP TABLE paymentMaster;
-DROP TABLE refundMaster;
 DROP TABLE unitModificationStatus;
 DROP TABLE unitBooking;
+DROP TABLE unitAmenity;
 DROP TABLE unitMaster;
 DROP TABLE parkingMaster;
-DROP TABLE unitPaymentSchedule;
 DROP TABLE projectBuilding;
 DROP TABLE projectPhase;
 DROP TABLE projectMaster;
-DROP TABLE userRole;
+DROP TABLE organization;
 DROP TABLE enquiryComment;
 DROP TABLE enquiry;
 DROP TABLE customerMaster;
+DROP TABLE userRole;
 DROP TABLE userMaster;
-DROP TABLE organization;
 DROP TABLE address;
 DROP TABLE amenity;
 DROP TABLE bankAccountType;
@@ -414,6 +414,7 @@ CREATE TABLE unitMaster
 	unitID bigint auto_increment NOT NULL UNIQUE,
 	projectBuilding bigint NOT NULL,
 	unitType bigint NOT NULL,
+	unitClassId bigint NOT NULL,
 	unitPricePolicyID bigint,
 	unitNumber varchar(32) NOT NULL,
 	floorNumber int NOT NULL,
@@ -537,22 +538,6 @@ ALTER TABLE projectMaster
 ;
 
 
-ALTER TABLE userMaster
-	ADD FOREIGN KEY (userAddress)
-	REFERENCES address (addressID)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
-;
-
-
-ALTER TABLE projectBankAccount
-	ADD FOREIGN KEY (bankAddress)
-	REFERENCES address (addressID)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
-;
-
-
 ALTER TABLE organization
 	ADD FOREIGN KEY (orgAddress)
 	REFERENCES address (addressID)
@@ -561,8 +546,24 @@ ALTER TABLE organization
 ;
 
 
+ALTER TABLE userMaster
+	ADD FOREIGN KEY (userAddress)
+	REFERENCES address (addressID)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
 ALTER TABLE customerMaster
 	ADD FOREIGN KEY (address)
+	REFERENCES address (addressID)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE projectBankAccount
+	ADD FOREIGN KEY (bankAddress)
 	REFERENCES address (addressID)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
@@ -697,14 +698,6 @@ ALTER TABLE paymentMaster
 ;
 
 
-ALTER TABLE userMaster
-	ADD FOREIGN KEY (personDetail)
-	REFERENCES person (personID)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
-;
-
-
 ALTER TABLE organization
 	ADD FOREIGN KEY (contactPerson)
 	REFERENCES person (personID)
@@ -721,6 +714,22 @@ ALTER TABLE customerMaster
 ;
 
 
+ALTER TABLE userMaster
+	ADD FOREIGN KEY (personDetail)
+	REFERENCES person (personID)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE unitPaymentSchedule
+	ADD FOREIGN KEY (projectBuildingID)
+	REFERENCES projectBuilding (projectBuildingID)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
 ALTER TABLE unitMaster
 	ADD FOREIGN KEY (projectBuilding)
 	REFERENCES projectBuilding (projectBuildingID)
@@ -730,14 +739,6 @@ ALTER TABLE unitMaster
 
 
 ALTER TABLE parkingMaster
-	ADD FOREIGN KEY (projectBuildingID)
-	REFERENCES projectBuilding (projectBuildingID)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
-;
-
-
-ALTER TABLE unitPaymentSchedule
 	ADD FOREIGN KEY (projectBuildingID)
 	REFERENCES projectBuilding (projectBuildingID)
 	ON UPDATE RESTRICT
@@ -801,16 +802,16 @@ ALTER TABLE address
 ;
 
 
-ALTER TABLE paymentMaster
-	ADD FOREIGN KEY (unitBooking)
+ALTER TABLE refundMaster
+	ADD FOREIGN KEY (unitBookingID)
 	REFERENCES unitBooking (unitBookingID)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
 ;
 
 
-ALTER TABLE refundMaster
-	ADD FOREIGN KEY (unitBookingID)
+ALTER TABLE paymentMaster
+	ADD FOREIGN KEY (unitBooking)
 	REFERENCES unitBooking (unitBookingID)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
@@ -825,7 +826,15 @@ ALTER TABLE unitModificationStatus
 ;
 
 
-ALTER TABLE unitAmenity
+ALTER TABLE unitMaster
+	ADD FOREIGN KEY (unitClassId)
+	REFERENCES unitClassificationMaster (unitClassId)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE unitBooking
 	ADD FOREIGN KEY (unit)
 	REFERENCES unitMaster (unitID)
 	ON UPDATE RESTRICT
@@ -833,7 +842,7 @@ ALTER TABLE unitAmenity
 ;
 
 
-ALTER TABLE unitBooking
+ALTER TABLE unitAmenity
 	ADD FOREIGN KEY (unit)
 	REFERENCES unitMaster (unitID)
 	ON UPDATE RESTRICT
@@ -857,16 +866,16 @@ ALTER TABLE unitMaster
 ;
 
 
-ALTER TABLE enquiry
-	ADD FOREIGN KEY (interest)
+ALTER TABLE unitMaster
+	ADD FOREIGN KEY (unitType)
 	REFERENCES unitType (unitTypeID)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
 ;
 
 
-ALTER TABLE unitMaster
-	ADD FOREIGN KEY (unitType)
+ALTER TABLE enquiry
+	ADD FOREIGN KEY (interest)
 	REFERENCES unitType (unitTypeID)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
@@ -881,24 +890,8 @@ ALTER TABLE paymentStatus
 ;
 
 
-ALTER TABLE userRole
-	ADD FOREIGN KEY (orgUser)
-	REFERENCES userMaster (userMasterID)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
-;
-
-
-ALTER TABLE enquiry
-	ADD FOREIGN KEY (orgUser)
-	REFERENCES userMaster (userMasterID)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
-;
-
-
-ALTER TABLE unitBooking
-	ADD FOREIGN KEY (cancelledBy)
+ALTER TABLE customerMaster
+	ADD FOREIGN KEY (createdBy)
 	REFERENCES userMaster (userMasterID)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
@@ -913,6 +906,14 @@ ALTER TABLE unitBooking
 ;
 
 
+ALTER TABLE enquiryComment
+	ADD FOREIGN KEY (orgUser)
+	REFERENCES userMaster (userMasterID)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
 ALTER TABLE unitModificationStatus
 	ADD FOREIGN KEY (updatedBy)
 	REFERENCES userMaster (userMasterID)
@@ -921,7 +922,15 @@ ALTER TABLE unitModificationStatus
 ;
 
 
-ALTER TABLE enquiryComment
+ALTER TABLE enquiry
+	ADD FOREIGN KEY (orgUser)
+	REFERENCES userMaster (userMasterID)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE userRole
 	ADD FOREIGN KEY (orgUser)
 	REFERENCES userMaster (userMasterID)
 	ON UPDATE RESTRICT
@@ -937,8 +946,8 @@ ALTER TABLE paymentMaster
 ;
 
 
-ALTER TABLE customerMaster
-	ADD FOREIGN KEY (createdBy)
+ALTER TABLE unitBooking
+	ADD FOREIGN KEY (cancelledBy)
 	REFERENCES userMaster (userMasterID)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT

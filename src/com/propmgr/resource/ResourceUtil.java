@@ -66,10 +66,12 @@ import com.propmgr.dao.Sourcemaster;
 import com.propmgr.dao.SourcemasterDAO;
 import com.propmgr.dao.Statemaster;
 import com.propmgr.dao.StatemasterDAO;
+import com.propmgr.dao.UnitClassificationmasterDAO;
 import com.propmgr.dao.Unitamenity;
 import com.propmgr.dao.UnitamenityDAO;
 import com.propmgr.dao.Unitbooking;
 import com.propmgr.dao.UnitbookingDAO;
+import com.propmgr.dao.Unitclassificationmaster;
 import com.propmgr.dao.Unitmaster;
 import com.propmgr.dao.UnitmasterDAO;
 import com.propmgr.dao.Unitmodificationstate;
@@ -218,7 +220,7 @@ public class ResourceUtil {
 			CodeTableResource floorType = (unit.getFloortype() == 0) ? 
 					new CodeTableResource(0, "EVEN", "Even") : new CodeTableResource(1, "ODD", "Odd");
 			List<CodeTableResource> amenities = new ArrayList<CodeTableResource>();
-			
+			CodeTableResource unitClassification = getUnitClassificationResourceFromDAO(unit.getUnitclassificationmaster());
 			double floorRise = (unit.getFloorrise() == null) ? 0 : unit.getFloorrise();
 			double bookingAmount =  (unit.getBookingamount() == null) ? 0.0 : unit.getBookingamount();
 			double otherCharges =  (unit.getOthercharges() == null) ? 0.0 : unit.getOthercharges();
@@ -236,7 +238,7 @@ public class ResourceUtil {
 			boolean booked = (new UnitbookingDAO()).isBookingExistsForUnit(unit.getUnitid());
 			boolean registered = (unit.getRegistrationdone() != null) ? unit.getRegistrationdone().booleanValue() : false;
 			result = new UnitResource(unit.getUnitid(), unit.getProjectbuilding().getProjectbuildingid(), getUnitPricePolicyFromDAO(unit.getUnitpricepolicy()),
-					displayProjectInfo, unitType, unit.getUnitnumber(), unit.getFloornumber(), floorType, unit.getCarpetarea(), unit.getSaleablearea(),
+					displayProjectInfo, unitType,unitClassification, unit.getUnitnumber(), unit.getFloornumber(), floorType, unit.getCarpetarea(), unit.getSaleablearea(),
 					unit.getCarpetareaforterrace(), floorRise, unit.isOtheroptions(), amenities, bookingAmount, otherCharges, agreementValue,
 					totalTax, totalCostWithTax, totalCost, !booked, registered);
 		}
@@ -295,6 +297,16 @@ public class ResourceUtil {
 		CodeTableResource parkingType = new CodeTableResource(aParkingtype.getParkingtypeid(), aParkingtype.getParkingcode(), aParkingtype.getParkingname());
 		return new ParkingResource(parking.getParkingmasterid(), parking.getProjectbuilding().getProjectbuildingid(), 
 				parkingType, parking.getTotal(), parking.getAvailable(), parking.getBooked());
+	}
+	
+	public static CodeTableResource getUnitClassificationResourceFromDAO(
+			Unitclassificationmaster unitclassificationmaster) {
+		if(unitclassificationmaster != null){
+			return new CodeTableResource(unitclassificationmaster.getUnitclassid(), unitclassificationmaster.getUnitclasscode(), unitclassificationmaster.getUnitclassdesc());
+		}else{
+			return null;
+		}
+		
 	}
 	
 	public static PaymentResource getPaymentFromDAO(Paymentmaster payment)  throws SQLException, IOException {
@@ -1036,6 +1048,13 @@ public class ResourceUtil {
 			 unit = new Unitmaster();
 		 }
 		 
+		 UnitClassificationmasterDAO classificationDAO = new UnitClassificationmasterDAO();
+		 
+		 Unitclassificationmaster classification = new Unitclassificationmaster();
+		 classification.setUnitclasscode("REG");
+		 classification = (Unitclassificationmaster)classificationDAO.findByExample(classification).get(0);
+
+		 
 		 unit.setProjectbuilding(projectBuilding);
 		 unit.setUnittype(getUnittypePOJO(formData));			
 		 unit.setUnitnumber(unitNumber);
@@ -1049,6 +1068,7 @@ public class ResourceUtil {
 		 unit.setBookingamount(getFormDataValueAsDouble(formData, "bookingamount"));
 		 unit.setOthercharges(getFormDataValueAsDouble(formData, "othercharges"));
 		 unit.setRegistrationdone(registered);
+		 unit.setUnitclassificationmaster(classification);
 		 unitmasterDAO.save(unit);
 
 		 List<Amenity> amenities = getAmenityPOJOList(formData);

@@ -8,6 +8,8 @@ public class UnitResource {
 	private UnitPricePolicyResource unitPricePolicy;
 	private String displayProjectInfo;
 	private CodeTableResource unitType;
+	private CodeTableResource unitClassification;
+	private String classification;
 	private String unitNumber;
 	private int floorNumber;
 	private CodeTableResource floorType;
@@ -28,7 +30,7 @@ public class UnitResource {
 	
 	public UnitResource(long id, long buildingId,
 			UnitPricePolicyResource unitPricePolicy, String displayProjectInfo,
-			CodeTableResource unitType, String unitNumber, int floorNumber,
+			CodeTableResource unitType,CodeTableResource unitClassification, String unitNumber, int floorNumber,
 			CodeTableResource floorType, long carpetArea, long saleableArea, long carpetAreaForTerrace,
 			double floorRise, boolean otherOptions, List<CodeTableResource> amenities,
 			double bookingAmount, double otherCharges, double agreementvalue, double totalTax, 
@@ -39,6 +41,8 @@ public class UnitResource {
 		this.unitPricePolicy = unitPricePolicy;
 		this.displayProjectInfo = displayProjectInfo;
 		this.unitType = unitType;
+		this.unitClassification = unitClassification;
+		this.classification = unitClassification.getName();
 		this.unitNumber = unitNumber;
 		this.floorNumber = floorNumber;
 		this.floorType = floorType;
@@ -144,5 +148,13 @@ public class UnitResource {
 
 	public boolean isRegistered() {
 		return registered;
+	}
+	
+	public CodeTableResource getUnitClassification() {
+		return unitClassification;
+	}
+
+	public String getClassification() {
+		return classification;
 	}
 }

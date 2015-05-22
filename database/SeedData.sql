@@ -3,6 +3,12 @@ INSERT INTO unitType (unitTypeID, unitTypeCode, unitTypeName) VALUES ('1', 'ONE'
 INSERT INTO unitType (unitTypeID, unitTypeCode, unitTypeName) VALUES ('2', 'TWO', '2 BHK');
 INSERT INTO unitType (unitTypeID, unitTypeCode, unitTypeName) VALUES ('3', 'THREE', '3 BHK');
 
+-- unit classification
+INSERT INTO unitClassificationMaster (unitClassID, unitClassCode, unitClassDesc) VALUES ('1', 'REG', 'Regular');
+INSERT INTO unitClassificationMaster (unitClassID, unitClassCode, unitClassDesc) VALUES ('2', 'INV', 'Investor');
+INSERT INTO unitClassificationMaster (unitClassID, unitClassCode, unitClassDesc) VALUES ('3', 'FRM', 'Farmer');
+INSERT INTO unitClassificationMaster (unitClassID, unitClassCode, unitClassDesc) VALUES ('4', 'RFG', 'Refugee');
+
 
 -- paymentState
 INSERT INTO paymentState (paymentStateID, paymentStateName, allowStateChange) VALUES ('1', 'Received not deposited', 'true');
