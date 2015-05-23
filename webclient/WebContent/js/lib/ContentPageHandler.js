@@ -108,7 +108,9 @@ define(
             			return {style : "width:30%"};
             		} else if (this.mode && this.mode == "unitregistration") {
             			return {style : "width:30%"};
-            		} else if (this.mode && this.mode == "showbookings") {
+            		}else if (this.mode && this.mode == "manageclassification") {
+            			return {style : "width:30%"}; 
+            		}else if (this.mode && this.mode == "showbookings") {
             			return {style : "width:55%"};
             		} else if (this.mode && this.mode == "updateprice") {
             			return {style : "width:68%"};
@@ -154,6 +156,11 @@ define(
             			return [
     	  				          ["refresh", "Refresh", "NewPage"],
     	  				          ["unitregistration", "Manage Unit Registration", "NewPage"]
+    	  				       ];
+              		}else if (this.mode && this.mode == "manageclassification") {
+            			return [
+    	  				          ["refresh", "Refresh", "NewPage"],
+    	  				          ["manageclassification", "Update Unit Classification", "NewPage"]
     	  				       ];
               		} else if (this.mode && this.mode == "showbookings") {
             			return [

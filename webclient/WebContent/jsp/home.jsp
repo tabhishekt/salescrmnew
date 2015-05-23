@@ -85,6 +85,7 @@
             	                ["Manage Unit Bookings", "contentTabPage.jsp?page=projectbuilding*mode=showbookings"],
             	                ["Update Unit Price for Building", "contentTabPage.jsp?page=projectbuilding*mode=updateprice"],
             	                ["Manage Unit Registration", "contentTabPage.jsp?page=projectbuilding*mode=unitregistration"],
+            	                ["Update Unit Classification", "contentTabPage.jsp?page=projectbuilding*mode=manageclassification"],
             	                ["Show Availability for Building", "contentTabPage.jsp?page=projectbuilding*mode=availability"]
             	               ];
             		aContainer.addChild(createAccordionContentPanel("Manage Inventory", linkData));
