@@ -53,17 +53,22 @@
 			};
 			
 			decorateAvailability = function (cell) {
-				if(!cell.data()) { 
+				if(cell.data() == "Regular") { 
                 	return 'text-align: center; background: green'; 
-             	} 
-				
+             	}else if(cell.data() == "Investor") { 
+                	return 'text-align: center; background: red'; 
+             	}else if(cell.data() == "Farmer") { 
+                	return 'text-align: center; background: yellow'; 
+             	}else if(cell.data() == "Refugee") { 
+                	return 'text-align: center; background: yellow'; 
+             	}
 				return 'text-align: center; background: red';
 			};
 			
             createUnitGrid = function() {
             	var gridLayout = [
   	   							{field: "unitNumber",name: "Unit Number",width: "8%"},
-  	   							{field: "classification",name: "Classification",width: "15%"},
+  	   							{field: "classification",name: "Classification",width: "15%", style: this.decorateAvailability},
 	   							{field: "displayProjectInfo",name: "Building / Project",width: "34%"},
 	   							{field: "agreementvalue",name: "Agreement Value",width: "20%", decorator: this.formatCurrency},
 	   							{field: "totalCost",name: "Total Cost",width: "20%", decorator: this.formatCurrency}
@@ -85,14 +90,16 @@
             onSubmit = function (event) {
             	event.preventDefault(); 
             	var rowDataUnit = this.unitGridHandler.getSelectedRowData();
+            	
+            	//alert("Button : " + event.srcElement.src ); 
             	if (rowDataUnit == null) {
-            		this.unitGridHandler.updateMessage("Please select a unit to mark registration done.", "error");
+            		this.unitGridHandler.updateMessage("Please select a unit to classify.", "error");
             		return;
 				} else {
 					registry.byId("unit").set("value", rowDataUnit.id); 
 				}
             	
-            	var promise = request.post("../rest/json/data/inventory/unit/post/markregistered", {
+            	var promise = request.post("../rest/json/data/inventory/unit/post/updateclassification", {
      				data: domForm.toObject(registry.byId("registerunitform").id),
      				timeout: 2000,
      				handleAs: "json"
@@ -100,7 +107,7 @@
      			
      			promise.response.then(
      				function(response) {
-     					this.unitGridHandler.updateMessage("Successfully marked registration done for this unit.", "success");
+     					this.unitGridHandler.updateMessage("Successfully Updated Classification.", "success");
      					this.unitGridHandler.refreshGrid();
      				},
      				function(error) {
@@ -125,7 +132,9 @@
 				<input data-dojo-type='dijit/form/TextBox' id="unit" name="unit" class="hiddenInput" value=""></input>
 			</div>
 			<div>
-				<button data-dojo-type="dijit/form/Button" type="submit" id="submitButton" name="submitButton" value="Submit">Mark as Registration done</button>
+				<button data-dojo-type="dijit/form/Button" type="submit" id="farmerButton" name="farmerButton" value="Submit">Mark as Farmer Flat</button>
+				<button data-dojo-type="dijit/form/Button" type="submit" id="refugeeButton" name="refugeeButton" value="Submit">Mark as Refugee Flat</button>
+				<button data-dojo-type="dijit/form/Button" type="submit" id="invButton" name="invButton" value="Submit">Mark as Investor Flat</button>
 			</div>
 		</div>
 </body>

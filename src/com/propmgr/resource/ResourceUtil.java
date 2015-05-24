@@ -171,22 +171,31 @@ public class ResourceUtil {
 			floorRise = new HashMap<Integer, Double>();
 			availability = new HashMap<Integer, List<UnitAvailabilityResource>>();
 			unitCharges = new HashMap<String, Map<String, Double>>();
-					
+			
 			for (int i=0; i<floorCount; i++) {
 				List<UnitAvailabilityResource> floorAvailability = new ArrayList<UnitAvailabilityResource>();
 				List<Unitmaster> allUnitsForFloor = unitmasterDAO.findByProjectBuildingAndFloorNumber(projectBuilding.getProjectbuildingid(), i+1);
 				for (Unitmaster unit : allUnitsForFloor) {
 					Unitbooking unitbooking = unitbookingDAO.findByUnit(unit);
-					boolean unitAvailable = (unitbooking == null) ? true : false;
+					boolean unitAvailable = (unitbooking == null && "REG".equalsIgnoreCase(unit.getUnitclassificationmaster().getUnitclasscode())) ? true : false;
 					UnitAvailabilityResource res = null; 
 					if (unitAvailable) {
-						res = new UnitAvailabilityResource(unit.getUnitnumber(), unit.getUnittype().getUnittypename(), null, null, null, unitAvailable);
-					} else {
-						Parkingmaster parkingForBooking = unitbooking.getParkingmaster();
-						String parkingName = (parkingForBooking == null) ? "No parking chosen" : parkingForBooking.getParkingtype().getParkingname();
 						res = new UnitAvailabilityResource(unit.getUnitnumber(), unit.getUnittype().getUnittypename(), 
-								parkingName, getCustomerDisplayName(unitbooking.getCustomermaster()), 
-								getUserDisplayName(unitbooking.getUsermasterByBookedby()), unitAvailable);
+								unit.getUnitclassificationmaster().getUnitclassdesc(), null, null, null, unitAvailable);
+					} else {
+						if(unitbooking != null){
+							Parkingmaster parkingForBooking = unitbooking.getParkingmaster();
+							String parkingName = (parkingForBooking == null) ? "No parking chosen" : parkingForBooking.getParkingtype().getParkingname();
+							res = new UnitAvailabilityResource(unit.getUnitnumber(), unit.getUnittype().getUnittypename(),
+									unit.getUnitclassificationmaster().getUnitclassdesc(),parkingName, getCustomerDisplayName(unitbooking.getCustomermaster()), 
+									getUserDisplayName(unitbooking.getUsermasterByBookedby()), unitAvailable);
+						}else{
+							res = new UnitAvailabilityResource(unit.getUnitnumber(), unit.getUnittype().getUnittypename(),
+									unit.getUnitclassificationmaster().getUnitclassdesc(),"Not Booked", "Not Booked", 
+									"Not Booked", unitAvailable);
+						}
+						
+						
 					}
 					floorAvailability.add(res);
 				}

@@ -59,10 +59,12 @@ import com.propmgr.dao.ProjectphaseDAO;
 import com.propmgr.dao.Refundmaster;
 import com.propmgr.dao.RefundmasterDAO;
 import com.propmgr.dao.Sourcemaster;
+import com.propmgr.dao.UnitClassificationmasterDAO;
 import com.propmgr.dao.Unitamenity;
 import com.propmgr.dao.UnitamenityDAO;
 import com.propmgr.dao.Unitbooking;
 import com.propmgr.dao.UnitbookingDAO;
+import com.propmgr.dao.Unitclassificationmaster;
 import com.propmgr.dao.Unitmaster;
 import com.propmgr.dao.UnitmasterDAO;
 import com.propmgr.dao.Unitmodificationstate;
@@ -1162,6 +1164,27 @@ public class InventoryService {
 		try {
 			Unitmaster unit = ResourceUtil.getUnitPOJO(formData);
 			unit.setRegistrationdone(true);
+			unitmasterDAO.flushSession();
+		}
+		catch (Exception e) {
+			logger.error("", e);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
+		}
+	    return Response.ok().build();
+	}
+	
+	@POST
+	@Path("/unit/post/updateclassification")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response modifyUnitClassification(MultivaluedMap<String, String> formData) {
+		UnitmasterDAO unitmasterDAO = new UnitmasterDAO();
+		UnitClassificationmasterDAO masterDAO = new UnitClassificationmasterDAO();
+		try {
+			Unitmaster unit = ResourceUtil.getUnitPOJO(formData);
+			Unitclassificationmaster classification = new Unitclassificationmaster();
+			classification.setUnitclasscode("INV");
+			classification = (Unitclassificationmaster)masterDAO.findByExample(classification).get(0);
+			unit.setUnitclassificationmaster(classification);
 			unitmasterDAO.flushSession();
 		}
 		catch (Exception e) {

@@ -44,11 +44,13 @@ define([
 							domConstruct.create("span", null, td).innerHTML = 
 								"Type: " + unitAvailability.unitType + "<br>" + 
 								"Number: " + unitAvailability.unitNumber + "<br>"
+								"Booking Type: " + unitAvailability.bookingType;
 						} else {
 							td = domConstruct.create("td", {style:"font-weight: bold; background-color: #FF0000; color: #ffffff"}, tr);
 							domConstruct.create("span", null, td).innerHTML = 
-								"Type: " + unitAvailability.unitType + "<br>" + 
+								"Type: " + unitAvailability.unitType + "<br>" +
 								"Number: " + unitAvailability.unitNumber + "<br>" +
+								"Booking Type: " + unitAvailability.bookingType + "<br>" +
 								"Parking: " + unitAvailability.parkingName + "<br>" + 
 								"Booked by: " + unitAvailability.customerName + "<br>" +
 								"Booked for: " + unitAvailability.userName;
