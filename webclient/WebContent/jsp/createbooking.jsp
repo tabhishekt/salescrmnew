@@ -85,10 +85,24 @@
 				return 'text-align: center; background: green';
 			};
 			
+			decorateClassification = function (cell) {
+				if(cell.data() == "Regular") { 
+                	return 'text-align: center; background: green'; 
+             	}else if(cell.data() == "Investor") { 
+                	return 'text-align: center; background: red'; 
+             	}else if(cell.data() == "Farmer") { 
+                	return 'text-align: center; background: yellow'; 
+             	}else if(cell.data() == "Refugee") { 
+                	return 'text-align: center; background: yellow'; 
+             	}
+				return 'text-align: center; background: red';
+			};
+			
             createUnitGrid = function() {
             	var gridLayout = [
   	   							{field: "unitNumber",name: "Unit Number",width: "8%"},
   	   							{field: "available",name: "Available",width: "7%", style: this.decorateAvailability, decorator: this.formatAvailability},
+  	   							{field: "classification",name: "Classification",width: "7%", style: this.decorateClassification},
 	   							{field: "displayProjectInfo",name: "Building / Project",width: "37%"},
 	   							{field: "saleableArea",name: "Saleable Area",width: "8%"},
 	   							{field: "agreementvalue",name: "Agreement Value",width: "20%", decorator: this.formatCurrency},

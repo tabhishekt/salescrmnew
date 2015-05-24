@@ -32,7 +32,10 @@
             	this.buildingId = this.getQueryVariable("buildingId");
             	this.dialogHandler = new DialogHandler();
             	this.createUnitGrid();
-            	on(registry.byId("registerunitform"), "submit", lang.hitch(this,"onSubmit"));  
+            	on(registry.byId("registerunitform"), "submit", lang.hitch(this,"onSubmit"));
+            	//on(registry.byId("farmerButton"), "onclick", lang.hitch(this,"onSubmit"));
+            	//on(registry.byId("refugeeButton"), "onclick", lang.hitch(this,"onSubmit"));
+            	//on(registry.byId("invButton"), "onclick", lang.hitch(this,"onSubmit")); 
             };
             
             formatCurrency = function (value) {
@@ -96,7 +99,12 @@
             		this.unitGridHandler.updateMessage("Please select a unit to classify.", "error");
             		return;
 				} else {
-					registry.byId("unit").set("value", rowDataUnit.id); 
+					registry.byId("unit").set("value", rowDataUnit.id);
+					//Set the value based on Button Clicked.
+					//for Investor - Set INV
+					//for Farmer - Set FRM
+					//for Refugee - Set RFG
+					registry.byId("type").set("value", "INV"); 
 				}
             	
             	var promise = request.post("../rest/json/data/inventory/unit/post/updateclassification", {
@@ -130,6 +138,7 @@
 		<div id="registerunitform" data-dojo-type="dijit/form/Form" enctype="multipart/form-data" action="" method="POST">
 			<div>
 				<input data-dojo-type='dijit/form/TextBox' id="unit" name="unit" class="hiddenInput" value=""></input>
+				<input data-dojo-type='dijit/form/TextBox' id="type" name="type" class="hiddenInput" value=""></input>
 			</div>
 			<div>
 				<button data-dojo-type="dijit/form/Button" type="submit" id="farmerButton" name="farmerButton" value="Submit">Mark as Farmer Flat</button>

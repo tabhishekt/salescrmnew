@@ -1182,7 +1182,7 @@ public class InventoryService {
 		try {
 			Unitmaster unit = ResourceUtil.getUnitPOJO(formData);
 			Unitclassificationmaster classification = new Unitclassificationmaster();
-			classification.setUnitclasscode("INV");
+			classification.setUnitclasscode(ResourceUtil.getFormDataValue(formData, "type"));
 			classification = (Unitclassificationmaster)masterDAO.findByExample(classification).get(0);
 			unit.setUnitclassificationmaster(classification);
 			unitmasterDAO.flushSession();
