@@ -32,10 +32,10 @@
             	this.buildingId = this.getQueryVariable("buildingId");
             	this.dialogHandler = new DialogHandler();
             	this.createUnitGrid();
-            	on(registry.byId("registerunitform"), "submit", lang.hitch(this,"onSubmit"));
-            	//on(registry.byId("farmerButton"), "onclick", lang.hitch(this,"onSubmit"));
-            	//on(registry.byId("refugeeButton"), "onclick", lang.hitch(this,"onSubmit"));
-            	//on(registry.byId("invButton"), "onclick", lang.hitch(this,"onSubmit")); 
+            	//on(registry.byId("registerunitform"), "submit", lang.hitch(this,"onSubmit"));
+            	on(registry.byId("farmerButton"), "click", lang.hitch(this,"onSubmit"));
+            	on(registry.byId("refugeeButton"), "click", lang.hitch(this,"onSubmit"));
+            	on(registry.byId("invButton"), "click", lang.hitch(this,"onSubmit")); 
             };
             
             formatCurrency = function (value) {
@@ -93,18 +93,23 @@
             onSubmit = function (event) {
             	event.preventDefault(); 
             	var rowDataUnit = this.unitGridHandler.getSelectedRowData();
-            	
-            	//alert("Button : " + event.srcElement.src ); 
+            	var buttonClicked = event.currentTarget.name;
+            	 
             	if (rowDataUnit == null) {
             		this.unitGridHandler.updateMessage("Please select a unit to classify.", "error");
             		return;
 				} else {
 					registry.byId("unit").set("value", rowDataUnit.id);
-					//Set the value based on Button Clicked.
-					//for Investor - Set INV
-					//for Farmer - Set FRM
-					//for Refugee - Set RFG
-					registry.byId("type").set("value", "INV"); 
+					if (buttonClicked == "farmerButton") {
+						registry.byId("type").set("value", "FRM");
+					}else if (buttonClicked == "refugeeButton") {
+						registry.byId("type").set("value", "RFG");
+					}else if (buttonClicked == "invButton") {
+						registry.byId("type").set("value", "INV");
+					}else{
+						registry.byId("type").set("value", "REG");
+					} 
+					 
 				}
             	
             	var promise = request.post("../rest/json/data/inventory/unit/post/updateclassification", {
@@ -141,9 +146,9 @@
 				<input data-dojo-type='dijit/form/TextBox' id="type" name="type" class="hiddenInput" value=""></input>
 			</div>
 			<div>
-				<button data-dojo-type="dijit/form/Button" type="submit" id="farmerButton" name="farmerButton" value="Submit">Mark as Farmer Flat</button>
-				<button data-dojo-type="dijit/form/Button" type="submit" id="refugeeButton" name="refugeeButton" value="Submit">Mark as Refugee Flat</button>
-				<button data-dojo-type="dijit/form/Button" type="submit" id="invButton" name="invButton" value="Submit">Mark as Investor Flat</button>
+				<button data-dojo-type="dijit/form/Button" type="button" id="farmerButton" name="farmerButton" value="Submit">Mark as Farmer Flat</button>
+				<button data-dojo-type="dijit/form/Button" type="button" id="refugeeButton" name="refugeeButton" value="Submit">Mark as Refugee Flat</button>
+				<button data-dojo-type="dijit/form/Button" type="button" id="invButton" name="invButton" value="Submit">Mark as Investor Flat</button>
 			</div>
 		</div>
 </body>
