@@ -35,7 +35,8 @@
             	//on(registry.byId("registerunitform"), "submit", lang.hitch(this,"onSubmit"));
             	on(registry.byId("farmerButton"), "click", lang.hitch(this,"onSubmit"));
             	on(registry.byId("refugeeButton"), "click", lang.hitch(this,"onSubmit"));
-            	on(registry.byId("invButton"), "click", lang.hitch(this,"onSubmit")); 
+            	on(registry.byId("invButton"), "click", lang.hitch(this,"onSubmit"));
+            	on(registry.byId("regButton"), "click", lang.hitch(this,"onSubmit")); 
             };
             
             formatCurrency = function (value) {
@@ -57,13 +58,13 @@
 			
 			decorateAvailability = function (cell) {
 				if(cell.data() == "Regular") { 
-                	return 'text-align: center; background: green'; 
+                	return 'text-align: center; background: #66FF66'; 
              	}else if(cell.data() == "Investor") { 
-                	return 'text-align: center; background: red'; 
+                	return 'text-align: center; background: grey'; 
              	}else if(cell.data() == "Farmer") { 
-                	return 'text-align: center; background: yellow'; 
+                	return 'text-align: center; background: pink'; 
              	}else if(cell.data() == "Refugee") { 
-                	return 'text-align: center; background: yellow'; 
+                	return 'text-align: center; background: #6699CC'; 
              	}
 				return 'text-align: center; background: red';
 			};
@@ -149,6 +150,7 @@
 				<button data-dojo-type="dijit/form/Button" type="button" id="farmerButton" name="farmerButton" value="Submit">Mark as Farmer Flat</button>
 				<button data-dojo-type="dijit/form/Button" type="button" id="refugeeButton" name="refugeeButton" value="Submit">Mark as Refugee Flat</button>
 				<button data-dojo-type="dijit/form/Button" type="button" id="invButton" name="invButton" value="Submit">Mark as Investor Flat</button>
+				<button data-dojo-type="dijit/form/Button" type="button" id="regButton" name="regButton" value="Submit">Mark as Regular Flat</button>
 			</div>
 		</div>
 </body>

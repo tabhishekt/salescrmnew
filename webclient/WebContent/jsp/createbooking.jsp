@@ -87,13 +87,13 @@
 			
 			decorateClassification = function (cell) {
 				if(cell.data() == "Regular") { 
-                	return 'text-align: center; background: green'; 
+                	return 'text-align: center; background: #66FF66'; 
              	}else if(cell.data() == "Investor") { 
-                	return 'text-align: center; background: red'; 
+                	return 'text-align: center; background: grey'; 
              	}else if(cell.data() == "Farmer") { 
-                	return 'text-align: center; background: yellow'; 
+                	return 'text-align: center; background: pink'; 
              	}else if(cell.data() == "Refugee") { 
-                	return 'text-align: center; background: yellow'; 
+                	return 'text-align: center; background: #6699CC'; 
              	}
 				return 'text-align: center; background: red';
 			};
