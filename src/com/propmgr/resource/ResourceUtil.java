@@ -88,6 +88,7 @@ import com.propmgr.dao.UsermasterDAO;
 
 public class ResourceUtil {
 	private final static Logger logger = Logger.getLogger(ResourceUtil.class);
+	private static final int MAX_REGISTRATION_CHARGE = 30000;
 	
 	public static OrganizationResource getOrganizationFromDAO(Organization org)  throws SQLException, IOException {
 		AddressResource address = getAddressFromDAO(org.getAddress());
@@ -583,7 +584,7 @@ public class ResourceUtil {
 			double otherCharges = unit.getOthercharges() - deductionOnOtherCharges;
 			
 			double basicCostReadyReckoner = getBasicCostUsingReadyReckonerRate(readyreckonerrate, unit.getCarpetarea(), unit.getCarpetareaforterrace());
-			double agreementValueBaseRate = getAgreementValueUsingBaseRate(baseRate, unit.getSaleablearea(), floorRise, otherCharges);
+			double agreementValueBaseRate = getAgreementValueUsingBaseRate(baseRate, unit.getSaleablearea(), floorRise, discount, otherCharges);
 			double agreementValueReadyReckoner = getAgreementValueUsingReadyReckonerRate(basicCostReadyReckoner, unit.getFloornumber());
 			double agreementValue = (agreementValueBaseRate >= agreementValueReadyReckoner) ? agreementValueBaseRate : agreementValueReadyReckoner;
 			
@@ -594,6 +595,9 @@ public class ResourceUtil {
 			
 			double stampDuty = (unitpricepolicy.getStampduty()*agreementValue)/100;
 			double registrationCharge = (unitpricepolicy.getRegistrationcharge()*agreementValue)/100;
+			if (registrationCharge > MAX_REGISTRATION_CHARGE) {
+				registrationCharge = MAX_REGISTRATION_CHARGE;
+			}
 			double serviceTax = (unitpricepolicy.getServicetax()*agreementValue)/100;
 			double valueAddedtax = (unitpricepolicy.getValueaddedtax()*agreementValue)/100;
 			
@@ -659,7 +663,7 @@ public class ResourceUtil {
 		if (payments != null) {
 			for (Paymentmaster payment : payments) {
 				Paymentstatus paymentstatusPOJO = paymentstatusDAO.findLatestByPaymentId(payment.getPaymentid());
-				if (!paymentstatusPOJO.getPaymentstate().getPaymentstatename().equalsIgnoreCase("Bounced")) {
+				if (paymentstatusPOJO == null || !paymentstatusPOJO.getPaymentstate().getPaymentstatename().equalsIgnoreCase("Bounced")) {
 					totalPaymentReceived += payment.getPaymentamount();
 				}
 			}
@@ -1096,7 +1100,7 @@ public class ResourceUtil {
 		double readyReckonerRate = unitpricepolicy.getReadyreckonerrate(); 
 		double otherCharges = unit.getOthercharges();
 		double basicCostReadyReckoner = getBasicCostUsingReadyReckonerRate(readyReckonerRate, unit.getCarpetarea(), unit.getCarpetareaforterrace());
-		double agreementValueBaseRate = getAgreementValueUsingBaseRate(baseRate, unit.getSaleablearea(), floorRise, otherCharges);
+		double agreementValueBaseRate = getAgreementValueUsingBaseRate(baseRate, unit.getSaleablearea(), floorRise, 0, otherCharges);
 		double agreementValueReadyReckoner = getAgreementValueUsingReadyReckonerRate(basicCostReadyReckoner, unit.getFloornumber());
 		double agreementValue = (agreementValueBaseRate >= agreementValueReadyReckoner) ? agreementValueBaseRate : agreementValueReadyReckoner;
 		
@@ -1107,6 +1111,9 @@ public class ResourceUtil {
 		
 		double stampDuty = (unitpricepolicy.getStampduty()*agreementValue)/100;
 		double registrationCharge = (unitpricepolicy.getRegistrationcharge()*agreementValue)/100;
+		if (registrationCharge > MAX_REGISTRATION_CHARGE) {
+			registrationCharge = MAX_REGISTRATION_CHARGE;
+		}
 		double serviceTax = (unitpricepolicy.getServicetax()*agreementValue)/100;
 		double valueAddedtax = (unitpricepolicy.getValueaddedtax()*agreementValue)/100;
 		double totalTax = stampDuty + registrationCharge + serviceTax + valueAddedtax;
@@ -1126,8 +1133,8 @@ public class ResourceUtil {
 	 }
 	 
 	 public static double getAgreementValueUsingBaseRate(double baseRate, long saleableArea, 
-			 double floorRise, double otherCharges) throws SQLException {
-		 return saleableArea*(baseRate + floorRise) + otherCharges;
+			 double floorRise, double discount, double otherCharges) throws SQLException {
+		 return saleableArea*(baseRate + floorRise - discount) + otherCharges;
 	 }
 	 
 	 public static double getBasicCostUsingReadyReckonerRate(double readyReckonerRate, long carpetArea,  

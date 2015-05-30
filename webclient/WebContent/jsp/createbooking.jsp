@@ -165,8 +165,14 @@
             				}
 		    			}
 		            	var deductiononothercharges = 0;
+		            	var otherCharges = 0;
 		            	if (dojo.byId("deductiononothercharges").value != "") {
 		            		deductiononothercharges = parseInt(dojo.byId("deductiononothercharges").value);
+		            		otherCharges = parseInt(rowDataUnit.otherCharges);
+            				if (deductiononothercharges > otherCharges){
+            					this.unitGridHandler.updateMessage("Deduction on other charges cannot be greater than other charges : " + otherCharges, "error");
+            					return;
+            				}
 		    			}
 						var options = {
 								action: "showunitpricedetails",

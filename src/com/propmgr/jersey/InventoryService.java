@@ -1985,13 +1985,23 @@ public class InventoryService {
 			Unitbooking unitbooking = ResourceUtil.getUnitbookingPOJO(formData);
 			Usermaster user = ResourceUtil.getUserPOJO(formData);
 			Paymenttype paymenttype = ResourceUtil.getPaymenttypePOJO(formData);
+			String bankName = ResourceUtil.getFormDataValue(formData, "bankname");
+			String chequeNumber = ResourceUtil.getFormDataValue(formData, "chequenumber");
 			
 			if (rowId != null && rowId.length() > 0) {
 				payment = paymentmasterDAO.findById(Long.parseLong(rowId));
 				if (payment == null) {
 					return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
 				}
-			} 
+			} else {
+				if (ResourceUtil.convertClobToString(paymenttype.getPaymenttypedescription()).equalsIgnoreCase("Bank Cheque")) {
+					if (paymentmasterDAO.findByBankAndChequeNumber(bankName, chequeNumber) != null) {
+						return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("Payment already exists with bankName " + 
+								bankName + " and cheque number " + chequeNumber)).build();
+					}
+				}
+			}
+			
 			
 			payment.setUnitbooking(unitbooking);
 			payment.setUsermaster(user);
@@ -2003,9 +2013,9 @@ public class InventoryService {
 			payment.setPaymentreceiveddate(ResourceUtil.getFormDataValueAsDate(formData, "receiptdate"));
 			payment.setPaymenttype(paymenttype);
 			
-			payment.setBankname(ResourceUtil.getFormDataValue(formData, "bankname"));
+			payment.setBankname(bankName);
 			payment.setBankbranch(ResourceUtil.getFormDataValue(formData, "bankbranch"));
-			payment.setChequenumber(ResourceUtil.getFormDataValue(formData, "chequenumber"));
+			payment.setChequenumber(chequeNumber);
 			payment.setChequedate(ResourceUtil.getFormDataValueAsDate(formData, "chequedate"));
 			
 			payment.setCardnumber(ResourceUtil.getFormDataValue(formData, "cardnumber"));

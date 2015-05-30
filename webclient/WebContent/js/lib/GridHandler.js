@@ -239,7 +239,7 @@ define(
     					this.updateMessage("Please select a record to " + action[1].toLowerCase() + ".", "error");	
     				} else {
     					if (action[0] == "edit") {
-    						if (this.page == "payment" && !rowData.paymentStatus.allowStateChange) {
+    						if (this.page == "payment" && rowData.paymentStatus != null && !rowData.paymentStatus.allowStateChange) {
     							this.updateMessage("Payment in state \"" + rowData.paymentStatus.name + "\" cannot be edited. Please add a new payment record.", "error");
     							return;
     						}

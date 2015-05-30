@@ -105,6 +105,55 @@ define([
         	this.setDataToDropdown('../rest/json/data/codetable/paymenttype/get/all', this.paymenttype);
         	this.setDataToDropdown('../rest/json/data/inventory/payment/get/states', this.paymentstatus);
         	this.setDataToMultiselect('../rest/json/data/inventory/payment/get/stages?rowId=' + this.buildingId, this.paymentstage.domNode);
+        },
+		
+        validate: function() {
+        	var isValid = this.inherited(arguments);
+        	
+        	if (isValid) {
+        		if (this.paymenttype.get("item").name == "Bank Cheque") {
+        				if (this.bankname.get("value") == "") {
+        					this.messageNode.innerHTML = "Bank name should be provided.";
+                    		return false
+        				} else if (this.bankbranch.get("value") == "") {
+        					this.messageNode.innerHTML = "Bank branch should be provided.";
+                    		return false
+        				} else if (this.chequenumber.get("value") == "") {
+        					this.messageNode.innerHTML = "Cheque numbershould be provided.";
+                    		return false
+        				} else if (this.chequedate.get("value") == "") {
+        					this.messageNode.innerHTML = "Cheque date should be provided.";
+                    		return false
+        				} else if (this.isFutureDate(this.chequedate.get("value"))) {
+        					if(this.paymentstatus.get("item").name == "Bounced") {
+            					this.messageNode.innerHTML = "For cheque payment status cannot be Bounced if cheque date is in future.";
+                        		return false
+            				} else if(this.paymentstatus.get("item").name == "Cleared") {
+            					this.messageNode.innerHTML = "For cheque payment status cannot be Cleared if cheque date is in future.";
+                        		return false
+            				}
+        				}
+        			
+    			} else if (this.paymenttype.get("item").name == "Cash") {
+    				if(this.paymentstatus.get("item").name == "Bounced") {
+    					this.messageNode.innerHTML = "For cash payment status cannot be Bounced.";
+                		return false
+    				}
+    			}
+        	}
+        	
+        	return isValid;
+        },
+        
+        isFutureDate: function(value) {
+		    var dt = new Date(value);
+		    var now = new Date();
+		    
+		    if (dt > now) {
+		    	return true;
+		    }
+		    
+		    return false;
         }
     });
 });

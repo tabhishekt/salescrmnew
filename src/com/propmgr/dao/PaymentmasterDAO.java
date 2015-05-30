@@ -1,6 +1,7 @@
 package com.propmgr.dao;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -143,6 +144,25 @@ public class PaymentmasterDAO extends SuperDAO {
 		}
 		
 		return -1;
+	}
+	
+	public Paymentmaster findByBankAndChequeNumber(String bankName, String chequeNumber) {
+		Session hbmSession = getSession();
+		List<Paymentmaster> resultList = null;
+		try {
+			String queryString = "from Paymentmaster u where u.bankname = '" 
+				+ bankName + "' and u.chequenumber = '" + chequeNumber + "'";
+			Query query = hbmSession.createQuery(queryString);
+			resultList = query.list ();
+			
+			if (resultList.size() > 0) {
+				return resultList.get(0);
+			}
+		} catch (Exception e) {
+			log.error ("", e);
+		}
+		
+		return null;
 	}
 	
 	@Override
