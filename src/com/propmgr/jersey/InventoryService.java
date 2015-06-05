@@ -1512,7 +1512,7 @@ public class InventoryService {
 					Usermaster user = unitbooking.getUsermasterByBookedby();
 					double bookingDiscount = (unitbooking.getBookingdiscount() == null) ? 0 : unitbooking.getBookingdiscount();
 					double deductionOnOtherCharges = (unitbooking.getDeductiononothercharges() == null) ? 0 : unitbooking.getDeductiononothercharges();
-					double totalCost = (unit.getTotalcost() == null) ? 0 : unit.getTotalcost();
+					double agreementValue = (unit.getAgreementvalue() == null) ? 0 : unit.getAgreementvalue();
 					double bookingAmount =  (unit.getBookingamount() == null) ? 0.0 : unit.getBookingamount();
 					UnitPriceDetailResource priceWithDiscount = ResourceUtil.getUnitPriceDetailResource(unit, bookingDiscount, deductionOnOtherCharges);
 					CodeTableResource buildingCurrentStatus = ResourceUtil.getBuildingCurrentStatus(projectbuilding);
@@ -1533,10 +1533,14 @@ public class InventoryService {
 					for (Unitpaymentschedule paymentSchedule : paymentSchedules) {
 						if (ResourceUtil.isPaymentScheduleApplicableToUnit(paymentSchedule, unit)) {
 							double percentAmount = paymentSchedule.getPercentamount();
-							double amount = (percentAmount*totalCost) / 100;
+							double amount = (percentAmount*agreementValue) / 100;
 							double floorRise = ResourceUtil.getFloorRisePaymentSchedule(paymentSchedule.getPaymentscheduletype(), projectbuilding.getProjectbuildingid());
 							if (paymentSchedule.getPaymentscheduletype().equalsIgnoreCase("Registration payment")) {
-								amount -= bookingAmount; 
+								if (amount > bookingAmount) {
+									amount -= bookingAmount;
+								} else {
+									amount = 0;
+								}
 							}
 							UnitPaymentScheduleResource paymentScheduleRes = ResourceUtil.getUnitPaymentScheduleFromDAO(paymentSchedule);
 							paymentScheduleRes.setAmount(amount);
@@ -1995,7 +1999,7 @@ public class InventoryService {
 				}
 			} else {
 				if (ResourceUtil.convertClobToString(paymenttype.getPaymenttypedescription()).equalsIgnoreCase("Bank Cheque")) {
-					if (paymentmasterDAO.findByBankAndChequeNumber(bankName, chequeNumber) != null) {
+					if (paymentmasterDAO.isDuplicateCheque(bankName, chequeNumber)) {
 						return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("Payment already exists with bankName " + 
 								bankName + " and cheque number " + chequeNumber)).build();
 					}

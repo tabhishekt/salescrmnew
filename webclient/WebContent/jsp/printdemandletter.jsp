@@ -19,12 +19,14 @@
              "dojo/on",
              "dojo/request", 
              "dojo/currency",
+             "dojo/dom-style",
              "dojo/date/locale",
              "dojo/dom-construct",
 			 "dojo/domReady!"],
-        function(lang, registry, on, request, currency, locale, domConstruct) {
+        function(lang, registry, on, request, currency, domStyle, locale, domConstruct) {
             load = function () {
             	this.unitbookingId = this.getQueryVariable("unitbookingId");
+            	this.showtaxes = this.getQueryVariable("showtaxes");
             	var promise = request.get("../rest/json/data/inventory/unitbooking/get/print?rowId=" + this.unitbookingId, {
        				timeout: 2000,
        				handleAs: "json"
@@ -66,6 +68,10 @@
             	this.totaltaxcharges.innerHTML = this.formatCurrency(total);
             	this.legalaccountinformation.innerHTML = data.projectBankAccounts["LEGAC"];
             	this.orgname.innerHTML = data.organization.name;
+            	
+            	if (this.showtaxes == "false") {
+            		domStyle.set(this.demandDiv2, "display", "none");
+            	}
             };
             
     		formatDate = function (value) {
@@ -144,7 +150,7 @@
 		<span class="printDemandLetterText">We hereby request you to send Cheque/DD/NEFT/RTGS/Cash to following bank account</span><br>
 		<span class="rintDemandLetterTextSmall" id="builderaccountinformation" data-dojo-attach-point="builderaccountinformation"></span>
 	</div><br>
-	<div id="demandDiv2">
+	<div id="demandDiv2" data-dojo-attach-point="demandDiv2">
 		<table class="demandLetterTable printDemandLetterText">
 			<tr>
 				<td class="demandLetterTableColLabel"><span>Service Tax</span></td>

@@ -77,7 +77,7 @@
        					domConstruct.create("img", {"class":"logo", "src": url, "alt": name}, node);
        				},
        				function(error) {
-       					domConstruct.create("span", {"class":"logoAltText"}, node).innerHTML = name;
+       					//domConstruct.create("span", {"class":"logoAltText"}, node).innerHTML = name;
        				}
        			);
             };
@@ -119,20 +119,23 @@
 	<div id="headerDiv">
 		<table width="100%" align="center">
 			<tr><td align="center" width="40%"><div id="projectLogo" data-dojo-attach-point="projectLogo"></div></td>
-			<td align="center" width="20%"><div class="receiptTopDiv">RECEIPT</div></td>
 			<td align="center" width="40%"><div id="orgLogo" data-dojo-attach-point="orgLogo"></div></td></tr>
 		</table>
 	</div>
 	<br><br>
+	<div class="receiptSpanText" >
+		<table width="100%" align="center">
+			<tr><td><span id="receiptnumber" data-dojo-attach-point="receiptnumber"></span></td>
+			<td align="right"><span id="datespan" data-dojo-attach-point="datespan"></span></td></tr>
+		</table>
+	</div>
 	<div class="receiptSpanText" id="receiptDiv1">
-		<table width="95%" align="center">
-			<tr><td><span>Received with thank from Mr./Mrs.:</span></td>
-			<td><span id="datespan" data-dojo-attach-point="datespan"></span></td></tr>
-			<tr><td><span style="text-decoration: underline;" id="customername" data-dojo-attach-point="customername"></span></td>
-			<td><span id="receiptnumber" data-dojo-attach-point="receiptnumber"></span></td></tr>
+		<table width="100%" align="center">
+			<tr><td><span>Received with thank from Mr./Mrs.:</span></td></tr>
+			<tr><td><span style="text-decoration: underline;" id="customername" data-dojo-attach-point="customername"></span></td></tr>
 		</table>
 		<br>
-		<table width="95%" align="center"><tr><td>
+		<table width="100%" align="center"><tr><td>
 			<span>The sum of </span><span style="text-decoration: underline;" id="amountinwords" data-dojo-attach-point="amountinwords"></span>
 		</td></tr>
 		<tr><td>

@@ -1,0 +1,25 @@
+<div class="dojoxDialog" tabindex="-1">
+	<div dojoAttachPoint="titleBar" class="dojoxDialogTitleBar">
+		<span dojoAttachPoint="titleNode" class="dojoxDialogTitle"
+			id="${id}_title">${title}</span>
+		<div dojoAttachPoint="closeButtonNode" class="dojoxDialogCloseIcon hiddenDialogCloseIcon"
+			dojoAttachEvent="onclick: onCancel">
+			<span dojoAttachPoint="closeText" class="closeText">x</span>
+		</div>
+	</div>
+	<div dojoAttachPoint="dojoxDialogWrapper">
+		<div dojoAttachPoint="containerNode" class="dojoxDialogPaneContent">
+			<p></p>
+				<div data-dojo-type="dojox/layout/TableContainer" data-dojo-props="cols:1">
+					<div align="center"><span class="confirmDialogMessage" id="confirmTextNode" data-dojo-attach-point="confirmTextNode"></span></div>
+				</div>
+				<p></p>
+				<div align="center">
+					<button data-dojo-type="dijit.form.Button" data-dojo-props=""
+						data-dojo-attach-point="submitButton" data-dojo-attach-event="onClick: onSubmit">Yes</button>
+					<button data-dojo-type="dijit.form.Button" data-dojo-props=""
+						data-dojo-attach-point="cancelButton" data-dojo-attach-event="onClick: onCancel">No</button>
+				</div>
+		</div>
+	</div>
+</div>

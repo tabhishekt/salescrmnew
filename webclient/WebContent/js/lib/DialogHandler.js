@@ -4,6 +4,7 @@ define(
         "dojo/_base/lang",
         'lib/widget/LoginDialog',
         'lib/widget/ConfirmDialog',
+        'lib/widget/YesNoDialog',
         'lib/widget/InformationDialog',
         'lib/widget/ShowEnquiryCommentDialog',
         'lib/widget/ShowUnitPriceDetailDialog',
@@ -19,7 +20,7 @@ define(
         'lib/widget/UnitModificationRequestDialog'
     ],
     function (
-        declare, lang, LoginDialog, ConfirmDialog, InformationDialog, ShowEnquiryCommentDialog, 
+        declare, lang, LoginDialog, ConfirmDialog, YesNoDialog, InformationDialog, ShowEnquiryCommentDialog, 
         ShowUnitPriceDetailDialog, AddEditUnitFloorRiseDialog, AddEditUnitPriceDialog, AddEditUnitChargesDialog,
         ShowUnitPaymentScheduleDialog, DefineBuildingPaymentScheduleDialog, ShowUnitAvailabilityDialog,
         CancelUnitBookingDialog, ShowCancelledBookingDetailDialog, DefineBuildingParkingDialog, UnitModificationRequestDialog
@@ -67,6 +68,21 @@ define(
     			this.confirmDialog.set("dimensions", [this.dialogDimension.width, this.dialogDimension.height]);
     			this.confirmDialog.layout();
     			this.confirmDialog.show();
+            },
+            
+            openYesNoDialog:function (options) {
+            	if(!this.yesnoDialog) {
+            		options.draggable = false;
+                	options.showTitle = true;
+            		this.yesnoDialog = new YesNoDialog(options);	
+            	}
+            	this.yesnoDialog.setDeferred(options.def);
+            	this.yesnoDialog.set("title", options.title);
+            	this.yesnoDialog.setConfirmText(options.confirmText);
+            	
+    			this.yesnoDialog.set("dimensions", [this.dialogDimension.width, this.dialogDimension.height]);
+    			this.yesnoDialog.layout();
+    			this.yesnoDialog.show();
             },
             
             openLoginDialog:function (options) {

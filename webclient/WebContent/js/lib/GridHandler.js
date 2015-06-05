@@ -414,7 +414,26 @@ define(
     					} else if (action[0] == "printbookingform") {
     						window.open("printbookingform.jsp?unitbookingId=" + rowData.id);
     					} else if (action[0] == "printdemandletter") {
-    						window.open("printdemandletter.jsp?unitbookingId=" + rowData.id);
+    						var gridHandler = this;
+    						var deferred = new Deferred();
+	        	        	var options = {
+		    	        		title:"Confirm show taxes", 
+		    	        	    confirmText : "Do you want to show taxes as part of demand?", 
+		    	        	    def: deferred
+		    	        	}
+	        	        	var dim = dialogHandler.dialogDimension; 
+	        	        	dialogHandler.setDimension({width:window.screen.width*0.30, height: window.screen.height*0.15});
+		    	        	dialogHandler.openYesNoDialog(options);
+		    	        	dialogHandler.setDimension(dim);
+		    	        	
+	        	        	deferred.then (
+	        	        		function(res){
+	        	        			window.open("printdemandletter.jsp?unitbookingId=" + rowData.id + "&showtaxes=true");
+	        	        		},
+	        	        		function(err){
+	        	        			window.open("printdemandletter.jsp?unitbookingId=" + rowData.id + "&showtaxes=false");
+	        	        		}
+	        	        	);	
     					} else if (action[0] == "printreceipt") {
     						window.open("printreceipt.jsp?paymentId=" + rowData.id);
     					}

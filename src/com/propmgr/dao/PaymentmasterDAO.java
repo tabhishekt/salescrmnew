@@ -146,9 +146,13 @@ public class PaymentmasterDAO extends SuperDAO {
 		return -1;
 	}
 	
-	public Paymentmaster findByBankAndChequeNumber(String bankName, String chequeNumber) {
+	public boolean isDuplicateCheque(String bankName, String chequeNumber) {
 		Session hbmSession = getSession();
 		List<Paymentmaster> resultList = null;
+		PaymentstatusDAO paymentstatusDAO = new PaymentstatusDAO();
+		PaymentstateDAO paymentstateDAO = new PaymentstateDAO();
+		Paymentstatus paymentstatus = null;
+		
 		try {
 			String queryString = "from Paymentmaster u where u.bankname = '" 
 				+ bankName + "' and u.chequenumber = '" + chequeNumber + "'";
@@ -156,13 +160,18 @@ public class PaymentmasterDAO extends SuperDAO {
 			resultList = query.list ();
 			
 			if (resultList.size() > 0) {
-				return resultList.get(0);
+				Paymentmaster payment = resultList.get(0);
+				Paymentstate paymentstate = paymentstateDAO.findByName("Bounced");
+				if (paymentstate != null) {
+					paymentstatus = paymentstatusDAO.findLatestByPaymentIdAndState(payment.getPaymentid(), paymentstate);
+				}
+				return (paymentstatus != null) ? false : true;
 			}
 		} catch (Exception e) {
 			log.error ("", e);
 		}
 		
-		return null;
+		return false;
 	}
 	
 	@Override

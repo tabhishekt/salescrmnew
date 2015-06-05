@@ -6,6 +6,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.LockMode;
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.criterion.Example;
 
 import com.propmgr.hibernate.SuperDAO;
@@ -108,6 +110,25 @@ public class PaymentstateDAO extends SuperDAO {
 		}
 	}
 
+	public Paymentstate findByName(String state) {
+		Session hbmSession = getSession();
+		List<Paymentstate> resultList = null;
+		
+		try {
+			String queryString = "from Paymentstate u where u.paymentstatename = '" + state + "'";
+			Query query = hbmSession.createQuery(queryString);
+			resultList = query.list ();
+			
+			if (resultList.size() > 0) {
+				return resultList.get(0);
+			}
+		} catch (Exception e) {
+			log.error ("", e);
+		}
+		
+		return null;
+	}
+	
 	@Override
 	protected Object getPojoObj() {
 		return new Paymentstate();
