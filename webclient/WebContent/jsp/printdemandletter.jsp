@@ -71,6 +71,7 @@
             	
             	if (this.showtaxes == "false") {
             		domStyle.set(this.demandDiv2, "display", "none");
+            		domStyle.set(this.demandDiv3, "display", "none");
             	}
             };
             
@@ -166,7 +167,7 @@
 		<span class="printDemandLetterText">We hereby request you to send Cheque/DD/NEFT/RTGS/Cash to following bank account</span><br>
 		<span class="rintDemandLetterTextSmall" id="taxaccountinformation" data-dojo-attach-point="taxaccountinformation"></span>
 	</div><br>
-	<div id="demandDiv3">
+	<div id="demandDiv3" data-dojo-attach-point="demandDiv3">
 		<table class="demandLetterTable printDemandLetterText">
 			<tr>
 				<td class="demandLetterTableColLabel"><span>Ready Reckoner Rate per sq.ft</span></td>
