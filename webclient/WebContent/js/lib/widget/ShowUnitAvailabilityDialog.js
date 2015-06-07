@@ -52,8 +52,8 @@ define([
 								"Number: " + unitAvailability.unitNumber + "<br>" +
 								"Booking Type: " + unitAvailability.bookingType + "<br>" +
 								"Parking: " + unitAvailability.parkingName + "<br>" + 
-								"Booked by: " + unitAvailability.customerName + "<br>" +
-								"Booked for: " + unitAvailability.userName;
+								"Booked by: " + unitAvailability.userName + "<br>" +
+								"Booked for: " + unitAvailability.customerName;
 						}
 					});
 				}

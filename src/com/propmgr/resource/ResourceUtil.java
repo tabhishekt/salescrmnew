@@ -583,8 +583,8 @@ public class ResourceUtil {
 		if (unitpricepolicy != null) {
 			double baseRate = unitpricepolicy.getBaserate();
 			double readyreckonerrate = unitpricepolicy.getReadyreckonerrate();
-			double basicCost = baseRate*unit.getSaleablearea();
 			double totalRate = baseRate + floorRise - discount; 
+			double basicCost = totalRate*unit.getSaleablearea();
 			double otherCharges = unit.getOthercharges() - deductionOnOtherCharges;
 			
 			double basicCostReadyReckoner = getBasicCostUsingReadyReckonerRate(readyreckonerrate, unit.getCarpetarea(), unit.getCarpetareaforterrace());
