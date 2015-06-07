@@ -115,8 +115,8 @@ public class CustomermasterDAO extends SuperDAO {
 		List<Customermaster> resultList = null;
 		
 		try {
-			String queryString = "from Customermaster u where u.person.firstname = '" + firstName + "'" +
-					" and u.person.middlename = '" + middleName + "' and u.person.lastname = '" + lastName + "'";
+			String queryString = "from Customermaster u where lower(u.person.firstname) = lower('" + firstName + "')" +
+					" and lower(u.person.middlename) = lower('" + middleName + "') and lower(u.person.lastname) = lower('" + lastName + "')";
 			
 			if (emailID != null && emailID.length() > 0) {
 				queryString += " and u.person.contactinfo.emailid = '" + emailID + "'";

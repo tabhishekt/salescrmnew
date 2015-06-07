@@ -970,12 +970,22 @@ public class InventoryService {
 			@QueryParam("deductiononothercharges") String deductiononothercharges) {
 		UnitmasterDAO unitmasterDAO = new UnitmasterDAO();
 		UnitPriceDetailResource result = null;
+		UnitbookingDAO unitbookingDAO = new UnitbookingDAO();
+		double bookingDiscount = 0.0;
 		
 		try {
 			HibernateConnection.getSession().clear();
 			Unitmaster unit = unitmasterDAO.findById(Long.parseLong(rowId));
 			if (unit != null) {
-				result = ResourceUtil.getUnitPriceDetailResource(unit, Long.parseLong(discount), Long.parseLong(deductiononothercharges));
+				bookingDiscount = Double.parseDouble(discount);
+				if (bookingDiscount == 0) {
+					// Check if we can discount from booking
+					Unitbooking unitbooking = unitbookingDAO.findByUnit(unit);
+					if (unitbooking != null) {
+						bookingDiscount = unitbooking.getBookingdiscount();
+					}
+				}
+				result = ResourceUtil.getUnitPriceDetailResource(unit, bookingDiscount, Double.parseDouble(deductiononothercharges));
 			} else {
 				return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
 			}
@@ -1471,13 +1481,14 @@ public class InventoryService {
 		UnitBookingResource result = null;
 		
 		try {
+				HibernateConnection.getSession().clear();
 				Unitbooking unitbooking = unitbookingDAO.findById(Long.parseLong(rowId));
 				if (unitbooking != null) {
 					result = ResourceUtil.getUnitbookingFromDAO(unitbooking);
 				} else {
 					return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
 				}
-			
+				HibernateConnection.getSession().clear();
 		} catch (Exception e) {
 			logger.error("", e);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
@@ -1535,13 +1546,6 @@ public class InventoryService {
 							double percentAmount = paymentSchedule.getPercentamount();
 							double amount = (percentAmount*agreementValue) / 100;
 							double floorRise = ResourceUtil.getFloorRisePaymentSchedule(paymentSchedule.getPaymentscheduletype(), projectbuilding.getProjectbuildingid());
-							if (paymentSchedule.getPaymentscheduletype().equalsIgnoreCase("Registration payment")) {
-								if (amount > bookingAmount) {
-									amount -= bookingAmount;
-								} else {
-									amount = 0;
-								}
-							}
 							UnitPaymentScheduleResource paymentScheduleRes = ResourceUtil.getUnitPaymentScheduleFromDAO(paymentSchedule);
 							paymentScheduleRes.setAmount(amount);
 							paymentScheduleRes.setFloorRise(floorRise);
@@ -1693,7 +1697,12 @@ public class InventoryService {
 			UnitBookingResource unitBookingResource = ResourceUtil.getUnitbookingFromDAO(unitbooking);
 			Usermaster user = ResourceUtil.getUserPOJO(formData);
 			double deduction = ResourceUtil.getFormDataValueAsDouble(formData, "canceldeduction");
-			double refundamount = unitBookingResource.getTotalPaymentReceived() - unitBookingResource.getTotalUnitCostWithDiscount()* (deduction/100);
+			double refundamount = unitBookingResource.getTotalPaymentReceived() - deduction;
+			
+			if (refundamount < 0) {
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException("Cancellation deduction "
+						+ " amount cannot be more than total payent received.")).build();
+			}
 			
 			if (refundamount > 0) {
 				refundmaster.setBankname(ResourceUtil.getFormDataValue(formData, "bankname"));

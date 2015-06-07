@@ -19,6 +19,7 @@ public class UnitBookingResource {
 	private boolean cancelled;
 	private String cancelUserDisplayName;
 	private double cancelDeduction;
+	private double cancelDeductionPercent;
 	private String cancellationDate;
 	private String cancellationComment;
 	private RefundResource refundDetails;
@@ -33,7 +34,7 @@ public class UnitBookingResource {
 			double deductionOnOtherCharges, String comment, double totalUnitCost,
 			double totalUnitCostWithDiscount, double totalPaymentReceived,
 			double balancePayment, boolean cancelled, String cancelUserDisplayName, 
-			double cancelDeduction, String cancellationDate, String cancellationComment,
+			double cancelDeduction, double cancelDeductionPercent, String cancellationDate, String cancellationComment,
 			RefundResource refundDetails, String unitModificationDetails, 
 			UnitModificationStateResource unitModificationStatus, String unitModificationStatusDate, 
 			String unitModificationStatusComment) {
@@ -56,6 +57,7 @@ public class UnitBookingResource {
 		this.cancelled = cancelled;
 		this.cancelUserDisplayName = cancelUserDisplayName;
 		this.cancelDeduction = cancelDeduction;
+		this.cancelDeductionPercent = cancelDeductionPercent;
 		this.cancellationDate = cancellationDate;
 		this.cancellationComment = cancellationComment;
 		this.refundDetails = refundDetails;
@@ -139,6 +141,10 @@ public class UnitBookingResource {
 
 	public double getCancelDeduction() {
 		return cancelDeduction;
+	}
+
+	public double getCancelDeductionPercent() {
+		return cancelDeductionPercent;
 	}
 
 	public void setCancelDeduction(double cancelDeduction) {

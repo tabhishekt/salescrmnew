@@ -270,6 +270,10 @@ public class ResourceUtil {
 		double totalPaymentReceived = getTotalPaymentReceivedForBooking(unitbooking);
 		double balancePayment = priceWithDiscount.getTotalCost() - totalPaymentReceived;
 		double cancelDeduction = (unitbooking.getCanceldeduction() == null) ? 0 : unitbooking.getCanceldeduction();
+		double cancelDeductionPercent = 0;
+		if (cancelDeduction > 0) {
+			cancelDeductionPercent = (unit.getAgreementvalue() != null) ? (cancelDeduction / unit.getAgreementvalue())*100 : 0;
+		}
 		String cancellationDate = (unitbooking.getCancellationdate() == null) ? null : convertDateToString(unitbooking.getCancellationdate());
 		String cancellationComment = (unitbooking.getCancellationcomment() == null) ? null : convertClobToString(unitbooking.getCancellationcomment());
 		String cancelUserDisplayName = (unitbooking.getUsermasterByCancelledby() == null) ? null : getUserDisplayName(unitbooking.getUsermasterByCancelledby());
@@ -298,7 +302,7 @@ public class ResourceUtil {
 			getUserDisplayName(user), convertDateToString(unitbooking.getBookingdate()), unit.getBookingamount(), 
 			bookingDiscount, deductionOnOtherCharges, convertClobToString(unitbooking.getBookingcomment()), priceWithoutDiscount.getTotalCost(),
 			priceWithDiscount.getTotalCost(), totalPaymentReceived, balancePayment, unitbooking.getIscancelled(), cancelUserDisplayName,
-			cancelDeduction, cancellationDate, cancellationComment, refundDetails, convertClobToString(unitbooking.getUnitmodificationdetails()),
+			cancelDeduction, cancelDeductionPercent, cancellationDate, cancellationComment, refundDetails, convertClobToString(unitbooking.getUnitmodificationdetails()),
 			unitModificationState, unitModificationStatusDate, unitModificationStatusComment);
 	}
 	
@@ -645,14 +649,14 @@ public class ResourceUtil {
 	
 	public static double getTotalDueForCurrentStatus(Set<UnitPaymentScheduleResource> scheduleList, 
 			double bookingAmount, Unitbooking unitbooking, int currentStatus) {
-		double totalDueForCurrentStatus = bookingAmount;
+		double totalDueForCurrentStatus = 0;
 		for (UnitPaymentScheduleResource paymentSchedule : scheduleList) {
 			if (paymentSchedule.getPosition() <= currentStatus) {
 				totalDueForCurrentStatus += paymentSchedule.getAmount();
 			}
 		}
 		
-		return totalDueForCurrentStatus;
+		return (totalDueForCurrentStatus < bookingAmount) ? bookingAmount : totalDueForCurrentStatus;
 	}
 	
 	public static double getTotalPaymentReceivedForBooking(Unitbooking unitbooking) {

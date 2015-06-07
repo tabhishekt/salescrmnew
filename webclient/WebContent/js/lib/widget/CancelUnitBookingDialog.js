@@ -35,6 +35,19 @@ define([
 			this.totalUnitCostWithDiscount.innerHTML = this.formatCurrency(this.data.totalUnitCostWithDiscount);
 			this.totalPaymentReceived.innerHTML = this.formatCurrency(this.data.totalPaymentReceived);
 			this.balancePayment.innerHTML = this.formatCurrency(this.data.balancePayment);
-    	}
+    	},
+    	
+    	validate: function() {
+        	var isValid = this.inherited(arguments);
+        	
+        	if (isValid) {
+        		if (this.canceldeduction.get("value") > this.data.totalPaymentReceived) {
+        			this.messageNode.innerHTML = "Cancellation deduction amount cannot be more than total payment received.";
+            		return false;
+        		}
+        	}
+        	
+        	return isValid;
+        }
     });
 });

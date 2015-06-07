@@ -63,7 +63,7 @@ define([
 			this.totalUnitCostWithDiscount.innerHTML = this.formatCurrency(this.data.totalUnitCostWithDiscount);
 			this.totalPaymentReceived.innerHTML = this.formatCurrency(this.data.totalPaymentReceived);
 			this.cancelUserDisplayName.innerHTML = this.data.cancelUserDisplayName;
-			this.cancelDeduction.innerHTML = this.data.cancelDeduction + "%";
+			this.cancelDeduction.innerHTML = this.data.cancelDeduction + " (" + this.data.cancelDeductionPercent +"%)";
 			this.cancellationDate.innerHTML = this.formatDate(this.data.cancellationDate);
 			this.cancellationComment.innerHTML = this.data.cancellationComment;
 			
