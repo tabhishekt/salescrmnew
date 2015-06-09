@@ -1,10 +1,8 @@
 package com.propmgr.jersey;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -184,16 +182,17 @@ public class PersonService {
 				AddressResource address = ResourceUtil.getAddressFromDAO(user.getAddress());
 				PersonResource person = ResourceUtil.getPersonResourceFromDAO(user.getPerson());
 				Iterator<Userrole> userroleIterator = user.getUserroles().iterator();
-				
+				StringBuffer displayRoles = new StringBuffer();
 				while(userroleIterator.hasNext()) {
 					Rolemaster role = userroleIterator.next().getRolemaster(); 
+					displayRoles.append(role.getRolename() + ", ");
 					roles.add(new RoleResource(role.getRolemasterid(), role.getRolename(), 
 							ResourceUtil.convertClobToString(role.getRoledescription()), role.isIsadmin()));
 				}
 				
 				result.add(new UserResource(user.getUsermasterid(), person, address, 
 						ResourceUtil.getDisplayNameFromPersonResource(person), ResourceUtil.getDisplayAddressFromAddressResource(address),
-						user.getLoginname(), user.getPassword(), roles, user.isIsactive()));
+						user.getLoginname(), user.getPassword(), roles, displayRoles.toString(), user.isIsactive()));
 			} 
 		} catch (Exception e) {
 			logger.error("", e);
@@ -218,16 +217,18 @@ public class PersonService {
 				AddressResource address = ResourceUtil.getAddressFromDAO(user.getAddress());
 				PersonResource person = ResourceUtil.getPersonResourceFromDAO(user.getPerson());
 				Iterator<Userrole> userroleIterator = user.getUserroles().iterator();
+				StringBuffer displayRoles = new StringBuffer();
 				
 				while(userroleIterator.hasNext()) {
 					Rolemaster role = userroleIterator.next().getRolemaster();
+					displayRoles.append(role.getRolename() + ", ");
 					roles.add(new RoleResource(role.getRolemasterid(), role.getRolename(), 
 							ResourceUtil.convertClobToString(role.getRoledescription()), role.isIsadmin()));
 				}
 				
 				result = new UserResource(user.getUsermasterid(), person, address, 
 						ResourceUtil.getDisplayNameFromPersonResource(person), ResourceUtil.getDisplayAddressFromAddressResource(address),
-						user.getLoginname(), user.getPassword(), roles, user.isIsactive());
+						user.getLoginname(), user.getPassword(), roles, displayRoles.toString(), user.isIsactive());
 			} else {
 				return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
 			}

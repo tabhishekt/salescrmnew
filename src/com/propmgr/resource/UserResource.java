@@ -12,11 +12,12 @@ public class UserResource {
 	private String loginname;
 	private String password;
 	private List<RoleResource> roles;
+	private String displayRoles;
 	private boolean active;
 	
 	public UserResource(long id, PersonResource person,
 			AddressResource address, String displayName, String displayAddress,
-			String loginname, String password, List<RoleResource> roles,
+			String loginname, String password, List<RoleResource> roles, String displayRoles,
 			boolean active) {
 		super();
 		this.id = id;
@@ -27,6 +28,7 @@ public class UserResource {
 		this.loginname = loginname;
 		this.password = password;
 		this.roles = roles;
+		this.displayRoles = displayRoles;
 		this.active = active;
 	}
 	
@@ -62,6 +64,10 @@ public class UserResource {
 		return roles;
 	}
 	
+	public String getDisplayRoles() {
+		return displayRoles;
+	}
+
 	public boolean isActive() {
 		return active;
 	}

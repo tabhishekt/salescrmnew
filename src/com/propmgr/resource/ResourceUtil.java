@@ -886,6 +886,16 @@ public class ResourceUtil {
 		 return dao.findById(Long.parseLong(parkingtypeId));
 	 }
 	 
+	 public static Unitclassificationmaster getUnitClassificationPOJO(MultivaluedMap<String, String> formData) {
+		 String unitclassificationId = getFormDataValue(formData, "unitclassification");
+		 if (unitclassificationId == null || unitclassificationId.length() == 0) {
+			 return null;
+		 }
+		 
+		 UnitClassificationmasterDAO dao = new UnitClassificationmasterDAO();
+		 return dao.findById(Long.parseLong(unitclassificationId));
+	 }
+	 
 	 public static Paymenttype getPaymenttypePOJO(MultivaluedMap<String, String> formData) {
 		 String paymenttypeId = getFormDataValue(formData, "paymenttype");
 		 PaymenttypeDAO dao = new PaymenttypeDAO();

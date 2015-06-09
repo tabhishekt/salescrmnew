@@ -22,21 +22,37 @@
              "dojo/on",
              "dojo/dom-form",
              "dojo/request",
+             "dojo/store/JsonRest",
+             "dojo/store/Memory",
              "lib/DialogHandler",
 			 "lib/GridHandler",
 			 'lib/widget/AddEditCustomerDialog', 
 		     "dijit/form/Button",
 			 "dojo/domReady!"],
-        function(lang, registry, currency, on, domForm, request, DialogHandler, GridHandler, AddEditCustomerDialog, Button) {
+        function(lang, registry, currency, on, domForm, request, JsonRest, Memory, DialogHandler, GridHandler, AddEditCustomerDialog, Button) {
             load = function () {
             	this.buildingId = this.getQueryVariable("buildingId");
             	this.dialogHandler = new DialogHandler();
             	this.createUnitGrid();
-            	//on(registry.byId("registerunitform"), "submit", lang.hitch(this,"onSubmit"));
-            	on(registry.byId("farmerButton"), "click", lang.hitch(this,"onSubmit"));
-            	on(registry.byId("refugeeButton"), "click", lang.hitch(this,"onSubmit"));
-            	on(registry.byId("invButton"), "click", lang.hitch(this,"onSubmit"));
-            	on(registry.byId("regButton"), "click", lang.hitch(this,"onSubmit")); 
+            	this.setDataToDropdown('../rest/json/data/codetable/unitclassification/get/all', registry.byId("unitclassification"));
+            	on(registry.byId("unitclassificationform"), "submit", lang.hitch(this,"onSubmit"));
+            };
+            
+            setDataToDropdown = function (url, node) {
+            	var dialog = this;
+            	var store = new JsonRest ({
+             		target: url,
+             		idProperty:'id'
+         		});
+       		
+            	store.query("", {
+    				handleAs : "json"
+    			}).then(function(data) {
+    				datastore = new Memory({
+    					data : data
+    				});
+    				node.set("store", datastore);
+    			});
             };
             
             formatCurrency = function (value) {
@@ -49,14 +65,22 @@
 			};
 			
 			formatAvailability = function (value) {
-				if(value) {
-					return "Registered";
+				if(!value) {
+					return "Booked";
 				}
 				
-				return "Not Registered";
+				return "Available";
 			};
 			
 			decorateAvailability = function (cell) {
+				if(!cell.data()) { 
+                	return 'text-align: center; background: red'; 
+             	} 
+				
+				return 'text-align: center; background: green';
+			};
+			
+			decorateClassification = function (cell) {
 				if(cell.data() == "Regular") { 
                 	return 'text-align: center; background: #66FF66'; 
              	}else if(cell.data() == "Investor") { 
@@ -72,7 +96,8 @@
             createUnitGrid = function() {
             	var gridLayout = [
   	   							{field: "unitNumber",name: "Unit Number",width: "8%"},
-  	   							{field: "classification",name: "Classification",width: "15%", style: this.decorateAvailability},
+  	   							{field: "available",name: "Available",width: "7%", style: this.decorateAvailability, decorator: this.formatAvailability},
+  	   							{field: "classification",name: "Classification",width: "15%", style: this.decorateClassification},
 	   							{field: "displayProjectInfo",name: "Building / Project",width: "34%"},
 	   							{field: "agreementvalue",name: "Agreement Value",width: "20%", decorator: this.formatCurrency},
 	   							{field: "totalCost",name: "Total Cost",width: "20%", decorator: this.formatCurrency}
@@ -94,27 +119,16 @@
             onSubmit = function (event) {
             	event.preventDefault(); 
             	var rowDataUnit = this.unitGridHandler.getSelectedRowData();
-            	var buttonClicked = event.currentTarget.name;
             	 
             	if (rowDataUnit == null) {
             		this.unitGridHandler.updateMessage("Please select a unit to classify.", "error");
             		return;
 				} else {
 					registry.byId("unit").set("value", rowDataUnit.id);
-					if (buttonClicked == "farmerButton") {
-						registry.byId("type").set("value", "FRM");
-					}else if (buttonClicked == "refugeeButton") {
-						registry.byId("type").set("value", "RFG");
-					}else if (buttonClicked == "invButton") {
-						registry.byId("type").set("value", "INV");
-					}else{
-						registry.byId("type").set("value", "REG");
-					} 
-					 
 				}
             	
             	var promise = request.post("../rest/json/data/inventory/unit/post/updateclassification", {
-     				data: domForm.toObject(registry.byId("registerunitform").id),
+     				data: domForm.toObject(registry.byId("unitclassificationform").id),
      				timeout: 2000,
      				handleAs: "json"
      			});
@@ -141,16 +155,26 @@
 		<div id="dataGridUnit"></div>
 </fieldset>
 <p>		
-		<div id="registerunitform" data-dojo-type="dijit/form/Form" enctype="multipart/form-data" action="" method="POST">
+		<div id="unitclassificationform" data-dojo-type="dijit/form/Form" enctype="multipart/form-data" action="" method="POST">
 			<div>
 				<input data-dojo-type='dijit/form/TextBox' id="unit" name="unit" class="hiddenInput" value=""></input>
 				<input data-dojo-type='dijit/form/TextBox' id="type" name="type" class="hiddenInput" value=""></input>
 			</div>
 			<div>
-				<button data-dojo-type="dijit/form/Button" type="button" id="farmerButton" name="farmerButton" value="Submit">Mark as Farmer Flat</button>
-				<button data-dojo-type="dijit/form/Button" type="button" id="refugeeButton" name="refugeeButton" value="Submit">Mark as Refugee Flat</button>
-				<button data-dojo-type="dijit/form/Button" type="button" id="invButton" name="invButton" value="Submit">Mark as Investor Flat</button>
-				<button data-dojo-type="dijit/form/Button" type="button" id="regButton" name="regButton" value="Submit">Mark as Regular Flat</button>
+				<table align="left" style="width: 100%;">
+					<tr><td>
+						<table>
+							<tr><td><label for="unitclassification">Select Unit Classification:</label></td></tr>
+							<tr><td><select id="unitclassification" name="unitclassification"
+							data-dojo-type="dijit/form/FilteringSelect" 
+							data-dojo-attach-point='unitclassification'
+							data-dojo-props="required:true"></select></td></tr>
+						</table>
+					</td></tr>
+					<tr><td>
+						<button data-dojo-type="dijit/form/Button" type="submit" id="submitButton" name="submitButton" value="Submit">Classify Unit</button>
+					</td></tr>
+				</table>
 			</div>
 		</div>
 </body>

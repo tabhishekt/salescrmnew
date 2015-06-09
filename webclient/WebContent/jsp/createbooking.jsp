@@ -253,11 +253,21 @@
             			return;
             		}
     			}
+            	
             	var deductiononothercharges = 0;
             	if (dojo.byId("deductiononothercharges").value != "") {
             		deductiononothercharges = parseInt(dojo.byId("deductiononothercharges").value);
             		if (deductiononothercharges > rowDataUnit.otherCharges) {
             			this.openBookingResultDialog("Deduction of other charges cannot be more than other charges", "error");
+            			return;
+            		}
+    			}
+            	
+            	var bookingdate;
+            	if (dojo.byId("bookingdate").value != "") {
+            		bookingdate = dojo.byId("bookingdate").value;
+            		if (new Date(bookingdate) > new Date()) {
+            			this.openBookingResultDialog("Booking date cannot be greater than today", "error");
             			return;
             		}
     			}
@@ -339,6 +349,14 @@
 										<tr><td><textarea id="comment" name="comment"
 										data-dojo-type="dijit/form/SimpleTextarea" rows="3"></textarea></td>
 										</tr>
+									</table>
+								</td></tr>
+								<tr><td>
+									<table>
+										<tr><td><label for="bookingdate">Booking Date:</label></td></tr>
+										<tr><td><input id="bookingdate" name="bookingdate"
+												data-dojo-type='dijit/form/DateTextBox'
+												type="text" /></td></tr>
 									</table>
 								</td></tr>
 							</table>

@@ -22,16 +22,17 @@ define([
 			this.legalcharge.set("value", data.legalcharge);
 			
 		},
+		
 		validate: function() {
         	var isValid = this.inherited(arguments);
         	
         	if (isValid) {
-        		if (this.maintenancecharge1.value > this.baserate.value) {
+        		if (parseFloat(this.maintenancecharge1.value) > parseFloat(this.baserate.value)) {
         		  		this.messageNode.innerHTML = "Maintainance charge 1 cannot be greater than Base Rate";
                 		return false          	
         			
     			}
-        		if (this.maintenancecharge2.value > this.baserate.value) {
+        		if (parseFloat(this.maintenancecharge2.value) > parseFloat(this.baserate.value)) {
     		  		this.messageNode.innerHTML = "Maintainance charge 2 cannot be greater than Base Rate";
             		return false          	
     			

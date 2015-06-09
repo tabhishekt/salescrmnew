@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -1191,9 +1192,7 @@ public class InventoryService {
 		UnitClassificationmasterDAO masterDAO = new UnitClassificationmasterDAO();
 		try {
 			Unitmaster unit = ResourceUtil.getUnitPOJO(formData);
-			Unitclassificationmaster classification = new Unitclassificationmaster();
-			classification.setUnitclasscode(ResourceUtil.getFormDataValue(formData, "type"));
-			classification = (Unitclassificationmaster)masterDAO.findByExample(classification).get(0);
+			Unitclassificationmaster classification = ResourceUtil.getUnitClassificationPOJO(formData);
 			unit.setUnitclassificationmaster(classification);
 			unitmasterDAO.flushSession();
 		}
@@ -1660,7 +1659,13 @@ public class InventoryService {
 			} else {
 				bookingFormNumber++;
 			}
-			unitbooking.setBookingdate(Calendar.getInstance().getTime());
+			
+			Date bookingDate = ResourceUtil.getFormDataValueAsDate(formData, "bookingdate");
+			if (bookingDate == null) {
+				bookingDate = Calendar.getInstance().getTime();
+			}
+			
+			unitbooking.setBookingdate(bookingDate);
 			unitbooking.setBookingformnumber(bookingFormNumber);
 			unitbooking.setUnitmaster(unit );
 			unitbooking.setCustomermaster(customer);

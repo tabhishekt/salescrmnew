@@ -476,7 +476,8 @@ define(
             		  this.pageParams.serviceName = "person";
             		  this.pageParams.gridLayout = [
 														{field: "displayName",name: "Name",width: "auto"},
-														{field: "loginname",name: "Login Name",width: "auto"}
+														{field: "loginname",name: "Login Name",width: "auto"},
+														{field: "displayRoles",name: "Roles",width: "auto"}
                     	   	   			  		   ];
             		  this.pageParams.dialogTtileField = "displayName";
             		  this.pageParams.GridDialog = AddEditUserDialog;
