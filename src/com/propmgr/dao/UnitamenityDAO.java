@@ -1,11 +1,14 @@
 package com.propmgr.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.LockMode;
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.criterion.Example;
 
 import com.propmgr.hibernate.SuperDAO;
@@ -106,6 +109,24 @@ public class UnitamenityDAO extends SuperDAO {
 		}
 	}
 
+	public List<Unitamenity> findByUnit(long unitId) {
+		Session hbmSession = getSession();
+		List<Unitamenity> resultList = null;
+		try {
+			String queryString = "from Unitamenity u where u.unitmaster.unitid = " + unitId;
+			Query query = hbmSession.createQuery(queryString);
+			resultList = query.list ();
+			
+			if (resultList.size() > 0) {
+				return resultList;
+			}
+		} catch (Exception e) {
+			log.error ("", e);
+		}
+		
+		return new ArrayList<Unitamenity>();
+	}
+	
 	@Override
 	protected Object getPojoObj() {
 		return new Unitamenity();

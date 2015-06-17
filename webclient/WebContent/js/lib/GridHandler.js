@@ -340,7 +340,7 @@ define(
     					} else if (action[0] == "updateamenitycharges") {
     						var options = {
     								action: action[0], 
-    		                    	title: "Update amenity charges for price policy " + rowData.name,
+    		                    	title: "Update amenity charges for price policy " + rowData.policyName,
     		                    	unitpricepolicyId: rowData.id,
     		                    	data: rowData.amenityCharges,
     		                    	url: "../rest/json/data/inventory/unitpricepolicy/post/amenitycharges",

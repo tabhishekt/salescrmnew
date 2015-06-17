@@ -1115,7 +1115,7 @@ public class ResourceUtil {
 		 unit.setUnitclassificationmaster(classification);
 		 unitmasterDAO.save(unit);
 
-		 List<Unitamenity> unitamenityList = unitamenityDAO.findAll();
+		 List<Unitamenity> unitamenityList = unitamenityDAO.findByUnit(unit.getUnitid());
 		 for (Unitamenity unitamenity : unitamenityList) {
 			 unitamenityDAO.delete(unitamenity);
 		 }
