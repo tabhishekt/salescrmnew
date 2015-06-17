@@ -18,9 +18,9 @@ define([
 			this.servicetax.set("value", data.servicetax);
 			this.valueaddedtax.set("value", data.valueaddedtax);
 			this.maintenancecharge1.set("value", data.maintenancecharge1);
+			this.maintenancecharge1duration.set("value", data.maintenancecharge1duration);
 			this.maintenancecharge2.set("value", data.maintenancecharge2);
 			this.legalcharge.set("value", data.legalcharge);
-			
 		},
 		
 		validate: function() {

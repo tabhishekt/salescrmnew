@@ -25,6 +25,8 @@ import com.propmgr.dao.Address;
 import com.propmgr.dao.AddressDAO;
 import com.propmgr.dao.Amenity;
 import com.propmgr.dao.AmenityDAO;
+import com.propmgr.dao.Amenitypricepolicy;
+import com.propmgr.dao.AmenitypricepolicyDAO;
 import com.propmgr.dao.Bankaccounttype;
 import com.propmgr.dao.BankaccounttypeDAO;
 import com.propmgr.dao.Citymaster;
@@ -414,6 +416,9 @@ public class ResourceUtil {
 			return null;
 		}
 		
+		AmenityDAO amenityDAO = new AmenityDAO();
+		AmenitypricepolicyDAO amenitypricepolicyDAO = new AmenitypricepolicyDAO();
+		Map<String, Double> amenityCharges = new HashMap<String, Double>();
 		Set<String> assignedProjects = new HashSet<String>();
 		Iterator<Unitmaster> iterator = unitPricePolicy.getUnitmasters().iterator();
 		while(iterator.hasNext()) {
@@ -431,11 +436,21 @@ public class ResourceUtil {
 		
 		double totalTax = unitPricePolicy.getStampduty() + unitPricePolicy.getRegistrationcharge() + 
 				unitPricePolicy.getServicetax() + unitPricePolicy.getValueaddedtax(); 
+		int maintenancecharge1duration = (unitPricePolicy.getMaintenancecharge1duration() == null) ? 1 : unitPricePolicy.getMaintenancecharge1duration();
+		
+		List<Amenity> allAmenityTypes = amenityDAO.findAll(); 
+		for (Amenity aAmenityType : allAmenityTypes) {
+				double charges = amenitypricepolicyDAO.findAmenityChargeByPricePolicyAndAmenityType(
+						unitPricePolicy.getUnitpricepolicyid(), aAmenityType.getAmenityid());
+				amenityCharges.put(aAmenityType.getAmenitydescription(), charges);
+		}
+		
+		
 		return new UnitPricePolicyResource(unitPricePolicy.getUnitpricepolicyid(), unitPricePolicy.getPolicyname(), 
 				unitPricePolicy.getBaserate(), unitPricePolicy.getReadyreckonerrate(), unitPricePolicy.getStampduty(), 
 				unitPricePolicy.getRegistrationcharge(), unitPricePolicy.getServicetax(), unitPricePolicy.getValueaddedtax(), totalTax, 
-				unitPricePolicy.getMaintenancecharge1(), unitPricePolicy.getMaintenancecharge2(), 
-				unitPricePolicy.getLegalcharge(), assignedToProjects.toString());
+				unitPricePolicy.getMaintenancecharge1(), maintenancecharge1duration, unitPricePolicy.getMaintenancecharge2(), 
+				unitPricePolicy.getLegalcharge(), assignedToProjects.toString(), amenityCharges);
 	}
 	
 	public static CustomerResource getCustomerFromDAO(Customermaster customer)  throws SQLException, IOException {
@@ -581,6 +596,7 @@ public class ResourceUtil {
 		
 		double floorRise = (unit.getFloorrise() == null) ? 0 : unit.getFloorrise();
 		if (unitpricepolicy != null) {
+			double amenityCharges = getAmenityCharges(unit, unitpricepolicy);
 			double baseRate = unitpricepolicy.getBaserate();
 			double readyreckonerrate = unitpricepolicy.getReadyreckonerrate();
 			double totalRate = baseRate + floorRise - discount; 
@@ -588,11 +604,12 @@ public class ResourceUtil {
 			double otherCharges = unit.getOthercharges() - deductionOnOtherCharges;
 			
 			double basicCostReadyReckoner = getBasicCostUsingReadyReckonerRate(readyreckonerrate, unit.getCarpetarea(), unit.getCarpetareaforterrace());
-			double agreementValueBaseRate = getAgreementValueUsingBaseRate(baseRate, unit.getSaleablearea(), floorRise, discount, otherCharges);
+			double agreementValueBaseRate = getAgreementValueUsingBaseRate(baseRate + amenityCharges, unit.getSaleablearea(), floorRise, discount, otherCharges);
 			double agreementValueReadyReckoner = getAgreementValueUsingReadyReckonerRate(basicCostReadyReckoner, unit.getFloornumber());
 			double agreementValue = (agreementValueBaseRate >= agreementValueReadyReckoner) ? agreementValueBaseRate : agreementValueReadyReckoner;
 			
-			double maintainanceCharge1 = unitpricepolicy.getMaintenancecharge1()*unit.getSaleablearea();
+			int maintenancecharge1duration = (unitpricepolicy.getMaintenancecharge1duration() == null) ? 1 : unitpricepolicy.getMaintenancecharge1duration();
+			double maintainanceCharge1 = unitpricepolicy.getMaintenancecharge1()*maintenancecharge1duration*unit.getSaleablearea();
 			double maintainanceCharge2 = unitpricepolicy.getMaintenancecharge2()*unit.getSaleablearea();
 			double logalCharge = unitpricepolicy.getLegalcharge();
 			double totalCharges = maintainanceCharge1 + maintainanceCharge2 + logalCharge;
@@ -613,14 +630,14 @@ public class ResourceUtil {
 			double totalCostReadyReckoner = totalCostWithTaxReadyReckoner + totalCharges;
 			
 			return new UnitPriceDetailResource(unit.getUnitid(), unit.getUnitnumber(), displayProjectInfo, getUnitPricePolicyFromDAO(unitpricepolicy), 
-					unit.getSaleablearea(), unit.getCarpetarea(), baseRate, readyreckonerrate, discount, deductionOnOtherCharges, floorRise, totalRate, stampDuty, 
+					unit.getSaleablearea(), unit.getCarpetarea(), baseRate, readyreckonerrate, amenityCharges, discount, deductionOnOtherCharges, floorRise, totalRate, stampDuty, 
 					registrationCharge, serviceTax, valueAddedtax, maintainanceCharge1, maintainanceCharge2, logalCharge, otherCharges, totalCharges, 
 					basicCost, basicCostReadyReckoner, agreementValueBaseRate, agreementValueReadyReckoner, totalTax, totalCostWithTax, 
 					totalCostWithTaxReadyReckoner, totalCost, totalCostReadyReckoner);
 		}
 		
 		return new UnitPriceDetailResource(unit.getUnitid(), unit.getUnitnumber(), displayProjectInfo, null, unit.getSaleablearea(), 
-				unit.getCarpetarea(), 0, 0, discount, deductionOnOtherCharges, floorRise, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+				unit.getCarpetarea(), 0, 0, 0, discount, deductionOnOtherCharges, floorRise, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 	}
 	
 	public static CodeTableResource getBuildingCurrentStatus(Projectbuilding projectBuilding) {
@@ -1098,6 +1115,11 @@ public class ResourceUtil {
 		 unit.setUnitclassificationmaster(classification);
 		 unitmasterDAO.save(unit);
 
+		 List<Unitamenity> unitamenityList = unitamenityDAO.findAll();
+		 for (Unitamenity unitamenity : unitamenityList) {
+			 unitamenityDAO.delete(unitamenity);
+		 }
+		 
 		 List<Amenity> amenities = getAmenityPOJOList(formData);
 		 for (Amenity amenity : amenities) {
 			 Unitamenity unitamenity = new Unitamenity();
@@ -1109,16 +1131,39 @@ public class ResourceUtil {
 		 unitmasterDAO.flushSession();
 	 }
 	 
+	 public static double getAmenityCharges(Unitmaster unit, Unitpricepolicy unitpricepolicy) {
+		 AmenitypricepolicyDAO amenitypricepolicyDAO = new AmenitypricepolicyDAO();
+		 double amenityCharges = 0;
+		 Set<Unitamenity> unitAmenities = unit.getUnitamenities();
+		 if (unitAmenities != null) {
+			 Iterator<Unitamenity> iterator = unitAmenities.iterator();
+			 while (iterator.hasNext()) {
+				 Unitamenity unitamenity = iterator.next();
+				 if (unitamenity != null) {
+					 Amenitypricepolicy amenitypricepolicy = amenitypricepolicyDAO.findByPricePolicyAndAmenityType(
+							 unitpricepolicy.getUnitpricepolicyid(), unitamenity.getAmenity().getAmenityid());
+					 if (amenitypricepolicy != null) {
+						 amenityCharges += amenitypricepolicy.getAmenitycharge(); 
+					 }
+				 }
+			 }
+		 }
+
+		 return amenityCharges;
+	 }
+	 
 	 public static void saveUnitPriceInformation(Unitmaster unit, Unitpricepolicy unitpricepolicy, double floorRise) throws SQLException {
+		double amenityCharges = getAmenityCharges(unit, unitpricepolicy);
 		double baseRate = unitpricepolicy.getBaserate();
 		double readyReckonerRate = unitpricepolicy.getReadyreckonerrate(); 
 		double otherCharges = unit.getOthercharges();
 		double basicCostReadyReckoner = getBasicCostUsingReadyReckonerRate(readyReckonerRate, unit.getCarpetarea(), unit.getCarpetareaforterrace());
-		double agreementValueBaseRate = getAgreementValueUsingBaseRate(baseRate, unit.getSaleablearea(), floorRise, 0, otherCharges);
+		double agreementValueBaseRate = getAgreementValueUsingBaseRate(baseRate + amenityCharges, unit.getSaleablearea(), floorRise, 0, otherCharges);
 		double agreementValueReadyReckoner = getAgreementValueUsingReadyReckonerRate(basicCostReadyReckoner, unit.getFloornumber());
 		double agreementValue = (agreementValueBaseRate >= agreementValueReadyReckoner) ? agreementValueBaseRate : agreementValueReadyReckoner;
 		
-		double maintainanceCharge1 = unitpricepolicy.getMaintenancecharge1();
+		int maintenancecharge1duration = (unitpricepolicy.getMaintenancecharge1duration() == null) ? 1 : unitpricepolicy.getMaintenancecharge1duration();
+		double maintainanceCharge1 = unitpricepolicy.getMaintenancecharge1()*maintenancecharge1duration;
 		double maintainanceCharge2 = unitpricepolicy.getMaintenancecharge2();
 		double logalCharge = unitpricepolicy.getLegalcharge();
 		double totalCharges = maintainanceCharge1 + maintainanceCharge2 + logalCharge;

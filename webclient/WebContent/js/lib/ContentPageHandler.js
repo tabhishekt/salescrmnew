@@ -140,6 +140,8 @@ define(
             		return {style : "width:50%"};
             	} else if (this.page == "payment") {
             		return {style : "width:45%"};
+            	} else if (this.page == "unitpricepolicy") {
+            		return {style : "width:50%"};
             	}
             	
             	return {style : "width:32%"};
@@ -271,7 +273,15 @@ define(
   				          ["refresh", "Refresh", "NewPage"],
   				          ["printreceipt", "Print Receipt", "NewPage"]
   				       ];
-            	}
+            	} else if (this.page == "unitpricepolicy") {
+            		return [
+    				          ["new", "New", "NewPage"],
+    				          ["edit", "Edit", "Copy"],
+    				          ["delete", "Delete", "Delete"],
+    				          ["refresh", "Refresh", "NewPage"],
+    				          ["updateamenitycharges", "Define Amenity Charges", "NewPage"]
+    				       ];
+              	}
             	
             	return [
 				          ["new", "New", "NewPage"],

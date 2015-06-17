@@ -61,5 +61,6 @@
 		<mapping resource="com/propmgr/dao/Parkingmaster.hbm.xml" />
 		<mapping resource="com/propmgr/dao/Unitmodificationstate.hbm.xml" />
 		<mapping resource="com/propmgr/dao/Unitmodificationstatus.hbm.xml" />
+		<mapping resource="com/propmgr/dao/Amenitypricepolicy.hbm.xml" />
 	</session-factory>
 </hibernate-configuration>

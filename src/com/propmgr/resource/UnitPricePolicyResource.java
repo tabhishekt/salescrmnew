@@ -1,5 +1,7 @@
 package com.propmgr.resource;
 
+import java.util.Map;
+
 
 public class UnitPricePolicyResource {
 	private long id;
@@ -12,13 +14,16 @@ public class UnitPricePolicyResource {
 	private double valueaddedtax;
 	private double totaltax;
 	private double maintenancecharge1;
+	private int maintenancecharge1duration;
 	private double maintenancecharge2;
 	private double legalcharge;
 	private String assignedToProjects;
+	private Map<String, Double> amenityCharges;
 	
-	public UnitPricePolicyResource(Long id, String policyName, double baserate, double readyreckonerrate, double stampduty, 
-			double registrationcharge, double servicetax, double valueaddedtax, double totaltax, 
-			double maintenancecharge1,double maintenancecharge2, double legalcharge, String assignedToProjects) {
+	public UnitPricePolicyResource(Long id, String policyName, double baserate, double readyreckonerrate, 
+			double stampduty, double registrationcharge, double servicetax, double valueaddedtax, double totaltax, 
+			double maintenancecharge1, int maintenancecharge1duration, double maintenancecharge2, 
+			double legalcharge, String assignedToProjects, Map<String, Double> amenityCharges) {
 		super();
 		this.id = id;
 		this.policyName = policyName;
@@ -30,9 +35,11 @@ public class UnitPricePolicyResource {
 		this.valueaddedtax = valueaddedtax;
 		this.totaltax = totaltax;
 		this.maintenancecharge1 = maintenancecharge1;
+		this.maintenancecharge1duration = maintenancecharge1duration;
 		this.maintenancecharge2 = maintenancecharge2;
 		this.legalcharge = legalcharge;
 		this.assignedToProjects = assignedToProjects;
+		this.amenityCharges = amenityCharges;
 	}
 
 	public Long getId() {
@@ -75,6 +82,10 @@ public class UnitPricePolicyResource {
 		return maintenancecharge1;
 	}
 
+	public int getMaintenancecharge1duration() {
+		return maintenancecharge1duration;
+	}
+
 	public double getMaintenancecharge2() {
 		return maintenancecharge2;
 	}
@@ -85,5 +96,9 @@ public class UnitPricePolicyResource {
 
 	public String getAssignedToProjects() {
 		return assignedToProjects;
+	}
+
+	public Map<String, Double> getAmenityCharges() {
+		return amenityCharges;
 	}
 }

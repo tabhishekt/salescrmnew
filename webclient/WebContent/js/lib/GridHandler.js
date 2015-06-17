@@ -337,6 +337,17 @@ define(
     		                    	gridHandler: this,
     		                }
     						this.dialogHandler.openOtherActionDialog(options, window.screen.width*0.50, window.screen.height*0.50);
+    					} else if (action[0] == "updateamenitycharges") {
+    						var options = {
+    								action: action[0], 
+    		                    	title: "Update amenity charges for price policy " + rowData.name,
+    		                    	unitpricepolicyId: rowData.id,
+    		                    	data: rowData.amenityCharges,
+    		                    	url: "../rest/json/data/inventory/unitpricepolicy/post/amenitycharges",
+    		                    	mode: "edit",
+    		                    	gridHandler: this,
+    		                }
+    						this.dialogHandler.openOtherActionDialog(options, window.screen.width*0.50, window.screen.height*0.50);
     					} else if (action[0] == "cancelbooking") {
     						var options = {
     								action: action[0], 

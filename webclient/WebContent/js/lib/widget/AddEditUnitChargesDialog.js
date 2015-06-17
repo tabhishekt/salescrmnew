@@ -103,7 +103,7 @@ define([
         },
         
         getIdPart: function (unitType) {
-        	var part = unitType.replace(" ", "_");
+        	var part = unitType.replace(new RegExp(" ", 'g'), "_");
         	return part.toLowerCase();
         },
         

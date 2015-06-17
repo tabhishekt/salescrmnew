@@ -17,13 +17,15 @@ define(
         'lib/widget/CancelUnitBookingDialog',
         'lib/widget/ShowCancelledBookingDetailDialog',
         'lib/widget/DefineBuildingParkingDialog',
-        'lib/widget/UnitModificationRequestDialog'
+        'lib/widget/UnitModificationRequestDialog',
+        'lib/widget/DefineAmenityChargesDialog'
     ],
     function (
         declare, lang, LoginDialog, ConfirmDialog, YesNoDialog, InformationDialog, ShowEnquiryCommentDialog, 
         ShowUnitPriceDetailDialog, AddEditUnitFloorRiseDialog, AddEditUnitPriceDialog, AddEditUnitChargesDialog,
         ShowUnitPaymentScheduleDialog, DefineBuildingPaymentScheduleDialog, ShowUnitAvailabilityDialog,
-        CancelUnitBookingDialog, ShowCancelledBookingDetailDialog, DefineBuildingParkingDialog, UnitModificationRequestDialog
+        CancelUnitBookingDialog, ShowCancelledBookingDetailDialog, DefineBuildingParkingDialog, UnitModificationRequestDialog,
+        DefineAmenityChargesDialog
     ) {
         return declare([], {
             
@@ -157,6 +159,18 @@ define(
         			this.updateUnitChargesDialog.set("dimensions", [width, height]);  
         			this.updateUnitChargesDialog.layout();
         			this.updateUnitChargesDialog.show();
+            	} else if (options.action == "updateamenitycharges") {
+            		if(!this.updateAmenityChargesDialog) {
+                		options.draggable = false;
+                    	options.showTitle = true;	
+                		this.updateAmenityChargesDialog = new DefineAmenityChargesDialog(options);
+                	}
+            		this.updateAmenityChargesDialog.data = options.data;
+            		this.updateAmenityChargesDialog.unitpricepolicyId = options.unitpricepolicyId;
+                	this.updateAmenityChargesDialog.set("title", options.title);
+        			this.updateAmenityChargesDialog.set("dimensions", [width, height]);  
+        			this.updateAmenityChargesDialog.layout();
+        			this.updateAmenityChargesDialog.show();
             	} else if (options.action == "cancelbooking") {
             		if(!this.cancelBookingDialog) {
                 		options.draggable = false;

@@ -40,7 +40,8 @@ define([
    					dialog.unitnumber.innerHTML = response.data.unitNumber;
    					dialog.displayprojectinfo.innerHTML = response.data.displayProjectInfo;
    					
-   					dialog.maintenancecharge1.innerHTML = dialog.formatCurrency(response.data.maintenancecharge1) + " (Rs. " + response.data.pricePolicy.maintenancecharge1 + " per sq ft)";
+   					dialog.maintenancecharge1.innerHTML = dialog.formatCurrency(response.data.maintenancecharge1) + 
+   							" (Rs. " + response.data.pricePolicy.maintenancecharge1 + " per sq ft for " + response.data.pricePolicy.maintenancecharge1duration + " months)";
    					dialog.maintenancecharge2.innerHTML = dialog.formatCurrency(response.data.maintenancecharge2) + " (Rs. " + response.data.pricePolicy.maintenancecharge2 + " per sq ft)";;
    					dialog.legalcharge.innerHTML = dialog.formatCurrency(response.data.legalcharge);
    					dialog.othercharges.innerHTML = dialog.formatCurrency(response.data.othercharges);
@@ -59,6 +60,7 @@ define([
    					dialog.readyreckonerrate.innerHTML = dialog.formatCurrency(response.data.readyreckonerrate);
    					dialog.ratediscount.innerHTML = dialog.formatCurrency(response.data.discount);
    					dialog.floorrise.innerHTML = dialog.formatCurrency(response.data.floorrise);
+   					dialog.amenitycharges.innerHTML = dialog.formatCurrency(response.data.amenityCharges);
    					dialog.agreementvalue.innerHTML = dialog.formatCurrency(response.data.agreementvalue);
    					dialog.agreementvaluereadyreckoner.innerHTML = dialog.formatCurrency(response.data.agreementvalueReadyReckoner);
    					dialog.totalcostwithtax.innerHTML = dialog.formatCurrency(response.data.totalCostWithTax);

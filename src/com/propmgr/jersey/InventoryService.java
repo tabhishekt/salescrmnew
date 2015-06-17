@@ -27,6 +27,10 @@ import org.apache.log4j.Logger;
 import org.hibernate.exception.ConstraintViolationException;
 
 import com.propmgr.dao.Address;
+import com.propmgr.dao.Amenity;
+import com.propmgr.dao.AmenityDAO;
+import com.propmgr.dao.Amenitypricepolicy;
+import com.propmgr.dao.AmenitypricepolicyDAO;
 import com.propmgr.dao.Contactinfo;
 import com.propmgr.dao.Customermaster;
 import com.propmgr.dao.Enquiry;
@@ -1305,6 +1309,7 @@ public class InventoryService {
 			unitPricePolicy.setRegistrationcharge(ResourceUtil.getFormDataValueAsDouble(formData, "registrationcharge"));
 			
 			unitPricePolicy.setMaintenancecharge1(ResourceUtil.getFormDataValueAsDouble(formData, "maintenancecharge1"));
+			unitPricePolicy.setMaintenancecharge1duration(ResourceUtil.getFormDataValueAsInt(formData, "maintenancecharge1duration"));
 			unitPricePolicy.setMaintenancecharge2(ResourceUtil.getFormDataValueAsDouble(formData, "maintenancecharge2"));
 			unitPricePolicy.setLegalcharge(ResourceUtil.getFormDataValueAsDouble(formData, "legalcharge"));
 			
@@ -1317,6 +1322,44 @@ public class InventoryService {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
 		}
 	    return Response.ok().build();	
+	}
+	
+	@POST
+	@Path("/unitpricepolicy/post/amenitycharges")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response modifyUnitPricePolicyUpdateAmenityCharges(MultivaluedMap<String, String> formData) {
+		AmenitypricepolicyDAO amenitypricepolicyDAO = new AmenitypricepolicyDAO();
+		AmenityDAO amenityDAO = new AmenityDAO();
+		
+		try {
+			Unitpricepolicy unitpricepolicy = ResourceUtil.getUnitpricepolicyPOJO(formData);
+			List<Amenity> allAmenities = amenityDAO.findAll();
+			for (Amenity anAmenity : allAmenities) {
+				Amenitypricepolicy amenitypricepolicy = amenitypricepolicyDAO.findByPricePolicyAndAmenityType(
+						unitpricepolicy.getUnitpricepolicyid(), anAmenity.getAmenityid());
+				if (amenitypricepolicy == null) {
+					amenitypricepolicy = new Amenitypricepolicy();
+				}
+				
+				String amenityType = anAmenity.getAmenitydescription().trim().toLowerCase().replaceAll(" ", "_");
+				double amenityCharge = ResourceUtil.getFormDataValueAsDouble(formData, "amenitycharge_" + amenityType);
+				
+				if(amenityCharge != amenitypricepolicy.getAmenitycharge()) {
+					amenitypricepolicy.setAmenity(anAmenity);
+					amenitypricepolicy.setUnitpricepolicy(unitpricepolicy);
+					amenitypricepolicy.setAmenitycharge(amenityCharge);
+					
+					amenitypricepolicyDAO.save(amenitypricepolicy);
+				}
+			}
+			
+			amenitypricepolicyDAO.flushSession();
+		}
+		catch (Exception e) {
+			logger.error("", e);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
+		}
+	    return Response.ok().build();
 	}
 	
 	@GET

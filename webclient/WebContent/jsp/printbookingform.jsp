@@ -86,14 +86,15 @@
             	this.saleablearea.innerHTML = data.unit.saleableArea;
             	this.baserate.innerHTML = this.formatCurrency(data.priceDetails.baserate) + " /sq ft";
             	this.reckonerrate.innerHTML = this.formatCurrency(data.priceDetails.readyreckonerrate) + " /sq mt";
-            	this.discount.innerHTML = this.formatCurrency(data.priceDetails.discount);
+            	this.discount.innerHTML = this.formatCurrency(data.priceDetails.discount) + " /sq ft";
+            	this.amenitycharges.innerHTML = this.formatCurrency(data.priceDetails.amenityCharges) + " /sq ft";
             	this.unitnumber.innerHTML = data.unit.unitNumber;
             	if (data.unit.floorRise > 0) {
             		this.floorrisebool.innerHTML = "Yes" 
             	} else {
             		this.floorrisebool.innerHTML = "No"
             	}
-            	this.floorrise.innerHTML = this.formatCurrency(data.unit.floorRise);
+            	this.floorrise.innerHTML = this.formatCurrency(data.unit.floorRise) + " /sq ft";
             	this.unittype.innerHTML = data.unit.unitType.name;
             	this.floortype.innerHTML = data.unit.floorType.name;
             	if (data.unit.otherOptions) {
@@ -456,8 +457,8 @@
 			<td><span id="projectbuilding" data-dojo-attach-point="projectbuilding"></span></td>
 			<td><span>Amenities Facing</span></td>
 			<td><span id="amenitiesfacing" data-dojo-attach-point="amenitiesfacing"></span></td>
-			<td><span></span></td>
-			<td><span></span></td>
+			<td><span>Amenities Charges</span></td>
+			<td><span id="amenitycharges" data-dojo-attach-point="amenitycharges"></span></td>
 			<td><span></span></td><tr>
 			
 			<tr><td><span>Flat No.</span></td>

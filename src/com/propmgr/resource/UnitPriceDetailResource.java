@@ -10,6 +10,7 @@ public class UnitPriceDetailResource {
 	private long saleableArea;
 	private double baserate;
 	private double readyreckonerrate;
+	private double amenityCharges;
 	private double discount;
 	private double deductionOnOtherCharges;
 	private double floorrise;
@@ -34,9 +35,9 @@ public class UnitPriceDetailResource {
 	private double totalCostReadyReckoner;
 	
 	public UnitPriceDetailResource(long id, String unitNumber, String displayProjectInfo, UnitPricePolicyResource pricePolicy, 
-			long saleableArea, long carpetArea, double baserate, double readyreckonerrate, double discount, double deductionOnOtherCharges, 
-			double floorrise, double totalrate, double stampduty, double registrationcharge, double servicetax,
-			double valueaddedtax, double maintenancecharge1, double maintenancecharge2, double legalcharge, 
+			long saleableArea, long carpetArea, double baserate, double readyreckonerrate, double amenityCharges, double discount, 
+			double deductionOnOtherCharges, double floorrise, double totalrate, double stampduty, double registrationcharge, 
+			double servicetax, double valueaddedtax, double maintenancecharge1, double maintenancecharge2, double legalcharge, 
 			double othercharges, double totalcharges, double basicCost, double basicCostReadyReckoner, double agreementvalue, 
 			double agreementvalueReadyReckoner, double totalTax, double totalCostWithTax, double totalCostWithTaxReadyReckoner,
 			double totalCost, double totalCostReadyReckoner) {
@@ -49,6 +50,7 @@ public class UnitPriceDetailResource {
 		this.carpetArea = carpetArea;
 		this.baserate = baserate;
 		this.readyreckonerrate = readyreckonerrate;
+		this.amenityCharges = amenityCharges;
 		this.discount = discount;
 		this.deductionOnOtherCharges = deductionOnOtherCharges;
 		this.floorrise = floorrise;
@@ -105,6 +107,10 @@ public class UnitPriceDetailResource {
 		return readyreckonerrate;
 	}
 	
+	public double getAmenityCharges() {
+		return amenityCharges;
+	}
+
 	public double getDiscount() {
 		return discount;
 	}

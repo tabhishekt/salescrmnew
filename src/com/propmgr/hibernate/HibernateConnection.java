@@ -80,7 +80,7 @@ public class HibernateConnection {
         	    public void execute(Connection connection) throws SQLException {
         	        //connection, finally!
         	    	connection.setTransactionIsolation(8);
-        	    	logger.info("***********Nikhil************* session isolation level is : " + connection.getTransactionIsolation());
+        	    	logger.info("session isolation level is : " + connection.getTransactionIsolation());
         	    }
         	});
         }catch(Exception e) {
