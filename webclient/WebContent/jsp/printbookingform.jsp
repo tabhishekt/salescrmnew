@@ -110,7 +110,7 @@
             	this.totaltax.innerHTML = this.formatCurrency(data.priceDetails.totalTax);
             	this.maintenance1.innerHTML = this.formatCurrency(data.unit.unitPricePolicy.maintenancecharge1) + " /sq ft";
             	this.maintenance1amt.innerHTML = this.formatCurrency(data.priceDetails.maintenancecharge1);
-            	this.othercharges.innerHTML = this.formatCurrency(data.unit.otherCharges);
+            	this.othercharges.innerHTML = this.formatCurrency(data.unit.otherCharges - data.deductionOnOtherCharges);
             	this.legalcharges.innerHTML = this.formatCurrency(data.priceDetails.legalcharge);
             	this.maintenance2.innerHTML = this.formatCurrency(data.unit.unitPricePolicy.maintenancecharge2) + " /sq ft";
             	this.maintenance2amt.innerHTML = this.formatCurrency(data.priceDetails.maintenancecharge2);

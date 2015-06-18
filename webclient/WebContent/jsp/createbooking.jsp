@@ -221,6 +221,21 @@
      			);
             };
             
+            calculateAgreementValue = function (rowDataUnit) {
+            	var baseAgreementValue = rowDataUnit.agreementvalue;
+            	var booingdiscount = 0;
+            	if (dojo.byId("discount").value != "") {
+            		booingdiscount = parseInt(dojo.byId("discount").value);
+    			}
+            	
+            	var deductiononothercharges = 0;
+            	if (dojo.byId("deductiononothercharges").value != "") {
+            		deductiononothercharges = parseInt(dojo.byId("deductiononothercharges").value);
+    			}
+            	
+            	return baseAgreementValue - booingdiscount*rowDataUnit.saleableArea - deductiononothercharges;
+            };
+            
             onSubmit = function (event) {
             	event.preventDefault(); 
             	
@@ -274,7 +289,7 @@
             	
             	var confirmBookingText = "Unit " + rowDataUnit.unitNumber + ", " + 
             		rowDataUnit.displayProjectInfo + " will be booked for " + rowDataCustomer.displayName +
-            		".<br>Agreement value is " + this.formatCurrency(rowDataUnit.agreementvalue) + " and discount offered is " + 
+            		".<br>Agreement value is " + this.formatCurrency(this.calculateAgreementValue(rowDataUnit)) + " and discount offered is " + 
             		this.formatCurrency(booingdiscount) + ".<br>Deduction on other charges is " + 
             		this.formatCurrency(deductiononothercharges) + "<br>Do you want to create this booking?";
             	

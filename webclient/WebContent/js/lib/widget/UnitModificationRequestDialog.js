@@ -46,6 +46,9 @@ define([
 				this.unitmodificationstatuscomment.set("value", this.data.unitModificationStatusComment);
 			} else {
 				this.unitmodificationdetails.disabled = false;
+				this.unitmodificationdetails.set("value", "");
+				this.unitmodificationstatuscomment.set("value", "");
+				this.unitmodificationstatus.set("item", null);
 				domStyle.set(this.unitmodificationstatusdiv, "display", "none");
 			}
     	},

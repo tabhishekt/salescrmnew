@@ -418,7 +418,7 @@ public class ResourceUtil {
 		
 		AmenityDAO amenityDAO = new AmenityDAO();
 		AmenitypricepolicyDAO amenitypricepolicyDAO = new AmenitypricepolicyDAO();
-		Map<String, Double> amenityCharges = new HashMap<String, Double>();
+		Map<String, Double> amenityCharges = null;
 		Set<String> assignedProjects = new HashSet<String>();
 		Iterator<Unitmaster> iterator = unitPricePolicy.getUnitmasters().iterator();
 		while(iterator.hasNext()) {
@@ -438,11 +438,14 @@ public class ResourceUtil {
 				unitPricePolicy.getServicetax() + unitPricePolicy.getValueaddedtax(); 
 		int maintenancecharge1duration = (unitPricePolicy.getMaintenancecharge1duration() == null) ? 1 : unitPricePolicy.getMaintenancecharge1duration();
 		
-		List<Amenity> allAmenityTypes = amenityDAO.findAll(); 
-		for (Amenity aAmenityType : allAmenityTypes) {
-				double charges = amenitypricepolicyDAO.findAmenityChargeByPricePolicyAndAmenityType(
-						unitPricePolicy.getUnitpricepolicyid(), aAmenityType.getAmenityid());
-				amenityCharges.put(aAmenityType.getAmenitydescription(), charges);
+		List<Amenity> allAmenityTypes = amenityDAO.findAll();
+		if (allAmenityTypes.size() > 0) {
+			amenityCharges = new HashMap<String, Double>();
+			for (Amenity aAmenityType : allAmenityTypes) {
+					double charges = amenitypricepolicyDAO.findAmenityChargeByPricePolicyAndAmenityType(
+							unitPricePolicy.getUnitpricepolicyid(), aAmenityType.getAmenityid());
+					amenityCharges.put(aAmenityType.getAmenitydescription(), charges);
+			}
 		}
 		
 		
@@ -599,12 +602,12 @@ public class ResourceUtil {
 			double amenityCharges = getAmenityCharges(unit, unitpricepolicy);
 			double baseRate = unitpricepolicy.getBaserate();
 			double readyreckonerrate = unitpricepolicy.getReadyreckonerrate();
-			double totalRate = baseRate + floorRise - discount; 
+			double totalRate = baseRate + floorRise + amenityCharges - discount; 
 			double basicCost = totalRate*unit.getSaleablearea();
 			double otherCharges = unit.getOthercharges() - deductionOnOtherCharges;
 			
 			double basicCostReadyReckoner = getBasicCostUsingReadyReckonerRate(readyreckonerrate, unit.getCarpetarea(), unit.getCarpetareaforterrace());
-			double agreementValueBaseRate = getAgreementValueUsingBaseRate(baseRate + amenityCharges, unit.getSaleablearea(), floorRise, discount, otherCharges);
+			double agreementValueBaseRate = getAgreementValueUsingBaseRate(totalRate, unit.getSaleablearea(), otherCharges);
 			double agreementValueReadyReckoner = getAgreementValueUsingReadyReckonerRate(basicCostReadyReckoner, unit.getFloornumber());
 			double agreementValue = (agreementValueBaseRate >= agreementValueReadyReckoner) ? agreementValueBaseRate : agreementValueReadyReckoner;
 			
@@ -1152,13 +1155,15 @@ public class ResourceUtil {
 		 return amenityCharges;
 	 }
 	 
-	 public static void saveUnitPriceInformation(Unitmaster unit, Unitpricepolicy unitpricepolicy, double floorRise) throws SQLException {
+	 public static void saveUnitPriceInformation(Unitmaster unit, Unitpricepolicy unitpricepolicy, 
+			 double floorRise, double discount, double deductionOnOtherCharges) throws SQLException {
 		double amenityCharges = getAmenityCharges(unit, unitpricepolicy);
 		double baseRate = unitpricepolicy.getBaserate();
 		double readyReckonerRate = unitpricepolicy.getReadyreckonerrate(); 
-		double otherCharges = unit.getOthercharges();
+		double otherCharges = unit.getOthercharges() - deductionOnOtherCharges;
+		double totalRate = baseRate + floorRise + amenityCharges - discount; 
 		double basicCostReadyReckoner = getBasicCostUsingReadyReckonerRate(readyReckonerRate, unit.getCarpetarea(), unit.getCarpetareaforterrace());
-		double agreementValueBaseRate = getAgreementValueUsingBaseRate(baseRate + amenityCharges, unit.getSaleablearea(), floorRise, 0, otherCharges);
+		double agreementValueBaseRate = getAgreementValueUsingBaseRate(totalRate, unit.getSaleablearea(), otherCharges);
 		double agreementValueReadyReckoner = getAgreementValueUsingReadyReckonerRate(basicCostReadyReckoner, unit.getFloornumber());
 		double agreementValue = (agreementValueBaseRate >= agreementValueReadyReckoner) ? agreementValueBaseRate : agreementValueReadyReckoner;
 		
@@ -1191,9 +1196,9 @@ public class ResourceUtil {
 		unit.setTotalcostreadyreckoner(totalCostReadyReckoner);
 	 }
 	 
-	 public static double getAgreementValueUsingBaseRate(double baseRate, long saleableArea, 
-			 double floorRise, double discount, double otherCharges) throws SQLException {
-		 return saleableArea*(baseRate + floorRise - discount) + otherCharges;
+	 public static double getAgreementValueUsingBaseRate(double totalRate, long saleableArea, 
+			 double otherCharges) throws SQLException {
+		 return saleableArea*totalRate + otherCharges;
 	 }
 	 
 	 public static double getBasicCostUsingReadyReckonerRate(double readyReckonerRate, long carpetArea,  

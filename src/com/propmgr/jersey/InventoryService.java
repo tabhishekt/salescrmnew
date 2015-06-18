@@ -1076,7 +1076,7 @@ public class InventoryService {
 				double unitFloorRise = (unit.getFloorrise() == null) ? 0 : unit.getFloorrise();
 				if (unitpricepolicy != null && floorRise != unitFloorRise) {
 					updateMade = true;
-					ResourceUtil.saveUnitPriceInformation(unit, unitpricepolicy, floorRise);
+					ResourceUtil.saveUnitPriceInformation(unit, unitpricepolicy, floorRise, 0, 0);
 					unit.setFloorrise(floorRise);
 					unitmasterDAO.save(unit);
 				} 
@@ -1156,7 +1156,7 @@ public class InventoryService {
 			for (Unitmaster unit : units) {
 				unit.setUnitpricepolicy(unitpricepolicy);
 				double floorRise = (unit.getFloorrise() == null) ? 0 : unit.getFloorrise();
-				ResourceUtil.saveUnitPriceInformation(unit, unitpricepolicy, floorRise);
+				ResourceUtil.saveUnitPriceInformation(unit, unitpricepolicy, floorRise, 0, 0);
 				unitmasterDAO.save(unit);
 			}
 			
@@ -1715,11 +1715,17 @@ public class InventoryService {
 			unitbooking.setUsermasterByBookedby(user);
 			unitbooking.setParkingmaster(parkingmaster);
 			unitbooking.setBookingcomment(ResourceUtil.getFormDataValueAsClob(formData, "comment"));
-			unitbooking.setBookingdiscount(ResourceUtil.getFormDataValueAsDouble(formData, "discount"));
-			unitbooking.setDeductiononothercharges(ResourceUtil.getFormDataValueAsDouble(formData, "deductiononothercharges"));
+			double discount = ResourceUtil.getFormDataValueAsDouble(formData, "discount");
+			double deductionOnOtherCharges = ResourceUtil.getFormDataValueAsDouble(formData, "deductiononothercharges");
+			unitbooking.setBookingdiscount(discount);
+			unitbooking.setDeductiononothercharges(deductionOnOtherCharges);
 			unitbooking.setIscancelled(false);
-			
 			unitbookingDAO.save(unitbooking);
+			
+			// Prices may have been modified due to discount and deductionOnOtherCharges
+			double floorRise = (unit.getFloorrise() == null) ? 0 : unit.getFloorrise();
+			ResourceUtil.saveUnitPriceInformation(unit, unit.getUnitpricepolicy(), floorRise, discount, deductionOnOtherCharges);
+			
 			unitbookingDAO.flushSession();
 			
 			result = ResourceUtil.getUnitbookingFromDAO(unitbooking);
