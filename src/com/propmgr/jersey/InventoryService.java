@@ -1637,10 +1637,43 @@ public class InventoryService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteUnitbooking(@QueryParam("rowId") String rowId) {		
 		UnitbookingDAO unitbookingDAO = new UnitbookingDAO();
+		PaymentmasterDAO paymentmasterDAO = new PaymentmasterDAO();
+		RefundmasterDAO refundmasterDAO = new RefundmasterDAO();
+		PaymentstatusDAO paymentstatusDAO = new PaymentstatusDAO();
+		PaymentstageDAO paymentstageDAO = new PaymentstageDAO();
+		UnitmodificationstatusDAO unitmodificationstatusDAO = new UnitmodificationstatusDAO();
 		
 		try {
 			Unitbooking unitbooking = unitbookingDAO.findById(Long.parseLong(rowId));
 			if (unitbooking != null) {
+				Iterator<Refundmaster> allRefunds = unitbooking.getRefundmasters().iterator();
+				while(allRefunds.hasNext()) {
+					refundmasterDAO.delete(allRefunds.next());
+				}
+				
+				Iterator<Unitmodificationstatus> allUnitmodifications = unitbooking.getUnitmodificationstatuses().iterator();
+				while (allUnitmodifications.hasNext()) {
+					unitmodificationstatusDAO.delete(allUnitmodifications.next());
+				}
+				
+				Iterator<Paymentmaster> allPayments = unitbooking.getPaymentmasters().iterator();
+				while (allPayments.hasNext()) {
+					Paymentmaster payment = allPayments.next();
+					if (payment != null) {
+						Iterator<Paymentstatus> iterator = payment.getPaymentstatuses().iterator();
+						while(iterator.hasNext()) {
+							paymentstatusDAO.delete(iterator.next());
+						}
+						
+						Iterator<Paymentstage> iterator1 = payment.getPaymentstages().iterator();
+						while(iterator.hasNext()) {
+							paymentstageDAO.delete(iterator1.next()); 
+						}
+						
+						paymentmasterDAO.delete(payment);
+					}
+				}
+				
 				unitbookingDAO.delete(unitbooking);
 				unitbookingDAO.flushSession();
 			} else {
