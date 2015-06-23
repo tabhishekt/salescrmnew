@@ -7,20 +7,23 @@ public class CustomerResource {
 	private String userDisplayName;
 	private AddressResource address;
 	private PersonResource person;
+	private PersonResource coOwner;
 	private String displayName;
 	private String displayAddress;
 	private String phoneNumber;
 	private String mobileNumber;
 	private String emailID;
 	
-	public CustomerResource(long id, long userId, String userDisplayName, AddressResource address, PersonResource person, String displayName, 
-			String displayAddress, String phoneNumber, String mobileNumber, String emailID) {
+	public CustomerResource(long id, long userId, String userDisplayName, AddressResource address, PersonResource person, 
+			PersonResource coOwner, String displayName, String displayAddress, String phoneNumber, String mobileNumber, 
+			String emailID) {
 		super();
 		this.id = id;
 		this.userId = userId;
 		this.userDisplayName = userDisplayName;
 		this.address = address;
 		this.person = person;
+		this.coOwner = coOwner;
 		this.displayName = displayName;
 		this.displayAddress = displayAddress;
 		this.phoneNumber = phoneNumber;
@@ -46,6 +49,10 @@ public class CustomerResource {
 
 	public PersonResource getPerson() {
 		return person;
+	}
+
+	public PersonResource getCoOwner() {
+		return coOwner;
 	}
 
 	public String getDisplayName() {

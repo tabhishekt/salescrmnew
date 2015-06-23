@@ -21,6 +21,7 @@ public class PaymentResource {
 	private String bankBranch;
 	private String chequeNumber;
 	private String chequeDate;
+	private String utrNumber;
 	private String cardNumber;
 	private String cardExpiryDate;
 	private String cardHolderName;
@@ -37,7 +38,7 @@ public class PaymentResource {
 			CodeTableResource paymentType, String paymentTypeName,
 			long receiptNumber, long altReceiptNumber, double receiptAmount, String description,
 			String receiptDate, String bankName, String bankBranch,
-			String chequeNumber, String chequeDate, String cardNumber,
+			String chequeNumber, String chequeDate, String utrNumber, String cardNumber,
 			String cardExpiryDate, String cardHolderName, String cardType, String displayPaymentStatus,
 			PaymentStateResource paymentStatus, String statusUpdatedBy, String statusDate,
 			String statusComment, List<CodeTableResource> paymentStages) {
@@ -58,6 +59,7 @@ public class PaymentResource {
 		this.bankBranch = bankBranch;
 		this.chequeNumber = chequeNumber;
 		this.chequeDate = chequeDate;
+		this.utrNumber = utrNumber;
 		this.cardNumber = cardNumber;
 		this.cardExpiryDate = cardExpiryDate;
 		this.cardHolderName = cardHolderName;
@@ -132,6 +134,10 @@ public class PaymentResource {
 
 	public String getChequeDate() {
 		return chequeDate;
+	}
+
+	public String getUtrNumber() {
+		return utrNumber;
 	}
 
 	public String getCardNumber() {

@@ -96,8 +96,9 @@ public class PersonService {
 			if (customer != null) {
 				customermasterDAO.delete(customer);
 				ResourceUtil.deleteAddress(customer.getAddress());
-				ResourceUtil.deletePerson(customer.getPerson());
-				ResourceUtil.deleteContactInfo(customer.getPerson().getContactinfo());
+				ResourceUtil.deletePerson(customer.getPersonByPersondetail());
+				ResourceUtil.deletePerson(customer.getPersonByCoownerdetail());
+				ResourceUtil.deleteContactInfo(customer.getPersonByPersondetail().getContactinfo());
 				customermasterDAO.flushSession();
 			} else {
 				return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
@@ -123,7 +124,9 @@ public class PersonService {
 		Customermaster customer = new Customermaster();
 		Address address = new Address();
 		Person person = new Person();
+		Person coOwner = new Person();
 		Contactinfo personContactinfo = new Contactinfo();
+		Contactinfo coOwnerContactinfo = new Contactinfo();
 		
 		try {
 			String rowId = ResourceUtil.getFormDataValue(formData, "rowId");
@@ -134,8 +137,12 @@ public class PersonService {
 					return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
 				}
 				address = customer.getAddress();
-				person = customer.getPerson();
+				person = customer.getPersonByPersondetail();
 				personContactinfo = person.getContactinfo();
+				coOwner = customer.getPersonByCoownerdetail();
+				if (coOwner != null) {
+					coOwnerContactinfo = coOwner.getContactinfo();
+				}
 			} else {
 				String firstName = ResourceUtil.getFormDataValue(formData, "firstname");
 				String middleName = ResourceUtil.getFormDataValue(formData, "middlename");
@@ -152,11 +159,19 @@ public class PersonService {
 				customer.setUsermaster(user);
 			}
 			
+			if (coOwner == null) {
+				coOwner = new Person();
+				coOwnerContactinfo = new Contactinfo();
+			}
+			
 			ResourceUtil.saveAddress(formData, address);
 			customer.setAddress(address);
 			
 			ResourceUtil.savePerson(formData, person, personContactinfo);
-			customer.setPerson(person);
+			customer.setPersonByPersondetail(person);
+			
+			ResourceUtil.savePerson1(formData, coOwner, coOwnerContactinfo);
+			customer.setPersonByCoownerdetail(coOwner);
 			
 			customermasterDAO.save(customer);
 			customermasterDAO.flushSession();

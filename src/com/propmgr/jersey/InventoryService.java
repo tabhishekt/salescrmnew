@@ -2117,7 +2117,7 @@ public class InventoryService {
 			payment.setBankbranch(ResourceUtil.getFormDataValue(formData, "bankbranch"));
 			payment.setChequenumber(chequeNumber);
 			payment.setChequedate(ResourceUtil.getFormDataValueAsDate(formData, "chequedate"));
-			
+			payment.setUtrnumber(ResourceUtil.getFormDataValue(formData, "utrnumber"));
 			payment.setCardnumber(ResourceUtil.getFormDataValue(formData, "cardnumber"));
 			payment.setCardexpirydate(ResourceUtil.getFormDataValue(formData, "cardexpirydate"));
 			payment.setCardholdername(ResourceUtil.getFormDataValue(formData, "cardholdername"));

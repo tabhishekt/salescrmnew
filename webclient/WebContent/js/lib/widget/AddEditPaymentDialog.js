@@ -77,6 +77,7 @@ define([
 			this.bankbranch.set("value", data.bankBranch);
 			this.chequenumber.set("value", data.chequeNumber);
 			this.chequedate.set("value", data.chequeDate);
+			this.utrnumber.set("value", data.utrNumber);
 			
 			this.cardnumber.set("value", data.cardNumber);
 			this.cardexpirydate.set("value", data.cardExpiryDate);

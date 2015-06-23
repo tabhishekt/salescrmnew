@@ -1,0 +1,61 @@
+<div>
+	<table style="width: 100%;">
+		<tr>
+			<td>
+				<table>
+					<tr>
+						<td><label for="person1phone">Phone Number:</label></td>
+					</tr>
+					<tr>
+						<td><input id="person1phone" name="person1phone"
+							data-dojo-type='dijit/form/ValidationTextBox' 
+							data-dojo-props="validator:this.isLandlineNumber, invalidMessage:'Invalid landline number format.'"
+							data-dojo-attach-point='person1phone' type="text" /></td>
+					</tr>
+				</table>
+			</td>
+			<td>
+				<table>
+					<tr>
+						<td><label for="person1altphone">Alternate Phone Number:</label></td>
+					</tr>
+					<tr>
+						<td><input id="person1altphone" name="person1altphone"
+							data-dojo-type='dijit/form/ValidationTextBox' 
+							data-dojo-props="validator:this.isLandlineNumber, invalidMessage:'Invalid landline number format.'"
+							data-dojo-attach-point='person1altphone' type="text" /></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<table>
+					<tr>
+						<td><label for="person1mobile">Mobile Number:</label></td>
+					</tr>
+					<tr>
+						<td><input id="person1mobile" name="person1mobile"
+							data-dojo-type='dijit/form/ValidationTextBox' 
+							data-dojo-props="validator:this.isMobileNumber, invalidMessage:'Invalid mobile number format.'"
+							data-dojo-attach-point='person1mobile' type="text" /></td>
+					</tr>
+				</table>
+			</td>
+			<td>
+				<table>
+					<tr>
+						<td><label for="person1emailid">Email Id:</label></td>
+					</tr>
+					<tr>
+						<td><input id="person1emailid" name="person1emailid"
+							data-dojo-type='dijit/form/ValidationTextBox' 
+							data-dojo-props="validator:this.isEmailAddress, invalidMessage:'Invalid email format.'"
+							data-dojo-attach-point='person1emailid' type="text" /></td>
+					</tr>
+				</table>
+			</td>
+			
+		</tr>
+	</table>
+</div>

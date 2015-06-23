@@ -59,6 +59,15 @@
             	this.lastname.innerHTML = customerDisplayName[2];
             	this.customerdob.innerHTML = this.formatDate(data.customer.person.dateOfBirth);
             	this.customerage.innerHTML = this.getAgerFromDOB(data.customer.person.dateOfBirth);
+            	
+            	if (data.customer.coOwner && data.customer.coOwner != null) {
+            		this.firstname1.innerHTML = data.customer.coOwner.firstName;
+                	this.middlename1.innerHTML = data.customer.coOwner.middleName;
+                	this.lastname1.innerHTML = data.customer.coOwner.lastName;
+                	this.customerdob1.innerHTML = this.formatDate(data.customer.coOwner.dateOfBirth);
+                	this.customerage1.innerHTML = this.getAgerFromDOB(data.customer.coOwner.dateOfBirth);	
+            	}
+            	
             	this.customeraddress.innerHTML = data.customer.displayAddress;
             	this.customerprofession.innerHTML = data.customer.person.profession;
             	this.customerotherdetails.innerHTML = data.customer.person.otherDetail;
@@ -104,13 +113,14 @@
             	}
             	this.floornumber.innerHTML = data.unit.floorNumber;
             	this.totalrate.innerHTML = this.formatCurrency(data.priceDetails.totalrate);
-            	this.infracharges.innerHTML = this.formatCurrency(data.unit.otherCharges);
+            	this.othercharges.innerHTML = this.formatCurrency(data.unit.otherCharges);
+            	this.deductiononothercharges.innerHTML = this.formatCurrency(data.deductionOnOtherCharges);
             	
             	this.basiccost.innerHTML = this.formatCurrency(data.priceDetails.basicCost);
             	this.totaltax.innerHTML = this.formatCurrency(data.priceDetails.totalTax);
             	this.maintenance1.innerHTML = this.formatCurrency(data.unit.unitPricePolicy.maintenancecharge1) + " /sq ft";
             	this.maintenance1amt.innerHTML = this.formatCurrency(data.priceDetails.maintenancecharge1);
-            	this.othercharges.innerHTML = this.formatCurrency(data.unit.otherCharges - data.deductionOnOtherCharges);
+            	this.otherchargeswithdeduction.innerHTML = this.formatCurrency(data.unit.otherCharges - data.deductionOnOtherCharges);
             	this.legalcharges.innerHTML = this.formatCurrency(data.priceDetails.legalcharge);
             	this.maintenance2.innerHTML = this.formatCurrency(data.unit.unitPricePolicy.maintenancecharge2) + " /sq ft";
             	this.maintenance2amt.innerHTML = this.formatCurrency(data.priceDetails.maintenancecharge2);
@@ -410,6 +420,22 @@
 			<td><span></span></td>
 			<td><span></span></td><tr>
 			
+			<tr><td><span>First Name</span></td>
+			<td><span id="firstname1" data-dojo-attach-point="firstname1"></span></td>
+			<td><span>Middle Name</span></td>
+			<td><span id="middlename1" data-dojo-attach-point="middlename1"></span></td>
+			<td><span>Last Name</span></td>
+			<td><span id="lastname1" data-dojo-attach-point="lastname1"></span></td>
+			<td><span></span></td><tr>
+			
+			<tr><td><span>Birth Date</span></td>
+			<td><span id="customerdob1" data-dojo-attach-point="customerdob1"></span></td>
+			<td><span>Age</span></td>
+			<td><span id="customerage1" data-dojo-attach-point="customerage1"></span></td>
+			<td><span></span></td>
+			<td><span></span></td>
+			<td><span></span></td><tr>
+			
 			<tr><td><span>Address</span></td>
 			<td colspan="5"><span id="customeraddress" data-dojo-attach-point="customeraddress"></span></td>
 			<td><span></span></td><tr>
@@ -492,10 +518,10 @@
 			
 			<tr><td><span>Extra Bkng Amt</span></td>
 			<td><span id="extrabookingamount" data-dojo-attach-point="extrabookingamount"></span></td>
-			<td><span>Infra Charges</span></td>
-			<td><span id="infracharges" data-dojo-attach-point="infracharges"></span></td>
-			<td><span></span></td>
-			<td><span></span></td>
+			<td><span>Other Charges</span></td>
+			<td><span id="othercharges" data-dojo-attach-point="othercharges"></span></td>
+			<td><span>Deduction on Other Charges</span></td>
+			<td><span id="deductiononothercharges" data-dojo-attach-point="deductiononothercharges"></span></td>
 			<td><span></span></td><tr>
 			
 			<tr><td colspan="7" align="center" style="font-weight: bold; font-size: 18px;"><span>Financial Details</span></td><tr>
@@ -508,8 +534,8 @@
 			<td><span id="maintenance1amt" data-dojo-attach-point="maintenance1amt"></span></td>
 			<td><span id="maintenance1" data-dojo-attach-point="maintenance1"></span></td><tr>
 			
-			<tr><td><span>Other Charges</span></td>
-			<td><span id="othercharges" data-dojo-attach-point="othercharges"></span></td>
+			<tr><td><span>Other Charges (with deduction)</span></td>
+			<td><span id="otherchargeswithdeduction" data-dojo-attach-point="otherchargeswithdeduction"></span></td>
 			<td><span>Legal Charges</span></td>
 			<td><span id="legalcharges" data-dojo-attach-point="legalcharges"></span></td>
 			<td><span>Maintenance 2</span></td>

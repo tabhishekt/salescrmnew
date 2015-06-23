@@ -361,7 +361,7 @@ public class ResourceUtil {
 					convertClobToString(paymenttype.getPaymenttypedescription()), payment.getReceiptnumber(), payment.getAltreceiptnumber(),
 					payment.getPaymentamount(), convertClobToString(payment.getPaymentdescription()), 
 					convertDateToString(payment.getPaymentreceiveddate()), payment.getBankname(), payment.getBankbranch(), 
-					payment.getChequenumber(), convertDateToString(payment.getChequedate()), payment.getCardnumber(), payment.getCardexpirydate(), 
+					payment.getChequenumber(), convertDateToString(payment.getChequedate()), payment.getUtrnumber(), payment.getCardnumber(), payment.getCardexpirydate(), 
 					payment.getCardholdername(), payment.getCardtype(), displayPaymentStatus, paymentStatus, statusUpdatedBy, statusDate, statusComment, paymentStages);
 		} 
 		
@@ -458,13 +458,14 @@ public class ResourceUtil {
 	
 	public static CustomerResource getCustomerFromDAO(Customermaster customer)  throws SQLException, IOException {
 		AddressResource address = getAddressFromDAO(customer.getAddress());
-		PersonResource person = getPersonResourceFromDAO(customer.getPerson());
+		PersonResource person = getPersonResourceFromDAO(customer.getPersonByPersondetail());
+		PersonResource coOwner = (customer.getPersonByCoownerdetail() == null) ? null : getPersonResourceFromDAO(customer.getPersonByCoownerdetail());
 		ContactInfoResource personContactInfo = person.getContactInfo();
 		Usermaster user = customer.getUsermaster();
 		String userDisplayName = getUserDisplayName(user);
 		
 		return new CustomerResource(customer.getCustomerid(), user.getUsermasterid(), userDisplayName, address, person, 
-				getDisplayNameFromPersonResource(person), getDisplayAddressFromAddressResource(address),
+				coOwner, getDisplayNameFromPersonResource(person), getDisplayAddressFromAddressResource(address),
 				personContactInfo.getPhoneNumber(), personContactInfo.getMobileNumber(), personContactInfo.getEmailID());
 	}
 	
@@ -615,7 +616,7 @@ public class ResourceUtil {
 			double maintainanceCharge1 = unitpricepolicy.getMaintenancecharge1()*maintenancecharge1duration*unit.getSaleablearea();
 			double maintainanceCharge2 = unitpricepolicy.getMaintenancecharge2()*unit.getSaleablearea();
 			double logalCharge = unitpricepolicy.getLegalcharge();
-			double totalCharges = maintainanceCharge1 + maintainanceCharge2 + logalCharge;
+			double totalCharges = maintainanceCharge1 + maintainanceCharge2;
 			
 			double stampDuty = (unitpricepolicy.getStampduty()*agreementValue)/100;
 			double registrationCharge = (unitpricepolicy.getRegistrationcharge()*agreementValue)/100;
@@ -626,7 +627,7 @@ public class ResourceUtil {
 			double valueAddedtax = (unitpricepolicy.getValueaddedtax()*agreementValue)/100;
 			
 			double totalTax = stampDuty + registrationCharge + serviceTax + valueAddedtax;
-			double totalCostWithTax = agreementValueBaseRate + totalTax;
+			double totalCostWithTax = agreementValueBaseRate + totalTax + logalCharge;
 			double totalCostWithTaxReadyReckoner = agreementValueReadyReckoner + totalTax;
 			
 			double totalCost = totalCostWithTax + totalCharges;
@@ -748,7 +749,7 @@ public class ResourceUtil {
 	}
 	
 	public static String getCustomerDisplayName(Customermaster customer) throws SQLException, IOException {
-		PersonResource person = getPersonResourceFromDAO(customer.getPerson());
+		PersonResource person = getPersonResourceFromDAO(customer.getPersonByPersondetail());
 		return getDisplayNameFromPersonResource(person);
 	}
 	
@@ -1071,6 +1072,25 @@ public class ResourceUtil {
 		 personDAO.save(person);
 	 }
 	 
+	 public static void savePerson1(MultivaluedMap<String, String> formData, Person person, Contactinfo personContactinfo) throws SQLException, ParseException {
+		 PersonDAO personDAO = new PersonDAO();
+		 ContactinfoDAO contactinfoDAO = new ContactinfoDAO();
+		 
+		 person.setFirstname(getFormDataValue(formData, "firstname1"));
+		 person.setMiddlename(getFormDataValue(formData, "middlename1"));
+		 person.setLastname(getFormDataValue(formData, "lastname1"));
+		 person.setDateofbirth(getFormDataValueAsDate(formData, "dateofbirth1"));
+		 person.setProfession(getFormDataValue(formData, "profession1"));
+		 person.setOtherdetail(getFormDataValueAsClob(formData, "otherdetails1"));
+		 personContactinfo.setPhonenumber(getFormDataValue(formData, "person1phone"));
+		 personContactinfo.setAlternatenumber(getFormDataValue(formData, "person1altphone"));
+		 personContactinfo.setMobilenumber(getFormDataValue(formData, "person1mobile"));
+		 personContactinfo.setEmailid(getFormDataValue(formData, "person1emailid"));
+		 contactinfoDAO.save(personContactinfo);
+		 person.setContactinfo(personContactinfo);
+		 personDAO.save(person);
+	 }
+	 
 	 public static void deletePerson(Person person) throws SQLException {
 		 PersonDAO personDAO = new PersonDAO();
 		 personDAO.delete(person);
@@ -1171,7 +1191,7 @@ public class ResourceUtil {
 		double maintainanceCharge1 = unitpricepolicy.getMaintenancecharge1()*maintenancecharge1duration;
 		double maintainanceCharge2 = unitpricepolicy.getMaintenancecharge2();
 		double logalCharge = unitpricepolicy.getLegalcharge();
-		double totalCharges = maintainanceCharge1 + maintainanceCharge2 + logalCharge;
+		double totalCharges = maintainanceCharge1 + maintainanceCharge2;
 		
 		double stampDuty = (unitpricepolicy.getStampduty()*agreementValue)/100;
 		double registrationCharge = (unitpricepolicy.getRegistrationcharge()*agreementValue)/100;
@@ -1181,7 +1201,7 @@ public class ResourceUtil {
 		double serviceTax = (unitpricepolicy.getServicetax()*agreementValue)/100;
 		double valueAddedtax = (unitpricepolicy.getValueaddedtax()*agreementValue)/100;
 		double totalTax = stampDuty + registrationCharge + serviceTax + valueAddedtax;
-		double totalCostWithTax = agreementValueBaseRate + totalTax;
+		double totalCostWithTax = agreementValueBaseRate + totalTax + logalCharge;
 		double totalCostWithTaxReadyReckoner = agreementValueReadyReckoner + totalTax;
 		
 		double totalCost = totalCostWithTax + totalCharges;

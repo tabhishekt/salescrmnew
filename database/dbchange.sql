@@ -7,9 +7,6 @@ CREATE TABLE amenityPricePolicy
 	PRIMARY KEY (amenityPricePolicyID)
 );
 
-ALTER TABLE unitPricePolicy
-	ADD maintenanceCharge1Duration int
-
 ALTER TABLE amenityPricePolicy
 	ADD FOREIGN KEY (amenityID)
 	REFERENCES amenity (amenityID)
@@ -30,3 +27,21 @@ ALTER TABLE amenityPricePolicy
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
 ;
+
+ALTER TABLE unitPricePolicy
+	ADD maintenanceCharge1Duration int
+
+ALTER TABLE paymentMaster
+	ADD utrNumber varchar(64)
+
+ALTER TABLE customerMaster
+	ADD coOwnerDetail bigint
+	
+ALTER TABLE customerMaster
+	ADD FOREIGN KEY (coOwnerDetail)
+	REFERENCES person (personID)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+alter table person alter contactInfo drop not null;

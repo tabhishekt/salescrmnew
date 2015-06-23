@@ -5,8 +5,11 @@ define([
     'lib/widget/PersonWidget',
     'lib/widget/AddressWidget',
     'lib/widget/PersonContactInfoWidget',
+    'lib/widget/Person1Widget',
+    'lib/widget/Person1ContactInfoWidget',
     "dojo/text!./template/AddEditCustomerTemplate.html"
-], function (declare, registry, AddEditDialog, PersonWidget, AddressWidget, PersonContactInfoWidget, template) {
+], function (declare, registry, AddEditDialog, PersonWidget, AddressWidget, 
+		PersonContactInfoWidget, Person1Widget, Person1ContactInfoWidget, template) {
     return declare([AddEditDialog], {
 		templateString: template,
 		
@@ -41,6 +44,20 @@ define([
 			this.contactinfo.personaltphone.set("value", data.person.contactInfo.alternateNumber);
 			this.contactinfo.personmobile.set("value", data.person.contactInfo.mobileNumber);
 			this.contactinfo.personemailid.set("value", data.person.contactInfo.emailID);
+			
+			if (data.coOwner && data.coOwner != null) {
+				this.coapplicantpersonaldetails.firstname1.set("value", data.coOwner.firstName);
+				this.coapplicantpersonaldetails.middlename1.set("value", data.coOwner.middleName);
+				this.coapplicantpersonaldetails.lastname1.set("value", data.coOwner.lastName);
+				this.coapplicantpersonaldetails.dateofbirth1.set("value", data.coOwner.dateOfBirth);
+				this.coapplicantpersonaldetails.profession1.set("value", data.coOwner.profession);
+				this.coapplicantpersonaldetails.otherdetails1.set("value", data.coOwner.otherDetail);
+				
+				this.coapplicantcontactinfo.person1phone.set("value", data.coOwner.contactInfo.phoneNumber);
+				this.coapplicantcontactinfo.person1altphone.set("value", data.coOwner.contactInfo.alternateNumber);
+				this.coapplicantcontactinfo.person1mobile.set("value", data.coOwner.contactInfo.mobileNumber);
+				this.coapplicantcontactinfo.person1emailid.set("value", data.coOwner.contactInfo.emailID);
+			}
 		},
 		
 		validate: function() {
