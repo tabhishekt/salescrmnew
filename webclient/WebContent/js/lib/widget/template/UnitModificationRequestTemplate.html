@@ -27,7 +27,7 @@
 					</fieldset>
 					<fieldset style="width: 80%;">
 	 					<legend>Unit Modification Request:</legend>
-	 					<div>
+	 					<div id="unitmodificationinputdiv" data-dojo-attach-point="unitmodificationinputdiv">
 	 						<table align="left" style="width: 100%;">
 	 							<tr><td colspan="2">
 									<table style="width: 80%;">
@@ -37,6 +37,19 @@
 										data-dojo-attach-point='unitmodificationdetails'></textarea></td></tr>
 									</table>
 								</td></tr>
+							</table>
+						</div>
+						<div id="unitmodificationdisplaydiv" data-dojo-attach-point="unitmodificationdisplaydiv">
+	 						<table align="left" style="width: 100%;">
+	 							<tr><td colspan="2">
+									<table style="width: 80%;">
+										<tr><td><label for="unitmodificationdetailsspan">Unit Modifications Details:</label></td></tr>
+										<tr><td><span id="unitmodificationdetailsspan" 
+											data-dojo-attach-point='unitmodificationdetailsspan'></span></td></tr>
+									</table>
+								</td></tr>
+								<tr><td>&nbsp;&nbsp;&nbsp;</td></tr>
+								<tr><td>&nbsp;&nbsp;&nbsp;</td></tr>
 							</table>
 						</div>
 						<div id="unitmodificationstatusdiv" data-dojo-attach-point="unitmodificationstatusdiv">

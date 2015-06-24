@@ -39,17 +39,21 @@ define([
 			
 			if (this.data.unitModificationStatus && this.data.unitModificationStatus != null) {
 				domStyle.set(this.unitmodificationstatusdiv, "display", "inline");
-				this.unitmodificationdetails.disabled = true;
+				domStyle.set(this.unitmodificationdisplaydiv, "display", "inline");
+				domStyle.set(this.unitmodificationinputdiv, "display", "none");
 				
-				this.unitmodificationdetails.set("value", this.data.unitModificationDetails);
+				this.unitmodificationdetailsspan.innerHTML = this.data.unitModificationDetails;
 				this.unitmodificationstatus.set("item", this.data.unitModificationStatus);
 				this.unitmodificationstatuscomment.set("value", this.data.unitModificationStatusComment);
 			} else {
-				this.unitmodificationdetails.disabled = false;
+				domStyle.set(this.unitmodificationstatusdiv, "display", "none");
+				domStyle.set(this.unitmodificationdisplaydiv, "display", "none");
+				domStyle.set(this.unitmodificationinputdiv, "display", "inline");
+				
+				this.unitmodificationdetailsspan.innerHTML = "";
 				this.unitmodificationdetails.set("value", "");
 				this.unitmodificationstatuscomment.set("value", "");
 				this.unitmodificationstatus.set("item", null);
-				domStyle.set(this.unitmodificationstatusdiv, "display", "none");
 			}
     	},
 		
