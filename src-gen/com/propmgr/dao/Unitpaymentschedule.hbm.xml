@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 23, 2015 11:52:03 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.propmgr.dao.Unitpaymentschedule" table="UNITPAYMENTSCHEDULE" schema="PUBLIC" catalog="PROPMGR">
+        <id name="unitpaymentscheduleid" type="java.lang.Long">
+            <column name="UNITPAYMENTSCHEDULEID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="projectbuilding" class="com.propmgr.dao.Projectbuilding" fetch="select">
+            <column name="PROJECTBUILDINGID" not-null="true" />
+        </many-to-one>
+        <property name="paymentscheduleposition" type="int">
+            <column name="PAYMENTSCHEDULEPOSITION" not-null="true" />
+        </property>
+        <property name="paymentscheduletype" type="string">
+            <column name="PAYMENTSCHEDULETYPE" length="64" not-null="true" />
+        </property>
+        <property name="paymentscheduledescription" type="clob">
+            <column name="PAYMENTSCHEDULEDESCRIPTION" />
+        </property>
+        <property name="percentamount" type="java.lang.Double">
+            <column name="PERCENTAMOUNT" precision="17" scale="0" />
+        </property>
+        <property name="paymentscheduledate" type="date">
+            <column name="PAYMENTSCHEDULEDATE" length="8" />
+        </property>
+        <property name="applicableto" type="int">
+            <column name="APPLICABLETO" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

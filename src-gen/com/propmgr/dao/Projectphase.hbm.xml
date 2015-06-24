@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 23, 2015 11:52:03 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.propmgr.dao.Projectphase" table="PROJECTPHASE" schema="PUBLIC" catalog="PROPMGR">
+        <id name="projectphaseid" type="java.lang.Long">
+            <column name="PROJECTPHASEID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="projectmaster" class="com.propmgr.dao.Projectmaster" fetch="select">
+            <column name="PROJECT" not-null="true" />
+        </many-to-one>
+        <property name="projectphasename" type="string">
+            <column name="PROJECTPHASENAME" length="64" not-null="true" />
+        </property>
+        <property name="projectphasedescription" type="clob">
+            <column name="PROJECTPHASEDESCRIPTION" />
+        </property>
+        <set name="projectbuildings" table="PROJECTBUILDING" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="PROJECTPHASE" not-null="true" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Projectbuilding" />
+        </set>
+    </class>
+</hibernate-mapping>

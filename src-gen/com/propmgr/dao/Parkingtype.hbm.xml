@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 23, 2015 11:52:03 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.propmgr.dao.Parkingtype" table="PARKINGTYPE" schema="PUBLIC" catalog="PROPMGR">
+        <id name="parkingtypeid" type="java.lang.Long">
+            <column name="PARKINGTYPEID" />
+            <generator class="identity" />
+        </id>
+        <property name="parkingcode" type="string">
+            <column name="PARKINGCODE" length="8" not-null="true" />
+        </property>
+        <property name="parkingname" type="string">
+            <column name="PARKINGNAME" length="64" />
+        </property>
+        <set name="parkingmasters" table="PARKINGMASTER" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="PARKINGTYPEID" not-null="true" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Parkingmaster" />
+        </set>
+    </class>
+</hibernate-mapping>

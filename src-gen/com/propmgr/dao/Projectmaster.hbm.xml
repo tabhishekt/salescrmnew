@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 23, 2015 11:52:03 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.propmgr.dao.Projectmaster" table="PROJECTMASTER" schema="PUBLIC" catalog="PROPMGR">
+        <id name="projectid" type="java.lang.Long">
+            <column name="PROJECTID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="address" class="com.propmgr.dao.Address" fetch="select">
+            <column name="ADDRESS" not-null="true" />
+        </many-to-one>
+        <many-to-one name="organization" class="com.propmgr.dao.Organization" fetch="select">
+            <column name="ORGNIZATION" not-null="true" />
+        </many-to-one>
+        <property name="projectname" type="string">
+            <column name="PROJECTNAME" length="64" not-null="true" />
+        </property>
+        <property name="projectdescription" type="clob">
+            <column name="PROJECTDESCRIPTION" />
+        </property>
+        <property name="totalphases" type="long">
+            <column name="TOTALPHASES" not-null="true" />
+        </property>
+        <property name="termsandconditions" type="clob">
+            <column name="TERMSANDCONDITIONS" />
+        </property>
+        <property name="logofilename" type="string">
+            <column name="LOGOFILENAME" length="64" />
+        </property>
+        <set name="projectbankaccounts" table="PROJECTBANKACCOUNT" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="PROJECT" not-null="true" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Projectbankaccount" />
+        </set>
+        <set name="projectphases" table="PROJECTPHASE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="PROJECT" not-null="true" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Projectphase" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 23, 2015 11:52:03 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.propmgr.dao.Person" table="PERSON" schema="PUBLIC" catalog="PROPMGR">
+        <id name="personid" type="java.lang.Long">
+            <column name="PERSONID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="contactinfo" class="com.propmgr.dao.Contactinfo" fetch="select">
+            <column name="CONTACTINFO" />
+        </many-to-one>
+        <property name="firstname" type="string">
+            <column name="FIRSTNAME" length="64" />
+        </property>
+        <property name="middlename" type="string">
+            <column name="MIDDLENAME" length="64" />
+        </property>
+        <property name="lastname" type="string">
+            <column name="LASTNAME" length="64" />
+        </property>
+        <property name="dateofbirth" type="date">
+            <column name="DATEOFBIRTH" length="8" />
+        </property>
+        <property name="profession" type="string">
+            <column name="PROFESSION" length="64" />
+        </property>
+        <property name="otherdetail" type="clob">
+            <column name="OTHERDETAIL" />
+        </property>
+        <set name="customermastersForCoownerdetail" table="CUSTOMERMASTER" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="COOWNERDETAIL" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Customermaster" />
+        </set>
+        <set name="customermastersForPersondetail" table="CUSTOMERMASTER" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="PERSONDETAIL" not-null="true" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Customermaster" />
+        </set>
+        <set name="usermasters" table="USERMASTER" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="PERSONDETAIL" not-null="true" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Usermaster" />
+        </set>
+        <set name="organizations" table="ORGANIZATION" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CONTACTPERSON" not-null="true" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Organization" />
+        </set>
+    </class>
+</hibernate-mapping>

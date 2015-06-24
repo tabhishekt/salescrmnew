@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 23, 2015 11:52:03 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.propmgr.dao.Paymentmaster" table="PAYMENTMASTER" schema="PUBLIC" catalog="PROPMGR">
+        <id name="paymentid" type="java.lang.Long">
+            <column name="PAYMENTID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="usermaster" class="com.propmgr.dao.Usermaster" fetch="select">
+            <column name="ORGUSER" not-null="true" />
+        </many-to-one>
+        <many-to-one name="unitbooking" class="com.propmgr.dao.Unitbooking" fetch="select">
+            <column name="UNITBOOKING" not-null="true" />
+        </many-to-one>
+        <many-to-one name="paymenttype" class="com.propmgr.dao.Paymenttype" fetch="select">
+            <column name="PAYMENTTYPE" not-null="true" />
+        </many-to-one>
+        <property name="receiptnumber" type="long">
+            <column name="RECEIPTNUMBER" not-null="true" />
+        </property>
+        <property name="altreceiptnumber" type="java.lang.Long">
+            <column name="ALTRECEIPTNUMBER" />
+        </property>
+        <property name="paymentamount" type="double">
+            <column name="PAYMENTAMOUNT" precision="17" scale="0" not-null="true" />
+        </property>
+        <property name="paymentdescription" type="clob">
+            <column name="PAYMENTDESCRIPTION" />
+        </property>
+        <property name="paymentreceiveddate" type="date">
+            <column name="PAYMENTRECEIVEDDATE" length="8" />
+        </property>
+        <property name="bankname" type="string">
+            <column name="BANKNAME" length="64" />
+        </property>
+        <property name="bankbranch" type="string">
+            <column name="BANKBRANCH" length="64" />
+        </property>
+        <property name="chequenumber" type="string">
+            <column name="CHEQUENUMBER" length="32" />
+        </property>
+        <property name="chequedate" type="date">
+            <column name="CHEQUEDATE" length="8" />
+        </property>
+        <property name="cardnumber" type="string">
+            <column name="CARDNUMBER" length="64" />
+        </property>
+        <property name="cardexpirydate" type="string">
+            <column name="CARDEXPIRYDATE" length="32" />
+        </property>
+        <property name="cardholdername" type="string">
+            <column name="CARDHOLDERNAME" length="64" />
+        </property>
+        <property name="cardtype" type="string">
+            <column name="CARDTYPE" length="32" />
+        </property>
+        <property name="editable" type="boolean">
+            <column name="EDITABLE" not-null="true" />
+        </property>
+        <property name="utrnumber" type="string">
+            <column name="UTRNUMBER" length="64" />
+        </property>
+        <set name="paymentstatuses" table="PAYMENTSTATUS" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="PAYMENTID" not-null="true" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Paymentstatus" />
+        </set>
+        <set name="paymentstages" table="PAYMENTSTAGE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="PAYMENTID" not-null="true" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Paymentstage" />
+        </set>
+    </class>
+</hibernate-mapping>

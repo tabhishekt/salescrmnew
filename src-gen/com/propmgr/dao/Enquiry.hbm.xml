@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 23, 2015 11:52:03 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.propmgr.dao.Enquiry" table="ENQUIRY" schema="PUBLIC" catalog="PROPMGR">
+        <id name="enquiryid" type="java.lang.Long">
+            <column name="ENQUIRYID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="customermaster" class="com.propmgr.dao.Customermaster" fetch="select">
+            <column name="CUSTOMER" not-null="true" />
+        </many-to-one>
+        <many-to-one name="usermaster" class="com.propmgr.dao.Usermaster" fetch="select">
+            <column name="ORGUSER" not-null="true" />
+        </many-to-one>
+        <many-to-one name="unittype" class="com.propmgr.dao.Unittype" fetch="select">
+            <column name="INTEREST" not-null="true" />
+        </many-to-one>
+        <many-to-one name="sourcemaster" class="com.propmgr.dao.Sourcemaster" fetch="select">
+            <column name="SOURCENAME" not-null="true" />
+        </many-to-one>
+        <property name="originalenquirydate" type="date">
+            <column name="ORIGINALENQUIRYDATE" length="8" />
+        </property>
+        <property name="budget" type="java.lang.Integer">
+            <column name="BUDGET" />
+        </property>
+        <property name="probability" type="java.lang.Integer">
+            <column name="PROBABILITY" />
+        </property>
+        <property name="currenthomestatus" type="java.lang.Integer">
+            <column name="CURRENTHOMESTATUS" />
+        </property>
+        <set name="enquirycomments" table="ENQUIRYCOMMENT" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="ENQUIRY" not-null="true" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Enquirycomment" />
+        </set>
+    </class>
+</hibernate-mapping>

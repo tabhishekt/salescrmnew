@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 23, 2015 11:52:03 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.propmgr.dao.Projectbuilding" table="PROJECTBUILDING" schema="PUBLIC" catalog="PROPMGR">
+        <id name="projectbuildingid" type="java.lang.Long">
+            <column name="PROJECTBUILDINGID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="projectphase" class="com.propmgr.dao.Projectphase" fetch="select">
+            <column name="PROJECTPHASE" not-null="true" />
+        </many-to-one>
+        <property name="buildingname" type="string">
+            <column name="BUILDINGNAME" length="64" not-null="true" />
+        </property>
+        <property name="wingname" type="string">
+            <column name="WINGNAME" length="64" />
+        </property>
+        <property name="floorcount" type="long">
+            <column name="FLOORCOUNT" not-null="true" />
+        </property>
+        <property name="buildingtype" type="string">
+            <column name="BUILDINGTYPE" length="64" />
+        </property>
+        <property name="currentstatus" type="java.lang.Integer">
+            <column name="CURRENTSTATUS" />
+        </property>
+        <property name="expectedcompletiondate" type="date">
+            <column name="EXPECTEDCOMPLETIONDATE" length="8" />
+        </property>
+        <property name="hasmultiplepaymentschedules" type="boolean">
+            <column name="HASMULTIPLEPAYMENTSCHEDULES" not-null="true" />
+        </property>
+        <property name="remarks" type="clob">
+            <column name="REMARKS" />
+        </property>
+        <set name="unitpaymentschedules" table="UNITPAYMENTSCHEDULE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="PROJECTBUILDINGID" not-null="true" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Unitpaymentschedule" />
+        </set>
+        <set name="parkingmasters" table="PARKINGMASTER" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="PROJECTBUILDINGID" not-null="true" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Parkingmaster" />
+        </set>
+        <set name="unitmasters" table="UNITMASTER" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="PROJECTBUILDING" not-null="true" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Unitmaster" />
+        </set>
+    </class>
+</hibernate-mapping>

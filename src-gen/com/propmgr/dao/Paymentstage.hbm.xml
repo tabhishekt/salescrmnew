@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 23, 2015 11:52:03 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.propmgr.dao.Paymentstage" table="PAYMENTSTAGE" schema="PUBLIC" catalog="PROPMGR">
+        <id name="paymentstageid" type="java.lang.Long">
+            <column name="PAYMENTSTAGEID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="paymentmaster" class="com.propmgr.dao.Paymentmaster" fetch="select">
+            <column name="PAYMENTID" not-null="true" />
+        </many-to-one>
+        <property name="paymentstagetype" type="int">
+            <column name="PAYMENTSTAGETYPE" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

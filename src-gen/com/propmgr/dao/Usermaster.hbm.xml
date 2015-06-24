@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 23, 2015 11:52:03 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.propmgr.dao.Usermaster" table="USERMASTER" schema="PUBLIC" catalog="PROPMGR">
+        <id name="usermasterid" type="java.lang.Long">
+            <column name="USERMASTERID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="person" class="com.propmgr.dao.Person" fetch="select">
+            <column name="PERSONDETAIL" not-null="true" />
+        </many-to-one>
+        <many-to-one name="address" class="com.propmgr.dao.Address" fetch="select">
+            <column name="USERADDRESS" not-null="true" />
+        </many-to-one>
+        <property name="loginname" type="string">
+            <column name="LOGINNAME" length="64" not-null="true" />
+        </property>
+        <property name="password" type="string">
+            <column name="PASSWORD" length="64" />
+        </property>
+        <property name="isactive" type="boolean">
+            <column name="ISACTIVE" not-null="true" />
+        </property>
+        <set name="enquirycomments" table="ENQUIRYCOMMENT" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="ORGUSER" not-null="true" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Enquirycomment" />
+        </set>
+        <set name="customermasters" table="CUSTOMERMASTER" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CREATEDBY" not-null="true" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Customermaster" />
+        </set>
+        <set name="unitbookingsForCancelledby" table="UNITBOOKING" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CANCELLEDBY" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Unitbooking" />
+        </set>
+        <set name="enquiries" table="ENQUIRY" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="ORGUSER" not-null="true" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Enquiry" />
+        </set>
+        <set name="unitbookingsForBookedby" table="UNITBOOKING" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="BOOKEDBY" not-null="true" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Unitbooking" />
+        </set>
+        <set name="paymentstatuses" table="PAYMENTSTATUS" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="UPDATEDBY" not-null="true" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Paymentstatus" />
+        </set>
+        <set name="unitmodificationstatuses" table="UNITMODIFICATIONSTATUS" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="UPDATEDBY" not-null="true" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Unitmodificationstatus" />
+        </set>
+        <set name="paymentmasters" table="PAYMENTMASTER" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="ORGUSER" not-null="true" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Paymentmaster" />
+        </set>
+        <set name="userroles" table="USERROLE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="ORGUSER" not-null="true" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Userrole" />
+        </set>
+    </class>
+</hibernate-mapping>

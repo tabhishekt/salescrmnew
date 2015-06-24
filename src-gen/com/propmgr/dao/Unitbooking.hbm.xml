@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 23, 2015 11:52:03 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.propmgr.dao.Unitbooking" table="UNITBOOKING" schema="PUBLIC" catalog="PROPMGR">
+        <id name="unitbookingid" type="java.lang.Long">
+            <column name="UNITBOOKINGID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="usermasterByBookedby" class="com.propmgr.dao.Usermaster" fetch="select">
+            <column name="BOOKEDBY" not-null="true" />
+        </many-to-one>
+        <many-to-one name="usermasterByCancelledby" class="com.propmgr.dao.Usermaster" fetch="select">
+            <column name="CANCELLEDBY" />
+        </many-to-one>
+        <many-to-one name="parkingmaster" class="com.propmgr.dao.Parkingmaster" fetch="select">
+            <column name="PARKINGMASTERID" />
+        </many-to-one>
+        <many-to-one name="customermaster" class="com.propmgr.dao.Customermaster" fetch="select">
+            <column name="CUSTOMER" not-null="true" />
+        </many-to-one>
+        <many-to-one name="unitmaster" class="com.propmgr.dao.Unitmaster" fetch="select">
+            <column name="UNIT" not-null="true" />
+        </many-to-one>
+        <property name="bookingdate" type="date">
+            <column name="BOOKINGDATE" length="8" not-null="true" />
+        </property>
+        <property name="bookingformnumber" type="long">
+            <column name="BOOKINGFORMNUMBER" not-null="true" />
+        </property>
+        <property name="bookingdiscount" type="java.lang.Double">
+            <column name="BOOKINGDISCOUNT" precision="17" scale="0" />
+        </property>
+        <property name="deductiononothercharges" type="java.lang.Double">
+            <column name="DEDUCTIONONOTHERCHARGES" precision="17" scale="0" />
+        </property>
+        <property name="bookingcomment" type="clob">
+            <column name="BOOKINGCOMMENT" />
+        </property>
+        <property name="iscancelled" type="java.lang.Boolean">
+            <column name="ISCANCELLED" />
+        </property>
+        <property name="canceldeduction" type="java.lang.Double">
+            <column name="CANCELDEDUCTION" precision="17" scale="0" />
+        </property>
+        <property name="cancellationdate" type="date">
+            <column name="CANCELLATIONDATE" length="8" />
+        </property>
+        <property name="cancellationcomment" type="clob">
+            <column name="CANCELLATIONCOMMENT" />
+        </property>
+        <property name="unitmodificationdetails" type="clob">
+            <column name="UNITMODIFICATIONDETAILS" />
+        </property>
+        <set name="refundmasters" table="REFUNDMASTER" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="UNITBOOKINGID" not-null="true" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Refundmaster" />
+        </set>
+        <set name="unitmodificationstatuses" table="UNITMODIFICATIONSTATUS" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="UNITBOOKINGID" not-null="true" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Unitmodificationstatus" />
+        </set>
+        <set name="paymentmasters" table="PAYMENTMASTER" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="UNITBOOKING" not-null="true" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Paymentmaster" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 23, 2015 11:52:03 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.propmgr.dao.Parkingmaster" table="PARKINGMASTER" schema="PUBLIC" catalog="PROPMGR">
+        <id name="parkingmasterid" type="java.lang.Long">
+            <column name="PARKINGMASTERID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="parkingtype" class="com.propmgr.dao.Parkingtype" fetch="select">
+            <column name="PARKINGTYPEID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="projectbuilding" class="com.propmgr.dao.Projectbuilding" fetch="select">
+            <column name="PROJECTBUILDINGID" not-null="true" />
+        </many-to-one>
+        <property name="total" type="int">
+            <column name="TOTAL" not-null="true" />
+        </property>
+        <property name="available" type="int">
+            <column name="AVAILABLE" not-null="true" />
+        </property>
+        <property name="booked" type="int">
+            <column name="BOOKED" not-null="true" />
+        </property>
+        <set name="unitbookings" table="UNITBOOKING" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="PARKINGMASTERID" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Unitbooking" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 23, 2015 11:52:03 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.propmgr.dao.Unitmaster" table="UNITMASTER" schema="PUBLIC" catalog="PROPMGR">
+        <id name="unitid" type="java.lang.Long">
+            <column name="UNITID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="projectbuilding" class="com.propmgr.dao.Projectbuilding" fetch="select">
+            <column name="PROJECTBUILDING" not-null="true" />
+        </many-to-one>
+        <many-to-one name="unitpricepolicy" class="com.propmgr.dao.Unitpricepolicy" fetch="select">
+            <column name="UNITPRICEPOLICYID" />
+        </many-to-one>
+        <many-to-one name="unitclassificationmaster" class="com.propmgr.dao.Unitclassificationmaster" fetch="select">
+            <column name="UNITCLASSID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="unittype" class="com.propmgr.dao.Unittype" fetch="select">
+            <column name="UNITTYPE" not-null="true" />
+        </many-to-one>
+        <property name="unitnumber" type="string">
+            <column name="UNITNUMBER" length="32" not-null="true" />
+        </property>
+        <property name="floornumber" type="int">
+            <column name="FLOORNUMBER" not-null="true" />
+        </property>
+        <property name="floortype" type="int">
+            <column name="FLOORTYPE" not-null="true" />
+        </property>
+        <property name="carpetarea" type="long">
+            <column name="CARPETAREA" not-null="true" />
+        </property>
+        <property name="saleablearea" type="long">
+            <column name="SALEABLEAREA" not-null="true" />
+        </property>
+        <property name="carpetareaforterrace" type="long">
+            <column name="CARPETAREAFORTERRACE" not-null="true" />
+        </property>
+        <property name="floorrise" type="java.lang.Double">
+            <column name="FLOORRISE" precision="17" scale="0" />
+        </property>
+        <property name="otheroptions" type="boolean">
+            <column name="OTHEROPTIONS" not-null="true" />
+        </property>
+        <property name="bookingamount" type="java.lang.Double">
+            <column name="BOOKINGAMOUNT" precision="17" scale="0" />
+        </property>
+        <property name="othercharges" type="java.lang.Double">
+            <column name="OTHERCHARGES" precision="17" scale="0" />
+        </property>
+        <property name="registrationdone" type="java.lang.Boolean">
+            <column name="REGISTRATIONDONE" />
+        </property>
+        <property name="agreementvalue" type="java.lang.Double">
+            <column name="AGREEMENTVALUE" precision="17" scale="0" />
+        </property>
+        <property name="agreementvalurereadyreckoner" type="java.lang.Double">
+            <column name="AGREEMENTVALUREREADYRECKONER" precision="17" scale="0" />
+        </property>
+        <property name="totaltax" type="java.lang.Double">
+            <column name="TOTALTAX" precision="17" scale="0" />
+        </property>
+        <property name="totalcostwithtax" type="java.lang.Double">
+            <column name="TOTALCOSTWITHTAX" precision="17" scale="0" />
+        </property>
+        <property name="totalcostwithtaxreadyreckoner" type="java.lang.Double">
+            <column name="TOTALCOSTWITHTAXREADYRECKONER" precision="17" scale="0" />
+        </property>
+        <property name="totalcost" type="java.lang.Double">
+            <column name="TOTALCOST" precision="17" scale="0" />
+        </property>
+        <property name="totalcostreadyreckoner" type="java.lang.Double">
+            <column name="TOTALCOSTREADYRECKONER" precision="17" scale="0" />
+        </property>
+        <set name="unitbookings" table="UNITBOOKING" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="UNIT" not-null="true" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Unitbooking" />
+        </set>
+        <set name="unitamenities" table="UNITAMENITY" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="UNIT" not-null="true" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Unitamenity" />
+        </set>
+    </class>
+</hibernate-mapping>

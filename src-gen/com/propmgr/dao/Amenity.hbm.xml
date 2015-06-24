@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 23, 2015 11:52:03 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.propmgr.dao.Amenity" table="AMENITY" schema="PUBLIC" catalog="PROPMGR">
+        <id name="amenityid" type="java.lang.Long">
+            <column name="AMENITYID" />
+            <generator class="identity" />
+        </id>
+        <property name="amenitycode" type="string">
+            <column name="AMENITYCODE" length="8" not-null="true" />
+        </property>
+        <property name="amenitydescription" type="string">
+            <column name="AMENITYDESCRIPTION" length="128" />
+        </property>
+        <set name="unitamenities" table="UNITAMENITY" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="AMENITY" not-null="true" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Unitamenity" />
+        </set>
+        <set name="amenitypricepolicies" table="AMENITYPRICEPOLICY" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="AMENITYID" not-null="true" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Amenitypricepolicy" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 23, 2015 11:52:03 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.propmgr.dao.Customermaster" table="CUSTOMERMASTER" schema="PUBLIC" catalog="PROPMGR">
+        <id name="customerid" type="java.lang.Long">
+            <column name="CUSTOMERID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="address" class="com.propmgr.dao.Address" fetch="select">
+            <column name="ADDRESS" not-null="true" />
+        </many-to-one>
+        <many-to-one name="personByCoownerdetail" class="com.propmgr.dao.Person" fetch="select">
+            <column name="COOWNERDETAIL" />
+        </many-to-one>
+        <many-to-one name="personByPersondetail" class="com.propmgr.dao.Person" fetch="select">
+            <column name="PERSONDETAIL" not-null="true" />
+        </many-to-one>
+        <many-to-one name="usermaster" class="com.propmgr.dao.Usermaster" fetch="select">
+            <column name="CREATEDBY" not-null="true" />
+        </many-to-one>
+        <set name="enquiries" table="ENQUIRY" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CUSTOMER" not-null="true" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Enquiry" />
+        </set>
+        <set name="unitbookings" table="UNITBOOKING" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CUSTOMER" not-null="true" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Unitbooking" />
+        </set>
+    </class>
+</hibernate-mapping>

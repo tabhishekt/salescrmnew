@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 23, 2015 11:52:03 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.propmgr.dao.Organization" table="ORGANIZATION" schema="PUBLIC" catalog="PROPMGR">
+        <id name="orgid" type="java.lang.Long">
+            <column name="ORGID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="contactinfo" class="com.propmgr.dao.Contactinfo" fetch="select">
+            <column name="CONTACTINFO" not-null="true" />
+        </many-to-one>
+        <many-to-one name="person" class="com.propmgr.dao.Person" fetch="select">
+            <column name="CONTACTPERSON" not-null="true" />
+        </many-to-one>
+        <many-to-one name="address" class="com.propmgr.dao.Address" fetch="select">
+            <column name="ORGADDRESS" not-null="true" />
+        </many-to-one>
+        <property name="orgname" type="string">
+            <column name="ORGNAME" length="64" not-null="true" />
+        </property>
+        <property name="logofilename" type="string">
+            <column name="LOGOFILENAME" length="64" />
+        </property>
+        <set name="projectmasters" table="PROJECTMASTER" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="ORGNIZATION" not-null="true" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Projectmaster" />
+        </set>
+    </class>
+</hibernate-mapping>

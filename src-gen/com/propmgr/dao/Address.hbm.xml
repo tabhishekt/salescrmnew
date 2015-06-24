@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 23, 2015 11:52:03 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.propmgr.dao.Address" table="ADDRESS" schema="PUBLIC" catalog="PROPMGR">
+        <id name="addressid" type="java.lang.Long">
+            <column name="ADDRESSID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="statemaster" class="com.propmgr.dao.Statemaster" fetch="select">
+            <column name="STATE" not-null="true" />
+        </many-to-one>
+        <many-to-one name="citymaster" class="com.propmgr.dao.Citymaster" fetch="select">
+            <column name="CITY" not-null="true" />
+        </many-to-one>
+        <property name="addressline1" type="clob">
+            <column name="ADDRESSLINE1" />
+        </property>
+        <property name="addressline2" type="clob">
+            <column name="ADDRESSLINE2" />
+        </property>
+        <property name="zipcode" type="string">
+            <column name="ZIPCODE" length="64" />
+        </property>
+        <set name="projectbankaccounts" table="PROJECTBANKACCOUNT" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="BANKADDRESS" not-null="true" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Projectbankaccount" />
+        </set>
+        <set name="customermasters" table="CUSTOMERMASTER" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="ADDRESS" not-null="true" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Customermaster" />
+        </set>
+        <set name="usermasters" table="USERMASTER" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="USERADDRESS" not-null="true" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Usermaster" />
+        </set>
+        <set name="organizations" table="ORGANIZATION" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="ORGADDRESS" not-null="true" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Organization" />
+        </set>
+        <set name="projectmasters" table="PROJECTMASTER" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="ADDRESS" not-null="true" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Projectmaster" />
+        </set>
+    </class>
+</hibernate-mapping>

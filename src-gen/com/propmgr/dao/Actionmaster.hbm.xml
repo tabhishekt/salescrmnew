@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 23, 2015 11:52:03 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.propmgr.dao.Actionmaster" table="ACTIONMASTER" schema="PUBLIC" catalog="PROPMGR">
+        <id name="actionmasterid" type="java.lang.Long">
+            <column name="ACTIONMASTERID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="pagemaster" class="com.propmgr.dao.Pagemaster" fetch="select">
+            <column name="PAGEMASTERID" not-null="true" />
+        </many-to-one>
+        <property name="actionname" type="string">
+            <column name="ACTIONNAME" length="64" not-null="true" />
+        </property>
+        <property name="actiondescription" type="clob">
+            <column name="ACTIONDESCRIPTION" />
+        </property>
+        <set name="actionroles" table="ACTIONROLE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="ACTIONMASTERID" not-null="true" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Actionrole" />
+        </set>
+    </class>
+</hibernate-mapping>

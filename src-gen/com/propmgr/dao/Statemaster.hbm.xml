@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 23, 2015 11:52:03 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.propmgr.dao.Statemaster" table="STATEMASTER" schema="PUBLIC" catalog="PROPMGR">
+        <id name="statemasterid" type="java.lang.Long">
+            <column name="STATEMASTERID" />
+            <generator class="identity" />
+        </id>
+        <property name="statecode" type="string">
+            <column name="STATECODE" length="8" />
+        </property>
+        <property name="statename" type="string">
+            <column name="STATENAME" length="64" />
+        </property>
+        <set name="addresses" table="ADDRESS" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="STATE" not-null="true" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Address" />
+        </set>
+    </class>
+</hibernate-mapping>

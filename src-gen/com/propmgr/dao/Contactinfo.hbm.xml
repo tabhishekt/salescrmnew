@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 23, 2015 11:52:03 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.propmgr.dao.Contactinfo" table="CONTACTINFO" schema="PUBLIC" catalog="PROPMGR">
+        <id name="contactinfoid" type="java.lang.Long">
+            <column name="CONTACTINFOID" />
+            <generator class="identity" />
+        </id>
+        <property name="phonenumber" type="string">
+            <column name="PHONENUMBER" length="64" />
+        </property>
+        <property name="alternatenumber" type="string">
+            <column name="ALTERNATENUMBER" length="64" />
+        </property>
+        <property name="mobilenumber" type="string">
+            <column name="MOBILENUMBER" length="64" />
+        </property>
+        <property name="emailid" type="string">
+            <column name="EMAILID" length="128" />
+        </property>
+        <set name="persons" table="PERSON" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CONTACTINFO" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Person" />
+        </set>
+        <set name="organizations" table="ORGANIZATION" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CONTACTINFO" not-null="true" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Organization" />
+        </set>
+    </class>
+</hibernate-mapping>
