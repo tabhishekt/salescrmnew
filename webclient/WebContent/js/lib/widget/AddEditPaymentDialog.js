@@ -87,9 +87,10 @@ define([
 			this.paymenttype.set("item", data.paymentType);
 			this.paymentstatus.set("item", data.paymentStatus);
 			this.paymentstatuscomment.set("value", data.statusComment);
-			
+		
+			this.clearOptionsForPaymentStages();
 			var widget = this;
-			array.forEach(data.paymentstage, function (stage)
+			array.forEach(data.paymentStages, function (stage)
 			{
 				var options = widget.paymentstage.domNode.children;
 				for (var i = 0; i < options.length; i++) {
@@ -98,6 +99,13 @@ define([
 				    } 
 				}
 			});
+		},
+		
+		clearOptionsForPaymentStages: function() {
+			var options = this.paymentstage.domNode.children;
+			for (var i = 0; i < options.length; i++) {
+				options[i].selected = "";
+			}
 		},
 		
 		postCreate:function () {

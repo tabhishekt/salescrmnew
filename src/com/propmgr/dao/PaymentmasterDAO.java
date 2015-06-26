@@ -128,12 +128,14 @@ public class PaymentmasterDAO extends SuperDAO {
 		return null;
 	}
 	
-	public long getMaxReceiptNumber() {
+	public long getMaxReceiptNumber(long projectId) {
 		Session hbmSession = getSession();
-		List<BigInteger> resultList = null;
+		List<Long> resultList = null;
 		try {
-			String queryString = "Select max(receiptNumber) from paymentMaster";
-			Query query = hbmSession.createSQLQuery(queryString);
+			String queryString = "Select max(receiptnumber) from Paymentmaster p "
+					+ "where p.unitbooking.unitmaster.projectbuilding.projectphase.projectmaster.projectid = " + projectId;
+			
+			Query query = hbmSession.createQuery(queryString);
 			resultList = query.list ();
 			
 			if (resultList!= null && resultList.size() > 0 && resultList.get(0) != null) {
@@ -166,6 +168,26 @@ public class PaymentmasterDAO extends SuperDAO {
 					paymentstatus = paymentstatusDAO.findLatestByPaymentIdAndState(payment.getPaymentid(), paymentstate);
 				}
 				return (paymentstatus != null) ? false : true;
+			}
+		} catch (Exception e) {
+			log.error ("", e);
+		}
+		
+		return false;
+	}
+	
+	public boolean isDuplicateAltReceiptNumber(long altReceiptNumber, long projectId) {
+		Session hbmSession = getSession();
+		List<Paymentmaster> resultList = null;
+		
+		try {
+			String queryString = "from Paymentmaster u where u.altreceiptnumber = " 
+				+ altReceiptNumber + " and u.unitbooking.unitmaster.projectbuilding.projectphase.projectmaster.projectid = " + projectId;
+			Query query = hbmSession.createQuery(queryString);
+			resultList = query.list ();
+			
+			if (resultList != null) {
+				return (resultList.size() > 0) ? true : false;
 			}
 		} catch (Exception e) {
 			log.error ("", e);

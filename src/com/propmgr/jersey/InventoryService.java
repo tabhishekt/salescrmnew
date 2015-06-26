@@ -1882,13 +1882,23 @@ public class InventoryService {
 	@GET
 	@Path("/payment/get/receiptnumber")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getReceiptNumberForPayment() {
+	public Response getReceiptNumberForPayment(@QueryParam("unitbookingId") String unitbookingId) {
+		UnitbookingDAO unitbookingDAO = new UnitbookingDAO();
 		PaymentmasterDAO paymentmasterDAO = new PaymentmasterDAO();
-		long receiptNumber = paymentmasterDAO.getMaxReceiptNumber();
-		if (receiptNumber == -1) {
-			receiptNumber = 10000; 
-		} else {
-			receiptNumber++;
+		long receiptNumber = 1;
+		
+		try {
+			Unitbooking unitbooking = unitbookingDAO.findById(Long.parseLong(unitbookingId));
+			long projectId = unitbooking.getUnitmaster().getProjectbuilding().getProjectphase().getProjectmaster().getProjectid();
+			receiptNumber = paymentmasterDAO.getMaxReceiptNumber(projectId);
+			if (receiptNumber == -1) {
+				receiptNumber = 1; 
+			} else {
+				receiptNumber++;
+			}
+		} catch (Exception e) {
+			logger.error("", e);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
 		}
 		
 		return Response.ok(receiptNumber).build();
@@ -1921,20 +1931,22 @@ public class InventoryService {
 			Projectbuilding projectbuilding = projectbuildingDAO.findById(Long.parseLong(rowId));
 			int floorCount = (int)projectbuilding.getFloorcount();
 			
-			result.add(new CodeTableResource(0, "REG", "Registration Payment"));
-			result.add(new CodeTableResource(1, "PLI", "Plinth Payment"));
+			result.add(new CodeTableResource(0, "BOK", "Booking Payment"));
+			result.add(new CodeTableResource(1, "REG", "Registration Payment"));
+			result.add(new CodeTableResource(2, "PLI", "Plinth Payment"));
 			for (int i=0; i<floorCount; i++) {
 				int slab = i+1;
-				result.add(new CodeTableResource(slab + 1, "SLB"+ slab, "Slab " + slab + "  payment"));
+				result.add(new CodeTableResource(slab + 2, "SLB"+ slab, "Slab " + slab + "  payment"));
 			}
-			result.add(new CodeTableResource(floorCount+2, "BRI", "Brickwork payment"));
-			result.add(new CodeTableResource(floorCount+3, "PLA", "Plastering payment"));
-			result.add(new CodeTableResource(floorCount+4, "FLO", "Flooring payment"));
-			result.add(new CodeTableResource(floorCount+5, "POS", "Possession payment"));
-			result.add(new CodeTableResource(floorCount+6, "TAX1", "Stampduty payment"));
-			result.add(new CodeTableResource(floorCount+7, "TAX2", "Registration charges payment"));
-			result.add(new CodeTableResource(floorCount+8, "TAX3", "Service tax payment"));
-			result.add(new CodeTableResource(floorCount+9, "TAX4", "MVAT payment"));
+			result.add(new CodeTableResource(floorCount+3, "BRI", "Brickwork payment"));
+			result.add(new CodeTableResource(floorCount+4, "PLA", "Plastering payment"));
+			result.add(new CodeTableResource(floorCount+5, "FLO", "Flooring payment"));
+			result.add(new CodeTableResource(floorCount+6, "POS", "Possession payment"));
+			result.add(new CodeTableResource(floorCount+7, "TAX1", "Stampduty payment"));
+			result.add(new CodeTableResource(floorCount+8, "TAX2", "Registration charges payment"));
+			result.add(new CodeTableResource(floorCount+9, "TAX3", "Service tax payment"));
+			result.add(new CodeTableResource(floorCount+10, "TAX4", "MVAT payment"));
+			result.add(new CodeTableResource(floorCount+11, "EXTRA", "Extra work payment"));
 		} catch (Exception e) {
 			logger.error("", e);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
@@ -2094,6 +2106,13 @@ public class InventoryService {
 					return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
 				}
 			} else {
+				long projectId = unitbooking.getUnitmaster().getProjectbuilding().getProjectphase().getProjectmaster().getProjectid();
+				long altReceiptNumber = ResourceUtil.getFormDataValueAsLong(formData, "altreceiptnumber");
+				if (paymentmasterDAO.isDuplicateAltReceiptNumber(altReceiptNumber, projectId)) {
+					return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("Payment already exists with altername "
+							+ "receipt number " + altReceiptNumber)).build();
+				}
+				
 				if (ResourceUtil.convertClobToString(paymenttype.getPaymenttypedescription()).equalsIgnoreCase("Bank Cheque")) {
 					if (paymentmasterDAO.isDuplicateCheque(bankName, chequeNumber)) {
 						return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("Payment already exists with bankName " + 
@@ -2140,6 +2159,11 @@ public class InventoryService {
 				paymentstatus.setUsermaster(user);
 				paymentstatusDAO.save(paymentstatus);
 			}
+			
+			List<Paymentstage> paymentstageList = paymentstageDAO.findByPayment(payment.getPaymentid());
+			 for (Paymentstage paymentstage : paymentstageList) {
+				 paymentstageDAO.delete(paymentstage);
+			 }
 			 
 			 List<String> values = formData.get("paymentstage");
 			 if (values != null && values.size()  > 0) {

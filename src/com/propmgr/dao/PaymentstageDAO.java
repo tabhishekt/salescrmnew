@@ -1,11 +1,14 @@
 package com.propmgr.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.LockMode;
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.criterion.Example;
 
 import com.propmgr.hibernate.SuperDAO;
@@ -108,6 +111,24 @@ public class PaymentstageDAO extends SuperDAO {
 		}
 	}
 
+	public List<Paymentstage> findByPayment(long paymentId) {
+		Session hbmSession = getSession();
+		List<Paymentstage> resultList = null;
+		try {
+			String queryString = "from Paymentstage u where u.paymentmaster.paymentid = " + paymentId;
+			Query query = hbmSession.createQuery(queryString);
+			resultList = query.list ();
+			
+			if (resultList.size() > 0) {
+				return resultList;
+			}
+		} catch (Exception e) {
+			log.error ("", e);
+		}
+		
+		return new ArrayList<Paymentstage>();
+	}
+	
 	@Override
 	protected Object getPojoObj() {
 		return new Paymentstate();

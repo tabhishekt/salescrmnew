@@ -47,7 +47,7 @@
             	
             	this.datespan.innerHTML = this.formatDate(data.paymentInformation.receiptDate);
             	this.customername.innerHTML = data.customer.displayName;
-            	this.receiptnumber.innerHTML = "No. " + data.paymentInformation.receiptNumber;
+            	this.receiptnumber.innerHTML = "Receipt No. " + data.paymentInformation.receiptNumber + " (" + data.project.name + ")";
             	this.amountinwords.innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rs&nbsp;&nbsp;" + data.amountInWords;
             	this.chequenumber.innerHTML = data.paymentInformation.chequeNumber;
             	this.bankname.innerHTML = data.paymentInformation.bankName;

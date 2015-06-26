@@ -468,7 +468,7 @@ define(
                 }
 				if (this.page == "payment") {
 					var gridHandler = this;
-	    			var promise = request.get(this.getURL("get") + "/receiptnumber", {
+	    			var promise = request.get(this.getURL("get") + "/receiptnumber?unitbookingId=" + this.unitbookingId, {
 	       				timeout: 2000,
 	       				handleAs: "json"
 	       			});

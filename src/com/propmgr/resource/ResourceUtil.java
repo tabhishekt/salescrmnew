@@ -371,27 +371,31 @@ public class ResourceUtil {
 	public static CodeTableResource getPaymentStage(int floorCount, int paymentStage) {
 		
 		if (paymentStage == 0) {
-			return new CodeTableResource(0, "REG", "Registration payment");
+			return new CodeTableResource(0, "BOK", "Booking Payment");
 		} else if (paymentStage == 1) {
-			return new CodeTableResource(1, "PLI", "Plinth payment");
-		} else if (paymentStage > 1 && paymentStage <= floorCount + 1) { 
-			return new CodeTableResource(paymentStage, "SLB"+ (paymentStage - 1), "Slab " + (paymentStage - 1) + "  payment");
-		} else if (paymentStage == floorCount+2) {
-			return new CodeTableResource(floorCount+2, "BRI", "Brickwork in progress");
+			return new CodeTableResource(1, "REG", "Registration payment");
+		} else if (paymentStage == 2) {
+			return new CodeTableResource(2, "PLI", "Plinth payment");
+		} else if (paymentStage > 2 && paymentStage <= floorCount + 2) { 
+			return new CodeTableResource(paymentStage, "SLB"+ (paymentStage - 2), "Slab " + (paymentStage - 2) + "  payment");
 		} else if (paymentStage == floorCount+3) {
-			return new CodeTableResource(floorCount+3, "PLA", "Plastering in progress");
+			return new CodeTableResource(floorCount+3, "BRI", "Brickwork in progress");
 		} else if (paymentStage == floorCount+4) {
-			return new CodeTableResource(floorCount+4, "FLO", "Flooring in progress");
+			return new CodeTableResource(floorCount+4, "PLA", "Plastering in progress");
 		} else if (paymentStage == floorCount+5) {
-			return new CodeTableResource(floorCount+5, "POS", "Ready for Possession");
-		} else if (paymentStage == floorCount+5) {
-			return new CodeTableResource(floorCount+6, "TAX1", "Stampduty payment");
-		} else if (paymentStage == floorCount+5) {
-			return new CodeTableResource(floorCount+7, "TAX2", "Registration charges payment");
-		} else if (paymentStage == floorCount+5) {
-			return new CodeTableResource(floorCount+8, "TAX3", "Service tax payment");
-		} else if (paymentStage == floorCount+5) {
-			return new CodeTableResource(floorCount+9, "TAX4", "MVAT payment");
+			return new CodeTableResource(floorCount+5, "FLO", "Flooring in progress");
+		} else if (paymentStage == floorCount+6) {
+			return new CodeTableResource(floorCount+6, "POS", "Ready for Possession");
+		} else if (paymentStage == floorCount+7) {
+			return new CodeTableResource(floorCount+7, "TAX1", "Stampduty payment");
+		} else if (paymentStage == floorCount+8) {
+			return new CodeTableResource(floorCount+8, "TAX2", "Registration charges payment");
+		} else if (paymentStage == floorCount+9) {
+			return new CodeTableResource(floorCount+9, "TAX3", "Service tax payment");
+		} else if (paymentStage == floorCount+10) {
+			return new CodeTableResource(floorCount+10, "TAX4", "MVAT payment");
+		} else if (paymentStage == floorCount+11) {
+			return new CodeTableResource(floorCount+11, "EXTRA", "Extra work payment");
 		}
 		
 		return null;
