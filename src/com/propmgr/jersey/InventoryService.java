@@ -1666,7 +1666,7 @@ public class InventoryService {
 						}
 						
 						Iterator<Paymentstage> iterator1 = payment.getPaymentstages().iterator();
-						while(iterator.hasNext()) {
+						while(iterator1.hasNext()) {
 							paymentstageDAO.delete(iterator1.next()); 
 						}
 						
