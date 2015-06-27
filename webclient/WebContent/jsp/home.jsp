@@ -5,7 +5,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Welcome to Sales CRM application</title>
-
 <style type="text/css">
 @import "../js/dojo_1.10.2/dojo/resources/dojo.css";
 @import "../js/dojo_1.10.2/dijit/themes/claro/claro.css";
@@ -13,21 +12,22 @@
 @import "../js/dojo_1.10.2/dojox/widget/Dialog/Dialog.css";
 </style>
 
+<jsp:directive.include file="common.jsp" />
 <script type="text/javascript" src="../js/common.js"></script>
 <script type="text/javascript" src="../js/dojo_1.10.2/dojo/dojo.js"></script>
 
 <script>
-    require(["dojo/_base/lang", "dijit/registry", "dijit/layout/BorderContainer",
-            "dijit/layout/TabContainer", "dijit/layout/ContentPane", 
+    require(["dojo/_base/lang", "dijit/registry", "dojo/request", 
+            "dijit/layout/BorderContainer", "dijit/layout/TabContainer", "dijit/layout/ContentPane", 
             "dijit/layout/AccordionContainer", "dojo/on", "dojo/Deferred", 
             "lib/DialogHandler", "dojo/dom", "dojo/dom-construct", "dojo/domReady!"],
-        function(lang, registry, BorderContainer, TabContainer, ContentPane, 
+        function(lang, registry, request, BorderContainer, TabContainer, ContentPane, 
         		AccordionContainer, on, Deferred, DialogHandler, dom, domConstruct) {
     		var dialogHandler = new DialogHandler();
     		
             load = function () {
             	var browser=get_browser_info();
-            	if (browser.name != 'Chrome') {
+            	if (browser.name != 'Chrome' && browser.name != 'Firefox') {
             		alert("This application is currently supported only on Chrome browser.")
             	} else {
             		createLayout();	
@@ -200,6 +200,22 @@
             	dialogHandler.openLoginDialog(options);
             };
             
+            logout = function() {
+            	var promise = request.get("../rest/json/data/userrole/logout", {
+    				timeout: 2000,
+    				handleAs: "json"
+    			});
+    			
+    			promise.response.then(
+    				function(response) {;
+    				    location.reload();
+    				},
+    				function(error) {
+    					alert("An error occured during logout");	
+    				}
+    			);
+            };
+            
             createBanner = function() {
             	var bannerHTML = "<div><table width='95%'><tr><td width='70%'>" +
             	"<span class='bannerText'>Welcome to Sales CRM Application</span></td>";
@@ -222,7 +238,7 @@
         });
 </script>
 </head>
-<body class="claro"  onload="this.load()">
+<body class="claro">
 	 <div id="appLayout" class="demoLayout"></div>
 </body>
 </html>

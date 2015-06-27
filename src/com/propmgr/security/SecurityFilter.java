@@ -9,6 +9,9 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
@@ -35,13 +38,19 @@ public class SecurityFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain) throws IOException, ServletException {
         try {
-//            String pageName = getPageName(((HttpServletRequest) request).getRequestURI());    
-//            if(pageName.endsWith(".jsp") && !pageName.equalsIgnoreCase("home.jsp")) {
-//            	String url = ((HttpServletRequest)request).getContextPath() + "/jsp/home.jsp"; 
-//            	((HttpServletResponse)response).sendRedirect(url);
-//            }
-            chain.doFilter(request, response);
-
+        	/*Boolean isAutheticated = false;
+        	HttpSession httpSession = ((HttpServletRequest)request).getSession(false);
+        	if (httpSession != null) {
+	        	isAutheticated = (Boolean)httpSession.getAttribute("isAutheticated");
+        	} 
+        	
+        	if(isAutheticated) {
+        		chain.doFilter(request, response);
+        	} else {
+        		((HttpServletResponse)response).sendRedirect("home.jsp");
+        	}*/
+        	
+        	chain.doFilter(request, response);
         } catch (Exception e) {
             logger.error("", e);
         } finally { 

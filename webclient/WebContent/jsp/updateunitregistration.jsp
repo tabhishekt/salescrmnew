@@ -13,6 +13,8 @@
 @import "../js/lib/gridx-1.3.6/resources/claro/Gridx.css";
 @import "../css/contentPage.css";
 </style>
+
+<jsp:directive.include file="common.jsp" />
 <script type="text/javascript" src="../js/common.js"></script>
 <script type="text/javascript" src="../js/dojo_1.10.2/dojo/dojo.js"></script>
 <script>
@@ -111,7 +113,7 @@
         });
 </script>
 </head>
-<body class="claro"  onload="this.load()">
+<body class="claro">
 <div class="messageSpanSuccess"><span id="messageSpanNode"></span></div>
 <fieldset style="width: 95%;">
 	 	<legend id="unitGridLegend"></legend>

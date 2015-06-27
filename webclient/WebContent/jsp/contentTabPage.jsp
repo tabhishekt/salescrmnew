@@ -14,6 +14,7 @@
 @import "../css/contentPage.css";
 </style>
 
+<jsp:directive.include file="common.jsp" />
 <script type="text/javascript" src="../js/common.js"></script>
 <script type="text/javascript" src="../js/dojo_1.10.2/dojo/dojo.js"></script>
 <script>
@@ -112,7 +113,7 @@
         });
 </script>
 </head>
-<body class="claro"  onload="this.load()">
+<body class="claro">
 <div id="dropdownDiv" class="hiddenInput">
 	<label for="projectselect">Select Project:</label>
 	<select id="projectselect" name="projectselect" data-dojo-type="dijit/form/FilteringSelect"></select>

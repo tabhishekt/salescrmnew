@@ -107,7 +107,7 @@
         });
 </script>
 </head>
-<body class="claro"  onload="this.load()">
+<body class="claro">
 <div class="containerDiv">
 	<div class="printDemandLetterText" id="headerDiv">
 		<table>

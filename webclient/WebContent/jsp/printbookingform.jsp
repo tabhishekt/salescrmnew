@@ -367,7 +367,7 @@
         });
 </script>
 </head>
-<body class="claro"  onload="this.load()">
+<body class="claro">
 <div class="containerDiv">
 	<div id="headerDiv">
 		<table width="100%" align="center">

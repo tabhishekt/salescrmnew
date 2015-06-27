@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
@@ -12,6 +14,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
@@ -48,11 +51,12 @@ public class UserRoleService {
 	@Path("/login/post")
 	@Consumes("application/x-www-form-urlencoded")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response loginUser(@FormParam("username") String username, @FormParam("password") String password) {
-		LoginResponse loginResponse = null;
+	public Response loginUser(@FormParam("username") String username, @FormParam("password") String password,
+			@Context HttpServletRequest httpRequest) {
 		UsermasterDAO usermasterDAO = new UsermasterDAO();
 		
 		try {
+			HttpSession httpSession = httpRequest.getSession(true);
 			Usermaster user = usermasterDAO.findByUserLoginCredentials(username, password);
 			boolean isAdmin = false;
 			boolean status = false;
@@ -67,15 +71,34 @@ public class UserRoleService {
 		    			isAdmin = true;
 		    		}
 		    	}
-		    	loginResponse = new LoginResponse(user.getUsermasterid(), status, isAdmin, userName);
+		    	
+		    	httpSession.setAttribute("userId", user.getUsermasterid());
+		    	httpSession.setAttribute("isAutheticated", status);
+		    	httpSession.setAttribute("isAdmin", isAdmin);
+		    	httpSession.setAttribute("userName", userName);
 	    	} else {
+	    		httpSession.setAttribute("isAutheticated", status);
 	    		return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("User with id " + username + " and given password not found.")).build();
 	    	}
 		} catch (Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
 		}
         
-	    return Response.ok(loginResponse).build(); 
+	    return Response.ok().build(); 
+	}
+	
+	@GET
+	@Path("/logout")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response logoutUser(@Context HttpServletRequest httpRequest) {
+		try {
+			HttpSession httpSession = httpRequest.getSession();
+			httpSession.invalidate();
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
+		}
+        
+	    return Response.ok().build(); 
 	}
 	
 	@GET
