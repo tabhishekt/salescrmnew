@@ -11,6 +11,8 @@
 @import "../js/dojo_1.10.2/dijit/themes/claro/document.css";
 @import "../css/contentPage.css";
 </style>
+
+<jsp:directive.include file="common.jsp" />
 <script type="text/javascript" src="../js/common.js"></script>
 <script type="text/javascript" src="../js/dojo_1.10.2/dojo/dojo.js"></script>
 <script>
