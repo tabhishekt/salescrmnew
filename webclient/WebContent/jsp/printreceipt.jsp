@@ -51,7 +51,12 @@
             	this.customername.innerHTML = data.customer.displayName;
             	this.receiptnumber.innerHTML = "Receipt No. " + data.paymentInformation.receiptNumber + " (" + data.project.name + ")";
             	this.amountinwords.innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rs&nbsp;&nbsp;" + data.amountInWords;
-            	this.chequenumber.innerHTML = data.paymentInformation.chequeNumber;
+            	if (data.paymentInformation.chequeNumber) {
+            		this.chequenumber.innerHTML = data.paymentInformation.chequeNumber;
+            	} else if (data.paymentInformation.utrNumber) {
+            		this.chequenumber.innerHTML = data.paymentInformation.utrNumber;
+            	}
+            	
             	this.bankname.innerHTML = data.paymentInformation.bankName;
             	this.bankbranch.innerHTML = data.paymentInformation.bankBranch;
             	this.chequedate.innerHTML = this.formatDate(data.paymentInformation.chequeDate);

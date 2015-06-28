@@ -277,7 +277,7 @@
 				th2 = domConstruct.create("th", null, tr);
 				this.createSpan(th2, "Branch");
 				th3 = domConstruct.create("th", null, tr);
-				this.createSpan(th3, "Cheque Number");
+				this.createSpan(th3, "Cheque Number / UTR Number");
 				th4 = domConstruct.create("th", null, tr);
 				this.createSpan(th4, "Cheque Date");
 				th5 = domConstruct.create("th", null, tr);
@@ -295,19 +295,23 @@
 					var payment = data.paymentList[i];
 					tr = domConstruct.create("tr", null, table);
 					
-					td1 = domConstruct.create("td", null, tr);
-					td2 = domConstruct.create("td", null, tr);
-					td3 = domConstruct.create("td", null, tr);
-					td4 = domConstruct.create("td", null, tr);
-					td5 = domConstruct.create("td", null, tr);
-					td6 = domConstruct.create("td", null, tr);
-					td7 = domConstruct.create("td", null, tr);
-					td8 = domConstruct.create("td", null, tr);
-					td9 = domConstruct.create("td", null, tr);
+					td1 = domConstruct.create("td", {"align": "center"}, tr);
+					td2 = domConstruct.create("td", {"align": "center"}, tr);
+					td3 = domConstruct.create("td", {"align": "center"}, tr);
+					td4 = domConstruct.create("td", {"align": "center"}, tr);
+					td5 = domConstruct.create("td", {"align": "center"}, tr);
+					td6 = domConstruct.create("td", {"align": "center"}, tr);
+					td7 = domConstruct.create("td", {"align": "center"}, tr);
+					td8 = domConstruct.create("td", {"align": "center"}, tr);
+					td9 = domConstruct.create("td", {"align": "center"}, tr);
 					
 					this.createSpan(td1, payment.bankName);
 					this.createSpan(td2, payment.bankBranch);
-					this.createSpan(td3, payment.chequeNumber);
+					if (payment.chequeNumber) {
+						this.createSpan(td3, payment.chequeNumber);
+	            	} else if (payment.utrNumber) {
+	            		this.createSpan(td3, payment.utrNumber);
+	            	}
 					this.createSpan(td4, this.formatDate(payment.chequeDate));
 					this.createSpan(td5, payment.receiptNumber);
 					this.createSpan(td6, payment.altReceiptNumber);

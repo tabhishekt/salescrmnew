@@ -613,7 +613,7 @@ public class ResourceUtil {
 			
 			double basicCostReadyReckoner = getBasicCostUsingReadyReckonerRate(readyreckonerrate, unit.getCarpetarea(), unit.getCarpetareaforterrace());
 			double agreementValueBaseRate = getAgreementValueUsingBaseRate(totalRate, unit.getSaleablearea(), otherCharges);
-			double agreementValueReadyReckoner = getAgreementValueUsingReadyReckonerRate(basicCostReadyReckoner, unit.getFloornumber());
+			double agreementValueReadyReckoner = getAgreementValueUsingReadyReckonerRate(basicCostReadyReckoner, unit.getFloornumber(), otherCharges);
 			double agreementValue = (agreementValueBaseRate >= agreementValueReadyReckoner) ? agreementValueBaseRate : agreementValueReadyReckoner;
 			
 			int maintenancecharge1duration = (unitpricepolicy.getMaintenancecharge1duration() == null) ? 1 : unitpricepolicy.getMaintenancecharge1duration();
@@ -632,7 +632,7 @@ public class ResourceUtil {
 			
 			double totalTax = stampDuty + registrationCharge + serviceTax + valueAddedtax;
 			double totalCostWithTax = agreementValueBaseRate + totalTax + logalCharge;
-			double totalCostWithTaxReadyReckoner = agreementValueReadyReckoner + totalTax;
+			double totalCostWithTaxReadyReckoner = agreementValueReadyReckoner + totalTax + logalCharge;
 			
 			double totalCost = totalCostWithTax + totalCharges;
 			double totalCostReadyReckoner = totalCostWithTaxReadyReckoner + totalCharges;
@@ -1188,7 +1188,7 @@ public class ResourceUtil {
 		double totalRate = baseRate + floorRise + amenityCharges - discount; 
 		double basicCostReadyReckoner = getBasicCostUsingReadyReckonerRate(readyReckonerRate, unit.getCarpetarea(), unit.getCarpetareaforterrace());
 		double agreementValueBaseRate = getAgreementValueUsingBaseRate(totalRate, unit.getSaleablearea(), otherCharges);
-		double agreementValueReadyReckoner = getAgreementValueUsingReadyReckonerRate(basicCostReadyReckoner, unit.getFloornumber());
+		double agreementValueReadyReckoner = getAgreementValueUsingReadyReckonerRate(basicCostReadyReckoner, unit.getFloornumber(), otherCharges);
 		double agreementValue = (agreementValueBaseRate >= agreementValueReadyReckoner) ? agreementValueBaseRate : agreementValueReadyReckoner;
 		
 		int maintenancecharge1duration = (unitpricepolicy.getMaintenancecharge1duration() == null) ? 1 : unitpricepolicy.getMaintenancecharge1duration();
@@ -1206,7 +1206,7 @@ public class ResourceUtil {
 		double valueAddedtax = (unitpricepolicy.getValueaddedtax()*agreementValue)/100;
 		double totalTax = stampDuty + registrationCharge + serviceTax + valueAddedtax;
 		double totalCostWithTax = agreementValueBaseRate + totalTax + logalCharge;
-		double totalCostWithTaxReadyReckoner = agreementValueReadyReckoner + totalTax;
+		double totalCostWithTaxReadyReckoner = agreementValueReadyReckoner + totalTax + logalCharge;
 		
 		double totalCost = totalCostWithTax + totalCharges;
 		double totalCostReadyReckoner = totalCostWithTaxReadyReckoner + totalCharges;
@@ -1233,7 +1233,7 @@ public class ResourceUtil {
 		 return basicCostReadyReckoner;
 	 }
 	 
-	 public static double getAgreementValueUsingReadyReckonerRate(double basicCostReadyReckoner, int floorNumber) throws SQLException {
+	 public static double getAgreementValueUsingReadyReckonerRate(double basicCostReadyReckoner, int floorNumber, double otherCharges) throws SQLException {
 		 double agreementValue = basicCostReadyReckoner;
 		 
 		 if (floorNumber > 5 && floorNumber <= 10) {
@@ -1244,7 +1244,7 @@ public class ResourceUtil {
 			 agreementValue += agreementValue*0.15;
 		 }
 		 
-		 return agreementValue;
+		 return agreementValue + otherCharges;
 	 }
 	 
 	 public static void saveUnitPaymentSchedule(MultivaluedMap<String, String> formData, String typeFieldName, 

@@ -179,15 +179,22 @@ public class PaymentmasterDAO extends SuperDAO {
 	public boolean isDuplicateAltReceiptNumber(long altReceiptNumber, long projectId) {
 		Session hbmSession = getSession();
 		List<Paymentmaster> resultList = null;
+		PaymentstatusDAO paymentstatusDAO = new PaymentstatusDAO();
+		PaymentstateDAO paymentstateDAO = new PaymentstateDAO();
+		Paymentstatus paymentstatus = null;
 		
 		try {
 			String queryString = "from Paymentmaster u where u.altreceiptnumber = " 
 				+ altReceiptNumber + " and u.unitbooking.unitmaster.projectbuilding.projectphase.projectmaster.projectid = " + projectId;
 			Query query = hbmSession.createQuery(queryString);
 			resultList = query.list ();
-			
-			if (resultList != null) {
-				return (resultList.size() > 0) ? true : false;
+			if (resultList.size() > 0) {
+				Paymentmaster payment = resultList.get(0);
+				Paymentstate paymentstate = paymentstateDAO.findByName("Bounced");
+				if (paymentstate != null) {
+					paymentstatus = paymentstatusDAO.findLatestByPaymentIdAndState(payment.getPaymentid(), paymentstate);
+				}
+				return (paymentstatus != null) ? false : true;
 			}
 		} catch (Exception e) {
 			log.error ("", e);
