@@ -146,7 +146,7 @@
 			<span>The sum of </span><span style="text-decoration: underline;" id="amountinwords" data-dojo-attach-point="amountinwords"></span>
 		</td></tr>
 		<tr><td>
-			<span>By Cash / Cheque / Draft No. </span><span style="text-decoration: underline;" id="chequenumber" data-dojo-attach-point="chequenumber"></span>
+			<span>By Cash / Cheque / UTR / Draft No. </span><span style="text-decoration: underline;" id="chequenumber" data-dojo-attach-point="chequenumber"></span>
 			<span>Drawn on Bank </span><span style="text-decoration: underline;" id="bankname" data-dojo-attach-point="bankname"></span>
 		</td></tr>
 		<tr><td>

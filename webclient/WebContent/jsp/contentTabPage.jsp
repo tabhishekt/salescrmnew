@@ -48,6 +48,15 @@
             	this.initializeHandlers();
             	
             	var dropdownDiv = dojo.byId("dropdownDiv");
+            	var backLinkDiv = dojo.byId("backLinkDiv");
+            	
+            	if (this.page == "projectbankaccount" || this.page == "unit" || this.page == "unitbooking" || 
+            			this.page == "cancelledbooking" || this.page == "payment") {
+            		domClass.remove(backLinkDiv, "hiddenInput");
+            	} else {
+            		domClass.add(backLinkDiv, "hiddenInput");
+            	}
+            	
             	if (this.page == "projectbuilding") {
             		domClass.remove(dropdownDiv);
             		on(registry.byId("projectselect"), "change", lang.hitch(this,"onDropdownSelection"));  
@@ -120,6 +129,7 @@
 	<br><br>
 </div>
 <div id="dataGridDiv">
+	<div id="backLinkDiv" align="right"><a href="javascript:history.back()">Go Back</a></div>
 	<fieldset style="width: 95%;">
 	 	<legend id="pageLegend"></legend>
 	 	<br>

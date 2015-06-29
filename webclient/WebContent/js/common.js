@@ -21,7 +21,7 @@ window.onload = function() {
 		alert("Could not load dojo. Please ensure dojo.js lives under Webcontent/js/dojo/");
 	}
 	readUserDataFromSession();
-	load();
+	this.load();
 }
 
 getQueryVariable = function(variable) {
