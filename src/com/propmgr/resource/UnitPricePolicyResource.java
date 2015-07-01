@@ -8,6 +8,7 @@ public class UnitPricePolicyResource {
 	private String policyName;
 	private double baserate;
 	private double readyreckonerrate;
+	private double landrate;
 	private double stampduty;
 	private double registrationcharge;
 	private double servicetax;
@@ -20,7 +21,7 @@ public class UnitPricePolicyResource {
 	private String assignedToProjects;
 	private Map<String, Double> amenityCharges;
 	
-	public UnitPricePolicyResource(Long id, String policyName, double baserate, double readyreckonerrate, 
+	public UnitPricePolicyResource(Long id, String policyName, double baserate, double readyreckonerrate, double landrate,
 			double stampduty, double registrationcharge, double servicetax, double valueaddedtax, double totaltax, 
 			double maintenancecharge1, int maintenancecharge1duration, double maintenancecharge2, 
 			double legalcharge, String assignedToProjects, Map<String, Double> amenityCharges) {
@@ -29,6 +30,7 @@ public class UnitPricePolicyResource {
 		this.policyName = policyName;
 		this.baserate = baserate;
 		this.readyreckonerrate = readyreckonerrate;
+		this.landrate = landrate;
 		this.stampduty = stampduty;
 		this.registrationcharge = registrationcharge;
 		this.servicetax = servicetax;
@@ -56,6 +58,10 @@ public class UnitPricePolicyResource {
 	
 	public double getReadyreckonerrate() {
 		return readyreckonerrate;
+	}
+
+	public double getLandrate() {
+		return landrate;
 	}
 
 	public double getStampduty() {

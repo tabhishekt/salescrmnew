@@ -115,6 +115,7 @@
 </head>
 <body class="claro">
 <div class="messageSpanSuccess"><span id="messageSpanNode"></span></div>
+<div id="backLinkDiv" align="right"><a href="javascript:history.back()">Go Back</a></div>
 <fieldset style="width: 95%;">
 	 	<legend id="unitGridLegend"></legend>
 	 	<br>

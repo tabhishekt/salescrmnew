@@ -1,6 +1,6 @@
 package com.propmgr.dao;
 
-// Generated Jun 23, 2015 11:52:03 PM by Hibernate Tools 3.4.0.CR1
+// Generated Jul 1, 2015 11:15:39 PM by Hibernate Tools 3.4.0.CR1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -33,6 +33,7 @@ public class Unitmaster implements java.io.Serializable {
 	private Double totalcostwithtaxreadyreckoner;
 	private Double totalcost;
 	private Double totalcostreadyreckoner;
+	private Double parkingarea;
 	private Set unitbookings = new HashSet(0);
 	private Set unitamenities = new HashSet(0);
 
@@ -66,8 +67,8 @@ public class Unitmaster implements java.io.Serializable {
 			Boolean registrationdone, Double agreementvalue,
 			Double agreementvalurereadyreckoner, Double totaltax,
 			Double totalcostwithtax, Double totalcostwithtaxreadyreckoner,
-			Double totalcost, Double totalcostreadyreckoner, Set unitbookings,
-			Set unitamenities) {
+			Double totalcost, Double totalcostreadyreckoner,
+			Double parkingarea, Set unitbookings, Set unitamenities) {
 		this.projectbuilding = projectbuilding;
 		this.unitpricepolicy = unitpricepolicy;
 		this.unitclassificationmaster = unitclassificationmaster;
@@ -90,6 +91,7 @@ public class Unitmaster implements java.io.Serializable {
 		this.totalcostwithtaxreadyreckoner = totalcostwithtaxreadyreckoner;
 		this.totalcost = totalcost;
 		this.totalcostreadyreckoner = totalcostreadyreckoner;
+		this.parkingarea = parkingarea;
 		this.unitbookings = unitbookings;
 		this.unitamenities = unitamenities;
 	}
@@ -279,6 +281,14 @@ public class Unitmaster implements java.io.Serializable {
 
 	public void setTotalcostreadyreckoner(Double totalcostreadyreckoner) {
 		this.totalcostreadyreckoner = totalcostreadyreckoner;
+	}
+
+	public Double getParkingarea() {
+		return this.parkingarea;
+	}
+
+	public void setParkingarea(Double parkingarea) {
+		this.parkingarea = parkingarea;
 	}
 
 	public Set getUnitbookings() {

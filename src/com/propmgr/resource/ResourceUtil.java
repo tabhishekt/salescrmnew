@@ -265,9 +265,10 @@ public class ResourceUtil {
 		Customermaster customer = unitbooking.getCustomermaster();
 		Usermaster user = unitbooking.getUsermasterByBookedby();
 		double bookingDiscount = (unitbooking.getBookingdiscount() == null) ? 0 : unitbooking.getBookingdiscount();
+		int parkingTypeReadyReckoner = (unitbooking.getParkingtype() == null) ? 0 : unitbooking.getParkingtype();
 		double deductionOnOtherCharges = (unitbooking.getDeductiononothercharges() == null) ? 0 : unitbooking.getDeductiononothercharges();
-		UnitPriceDetailResource priceWithoutDiscount = ResourceUtil.getUnitPriceDetailResource(unit, 0, deductionOnOtherCharges);
-		UnitPriceDetailResource priceWithDiscount = ResourceUtil.getUnitPriceDetailResource(unit, bookingDiscount, deductionOnOtherCharges);
+		UnitPriceDetailResource priceWithoutDiscount = ResourceUtil.getUnitPriceDetailResource(unit, 0, deductionOnOtherCharges, parkingTypeReadyReckoner);
+		UnitPriceDetailResource priceWithDiscount = ResourceUtil.getUnitPriceDetailResource(unit, bookingDiscount, deductionOnOtherCharges, parkingTypeReadyReckoner);
 		
 		double totalPaymentReceived = getTotalPaymentReceivedForBooking(unitbooking);
 		double balancePayment = priceWithDiscount.getTotalCost() - totalPaymentReceived;
@@ -452,9 +453,9 @@ public class ResourceUtil {
 			}
 		}
 		
-		
+		double landRate = (unitPricePolicy.getLandrate() == null) ? 0 : unitPricePolicy.getLandrate();
 		return new UnitPricePolicyResource(unitPricePolicy.getUnitpricepolicyid(), unitPricePolicy.getPolicyname(), 
-				unitPricePolicy.getBaserate(), unitPricePolicy.getReadyreckonerrate(), unitPricePolicy.getStampduty(), 
+				unitPricePolicy.getBaserate(), unitPricePolicy.getReadyreckonerrate(), landRate, unitPricePolicy.getStampduty(), 
 				unitPricePolicy.getRegistrationcharge(), unitPricePolicy.getServicetax(), unitPricePolicy.getValueaddedtax(), totalTax, 
 				unitPricePolicy.getMaintenancecharge1(), maintenancecharge1duration, unitPricePolicy.getMaintenancecharge2(), 
 				unitPricePolicy.getLegalcharge(), assignedToProjects.toString(), amenityCharges);
@@ -598,22 +599,25 @@ public class ResourceUtil {
 				convertDateToString(enquirycomment.getVisitdate()), convertDateToString(enquirycomment.getFollowupdate()));
 	}
 	
-	public static UnitPriceDetailResource getUnitPriceDetailResource(Unitmaster unit, double discount, double deductionOnOtherCharges)  throws SQLException, IOException {
+	public static UnitPriceDetailResource getUnitPriceDetailResource(Unitmaster unit, double discount, 
+			double deductionOnOtherCharges, int parkingTypeReadyReckoner)  throws SQLException, IOException {
 		String displayProjectInfo = getProjectDisplayName(unit);
 		Unitpricepolicy unitpricepolicy = unit.getUnitpricepolicy();
 		
 		double floorRise = (unit.getFloorrise() == null) ? 0 : unit.getFloorrise();
+		double parkingArea = (unit.getParkingarea() == null) ? 100 : unit.getParkingarea();
 		if (unitpricepolicy != null) {
 			double amenityCharges = getAmenityCharges(unit, unitpricepolicy);
 			double baseRate = unitpricepolicy.getBaserate();
 			double readyreckonerrate = unitpricepolicy.getReadyreckonerrate();
+			double landrate = (unitpricepolicy.getLandrate() == null) ? 0 : unitpricepolicy.getLandrate();
 			double totalRate = baseRate + floorRise + amenityCharges - discount; 
 			double basicCost = totalRate*unit.getSaleablearea();
 			double otherCharges = unit.getOthercharges() - deductionOnOtherCharges;
-			
+			double parkingChargesReadyReckoner = getParkingChargesReadyReckoner(readyreckonerrate, landrate, parkingArea, parkingTypeReadyReckoner);
 			double basicCostReadyReckoner = getBasicCostUsingReadyReckonerRate(readyreckonerrate, unit.getCarpetarea(), unit.getCarpetareaforterrace());
 			double agreementValueBaseRate = getAgreementValueUsingBaseRate(totalRate, unit.getSaleablearea(), otherCharges);
-			double agreementValueReadyReckoner = getAgreementValueUsingReadyReckonerRate(basicCostReadyReckoner, unit.getFloornumber(), otherCharges);
+			double agreementValueReadyReckoner = getAgreementValueUsingReadyReckonerRate(basicCostReadyReckoner, unit.getFloornumber(), parkingChargesReadyReckoner);
 			double agreementValue = (agreementValueBaseRate >= agreementValueReadyReckoner) ? agreementValueBaseRate : agreementValueReadyReckoner;
 			
 			int maintenancecharge1duration = (unitpricepolicy.getMaintenancecharge1duration() == null) ? 1 : unitpricepolicy.getMaintenancecharge1duration();
@@ -627,12 +631,12 @@ public class ResourceUtil {
 			if (registrationCharge > MAX_REGISTRATION_CHARGE) {
 				registrationCharge = MAX_REGISTRATION_CHARGE;
 			}
-			double serviceTax = (unitpricepolicy.getServicetax()*agreementValue)/100;
+			double serviceTax = (unitpricepolicy.getServicetax()*agreementValueBaseRate)/100;
 			double valueAddedtax = (unitpricepolicy.getValueaddedtax()*agreementValue)/100;
 			
 			double totalTax = stampDuty + registrationCharge + serviceTax + valueAddedtax;
 			double totalCostWithTax = agreementValueBaseRate + totalTax + logalCharge;
-			double totalCostWithTaxReadyReckoner = agreementValueReadyReckoner + totalTax + logalCharge;
+			double totalCostWithTaxReadyReckoner = agreementValueReadyReckoner + totalTax;
 			
 			double totalCost = totalCostWithTax + totalCharges;
 			double totalCostReadyReckoner = totalCostWithTaxReadyReckoner + totalCharges;
@@ -1180,15 +1184,18 @@ public class ResourceUtil {
 	 }
 	 
 	 public static void saveUnitPriceInformation(Unitmaster unit, Unitpricepolicy unitpricepolicy, 
-			 double floorRise, double discount, double deductionOnOtherCharges) throws SQLException {
+			 double floorRise, double discount, double deductionOnOtherCharges, int parkingTypeReadyReckoner) throws SQLException {
+		double parkingArea = (unit.getParkingarea() == null) ? 100 : unit.getParkingarea();
 		double amenityCharges = getAmenityCharges(unit, unitpricepolicy);
 		double baseRate = unitpricepolicy.getBaserate();
 		double readyReckonerRate = unitpricepolicy.getReadyreckonerrate(); 
 		double otherCharges = unit.getOthercharges() - deductionOnOtherCharges;
 		double totalRate = baseRate + floorRise + amenityCharges - discount; 
+		double landrate = (unitpricepolicy.getLandrate() == null) ? 0 : unitpricepolicy.getLandrate();
+		double parkingChargesReadyReckoner = getParkingChargesReadyReckoner(readyReckonerRate, landrate, parkingArea, parkingTypeReadyReckoner);
 		double basicCostReadyReckoner = getBasicCostUsingReadyReckonerRate(readyReckonerRate, unit.getCarpetarea(), unit.getCarpetareaforterrace());
 		double agreementValueBaseRate = getAgreementValueUsingBaseRate(totalRate, unit.getSaleablearea(), otherCharges);
-		double agreementValueReadyReckoner = getAgreementValueUsingReadyReckonerRate(basicCostReadyReckoner, unit.getFloornumber(), otherCharges);
+		double agreementValueReadyReckoner = getAgreementValueUsingReadyReckonerRate(basicCostReadyReckoner, unit.getFloornumber(), parkingChargesReadyReckoner);
 		double agreementValue = (agreementValueBaseRate >= agreementValueReadyReckoner) ? agreementValueBaseRate : agreementValueReadyReckoner;
 		
 		int maintenancecharge1duration = (unitpricepolicy.getMaintenancecharge1duration() == null) ? 1 : unitpricepolicy.getMaintenancecharge1duration();
@@ -1202,11 +1209,11 @@ public class ResourceUtil {
 		if (registrationCharge > MAX_REGISTRATION_CHARGE) {
 			registrationCharge = MAX_REGISTRATION_CHARGE;
 		}
-		double serviceTax = (unitpricepolicy.getServicetax()*agreementValue)/100;
+		double serviceTax = (unitpricepolicy.getServicetax()*agreementValueBaseRate)/100;
 		double valueAddedtax = (unitpricepolicy.getValueaddedtax()*agreementValue)/100;
 		double totalTax = stampDuty + registrationCharge + serviceTax + valueAddedtax;
 		double totalCostWithTax = agreementValueBaseRate + totalTax + logalCharge;
-		double totalCostWithTaxReadyReckoner = agreementValueReadyReckoner + totalTax + logalCharge;
+		double totalCostWithTaxReadyReckoner = agreementValueReadyReckoner + totalTax;
 		
 		double totalCost = totalCostWithTax + totalCharges;
 		double totalCostReadyReckoner = totalCostWithTaxReadyReckoner + totalCharges;
@@ -1225,15 +1232,27 @@ public class ResourceUtil {
 		 return saleableArea*totalRate + otherCharges;
 	 }
 	 
+	 public static double getParkingChargesReadyReckoner(double readyreckonerrate, double landrate, double parkingArea, int parkingTypeReadyReckoner) {
+		 double parkingChargesReadyReckoner = 0;
+		 if (parkingTypeReadyReckoner == 1) {
+			 parkingChargesReadyReckoner = (0.4*parkingArea)*(landrate/10.764);
+		 } if (parkingTypeReadyReckoner == 2) {
+			 parkingChargesReadyReckoner = (0.25*parkingArea)*(readyreckonerrate/10.764);
+		 }
+		 
+		 return parkingChargesReadyReckoner;
+	 }
+	 
 	 public static double getBasicCostUsingReadyReckonerRate(double readyReckonerRate, long carpetArea,  
 			 long carpetAreaForTerrace) throws SQLException {
 		 double saleableAreaReadyReckoner = ((carpetArea + 0.4*carpetAreaForTerrace)*1.2)/10.764;
-		 double basicCostReadyReckoner = readyReckonerRate*saleableAreaReadyReckoner;
+		 double basicCostReadyReckoner = Math.round(readyReckonerRate*saleableAreaReadyReckoner*100)/100D;
 		 
 		 return basicCostReadyReckoner;
 	 }
 	 
-	 public static double getAgreementValueUsingReadyReckonerRate(double basicCostReadyReckoner, int floorNumber, double otherCharges) throws SQLException {
+	 public static double getAgreementValueUsingReadyReckonerRate(double basicCostReadyReckoner, int floorNumber,
+			 double parkingChargesReadyReckoner) throws SQLException {
 		 double agreementValue = basicCostReadyReckoner;
 		 
 		 if (floorNumber > 5 && floorNumber <= 10) {
@@ -1244,7 +1263,7 @@ public class ResourceUtil {
 			 agreementValue += agreementValue*0.15;
 		 }
 		 
-		 return agreementValue + otherCharges;
+		 return agreementValue + parkingChargesReadyReckoner;
 	 }
 	 
 	 public static void saveUnitPaymentSchedule(MultivaluedMap<String, String> formData, String typeFieldName, 

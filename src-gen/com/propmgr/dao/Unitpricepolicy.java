@@ -1,6 +1,6 @@
 package com.propmgr.dao;
 
-// Generated Jun 23, 2015 11:52:03 PM by Hibernate Tools 3.4.0.CR1
+// Generated Jul 1, 2015 11:15:39 PM by Hibernate Tools 3.4.0.CR1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -22,6 +22,7 @@ public class Unitpricepolicy implements java.io.Serializable {
 	private double maintenancecharge2;
 	private double legalcharge;
 	private Integer maintenancecharge1duration;
+	private Double landrate;
 	private Set unitmasters = new HashSet(0);
 	private Set amenitypricepolicies = new HashSet(0);
 
@@ -50,7 +51,7 @@ public class Unitpricepolicy implements java.io.Serializable {
 			double registrationcharge, double servicetax, double valueaddedtax,
 			double maintenancecharge1, double maintenancecharge2,
 			double legalcharge, Integer maintenancecharge1duration,
-			Set unitmasters, Set amenitypricepolicies) {
+			Double landrate, Set unitmasters, Set amenitypricepolicies) {
 		this.policyname = policyname;
 		this.baserate = baserate;
 		this.readyreckonerrate = readyreckonerrate;
@@ -62,6 +63,7 @@ public class Unitpricepolicy implements java.io.Serializable {
 		this.maintenancecharge2 = maintenancecharge2;
 		this.legalcharge = legalcharge;
 		this.maintenancecharge1duration = maintenancecharge1duration;
+		this.landrate = landrate;
 		this.unitmasters = unitmasters;
 		this.amenitypricepolicies = amenitypricepolicies;
 	}
@@ -160,6 +162,14 @@ public class Unitpricepolicy implements java.io.Serializable {
 
 	public void setMaintenancecharge1duration(Integer maintenancecharge1duration) {
 		this.maintenancecharge1duration = maintenancecharge1duration;
+	}
+
+	public Double getLandrate() {
+		return this.landrate;
+	}
+
+	public void setLandrate(Double landrate) {
+		this.landrate = landrate;
 	}
 
 	public Set getUnitmasters() {

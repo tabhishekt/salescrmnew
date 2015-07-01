@@ -656,9 +656,6 @@ public class CodeTableService {
 	    return Response.ok().build();
 	}
 	
-	
-/** Addition By Abhishek for new code table for unit classifiaction **/
-	
 	@GET
 	@Path("/unitclassification/get/all")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -745,8 +742,6 @@ public class CodeTableService {
 	    return Response.ok().build();
 	}
 	
-	/** Addition by Abhishek ends *********/
-	
 	@GET
 	@Path("/parkingtype/get/all")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -778,6 +773,21 @@ public class CodeTableService {
 		}
 
 	    return Response.ok(result).build();
+	}
+	
+	@GET
+	@Path("/parkingtype/get/market")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAllParkingTypesForMarket() {
+		List<CodeTableResource> result = new ArrayList<CodeTableResource>();
+		
+		result.add(new CodeTableResource(0, "NOPAR", "No Parking"));
+		result.add(new CodeTableResource(1, "OPNPAR", "Open Parking"));
+		result.add(new CodeTableResource(2, "COVPAR", "Covered Parking"));
+		
+		int size = result.size();
+		
+	    return Response.ok(result).header("Content-Range", "items 0-" + (size - 1) + "/" + size).build();
 	}
 	
 	@DELETE

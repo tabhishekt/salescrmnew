@@ -1,6 +1,6 @@
 package com.propmgr.dao;
 
-// Generated Jun 23, 2015 11:52:03 PM by Hibernate Tools 3.4.0.CR1
+// Generated Jul 1, 2015 11:15:39 PM by Hibernate Tools 3.4.0.CR1
 
 import java.sql.Clob;
 import java.util.Date;
@@ -28,6 +28,7 @@ public class Unitbooking implements java.io.Serializable {
 	private Date cancellationdate;
 	private Clob cancellationcomment;
 	private Clob unitmodificationdetails;
+	private Integer parkingtype;
 	private Set refundmasters = new HashSet(0);
 	private Set unitmodificationstatuses = new HashSet(0);
 	private Set paymentmasters = new HashSet(0);
@@ -52,7 +53,8 @@ public class Unitbooking implements java.io.Serializable {
 			Double deductiononothercharges, Clob bookingcomment,
 			Boolean iscancelled, Double canceldeduction, Date cancellationdate,
 			Clob cancellationcomment, Clob unitmodificationdetails,
-			Set refundmasters, Set unitmodificationstatuses, Set paymentmasters) {
+			Integer parkingtype, Set refundmasters,
+			Set unitmodificationstatuses, Set paymentmasters) {
 		this.usermasterByBookedby = usermasterByBookedby;
 		this.usermasterByCancelledby = usermasterByCancelledby;
 		this.parkingmaster = parkingmaster;
@@ -68,6 +70,7 @@ public class Unitbooking implements java.io.Serializable {
 		this.cancellationdate = cancellationdate;
 		this.cancellationcomment = cancellationcomment;
 		this.unitmodificationdetails = unitmodificationdetails;
+		this.parkingtype = parkingtype;
 		this.refundmasters = refundmasters;
 		this.unitmodificationstatuses = unitmodificationstatuses;
 		this.paymentmasters = paymentmasters;
@@ -199,6 +202,14 @@ public class Unitbooking implements java.io.Serializable {
 
 	public void setUnitmodificationdetails(Clob unitmodificationdetails) {
 		this.unitmodificationdetails = unitmodificationdetails;
+	}
+
+	public Integer getParkingtype() {
+		return this.parkingtype;
+	}
+
+	public void setParkingtype(Integer parkingtype) {
+		this.parkingtype = parkingtype;
 	}
 
 	public Set getRefundmasters() {

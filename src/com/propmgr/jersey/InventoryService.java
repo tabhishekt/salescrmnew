@@ -977,6 +977,7 @@ public class InventoryService {
 		UnitPriceDetailResource result = null;
 		UnitbookingDAO unitbookingDAO = new UnitbookingDAO();
 		double bookingDiscount = 0.0;
+		int parkingTypeReadyReckoner = 0;
 		
 		try {
 			HibernateConnection.getSession().clear();
@@ -988,9 +989,10 @@ public class InventoryService {
 					Unitbooking unitbooking = unitbookingDAO.findByUnit(unit);
 					if (unitbooking != null) {
 						bookingDiscount = unitbooking.getBookingdiscount();
+						parkingTypeReadyReckoner = unitbooking.getParkingtype();
 					}
 				}
-				result = ResourceUtil.getUnitPriceDetailResource(unit, bookingDiscount, Double.parseDouble(deductiononothercharges));
+				result = ResourceUtil.getUnitPriceDetailResource(unit, bookingDiscount, Double.parseDouble(deductiononothercharges), parkingTypeReadyReckoner);
 			} else {
 				return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
 			}
@@ -1014,7 +1016,7 @@ public class InventoryService {
 			Unitmaster unit = unitmasterDAO.findById(Long.parseLong(rowId));
 			if (unit != null) {
 				Projectbuilding projectbuilding = unit.getProjectbuilding();
-				UnitPriceDetailResource priceDetails = ResourceUtil.getUnitPriceDetailResource(unit, 0, 0);
+				UnitPriceDetailResource priceDetails = ResourceUtil.getUnitPriceDetailResource(unit, 0, 0, 0);
 				Set<Unitpaymentschedule> paymentSchedules = projectbuilding.getUnitpaymentschedules();
 				Set<UnitPaymentScheduleResource> scheduleList = new TreeSet<UnitPaymentScheduleResource>(new ScheduleComp());
 				double totalCost = (unit.getTotalcost() == null) ? 0 : unit.getTotalcost();
@@ -1076,7 +1078,7 @@ public class InventoryService {
 				double unitFloorRise = (unit.getFloorrise() == null) ? 0 : unit.getFloorrise();
 				if (unitpricepolicy != null && floorRise != unitFloorRise) {
 					updateMade = true;
-					ResourceUtil.saveUnitPriceInformation(unit, unitpricepolicy, floorRise, 0, 0);
+					ResourceUtil.saveUnitPriceInformation(unit, unitpricepolicy, floorRise, 0, 0, 0);
 					unit.setFloorrise(floorRise);
 					unitmasterDAO.save(unit);
 				} 
@@ -1156,7 +1158,7 @@ public class InventoryService {
 			for (Unitmaster unit : units) {
 				unit.setUnitpricepolicy(unitpricepolicy);
 				double floorRise = (unit.getFloorrise() == null) ? 0 : unit.getFloorrise();
-				ResourceUtil.saveUnitPriceInformation(unit, unitpricepolicy, floorRise, 0, 0);
+				ResourceUtil.saveUnitPriceInformation(unit, unitpricepolicy, floorRise, 0, 0, 0);
 				unitmasterDAO.save(unit);
 			}
 			
@@ -1302,6 +1304,7 @@ public class InventoryService {
 			unitPricePolicy.setPolicyname(policyName);
 			unitPricePolicy.setBaserate(ResourceUtil.getFormDataValueAsDouble(formData, "baserate"));
 			unitPricePolicy.setReadyreckonerrate(ResourceUtil.getFormDataValueAsDouble(formData, "readyreckonerrate"));
+			unitPricePolicy.setLandrate(ResourceUtil.getFormDataValueAsDouble(formData, "landrate"));
 			
 			unitPricePolicy.setServicetax(ResourceUtil.getFormDataValueAsDouble(formData, "servicetax"));
 			unitPricePolicy.setValueaddedtax(ResourceUtil.getFormDataValueAsDouble(formData, "valueaddedtax"));
@@ -1564,10 +1567,12 @@ public class InventoryService {
 					Set<Unitpaymentschedule> paymentSchedules = projectbuilding.getUnitpaymentschedules();
 					Usermaster user = unitbooking.getUsermasterByBookedby();
 					double bookingDiscount = (unitbooking.getBookingdiscount() == null) ? 0 : unitbooking.getBookingdiscount();
+					int parkingTypeReadyReckoner = (unitbooking.getParkingtype() == null) ? 0 : unitbooking.getParkingtype();
 					double deductionOnOtherCharges = (unitbooking.getDeductiononothercharges() == null) ? 0 : unitbooking.getDeductiononothercharges();
 					double agreementValue = (unit.getAgreementvalue() == null) ? 0 : unit.getAgreementvalue();
 					double bookingAmount =  (unit.getBookingamount() == null) ? 0.0 : unit.getBookingamount();
-					UnitPriceDetailResource priceWithDiscount = ResourceUtil.getUnitPriceDetailResource(unit, bookingDiscount, deductionOnOtherCharges);
+					UnitPriceDetailResource priceWithDiscount = ResourceUtil.getUnitPriceDetailResource(unit, bookingDiscount, 
+							deductionOnOtherCharges, parkingTypeReadyReckoner);
 					CodeTableResource buildingCurrentStatus = ResourceUtil.getBuildingCurrentStatus(projectbuilding);
 					String displayProjectInfo = ResourceUtil.getProjectDisplayName(unit);
 					
@@ -1697,6 +1702,7 @@ public class InventoryService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response createBooking(MultivaluedMap<String, String> formData) {
 		UnitbookingDAO unitbookingDAO = new UnitbookingDAO();
+		UnitmasterDAO unitmasterDAO = new UnitmasterDAO();
 		Unitbooking unitbooking = new Unitbooking();
 		UnitBookingResource result = null;
 		ParkingmasterDAO parkingmasterDAO = new ParkingmasterDAO();
@@ -1707,7 +1713,6 @@ public class InventoryService {
 			Usermaster user = ResourceUtil.getBookingUserPOJO(formData);
 			Customermaster customer = ResourceUtil.getCustomerPOJO(formData);
 			Parkingtype parkingType = ResourceUtil.getParkingtypePOJO(formData);
-			
 			Unitbooking existingBooking = unitbookingDAO.findByUnit(unit);
 			if (existingBooking != null) {
 				String errorMessage = "Unit " + ResourceUtil.getUnitDisplayName(unit)
@@ -1747,6 +1752,8 @@ public class InventoryService {
 			unitbooking.setCustomermaster(customer);
 			unitbooking.setUsermasterByBookedby(user);
 			unitbooking.setParkingmaster(parkingmaster);
+			int parkingTypeReadyReckoner = ResourceUtil.getFormDataValueAsInt(formData, "parkingtypeformarketvalue");
+			unitbooking.setParkingtype(parkingTypeReadyReckoner);
 			unitbooking.setBookingcomment(ResourceUtil.getFormDataValueAsClob(formData, "comment"));
 			double discount = ResourceUtil.getFormDataValueAsDouble(formData, "discount");
 			double deductionOnOtherCharges = ResourceUtil.getFormDataValueAsDouble(formData, "deductiononothercharges");
@@ -1757,8 +1764,15 @@ public class InventoryService {
 			
 			// Prices may have been modified due to discount and deductionOnOtherCharges
 			double floorRise = (unit.getFloorrise() == null) ? 0 : unit.getFloorrise();
-			ResourceUtil.saveUnitPriceInformation(unit, unit.getUnitpricepolicy(), floorRise, discount, deductionOnOtherCharges);
+			ResourceUtil.saveUnitPriceInformation(unit, unit.getUnitpricepolicy(), floorRise, discount, deductionOnOtherCharges, parkingTypeReadyReckoner);
+			String parkingArea = ResourceUtil.getFormDataValue(formData, "parkingarea");
 			
+			if (parkingArea != null && !parkingArea.isEmpty()) {
+				unit.setParkingarea(Double.parseDouble(parkingArea));
+			} else {
+				unit.setParkingarea(100.0);
+			}
+			unitmasterDAO.save(unit);
 			unitbookingDAO.flushSession();
 			
 			result = ResourceUtil.getUnitbookingFromDAO(unitbooking);

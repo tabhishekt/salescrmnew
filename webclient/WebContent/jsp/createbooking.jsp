@@ -39,6 +39,7 @@
             	this.createUnitGrid();
             	this.createCustomerGrid();
             	this.setDataToDropdown('../rest/json/data/codetable/parkingtype/get/all', registry.byId("parkingtype"));
+            	this.setDataToDropdown('../rest/json/data/codetable/parkingtype/get/market', registry.byId("parkingtypeformarketvalue"));
             	
             	on(registry.byId("createbookingForm"), "submit", lang.hitch(this,"onSubmit"));
             	on(registry.byId("showdiscountprice"), "click", lang.hitch(this,"onShowDiscountPrice"));  
@@ -315,6 +316,7 @@
 </head>
 <body class="claro">
 <div class="messageSpanSuccess"><span id="messageSpanNode"></span></div>
+<div id="backLinkDiv" align="right"><a href="javascript:history.back()">Go Back</a></div>
 <fieldset style="width: 95%;">
 	 	<legend id="unitGridLegend"></legend>
 	 	<br>
@@ -362,10 +364,18 @@
 									</table>
 								</td><td>
 									<table>
-										<tr><td><label for="comment">Comment:</label></td></tr>
-										<tr><td><textarea id="comment" name="comment"
-										data-dojo-type="dijit/form/SimpleTextarea" rows="3"></textarea></td>
-										</tr>
+										<tr><td><label for="parkingtypeformarketvalue">Parking Type (For Market Value):</label></td></tr>
+										<tr><td><select id="parkingtypeformarketvalue" name="parkingtypeformarketvalue"
+										data-dojo-type="dijit/form/FilteringSelect" 
+										data-dojo-attach-point='parkingtypeformarketvalue'
+										data-dojo-props="required:true"></select></td></tr>
+									</table>
+								</td><td>
+									<table>
+										<tr><td><label for="parkingarea">Parking Area:</label></td></tr>
+										<tr><td><input id="parkingarea" name="parkingarea"
+												data-dojo-type='dijit/form/TextBox'
+												type="text" /></td></tr>
 									</table>
 								</td></tr>
 								<tr><td>
@@ -374,6 +384,13 @@
 										<tr><td><input id="bookingdate" name="bookingdate"
 												data-dojo-type='dijit/form/DateTextBox'
 												type="text" /></td></tr>
+									</table>
+								</td><td>
+									<table>
+										<tr><td><label for="comment">Comment:</label></td></tr>
+										<tr><td><textarea id="comment" name="comment"
+										data-dojo-type="dijit/form/SimpleTextarea" rows="3"></textarea></td>
+										</tr>
 									</table>
 								</td></tr>
 							</table>

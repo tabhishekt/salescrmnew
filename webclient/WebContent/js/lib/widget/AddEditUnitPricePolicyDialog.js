@@ -13,6 +13,7 @@ define([
 			this.policyname.set("value", data.policyName);
 			this.baserate.set("value", data.baserate);
 			this.readyreckonerrate.set("value", data.readyreckonerrate);
+			this.landrate.set("value", data.landrate);
 			this.stampduty.set("value", data.stampduty);
 			this.registrationcharge.set("value", data.registrationcharge);
 			this.servicetax.set("value", data.servicetax);

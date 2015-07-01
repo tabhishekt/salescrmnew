@@ -26,17 +26,6 @@
 												data-dojo-props="required:true"
 												type="text" /></td></tr>
 									</table>
-								</td></tr>
-								<tr><td>
-									<table>
-										<tr><td><label for="readyreckonerrate">Ready Reckoner Rate:</label></td></tr>
-										<tr><td>Rs per sq. meter</td></tr>
-										<tr><td><input id="readyreckonerrate" name="readyreckonerrate"
-												data-dojo-type='dijit/form/ValidationTextBox'
-												data-dojo-attach-point='readyreckonerrate'
-												data-dojo-props="required:true, regExp:'^[0-9]([0-9]{1,4})?(\.[1-9])?$', invalidMessage:'Enter valid decimal value upto 99999.9'"
-												type="text" /></td></tr>
-									</table>
 								</td><td>
 									<table>
 										<tr><td><label for="baserate">Base Rate:</label></td></tr>
@@ -45,6 +34,27 @@
 												data-dojo-type='dijit/form/ValidationTextBox'
 												data-dojo-attach-point='baserate'
 												data-dojo-props="required:true, regExp:'^[0-9]([0-9]{1,4})?(\.[1-9])?$', invalidMessage:'Enter valid decimal value upto 99999.9'"
+												type="text" /></td></tr>
+									</table>
+								</td></tr>
+								<tr><td>
+									<table>
+										<tr><td><label for="readyreckonerrate">Ready Reckoner Rate:</label></td></tr>
+										<tr><td>Rs per sq. meter</td></tr>
+										<tr><td><input id="readyreckonerrate" name="readyreckonerrate"
+												data-dojo-type='dijit/form/ValidationTextBox'
+												data-dojo-attach-point='readyreckonerrate'
+												data-dojo-props="required:true, regExp:'^[0-9]([0-9]{1,6})?(\.[1-9])?$', invalidMessage:'Enter valid decimal value upto 9999999.9'"
+												type="text" /></td></tr>
+									</table>
+								</td><td>
+									<table>
+										<tr><td><label for="landrate">Land Rate:</label></td></tr>
+										<tr><td>Rs per sq. meter</td></tr>
+										<tr><td><input id="landrate" name="landrate"
+												data-dojo-type='dijit/form/ValidationTextBox'
+												data-dojo-attach-point='landrate'
+												data-dojo-props="required:true, regExp:'^[0-9]([0-9]{1,6})?(\.[1-9])?$', invalidMessage:'Enter valid decimal value upto 9999999.9'"
 												type="text" /></td></tr>
 									</table>
 								</td></tr>
