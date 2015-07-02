@@ -16,7 +16,8 @@
 <script type="text/javascript" src="../js/common.js"></script>
 <script type="text/javascript" src="../js/dojo_1.10.2/dojo/dojo.js"></script>
 <script>
-    require(["dojo/_base/lang",
+    require(["dojo/ready", 
+             "dojo/_base/lang",
              "dijit/registry",
              "dojo/on",
              "dojo/request", 
@@ -24,8 +25,14 @@
              "dojo/date/locale",
              "dojo/dom-construct",
 			 "dojo/domReady!"],
-        function(lang, registry, on, request, currency, locale, domConstruct) {
+        function(ready, lang, registry, on, request, currency, locale, domConstruct) {
+	    	ready(function() {
+	    		this.readUserDataFromSession();
+	    		this.load();
+			});
+	    	
             load = function () {
+            	readUserDataFromSession();
             	this.unitbookingId = this.getQueryVariable("unitbookingId");
             	var promise = request.get("../rest/json/data/inventory/unitbooking/get/print?rowId=" + this.unitbookingId, {
        				timeout: 2000,
@@ -146,11 +153,11 @@
             	this.totaltaxrr.innerHTML = this.formatCurrency(data.priceDetails.totalTax);
             	this.maintenance1rr.innerHTML = this.formatCurrency(data.unit.unitPricePolicy.maintenancecharge1) + " /sq ft";
             	this.maintenance1amtrr.innerHTML = this.formatCurrency(data.priceDetails.maintenancecharge1);
-            	this.otherchargesrr.innerHTML = this.formatCurrency(data.unit.otherCharges);
+            	this.floreriseandparking.innerHTML = this.formatCurrency(data.priceDetails.agreementvalueReadyReckoner - data.priceDetails.basicCostReadyReckoner);
             	this.legalchargesrr.innerHTML = this.formatCurrency(data.priceDetails.legalcharge);
             	this.maintenance2rr.innerHTML = this.formatCurrency(data.unit.unitPricePolicy.maintenancecharge2) + " /sq ft";
             	this.maintenance2amtrr.innerHTML = this.formatCurrency(data.priceDetails.maintenancecharge2);
-            	this.agreementvaluerr.innerHTML = this.formatCurrency(data.priceDetails.agreementvalueReadyReckoner);
+            	this.marketvalue.innerHTML = this.formatCurrency(data.priceDetails.agreementvalueReadyReckoner);
             	this.totalwithtaxrr.innerHTML = this.formatCurrency(data.priceDetails.totalCostWithTaxReadyReckoner);
             	this.totalcostrr.innerHTML = this.formatCurrency(data.priceDetails.totalCostReadyReckoner);
             	this.builderaccountinformationrr.innerHTML = data.projectBankAccounts["BLDRAC"];
@@ -595,16 +602,16 @@
 			<td><span id="maintenance1amtrr" data-dojo-attach-point="maintenance1amtrr"></span></td>
 			<td><span id="maintenance1rr" data-dojo-attach-point="maintenance1rr"></span></td><tr>
 
-			<tr><td><span>Other Charges</span></td>
-			<td><span id="otherchargesrr" data-dojo-attach-point="otherchargesrr"></span></td>
+			<tr><td><span>Floor Rise and Parking</span></td>
+			<td><span id="floreriseandparking" data-dojo-attach-point="floreriseandparking"></span></td>
 			<td><span>Legal Charges</span></td>
 			<td><span id="legalchargesrr" data-dojo-attach-point="legalchargesrr"></span></td>
 			<td><span>Maintenance 2</span></td>
 			<td><span id="maintenance2amtrr" data-dojo-attach-point="maintenance2amtrr"></span></td>
 			<td><span id="maintenance2rr" data-dojo-attach-point="maintenance2rr"></span></td><tr>
 			
-			<tr><td><span>Agrmnt Value</span></td>
-			<td><span id="agreementvaluerr" data-dojo-attach-point="agreementvaluerr"></span></td>
+			<tr><td><span>Market Value</span></td>
+			<td><span id="marketvalue" data-dojo-attach-point="marketvalue"></span></td>
 			<td><span>Total with Tax</span></td>
 			<td><span id="totalwithtaxrr" data-dojo-attach-point="totalwithtaxrr"></span></td>
 			<td><span>Total Cost</span></td>

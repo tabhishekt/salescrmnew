@@ -17,19 +17,25 @@
 <script type="text/javascript" src="../js/dojo_1.10.2/dojo/dojo.js"></script>
 
 <script>
-    require(["dojo/_base/lang", "dijit/registry", "dojo/request", 
+    require(["dojo/ready", "dojo/_base/lang", "dijit/registry", "dojo/request", 
             "dijit/layout/BorderContainer", "dijit/layout/TabContainer", "dijit/layout/ContentPane", 
             "dijit/layout/AccordionContainer", "dojo/on", "dojo/Deferred", 
             "lib/DialogHandler", "dojo/dom", "dojo/dom-construct", "dojo/domReady!"],
-        function(lang, registry, request, BorderContainer, TabContainer, ContentPane, 
+        function(ready, lang, registry, request, BorderContainer, TabContainer, ContentPane, 
         		AccordionContainer, on, Deferred, DialogHandler, dom, domConstruct) {
     		var dialogHandler = new DialogHandler();
+    		
+    		ready(function() {
+	    		this.readUserDataFromSession();
+	    		this.load();
+			});
     		
             load = function () {
             	var browser=get_browser_info();
             	if (browser.name != 'Chrome' && browser.name != 'Firefox') {
             		alert("This application is currently supported only on Chrome browser.")
             	} else {
+            		readUserDataFromSession();
             		createLayout();	
             	}
             };
@@ -234,7 +240,6 @@
             	bannerHTML += "</tr></table></div>";
             	return bannerHTML;
             };
-            
         });
 </script>
 </head>

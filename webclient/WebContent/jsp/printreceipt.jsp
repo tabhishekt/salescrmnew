@@ -16,7 +16,8 @@
 <script type="text/javascript" src="../js/common.js"></script>
 <script type="text/javascript" src="../js/dojo_1.10.2/dojo/dojo.js"></script>
 <script>
-    require(["dojo/_base/lang",
+    require(["dojo/ready", 
+             "dojo/_base/lang",
              "dijit/registry",
              "dojo/on",
              "dojo/request",
@@ -25,8 +26,14 @@
              "dojo/date/locale",
              "dojo/dom-construct",
 			 "dojo/domReady!"],
-        function(lang, registry, on, request, domConstruct, currency, locale, domConstruct) {
+        function(ready, lang, registry, on, request, domConstruct, currency, locale, domConstruct) {
+	    	ready(function() {
+	    		this.readUserDataFromSession();
+	    		this.load();
+			});
+	    	
             load = function () {
+            	readUserDataFromSession();
             	this.paymentId = this.getQueryVariable("paymentId");
             	var promise = request.get("../rest/json/data/inventory/payment/get/print?rowId=" + this.paymentId, {
        				timeout: 2000,

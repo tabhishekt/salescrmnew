@@ -115,18 +115,18 @@ public class CustomermasterDAO extends SuperDAO {
 		List<Customermaster> resultList = null;
 		
 		try {
-			String queryString = "from Customermaster u where lower(u.person.firstname) = lower('" + firstName + "')" +
-					" and lower(u.person.middlename) = lower('" + middleName + "') and lower(u.person.lastname) = lower('" + lastName + "')";
+			String queryString = "from Customermaster u where lower(u.personByPersondetail.firstname) = lower('" + firstName + "')" +
+					" and lower(u.personByPersondetail.middlename) = lower('" + middleName + "') and lower(u.personByPersondetail.lastname) = lower('" + lastName + "')";
 			
 			if (emailID != null && emailID.length() > 0) {
-				queryString += " and u.person.contactinfo.emailid = '" + emailID + "'";
+				queryString += " and u.personByPersondetail.contactinfo.emailid = '" + emailID + "'";
 			}
 			
 			if (phoneNumber != null && phoneNumber.length() > 0) {
-				queryString += " and u.person.contactinfo.phonenumber = '" + phoneNumber + "'";
+				queryString += " and u.personByPersondetail.contactinfo.phonenumber = '" + phoneNumber + "'";
 			} else { 
 				if (mobileNumber != null && mobileNumber.length() > 0) {
-					queryString += " and u.person.contactinfo.mobilenumber = '" + mobileNumber + "'";
+					queryString += " and u.personByPersondetail.contactinfo.mobilenumber = '" + mobileNumber + "'";
 				}
 			}
 			

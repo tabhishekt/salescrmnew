@@ -170,8 +170,10 @@ public class PersonService {
 			ResourceUtil.savePerson(formData, person, personContactinfo);
 			customer.setPersonByPersondetail(person);
 			
-			ResourceUtil.savePerson1(formData, coOwner, coOwnerContactinfo);
-			customer.setPersonByCoownerdetail(coOwner);
+			if (ResourceUtil.getFormDataValue(formData, "firstname1") != null) {
+				ResourceUtil.savePerson1(formData, coOwner, coOwnerContactinfo);
+				customer.setPersonByCoownerdetail(coOwner);
+			}
 			
 			customermasterDAO.save(customer);
 			customermasterDAO.flushSession();

@@ -18,7 +18,8 @@
 <script type="text/javascript" src="../js/common.js"></script>
 <script type="text/javascript" src="../js/dojo_1.10.2/dojo/dojo.js"></script>
 <script>
-    require(["dojo/_base/lang",
+    require(["dojo/ready",
+             "dojo/_base/lang",
              "dijit/registry",
              "dojo/currency",
              "dojo/on",
@@ -32,8 +33,14 @@
 			 'lib/widget/AddEditCustomerDialog', 
 		     "dijit/form/Button",
 			 "dojo/domReady!"],
-        function(lang, registry, currency, on, domForm, request, Deferred, JsonRest, Memory, DialogHandler, GridHandler, AddEditCustomerDialog, Button) {
+        function(ready, lang, registry, currency, on, domForm, request, Deferred, JsonRest, Memory, DialogHandler, GridHandler, AddEditCustomerDialog, Button) {
+	    	ready(function() {
+	    		this.readUserDataFromSession();
+	    		this.load();
+			});
+	    	
             load = function () {
+            	readUserDataFromSession();
             	this.buildingId = this.getQueryVariable("buildingId");
             	this.dialogHandler = new DialogHandler();
             	this.createUnitGrid();

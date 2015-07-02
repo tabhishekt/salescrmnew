@@ -20,8 +20,6 @@ window.onload = function() {
 	if (typeof require == "undefined") {
 		alert("Could not load dojo. Please ensure dojo.js lives under Webcontent/js/dojo/");
 	}
-	readUserDataFromSession();
-	this.load();
 }
 
 getQueryVariable = function(variable) {

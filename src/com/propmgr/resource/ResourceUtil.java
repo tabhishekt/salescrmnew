@@ -636,7 +636,7 @@ public class ResourceUtil {
 			
 			double totalTax = stampDuty + registrationCharge + serviceTax + valueAddedtax;
 			double totalCostWithTax = agreementValueBaseRate + totalTax + logalCharge;
-			double totalCostWithTaxReadyReckoner = agreementValueReadyReckoner + totalTax;
+			double totalCostWithTaxReadyReckoner = agreementValueReadyReckoner + totalTax + logalCharge;
 			
 			double totalCost = totalCostWithTax + totalCharges;
 			double totalCostReadyReckoner = totalCostWithTaxReadyReckoner + totalCharges;
@@ -1213,7 +1213,7 @@ public class ResourceUtil {
 		double valueAddedtax = (unitpricepolicy.getValueaddedtax()*agreementValue)/100;
 		double totalTax = stampDuty + registrationCharge + serviceTax + valueAddedtax;
 		double totalCostWithTax = agreementValueBaseRate + totalTax + logalCharge;
-		double totalCostWithTaxReadyReckoner = agreementValueReadyReckoner + totalTax;
+		double totalCostWithTaxReadyReckoner = agreementValueReadyReckoner + totalTax + logalCharge;
 		
 		double totalCost = totalCostWithTax + totalCharges;
 		double totalCostReadyReckoner = totalCostWithTaxReadyReckoner + totalCharges;
@@ -1246,8 +1246,8 @@ public class ResourceUtil {
 	 public static double getBasicCostUsingReadyReckonerRate(double readyReckonerRate, long carpetArea,  
 			 long carpetAreaForTerrace) throws SQLException {
 		 double saleableAreaReadyReckoner = ((carpetArea + 0.4*carpetAreaForTerrace)*1.2)/10.764;
-		 double basicCostReadyReckoner = Math.round(readyReckonerRate*saleableAreaReadyReckoner*100)/100D;
-		 
+		 double basicCostReadyReckoner = readyReckonerRate*saleableAreaReadyReckoner;
+		 basicCostReadyReckoner = Math.ceil(basicCostReadyReckoner/100) * 100;
 		 return basicCostReadyReckoner;
 	 }
 	 

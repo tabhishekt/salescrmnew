@@ -18,7 +18,8 @@
 <script type="text/javascript" src="../js/common.js"></script>
 <script type="text/javascript" src="../js/dojo_1.10.2/dojo/dojo.js"></script>
 <script>
-    require(["dojo/_base/lang",
+    require(["dojo/ready", 
+             "dojo/_base/lang",
              "dojo/dom-class",
              "dijit/registry",
              "dojo/on",
@@ -27,7 +28,12 @@
              "lib/DialogHandler",
 			 "lib/GridHandler",
 			 "dojo/domReady!"],
-        function(lang, domClass, registry, on, domConstruct, ContentPageHandler, DialogHandler, GridHandler) {
+        function(ready, lang, domClass, registry, on, domConstruct, ContentPageHandler, DialogHandler, GridHandler) {
+	    	ready(function() {
+	    		this.readUserDataFromSession();
+	    		this.load();
+			});
+		
             load = function () {
             	this.init(); 
             };
