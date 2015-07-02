@@ -1078,7 +1078,7 @@ public class InventoryService {
 				double unitFloorRise = (unit.getFloorrise() == null) ? 0 : unit.getFloorrise();
 				if (unitpricepolicy != null && floorRise != unitFloorRise) {
 					updateMade = true;
-					ResourceUtil.saveUnitPriceInformation(unit, unitpricepolicy, floorRise, 0, 0, 0);
+					ResourceUtil.saveUnitPriceInformation(unit, unitpricepolicy, floorRise, 0, 0, 0, 0);
 					unit.setFloorrise(floorRise);
 					unitmasterDAO.save(unit);
 				} 
@@ -1158,7 +1158,7 @@ public class InventoryService {
 			for (Unitmaster unit : units) {
 				unit.setUnitpricepolicy(unitpricepolicy);
 				double floorRise = (unit.getFloorrise() == null) ? 0 : unit.getFloorrise();
-				ResourceUtil.saveUnitPriceInformation(unit, unitpricepolicy, floorRise, 0, 0, 0);
+				ResourceUtil.saveUnitPriceInformation(unit, unitpricepolicy, floorRise, 0, 0, 0, 0);
 				unitmasterDAO.save(unit);
 			}
 			
@@ -1764,14 +1764,14 @@ public class InventoryService {
 			
 			// Prices may have been modified due to discount and deductionOnOtherCharges
 			double floorRise = (unit.getFloorrise() == null) ? 0 : unit.getFloorrise();
-			ResourceUtil.saveUnitPriceInformation(unit, unit.getUnitpricepolicy(), floorRise, discount, deductionOnOtherCharges, parkingTypeReadyReckoner);
 			String parkingArea = ResourceUtil.getFormDataValue(formData, "parkingarea");
-			
+			double parkingAreaDouble = 100.0;
 			if (parkingArea != null && !parkingArea.isEmpty()) {
-				unit.setParkingarea(Double.parseDouble(parkingArea));
-			} else {
-				unit.setParkingarea(100.0);
-			}
+				parkingAreaDouble = Double.parseDouble(parkingArea); 
+			} 
+			unit.setParkingarea(parkingAreaDouble);
+			ResourceUtil.saveUnitPriceInformation(unit, unit.getUnitpricepolicy(), floorRise, discount, 
+					deductionOnOtherCharges, parkingTypeReadyReckoner, parkingAreaDouble);
 			unitmasterDAO.save(unit);
 			unitbookingDAO.flushSession();
 			

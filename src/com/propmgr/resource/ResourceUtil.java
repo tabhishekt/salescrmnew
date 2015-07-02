@@ -1184,8 +1184,8 @@ public class ResourceUtil {
 	 }
 	 
 	 public static void saveUnitPriceInformation(Unitmaster unit, Unitpricepolicy unitpricepolicy, 
-			 double floorRise, double discount, double deductionOnOtherCharges, int parkingTypeReadyReckoner) throws SQLException {
-		double parkingArea = (unit.getParkingarea() == null) ? 100 : unit.getParkingarea();
+			 double floorRise, double discount, double deductionOnOtherCharges, int parkingTypeReadyReckoner,
+			 double parkingArea) throws SQLException {
 		double amenityCharges = getAmenityCharges(unit, unitpricepolicy);
 		double baseRate = unitpricepolicy.getBaserate();
 		double readyReckonerRate = unitpricepolicy.getReadyreckonerrate(); 
