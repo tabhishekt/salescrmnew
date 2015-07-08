@@ -1,12 +1,10 @@
 package com.propmgr.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
-import org.hibernate.LockMode;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Example;
@@ -21,63 +19,6 @@ import com.propmgr.hibernate.SuperDAO;
 public class UnitpricepolicyDAO extends SuperDAO {
 
 	private static final Log log = LogFactory.getLog(UnitpricepolicyDAO.class);
-
-	public void persist(Unitpricepolicy transientInstance) {
-		log.debug("persisting Unitprice instance");
-		try {
-			getSession().persist(transientInstance);
-			log.debug("persist successful");
-		} catch (RuntimeException re) {
-			log.error("persist failed", re);
-			throw re;
-		}
-	}
-
-	public void attachDirty(Unitpricepolicy instance) {
-		log.debug("attaching dirty Unitprice instance");
-		try {
-			getSession().saveOrUpdate(instance);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
-
-	public void attachClean(Unitpricepolicy instance) {
-		log.debug("attaching clean Unitprice instance");
-		try {
-			getSession().lock(instance, LockMode.NONE);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
-
-	public void delete(Unitpricepolicy persistentInstance) {
-		log.debug("deleting Unitprice instance");
-		try {
-			getSession().delete(persistentInstance);
-			log.debug("delete successful");
-		} catch (RuntimeException re) {
-			log.error("delete failed", re);
-			throw re;
-		}
-	}
-
-	public Unitpricepolicy merge(Unitpricepolicy detachedInstance) {
-		log.debug("merging Unitprice instance");
-		try {
-			Unitpricepolicy result = (Unitpricepolicy) getSession()
-					.merge(detachedInstance);
-			log.debug("merge successful");
-			return result;
-		} catch (RuntimeException re) {
-			log.error("merge failed", re);
-			throw re;
-		}
-	}
 
 	public Unitpricepolicy findById(long id) {
 		log.debug("getting Unitpricepolicy instance with id: " + id);

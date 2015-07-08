@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
-import org.hibernate.LockMode;
 import org.hibernate.criterion.Example;
 
 import com.propmgr.hibernate.SuperDAO;
@@ -18,63 +17,6 @@ import com.propmgr.hibernate.SuperDAO;
 public class AmenityDAO extends SuperDAO {
 
 	private static final Log log = LogFactory.getLog(AmenityDAO.class);
-
-	public void persist(Amenity transientInstance) {
-		log.debug("persisting Amenity instance");
-		try {
-			getSession().persist(transientInstance);
-			log.debug("persist successful");
-		} catch (RuntimeException re) {
-			log.error("persist failed", re);
-			throw re;
-		}
-	}
-
-	public void attachDirty(Amenity instance) {
-		log.debug("attaching dirty Amenity instance");
-		try {
-			getSession().saveOrUpdate(instance);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
-
-	public void attachClean(Amenity instance) {
-		log.debug("attaching clean Amenity instance");
-		try {
-			getSession().lock(instance, LockMode.NONE);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
-
-	public void delete(Amenity persistentInstance) {
-		log.debug("deleting Amenity instance");
-		try {
-			getSession().delete(persistentInstance);
-			log.debug("delete successful");
-		} catch (RuntimeException re) {
-			log.error("delete failed", re);
-			throw re;
-		}
-	}
-
-	public Amenity merge(Amenity detachedInstance) {
-		log.debug("merging Amenity instance");
-		try {
-			Amenity result = (Amenity) getSession()
-					.merge(detachedInstance);
-			log.debug("merge successful");
-			return result;
-		} catch (RuntimeException re) {
-			log.error("merge failed", re);
-			throw re;
-		}
-	}
 
 	public Amenity findById(long id) {
 		log.debug("getting Amenity instance with id: " + id);

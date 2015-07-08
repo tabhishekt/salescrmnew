@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
-import org.hibernate.LockMode;
 import org.hibernate.criterion.Example;
 
 import com.propmgr.hibernate.SuperDAO;
@@ -18,62 +17,6 @@ import com.propmgr.hibernate.SuperDAO;
 public class ProjectmasterDAO extends SuperDAO {
 
 	private static final Log log = LogFactory.getLog(ProjectmasterDAO.class);
-
-	public void persist(Projectmaster transientInstance) {
-		log.debug("persisting Projectmaster instance");
-		try {
-			getSession().persist(transientInstance);
-			log.debug("persist successful");
-		} catch (RuntimeException re) {
-			log.error("persist failed", re);
-			throw re;
-		}
-	}
-
-	public void attachDirty(Projectmaster instance) {
-		log.debug("attaching dirty Projectmaster instance");
-		try {
-			getSession().saveOrUpdate(instance);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
-
-	public void attachClean(Projectmaster instance) {
-		log.debug("attaching clean Projectmaster instance");
-		try {
-			getSession().lock(instance, LockMode.NONE);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
-
-	public void delete(Projectmaster persistentInstance) {
-		log.debug("deleting Projectmaster instance");
-		try {
-			getSession().delete(persistentInstance);
-			log.debug("delete successful");
-		} catch (RuntimeException re) {
-			log.error("delete failed", re);
-			throw re;
-		}
-	}
-
-	public Projectmaster merge(Projectmaster detachedInstance) {
-		log.debug("merging Projectmaster instance");
-		try {
-			Projectmaster result = (Projectmaster) getSession().merge(detachedInstance);
-			log.debug("merge successful");
-			return result;
-		} catch (RuntimeException re) {
-			log.error("merge failed", re);
-			throw re;
-		}
-	}
 
 	public Projectmaster findById(long id) {
 		log.debug("getting Projectmaster instance with id: " + id);

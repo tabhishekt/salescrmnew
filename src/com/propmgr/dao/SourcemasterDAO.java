@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
-import org.hibernate.LockMode;
 import org.hibernate.criterion.Example;
 
 import com.propmgr.hibernate.SuperDAO;
@@ -18,62 +17,6 @@ import com.propmgr.hibernate.SuperDAO;
 public class SourcemasterDAO extends SuperDAO {
 
 	private static final Log log = LogFactory.getLog(SourcemasterDAO.class);
-
-	public void persist(Sourcemaster transientInstance) {
-		log.debug("persisting Sourcemaster instance");
-		try {
-			getSession().persist(transientInstance);
-			log.debug("persist successful");
-		} catch (RuntimeException re) {
-			log.error("persist failed", re);
-			throw re;
-		}
-	}
-
-	public void attachDirty(Sourcemaster instance) {
-		log.debug("attaching dirty Sourcemaster instance");
-		try {
-			getSession().saveOrUpdate(instance);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
-
-	public void attachClean(Sourcemaster instance) {
-		log.debug("attaching clean Sourcemaster instance");
-		try {
-			getSession().lock(instance, LockMode.NONE);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
-
-	public void delete(Sourcemaster persistentInstance) {
-		log.debug("deleting Sourcemaster instance");
-		try {
-			getSession().delete(persistentInstance);
-			log.debug("delete successful");
-		} catch (RuntimeException re) {
-			log.error("delete failed", re);
-			throw re;
-		}
-	}
-
-	public Sourcemaster merge(Sourcemaster detachedInstance) {
-		log.debug("merging Sourcemaster instance");
-		try {
-			Sourcemaster result = (Sourcemaster) getSession().merge(detachedInstance);
-			log.debug("merge successful");
-			return result;
-		} catch (RuntimeException re) {
-			log.error("merge failed", re);
-			throw re;
-		}
-	}
 
 	public Sourcemaster findById(long id) {
 		log.debug("getting Sourcemaster instance with id: " + id);

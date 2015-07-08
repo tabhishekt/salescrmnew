@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
-import org.hibernate.LockMode;
 import org.hibernate.criterion.Example;
 
 import com.propmgr.hibernate.SuperDAO;
@@ -18,62 +17,6 @@ import com.propmgr.hibernate.SuperDAO;
 public class BankaccounttypeDAO extends SuperDAO {
 
 	private static final Log log = LogFactory.getLog(BankaccounttypeDAO.class);
-
-	public void persist(Bankaccounttype transientInstance) {
-		log.debug("persisting Bankaccounttype instance");
-		try {
-			getSession().persist(transientInstance);
-			log.debug("persist successful");
-		} catch (RuntimeException re) {
-			log.error("persist failed", re);
-			throw re;
-		}
-	}
-
-	public void attachDirty(Bankaccounttype instance) {
-		log.debug("attaching dirty Bankaccounttype instance");
-		try {
-			getSession().saveOrUpdate(instance);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
-
-	public void attachClean(Bankaccounttype instance) {
-		log.debug("attaching clean Bankaccounttype instance");
-		try {
-			getSession().lock(instance, LockMode.NONE);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
-
-	public void delete(Bankaccounttype persistentInstance) {
-		log.debug("deleting Bankaccounttype instance");
-		try {
-			getSession().delete(persistentInstance);
-			log.debug("delete successful");
-		} catch (RuntimeException re) {
-			log.error("delete failed", re);
-			throw re;
-		}
-	}
-
-	public Bankaccounttype merge(Bankaccounttype detachedInstance) {
-		log.debug("merging Bankaccounttype instance");
-		try {
-			Bankaccounttype result = (Bankaccounttype) getSession().merge(detachedInstance);
-			log.debug("merge successful");
-			return result;
-		} catch (RuntimeException re) {
-			log.error("merge failed", re);
-			throw re;
-		}
-	}
 
 	public Bankaccounttype findById(java.lang.Long id) {
 		log.debug("getting Bankaccounttype instance with id: " + id);

@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
-import org.hibernate.LockMode;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Example;
@@ -21,63 +20,6 @@ public class UnitmodificationstatusDAO extends SuperDAO {
 
 	private static final Log log = LogFactory
 			.getLog(UnitmodificationstatusDAO.class);
-
-	public void persist(Unitmodificationstatus transientInstance) {
-		log.debug("persisting Unitmodificationstatus instance");
-		try {
-			getSession().persist(transientInstance);
-			log.debug("persist successful");
-		} catch (RuntimeException re) {
-			log.error("persist failed", re);
-			throw re;
-		}
-	}
-
-	public void attachDirty(Unitmodificationstatus instance) {
-		log.debug("attaching dirty Unitmodificationstatus instance");
-		try {
-			getSession().saveOrUpdate(instance);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
-
-	public void attachClean(Unitmodificationstatus instance) {
-		log.debug("attaching clean Unitmodificationstatus instance");
-		try {
-			getSession().lock(instance, LockMode.NONE);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
-
-	public void delete(Unitmodificationstatus persistentInstance) {
-		log.debug("deleting Unitmodificationstatus instance");
-		try {
-			getSession().delete(persistentInstance);
-			log.debug("delete successful");
-		} catch (RuntimeException re) {
-			log.error("delete failed", re);
-			throw re;
-		}
-	}
-
-	public Unitmodificationstatus merge(Unitmodificationstatus detachedInstance) {
-		log.debug("merging Unitmodificationstatus instance");
-		try {
-			Unitmodificationstatus result = (Unitmodificationstatus)  
-					getSession().merge(detachedInstance);
-			log.debug("merge successful");
-			return result;
-		} catch (RuntimeException re) {
-			log.error("merge failed", re);
-			throw re;
-		}
-	}
 
 	public Unitmodificationstatus findById(java.lang.Long id) {
 		log.debug("getting Unitmodificationstatus instance with id: " + id);

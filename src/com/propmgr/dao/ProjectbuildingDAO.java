@@ -6,7 +6,6 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
-import org.hibernate.LockMode;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Example;
@@ -21,62 +20,6 @@ import com.propmgr.hibernate.SuperDAO;
 public class ProjectbuildingDAO extends SuperDAO {
 
 	private static final Log log = LogFactory.getLog(ProjectbuildingDAO.class);
-
-	public void persist(Projectbuilding transientInstance) {
-		log.debug("persisting Projectbuilding instance");
-		try {
-			getSession().persist(transientInstance);
-			log.debug("persist successful");
-		} catch (RuntimeException re) {
-			log.error("persist failed", re);
-			throw re;
-		}
-	}
-
-	public void attachDirty(Projectbuilding instance) {
-		log.debug("attaching dirty Projectbuilding instance");
-		try {
-			getSession().saveOrUpdate(instance);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
-
-	public void attachClean(Projectbuilding instance) {
-		log.debug("attaching clean Projectbuilding instance");
-		try {
-			getSession().lock(instance, LockMode.NONE);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
-
-	public void delete(Projectbuilding persistentInstance) {
-		log.debug("deleting Projectbuilding instance");
-		try {
-			getSession().delete(persistentInstance);
-			log.debug("delete successful");
-		} catch (RuntimeException re) {
-			log.error("delete failed", re);
-			throw re;
-		}
-	}
-
-	public Projectbuilding merge(Projectbuilding detachedInstance) {
-		log.debug("merging Projectbuilding instance");
-		try {
-			Projectbuilding result = (Projectbuilding) getSession().merge(detachedInstance);
-			log.debug("merge successful");
-			return result;
-		} catch (RuntimeException re) {
-			log.error("merge failed", re);
-			throw re;
-		}
-	}
 
 	public Projectbuilding findById(long id) {
 		log.debug("getting Projectbuilding instance with id: " + id);

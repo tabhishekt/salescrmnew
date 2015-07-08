@@ -6,7 +6,6 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
-import org.hibernate.LockMode;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Example;
@@ -22,62 +21,6 @@ public class UnitpaymentscheduleDAO extends SuperDAO {
 
 	private static final Log log = LogFactory
 			.getLog(UnitpaymentscheduleDAO.class);
-
-	public void persist(Unitpaymentschedule transientInstance) {
-		log.debug("persisting Unitpaymentschedule instance");
-		try {
-			getSession().persist(transientInstance);
-			log.debug("persist successful");
-		} catch (RuntimeException re) {
-			log.error("persist failed", re);
-			throw re;
-		}
-	}
-
-	public void attachDirty(Unitpaymentschedule instance) {
-		log.debug("attaching dirty Unitpaymentschedule instance");
-		try {
-			getSession().saveOrUpdate(instance);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
-
-	public void attachClean(Unitpaymentschedule instance) {
-		log.debug("attaching clean Unitpaymentschedule instance");
-		try {
-			getSession().lock(instance, LockMode.NONE);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
-
-	public void delete(Unitpaymentschedule persistentInstance) {
-		log.debug("deleting Unitpaymentschedule instance");
-		try {
-			getSession().delete(persistentInstance);
-			log.debug("delete successful");
-		} catch (RuntimeException re) {
-			log.error("delete failed", re);
-			throw re;
-		}
-	}
-
-	public Unitpaymentschedule merge(Unitpaymentschedule detachedInstance) {
-		log.debug("merging Unitpaymentschedule instance");
-		try {
-			Unitpaymentschedule result = (Unitpaymentschedule) getSession().merge(detachedInstance);
-			log.debug("merge successful");
-			return result;
-		} catch (RuntimeException re) {
-			log.error("merge failed", re);
-			throw re;
-		}
-	}
 
 	public Unitpaymentschedule findById(long id) {
 		log.debug("getting Unitpaymentschedule instance with id: " + id);

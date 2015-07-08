@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
-import org.hibernate.LockMode;
 import org.hibernate.criterion.Example;
 
 import com.propmgr.hibernate.SuperDAO;
@@ -18,64 +17,6 @@ import com.propmgr.hibernate.SuperDAO;
 public class CitymasterDAO extends SuperDAO {
 
 	private static final Log log = LogFactory.getLog(CitymasterDAO.class);
-
-
-	public void persist(Citymaster transientInstance) {
-		log.debug("persisting Citymaster instance");
-		try {
-			getSession().persist(transientInstance);
-			log.debug("persist successful");
-		} catch (RuntimeException re) {
-			log.error("persist failed", re);
-			throw re;
-		}
-	}
-
-	public void attachDirty(Citymaster instance) {
-		log.debug("attaching dirty Citymaster instance");
-		try {
-			getSession().saveOrUpdate(instance);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
-
-	public void attachClean(Citymaster instance) {
-		log.debug("attaching clean Citymaster instance");
-		try {
-			getSession().lock(instance, LockMode.NONE);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
-
-	public void delete(Citymaster persistentInstance) {
-		log.debug("deleting Citymaster instance");
-		try {
-			getSession().delete(persistentInstance);
-			log.debug("delete successful");
-		} catch (RuntimeException re) {
-			log.error("delete failed", re);
-			throw re;
-		}
-	}
-
-	public Citymaster merge(Citymaster detachedInstance) {
-		log.debug("merging Citymaster instance");
-		try {
-			Citymaster result = (Citymaster) getSession()
-					.merge(detachedInstance);
-			log.debug("merge successful");
-			return result;
-		} catch (RuntimeException re) {
-			log.error("merge failed", re);
-			throw re;
-		}
-	}
 
 	public Citymaster findById(long id) {
 		log.debug("getting Citymaster instance with id: " + id);

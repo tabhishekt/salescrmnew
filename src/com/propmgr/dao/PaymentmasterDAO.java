@@ -1,13 +1,10 @@
 package com.propmgr.dao;
 
-import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
-import org.hibernate.LockMode;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Example;
@@ -22,62 +19,6 @@ import com.propmgr.hibernate.SuperDAO;
 public class PaymentmasterDAO extends SuperDAO {
 
 	private static final Log log = LogFactory.getLog(PaymentmasterDAO.class);
-
-	public void persist(Paymentmaster transientInstance) {
-		log.debug("persisting Paymentmaster instance");
-		try {
-			getSession().persist(transientInstance);
-			log.debug("persist successful");
-		} catch (RuntimeException re) {
-			log.error("persist failed", re);
-			throw re;
-		}
-	}
-
-	public void attachDirty(Paymentmaster instance) {
-		log.debug("attaching dirty Paymentmaster instance");
-		try {
-			getSession().saveOrUpdate(instance);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
-
-	public void attachClean(Paymentmaster instance) {
-		log.debug("attaching clean Paymentmaster instance");
-		try {
-			getSession().lock(instance, LockMode.NONE);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
-
-	public void delete(Paymentmaster persistentInstance) {
-		log.debug("deleting Paymentmaster instance");
-		try {
-			getSession().delete(persistentInstance);
-			log.debug("delete successful");
-		} catch (RuntimeException re) {
-			log.error("delete failed", re);
-			throw re;
-		}
-	}
-
-	public Paymentmaster merge(Paymentmaster detachedInstance) {
-		log.debug("merging Paymentmaster instance");
-		try {
-			Paymentmaster result = (Paymentmaster) getSession().merge(detachedInstance);
-			log.debug("merge successful");
-			return result;
-		} catch (RuntimeException re) {
-			log.error("merge failed", re);
-			throw re;
-		}
-	}
 
 	public Paymentmaster findById(long id) {
 		log.debug("getting Paymentmaster instance with id: " + id);

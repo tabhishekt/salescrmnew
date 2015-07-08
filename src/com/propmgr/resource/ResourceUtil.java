@@ -1053,7 +1053,7 @@ public class ResourceUtil {
 		 address.setCitymaster(city);
 		 address.setStatemaster(state);
 		 address.setZipcode(getFormDataValue(formData, "zipcode"));
-		 addressDAO.save(address);
+		 addressDAO.saveOrUpdate(address);
 	 }
 	 
 	 public static void deleteAddress(Address address) throws SQLException {
@@ -1075,9 +1075,9 @@ public class ResourceUtil {
 		 personContactinfo.setAlternatenumber(getFormDataValue(formData, "personaltphone"));
 		 personContactinfo.setMobilenumber(getFormDataValue(formData, "personmobile"));
 		 personContactinfo.setEmailid(getFormDataValue(formData, "personemailid"));
-		 contactinfoDAO.save(personContactinfo);
+		 contactinfoDAO.saveOrUpdate(personContactinfo);
 		 person.setContactinfo(personContactinfo);
-		 personDAO.save(person);
+		 personDAO.saveOrUpdate(person);
 	 }
 	 
 	 public static void savePerson1(MultivaluedMap<String, String> formData, Person person, Contactinfo personContactinfo) throws SQLException, ParseException {
@@ -1094,9 +1094,9 @@ public class ResourceUtil {
 		 personContactinfo.setAlternatenumber(getFormDataValue(formData, "person1altphone"));
 		 personContactinfo.setMobilenumber(getFormDataValue(formData, "person1mobile"));
 		 personContactinfo.setEmailid(getFormDataValue(formData, "person1emailid"));
-		 contactinfoDAO.save(personContactinfo);
+		 contactinfoDAO.saveOrUpdate(personContactinfo);
 		 person.setContactinfo(personContactinfo);
-		 personDAO.save(person);
+		 personDAO.saveOrUpdate(person);
 	 }
 	 
 	 public static void deletePerson(Person person) throws SQLException {
@@ -1111,7 +1111,7 @@ public class ResourceUtil {
 		 contactInfo.setAlternatenumber(getFormDataValue(formData, "altphone"));
 		 contactInfo.setMobilenumber(getFormDataValue(formData, "mobile"));
 		 contactInfo.setEmailid(getFormDataValue(formData, "emailid"));
-		 contactinfoDAO.save(contactInfo);
+		 contactinfoDAO.saveOrUpdate(contactInfo);
 	 }
 	 
 	 public static void saveUnit(MultivaluedMap<String, String> formData, Unitmaster unit, Projectbuilding projectBuilding, 
@@ -1144,7 +1144,7 @@ public class ResourceUtil {
 		 unit.setOthercharges(getFormDataValueAsDouble(formData, "othercharges"));
 		 unit.setRegistrationdone(registered);
 		 unit.setUnitclassificationmaster(classification);
-		 unitmasterDAO.save(unit);
+		 unitmasterDAO.saveOrUpdate(unit);
 
 		 List<Unitamenity> unitamenityList = unitamenityDAO.findByUnit(unit.getUnitid());
 		 for (Unitamenity unitamenity : unitamenityList) {
@@ -1156,10 +1156,8 @@ public class ResourceUtil {
 			 Unitamenity unitamenity = new Unitamenity();
 			 unitamenity.setUnitmaster(unit);
 			 unitamenity.setAmenity(amenity);
-			 unitamenityDAO.save(unitamenity);
+			 unitamenityDAO.saveOrUpdate(unitamenity);
 		 }
-
-		 unitmasterDAO.flushSession();
 	 }
 	 
 	 public static double getAmenityCharges(Unitmaster unit, Unitpricepolicy unitpricepolicy) {
@@ -1289,14 +1287,12 @@ public class ResourceUtil {
 			 paymentSchedule.setPercentamount(percentAmount);
 			 paymentSchedule.setApplicableto(applicableTo);
 			 paymentSchedule.setProjectbuilding(projectBuilding);
-			 unitpaymentscheduleDAO.save(paymentSchedule);
+			 unitpaymentscheduleDAO.saveOrUpdate(paymentSchedule);
 		 } else {
 			 if (paymentSchedule != null) {
 				 unitpaymentscheduleDAO.delete(paymentSchedule);
 			 }
 		 }
-		 
-		 unitpaymentscheduleDAO.flushSession();
 	 }
 	 
 	 public static boolean isPaymentScheduleApplicableToUnit(Unitpaymentschedule paymentSchedule, Unitmaster unit) throws SQLException {

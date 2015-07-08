@@ -6,7 +6,6 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
-import org.hibernate.LockMode;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Example;
@@ -21,63 +20,6 @@ import com.propmgr.hibernate.SuperDAO;
 public class PaymentstageDAO extends SuperDAO {
 
 	private static final Log log = LogFactory.getLog(PaymentstageDAO.class);
-
-	public void persist(Paymentstage transientInstance) {
-		log.debug("persisting Paymentstate instance");
-		try {
-			getSession().persist(transientInstance);
-			log.debug("persist successful");
-		} catch (RuntimeException re) {
-			log.error("persist failed", re);
-			throw re;
-		}
-	}
-
-	public void attachDirty(Paymentstage instance) {
-		log.debug("attaching dirty Paymentstage instance");
-		try {
-			getSession().saveOrUpdate(instance);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
-
-	public void attachClean(Paymentstage instance) {
-		log.debug("attaching clean Paymentstage instance");
-		try {
-			getSession().lock(instance, LockMode.NONE);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
-
-	public void delete(Paymentstage persistentInstance) {
-		log.debug("deleting Paymentstage instance");
-		try {
-			getSession().delete(persistentInstance);
-			log.debug("delete successful");
-		} catch (RuntimeException re) {
-			log.error("delete failed", re);
-			throw re;
-		}
-	}
-
-	public Paymentstage merge(Paymentstage detachedInstance) {
-		log.debug("merging Paymentstage instance");
-		try {
-			Paymentstage result = (Paymentstage) getSession()
-					.merge(detachedInstance);
-			log.debug("merge successful");
-			return result;
-		} catch (RuntimeException re) {
-			log.error("merge failed", re);
-			throw re;
-		}
-	}
 
 	public Paymentstage findById(java.lang.Long id) {
 		log.debug("getting Paymentstage instance with id: " + id);

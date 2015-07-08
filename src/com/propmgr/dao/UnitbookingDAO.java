@@ -6,7 +6,6 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
-import org.hibernate.LockMode;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Example;
@@ -21,62 +20,6 @@ import com.propmgr.hibernate.SuperDAO;
 public class UnitbookingDAO extends SuperDAO {
 
 	private static final Log log = LogFactory.getLog(UnitbookingDAO.class);
-
-	public void persist(Unitbooking transientInstance) {
-		log.debug("persisting Unitbooking instance");
-		try {
-			getSession().persist(transientInstance);
-			log.debug("persist successful");
-		} catch (RuntimeException re) {
-			log.error("persist failed", re);
-			throw re;
-		}
-	}
-
-	public void attachDirty(Unitbooking instance) {
-		log.debug("attaching dirty Unitbooking instance");
-		try {
-			getSession().saveOrUpdate(instance);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
-
-	public void attachClean(Unitbooking instance) {
-		log.debug("attaching clean Unitbooking instance");
-		try {
-			getSession().lock(instance, LockMode.NONE);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
-
-	public void delete(Unitbooking persistentInstance) {
-		log.debug("deleting Unitbooking instance");
-		try {
-			getSession().delete(persistentInstance);
-			log.debug("delete successful");
-		} catch (RuntimeException re) {
-			log.error("delete failed", re);
-			throw re;
-		}
-	}
-
-	public Unitbooking merge(Unitbooking detachedInstance) {
-		log.debug("merging Unitbooking instance");
-		try {
-			Unitbooking result = (Unitbooking) getSession().merge(detachedInstance);
-			log.debug("merge successful");
-			return result;
-		} catch (RuntimeException re) {
-			log.error("merge failed", re);
-			throw re;
-		}
-	}
 
 	public Unitbooking findById(long id) {
 		log.debug("getting Unitbooking instance with id: " + id);

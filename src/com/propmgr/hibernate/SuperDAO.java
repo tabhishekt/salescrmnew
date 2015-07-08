@@ -1,8 +1,6 @@
 package com.propmgr.hibernate;
 
 import java.io.Serializable;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,22 +30,50 @@ public abstract class SuperDAO {
 		Serializable retval = null;
 		try
         {
+			beginTransaction();
             retval = getSession().save(obj);
-//            getSession().flush();
-//            commitTransaction();
-//            beginTransaction();
+            getSession().flush();
+            commitTransaction();
         }
         catch(Exception e)
         {
+        	rollbackTransaction();
             throw new HibernateException(e);
         }
         finally
         {
-            
+        	
         }
 		return retval;
 	}
 
+	/**
+	 * Insert the object into the database.
+	 * 
+	 * @param obj
+	 *            The object to save.
+	 * 
+	 * @return The primary key of the newly inserted object.
+	 */
+	public void saveOrUpdate(Object obj) {
+		try
+        {
+			beginTransaction();
+            getSession().saveOrUpdate(obj);
+            getSession().flush();
+            commitTransaction();
+        }
+        catch(Exception e)
+        {
+        	rollbackTransaction();
+            throw new HibernateException(e);
+        }
+        finally
+        {
+        	
+        }
+	}
+	
 	/**
 	 * Delete the object from the database.
 	 * 
@@ -57,17 +83,19 @@ public abstract class SuperDAO {
 	public void delete(Object obj) {
 		try
         {
+			beginTransaction();
             getSession().delete(obj);
             getSession().flush();
             commitTransaction();
-            beginTransaction();
         }
         catch(Exception e)
         {
+        	rollbackTransaction();
             throw new DAOException(e);
         }
         finally
         {
+        	
         }
 
 	}
@@ -80,13 +108,17 @@ public abstract class SuperDAO {
 	 */
 	public void update(Object obj) {
 		try {
+			beginTransaction();
 			getSession().update(obj);
 	        getSession().flush();
 	        commitTransaction();
-	        beginTransaction();
-		} catch (Exception e) {
+		} 
+		catch (Exception e) {
+			rollbackTransaction();
 			throw new HibernateException(e);
-		} finally {
+		} 
+		finally {
+			
 		}
 	}
 	
@@ -106,7 +138,9 @@ public abstract class SuperDAO {
 		} catch (HibernateException e) {
 			logger.error ("", e);
 			throw new com.propmgr.hibernate.DAOException(e);
-		} finally {
+		} 
+		finally {
+			
 		}
 		return retval;
 	}
@@ -202,13 +236,13 @@ public abstract class SuperDAO {
 	}
 
 	/**
-	 * commit the transaction.
+	 * begin the transaction.
 	 * 
 	 * All the subclass should not know abt the HibernateConnection.
 	 *  
 	 */
 	public void beginTransaction() {
-		//Doest not do any thing
+		HibernateConnection.beginTransaction();
 	}
 
 	/**

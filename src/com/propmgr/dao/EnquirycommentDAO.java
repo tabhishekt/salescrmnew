@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
-import org.hibernate.LockMode;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Example;
@@ -20,62 +19,6 @@ import com.propmgr.hibernate.SuperDAO;
 public class EnquirycommentDAO extends SuperDAO {
 
 	private static final Log log = LogFactory.getLog(EnquirycommentDAO.class);
-
-	public void persist(Enquirycomment transientInstance) {
-		log.debug("persisting Enquirycomment instance");
-		try {
-			getSession().persist(transientInstance);
-			log.debug("persist successful");
-		} catch (RuntimeException re) {
-			log.error("persist failed", re);
-			throw re;
-		}
-	}
-
-	public void attachDirty(Enquirycomment instance) {
-		log.debug("attaching dirty Enquirycomment instance");
-		try {
-			getSession().saveOrUpdate(instance);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
-
-	public void attachClean(Enquirycomment instance) {
-		log.debug("attaching clean Enquirycomment instance");
-		try {
-			getSession().lock(instance, LockMode.NONE);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
-
-	public void delete(Enquirycomment persistentInstance) {
-		log.debug("deleting Enquirycomment instance");
-		try {
-			getSession().delete(persistentInstance);
-			log.debug("delete successful");
-		} catch (RuntimeException re) {
-			log.error("delete failed", re);
-			throw re;
-		}
-	}
-
-	public Enquirycomment merge(Enquirycomment detachedInstance) {
-		log.debug("merging Enquirycomment instance");
-		try {
-			Enquirycomment result = (Enquirycomment) getSession().merge(detachedInstance);
-			log.debug("merge successful");
-			return result;
-		} catch (RuntimeException re) {
-			log.error("merge failed", re);
-			throw re;
-		}
-	}
 
 	public Enquirycomment findById(long id) {
 		log.debug("getting Enquirycomment instance with id: " + id);

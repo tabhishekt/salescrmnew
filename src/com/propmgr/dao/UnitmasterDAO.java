@@ -1,13 +1,11 @@
 package com.propmgr.dao;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
-import org.hibernate.LockMode;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Example;
@@ -22,63 +20,6 @@ import com.propmgr.hibernate.SuperDAO;
 public class UnitmasterDAO extends SuperDAO {
 
 	private static final Log log = LogFactory.getLog(UnitmasterDAO.class);
-
-	public void persist(Unitmaster transientInstance) {
-		log.debug("persisting Unitmaster instance");
-		try {
-			getSession().persist(transientInstance);
-			log.debug("persist successful");
-		} catch (RuntimeException re) {
-			log.error("persist failed", re);
-			throw re;
-		}
-	}
-
-	public void attachDirty(Unitmaster instance) {
-		log.debug("attaching dirty Unitmaster instance");
-		try {
-			getSession().saveOrUpdate(instance);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
-
-	public void attachClean(Unitmaster instance) {
-		log.debug("attaching clean Unitmaster instance");
-		try {
-			getSession().lock(instance, LockMode.NONE);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
-
-	public void delete(Unitmaster persistentInstance) {
-		log.debug("deleting Unitmaster instance");
-		try {
-			getSession().delete(persistentInstance);
-			log.debug("delete successful");
-		} catch (RuntimeException re) {
-			log.error("delete failed", re);
-			throw re;
-		}
-	}
-
-	public Unitmaster merge(Unitmaster detachedInstance) {
-		log.debug("merging Unitmaster instance");
-		try {
-			Unitmaster result = (Unitmaster) getSession()
-					.merge(detachedInstance);
-			log.debug("merge successful");
-			return result;
-		} catch (RuntimeException re) {
-			log.error("merge failed", re);
-			throw re;
-		}
-	}
 
 	public Unitmaster findById(long id) {
 		log.debug("getting Unitmaster instance with id: " + id);

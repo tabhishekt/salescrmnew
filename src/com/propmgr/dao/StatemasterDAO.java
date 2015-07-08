@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
-import org.hibernate.LockMode;
 import org.hibernate.criterion.Example;
 
 import com.propmgr.hibernate.SuperDAO;
@@ -18,62 +17,6 @@ import com.propmgr.hibernate.SuperDAO;
 public class StatemasterDAO extends SuperDAO {
 
 	private static final Log log = LogFactory.getLog(StatemasterDAO.class);
-
-	public void persist(Statemaster transientInstance) {
-		log.debug("persisting Statemaster instance");
-		try {
-			getSession().persist(transientInstance);
-			log.debug("persist successful");
-		} catch (RuntimeException re) {
-			log.error("persist failed", re);
-			throw re;
-		}
-	}
-
-	public void attachDirty(Statemaster instance) {
-		log.debug("attaching dirty Statemaster instance");
-		try {
-			getSession().saveOrUpdate(instance);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
-
-	public void attachClean(Statemaster instance) {
-		log.debug("attaching clean Statemaster instance");
-		try {
-			getSession().lock(instance, LockMode.NONE);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
-
-	public void delete(Statemaster persistentInstance) {
-		log.debug("deleting Statemaster instance");
-		try {
-			getSession().delete(persistentInstance);
-			log.debug("delete successful");
-		} catch (RuntimeException re) {
-			log.error("delete failed", re);
-			throw re;
-		}
-	}
-
-	public Statemaster merge(Statemaster detachedInstance) {
-		log.debug("merging Statemaster instance");
-		try {
-			Statemaster result = (Statemaster) getSession().merge(detachedInstance);
-			log.debug("merge successful");
-			return result;
-		} catch (RuntimeException re) {
-			log.error("merge failed", re);
-			throw re;
-		}
-	}
 
 	public Statemaster findById(long id) {
 		log.debug("getting Statemaster instance with id: " + id);

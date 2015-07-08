@@ -88,7 +88,6 @@ public class CodeTableService {
 			Citymaster city = citymasterDAO.findById(id);
 			if (city != null) {
 				citymasterDAO.delete(city);
-				citymasterDAO.flushSession();
 			} else {
 				return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
 			}
@@ -119,8 +118,7 @@ public class CodeTableService {
 			}
 			city.setCitycode(code);
 			city.setCityname(name);
-			citymasterDAO.save(city);
-			citymasterDAO.flushSession();
+			citymasterDAO.saveOrUpdate(city);
 		}
 		catch (Exception e) {
 			logger.error("", e);
@@ -174,7 +172,6 @@ public class CodeTableService {
 			Statemaster state = statemasterDAO.findById(id);
 			if (state != null) {
 				statemasterDAO.delete(state);
-				statemasterDAO.flushSession();
 			} else {
 				return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
 			}
@@ -205,8 +202,7 @@ public class CodeTableService {
 			}
 			state.setStatecode(code);
 			state.setStatename(name);
-			statemasterDAO.save(state);
-			statemasterDAO.flushSession();
+			statemasterDAO.saveOrUpdate(state);
 		}
 		catch (Exception e) {
 			logger.error("", e);
@@ -260,7 +256,6 @@ public class CodeTableService {
 			Amenity amenity = amenityDAO.findById(id);
 			if (amenity != null) {
 				amenityDAO.delete(amenity);
-				amenityDAO.flushSession();
 			} else {
 				return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
 			}
@@ -291,8 +286,7 @@ public class CodeTableService {
 			}
 			amenity.setAmenitycode(code);
 			amenity.setAmenitydescription(name);
-			amenityDAO.save(amenity);
-			amenityDAO.flushSession();
+			amenityDAO.saveOrUpdate(amenity);
 		}
 		catch (Exception e) {
 			logger.error("", e);
@@ -346,7 +340,6 @@ public class CodeTableService {
 			Unittype unittype = unittypeDAO.findById(id);
 			if (unittype != null) {
 				unittypeDAO.delete(unittype);
-				unittypeDAO.flushSession();
 			} else {
 				return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
 			}
@@ -377,8 +370,7 @@ public class CodeTableService {
 			}
 			unittype.setUnittypecode(code);
 			unittype.setUnittypename(name);
-			unittypeDAO.save(unittype);
-			unittypeDAO.flushSession();
+			unittypeDAO.saveOrUpdate(unittype);
 		}
 		catch (Exception e) {
 			logger.error("", e);
@@ -432,7 +424,6 @@ public class CodeTableService {
 			Sourcemaster source = sourcemasterDAO.findById(id);
 			if (source != null) {
 				sourcemasterDAO.delete(source);
-				sourcemasterDAO.flushSession();
 			} else {
 				return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
 			}
@@ -463,8 +454,7 @@ public class CodeTableService {
 			}
 			source.setSourcecode(code);
 			source.setSourcename(name);
-			sourcemasterDAO.save(source);
-			sourcemasterDAO.flushSession();
+			sourcemasterDAO.saveOrUpdate(source);
 		}
 		catch (Exception e) {
 			logger.error("", e);
@@ -529,7 +519,6 @@ public class CodeTableService {
 			Paymenttype paymenttype = paymenttypeDAO.findById(id);
 			if (paymenttype != null) {
 				paymenttypeDAO.delete(paymenttype);
-				paymenttypeDAO.flushSession();
 			} else {
 				return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
 			}
@@ -560,8 +549,7 @@ public class CodeTableService {
 			}
 			paymenttype.setPaymenttypecode(code);
 			paymenttype.setPaymenttypedescription(ResourceUtil.convertStringToClob(name));
-			paymenttypeDAO.save(paymenttype);
-			paymenttypeDAO.flushSession();
+			paymenttypeDAO.saveOrUpdate(paymenttype);
 		}
 		catch (Exception e) {
 			logger.error("", e);
@@ -615,7 +603,6 @@ public class CodeTableService {
 			Bankaccounttype aBankaccounttype = bankaccounttypeDAO.findById(id);
 			if (aBankaccounttype != null) {
 				bankaccounttypeDAO.delete(aBankaccounttype);
-				bankaccounttypeDAO.flushSession();
 			} else {
 				return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
 			}
@@ -646,8 +633,7 @@ public class CodeTableService {
 			}
 			aBankaccounttype.setAccounttypecode(code);
 			aBankaccounttype.setAccounttypename(name);
-			bankaccounttypeDAO.save(aBankaccounttype);
-			bankaccounttypeDAO.flushSession();
+			bankaccounttypeDAO.saveOrUpdate(aBankaccounttype);
 		}
 		catch (Exception e) {
 			logger.error("", e);
@@ -701,7 +687,6 @@ public class CodeTableService {
 			Unitclassificationmaster unitclassificationmaster = unitClassDAO.findById(id);
 			if (unitclassificationmaster != null) {
 				unitClassDAO.delete(unitclassificationmaster);
-				unitClassDAO.flushSession();
 			} else {
 				return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
 			}
@@ -732,8 +717,7 @@ public class CodeTableService {
 			}
 			unitclassificationmaster.setUnitclasscode(code);
 			unitclassificationmaster.setUnitclassdesc(name);
-			unitClassDAO.save(unitclassificationmaster);
-			unitClassDAO.flushSession();
+			unitClassDAO.saveOrUpdate(unitclassificationmaster);
 		}
 		catch (Exception e) {
 			logger.error("", e);
@@ -801,7 +785,6 @@ public class CodeTableService {
 			Parkingtype aParkingtype = parkingtypeDAO.findById(id);
 			if (aParkingtype != null) {
 				parkingtypeDAO.delete(aParkingtype);
-				parkingtypeDAO.flushSession();
 			} else {
 				return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
 			}
@@ -832,8 +815,7 @@ public class CodeTableService {
 			}
 			aParkingtype.setParkingcode(code);
 			aParkingtype.setParkingname(name);
-			parkingtypeDAO.save(aParkingtype);
-			parkingtypeDAO.flushSession();
+			parkingtypeDAO.saveOrUpdate(aParkingtype);
 		}
 		catch (Exception e) {
 			logger.error("", e);

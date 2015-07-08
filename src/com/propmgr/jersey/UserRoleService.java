@@ -28,7 +28,6 @@ import com.propmgr.dao.RolemasterDAO;
 import com.propmgr.dao.Usermaster;
 import com.propmgr.dao.UsermasterDAO;
 import com.propmgr.dao.Userrole;
-import com.propmgr.resource.LoginResponse;
 import com.propmgr.resource.ResourceUtil;
 import com.propmgr.resource.RoleResource;
  
@@ -143,7 +142,6 @@ public class UserRoleService {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
 		}
 		
-
 	    return Response.ok(result).build();
 	}
 	
@@ -157,7 +155,6 @@ public class UserRoleService {
 			Rolemaster role = rolemasterDAO.findById(Long.parseLong(rowId));
 			if (role != null) {
 				rolemasterDAO.delete(role);
-				rolemasterDAO.flushSession();
 			} else {
 				return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
 			}
@@ -193,8 +190,7 @@ public class UserRoleService {
 			role.setRoledescription(ResourceUtil.getFormDataValueAsClob(formData, "description"));
 			role.setIsadmin(ResourceUtil.getFormDataValueAsBoolean(formData, "admin"));
 			
-			rolemasterDAO.save(role);
-			rolemasterDAO.flushSession();
+			rolemasterDAO.saveOrUpdate(role);
 		}
 		catch (Exception e) {
 			logger.error("", e);

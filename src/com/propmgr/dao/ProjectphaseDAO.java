@@ -6,7 +6,6 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
-import org.hibernate.LockMode;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Example;
@@ -21,62 +20,6 @@ import com.propmgr.hibernate.SuperDAO;
 public class ProjectphaseDAO extends SuperDAO {
 
 	private static final Log log = LogFactory.getLog(ProjectphaseDAO.class);
-
-	public void persist(Projectphase transientInstance) {
-		log.debug("persisting Projectphase instance");
-		try {
-			getSession().persist(transientInstance);
-			log.debug("persist successful");
-		} catch (RuntimeException re) {
-			log.error("persist failed", re);
-			throw re;
-		}
-	}
-
-	public void attachDirty(Projectphase instance) {
-		log.debug("attaching dirty Projectphase instance");
-		try {
-			getSession().saveOrUpdate(instance);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
-
-	public void attachClean(Projectphase instance) {
-		log.debug("attaching clean Projectphase instance");
-		try {
-			getSession().lock(instance, LockMode.NONE);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
-
-	public void delete(Projectphase persistentInstance) {
-		log.debug("deleting Projectphase instance");
-		try {
-			getSession().delete(persistentInstance);
-			log.debug("delete successful");
-		} catch (RuntimeException re) {
-			log.error("delete failed", re);
-			throw re;
-		}
-	}
-
-	public Projectphase merge(Projectphase detachedInstance) {
-		log.debug("merging Projectphase instance");
-		try {
-			Projectphase result = (Projectphase) getSession().merge(detachedInstance);
-			log.debug("merge successful");
-			return result;
-		} catch (RuntimeException re) {
-			log.error("merge failed", re);
-			throw re;
-		}
-	}
 
 	public Projectphase findById(long id) {
 		log.debug("getting Projectphase instance with id: " + id);

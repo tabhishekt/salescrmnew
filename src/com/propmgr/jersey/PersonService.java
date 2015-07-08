@@ -99,7 +99,6 @@ public class PersonService {
 				ResourceUtil.deletePerson(customer.getPersonByPersondetail());
 				ResourceUtil.deletePerson(customer.getPersonByCoownerdetail());
 				ResourceUtil.deleteContactInfo(customer.getPersonByPersondetail().getContactinfo());
-				customermasterDAO.flushSession();
 			} else {
 				return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
 			}
@@ -175,8 +174,7 @@ public class PersonService {
 				customer.setPersonByCoownerdetail(coOwner);
 			}
 			
-			customermasterDAO.save(customer);
-			customermasterDAO.flushSession();
+			customermasterDAO.saveOrUpdate(customer);
 		}
 		catch (Exception e) {
 			logger.error("", e);
@@ -277,7 +275,6 @@ public class PersonService {
 				ResourceUtil.deleteAddress(user.getAddress());
 				ResourceUtil.deletePerson(user.getPerson());
 				ResourceUtil.deleteContactInfo(user.getPerson().getContactinfo());
-				usermasterDAO.flushSession();
 			} else {
 				return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
 			}
@@ -324,17 +321,15 @@ public class PersonService {
 			user.setPerson(person);
 			user.setLoginname(ResourceUtil.getFormDataValue(formData, "loginname"));
 			user.setPassword(ResourceUtil.getFormDataValue(formData, "password"));
-			usermasterDAO.save(user);
+			usermasterDAO.saveOrUpdate(user);
 			
 			List<Rolemaster> roles = ResourceUtil.getRolePOJOList(formData);
 			for (Rolemaster role : roles) {
 				Userrole userrole = new Userrole();
 				userrole.setUsermaster(user);
 				userrole.setRolemaster(role);
-				userroleDAO.save(userrole);
+				userroleDAO.saveOrUpdate(userrole);
 			}
-			
-			usermasterDAO.flushSession();
 		}
 		catch (Exception e) {
 			logger.error("", e);

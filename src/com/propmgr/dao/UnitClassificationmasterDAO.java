@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
-import org.hibernate.LockMode;
 import org.hibernate.criterion.Example;
 
 import com.propmgr.hibernate.SuperDAO;
@@ -18,62 +17,6 @@ import com.propmgr.hibernate.SuperDAO;
 public class UnitClassificationmasterDAO extends SuperDAO {
 
 	private static final Log log = LogFactory.getLog(UnitClassificationmasterDAO.class);
-
-	public void persist(Unitclassificationmaster transientInstance) {
-		log.debug("persisting Unitclassificationmaster instance");
-		try {
-			getSession().persist(transientInstance);
-			log.debug("persist successful");
-		} catch (RuntimeException re) {
-			log.error("persist failed", re);
-			throw re;
-		}
-	}
-
-	public void attachDirty(Unitclassificationmaster instance) {
-		log.debug("attaching dirty Unitclassificationmaster instance");
-		try {
-			getSession().saveOrUpdate(instance);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
-
-	public void attachClean(Unitclassificationmaster instance) {
-		log.debug("attaching clean Unitclassificationmaster instance");
-		try {
-			getSession().lock(instance, LockMode.NONE);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
-
-	public void delete(Unitclassificationmaster persistentInstance) {
-		log.debug("deleting Unitclassificationmaster instance");
-		try {
-			getSession().delete(persistentInstance);
-			log.debug("delete successful");
-		} catch (RuntimeException re) {
-			log.error("delete failed", re);
-			throw re;
-		}
-	}
-
-	public Unitclassificationmaster merge(Unitclassificationmaster detachedInstance) {
-		log.debug("merging Unitclassificationmaster instance");
-		try {
-			Unitclassificationmaster result = (Unitclassificationmaster) getSession().merge(detachedInstance);
-			log.debug("merge successful");
-			return result;
-		} catch (RuntimeException re) {
-			log.error("merge failed", re);
-			throw re;
-		}
-	}
 
 	public Unitclassificationmaster findById(long id) {
 		log.debug("getting Unitclassificationmaster instance with id: " + id);

@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
-import org.hibernate.LockMode;
 import org.hibernate.criterion.Example;
 
 import com.propmgr.hibernate.SuperDAO;
@@ -18,63 +17,6 @@ import com.propmgr.hibernate.SuperDAO;
 public class RolemasterDAO extends SuperDAO {
 
 	private static final Log log = LogFactory.getLog(RolemasterDAO.class);
-	
-	public void persist(Rolemaster transientInstance) {
-		log.debug("persisting Rolemaster instance");
-		try {
-			getSession().persist(transientInstance);
-			log.debug("persist successful");
-		} catch (RuntimeException re) {
-			log.error("persist failed", re);
-			throw re;
-		}
-	}
-
-	public void attachDirty(Rolemaster instance) {
-		log.debug("attaching dirty Rolemaster instance");
-		try {
-			getSession().saveOrUpdate(instance);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
-
-	public void attachClean(Rolemaster instance) {
-		log.debug("attaching clean Rolemaster instance");
-		try {
-			getSession().lock(instance, LockMode.NONE);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
-
-	public void delete(Rolemaster persistentInstance) {
-		log.debug("deleting Rolemaster instance");
-		try {
-			getSession().delete(persistentInstance);
-			log.debug("delete successful");
-		} catch (RuntimeException re) {
-			log.error("delete failed", re);
-			throw re;
-		}
-	}
-
-	public Rolemaster merge(Rolemaster detachedInstance) {
-		log.debug("merging Rolemaster instance");
-		try {
-			Rolemaster result = (Rolemaster) getSession()
-					.merge(detachedInstance);
-			log.debug("merge successful");
-			return result;
-		} catch (RuntimeException re) {
-			log.error("merge failed", re);
-			throw re;
-		}
-	}
 
 	public Rolemaster findById(long id) {
 		log.debug("getting Rolemaster instance with id: " + id);

@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
-import org.hibernate.LockMode;
 import org.hibernate.criterion.Example;
 
 import com.propmgr.hibernate.SuperDAO;
@@ -18,63 +17,6 @@ import com.propmgr.hibernate.SuperDAO;
 public class UnittypeDAO extends SuperDAO {
 
 	private static final Log log = LogFactory.getLog(UnittypeDAO.class);
-
-	public void persist(Unittype transientInstance) {
-		log.debug("persisting Unittype instance");
-		try {
-			getSession().persist(transientInstance);
-			log.debug("persist successful");
-		} catch (RuntimeException re) {
-			log.error("persist failed", re);
-			throw re;
-		}
-	}
-
-	public void attachDirty(Unittype instance) {
-		log.debug("attaching dirty Unittype instance");
-		try {
-			getSession().saveOrUpdate(instance);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
-
-	public void attachClean(Unittype instance) {
-		log.debug("attaching clean Unittype instance");
-		try {
-			getSession().lock(instance, LockMode.NONE);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
-
-	public void delete(Unittype persistentInstance) {
-		log.debug("deleting Unittype instance");
-		try {
-			getSession().delete(persistentInstance);
-			log.debug("delete successful");
-		} catch (RuntimeException re) {
-			log.error("delete failed", re);
-			throw re;
-		}
-	}
-
-	public Unittype merge(Unittype detachedInstance) {
-		log.debug("merging Unittype instance");
-		try {
-			Unittype result = (Unittype) getSession()
-					.merge(detachedInstance);
-			log.debug("merge successful");
-			return result;
-		} catch (RuntimeException re) {
-			log.error("merge failed", re);
-			throw re;
-		}
-	}
 
 	public Unittype findById(long id) {
 		log.debug("getting Unittype instance with id: " + id);

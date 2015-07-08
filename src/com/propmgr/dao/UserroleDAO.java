@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
-import org.hibernate.LockMode;
 import org.hibernate.criterion.Example;
 
 import com.propmgr.hibernate.SuperDAO;
@@ -18,63 +17,6 @@ import com.propmgr.hibernate.SuperDAO;
 public class UserroleDAO extends SuperDAO {
 
 	private static final Log log = LogFactory.getLog(UserroleDAO.class);
-
-	public void persist(Userrole transientInstance) {
-		log.debug("persisting Userrole instance");
-		try {
-			getSession().persist(transientInstance);
-			log.debug("persist successful");
-		} catch (RuntimeException re) {
-			log.error("persist failed", re);
-			throw re;
-		}
-	}
-
-	public void attachDirty(Userrole instance) {
-		log.debug("attaching dirty Userrole instance");
-		try {
-			getSession().saveOrUpdate(instance);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
-
-	public void attachClean(Userrole instance) {
-		log.debug("attaching clean Userrole instance");
-		try {
-			getSession().lock(instance, LockMode.NONE);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
-
-	public void delete(Userrole persistentInstance) {
-		log.debug("deleting Userrole instance");
-		try {
-			getSession().delete(persistentInstance);
-			log.debug("delete successful");
-		} catch (RuntimeException re) {
-			log.error("delete failed", re);
-			throw re;
-		}
-	}
-
-	public Userrole merge(Userrole detachedInstance) {
-		log.debug("merging Userrole instance");
-		try {
-			Userrole result = (Userrole) getSession()
-					.merge(detachedInstance);
-			log.debug("merge successful");
-			return result;
-		} catch (RuntimeException re) {
-			log.error("merge failed", re);
-			throw re;
-		}
-	}
 
 	public Userrole findById(long id) {
 		log.debug("getting Userrole instance with id: " + id);

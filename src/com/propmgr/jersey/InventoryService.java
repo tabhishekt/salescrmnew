@@ -64,7 +64,6 @@ import com.propmgr.dao.ProjectphaseDAO;
 import com.propmgr.dao.Refundmaster;
 import com.propmgr.dao.RefundmasterDAO;
 import com.propmgr.dao.Sourcemaster;
-import com.propmgr.dao.UnitClassificationmasterDAO;
 import com.propmgr.dao.Unitamenity;
 import com.propmgr.dao.UnitamenityDAO;
 import com.propmgr.dao.Unitbooking;
@@ -169,7 +168,6 @@ public class InventoryService {
 				ResourceUtil.deleteAddress(organization.getAddress());
 				ResourceUtil.deletePerson(organization.getPerson());
 				ResourceUtil.deleteContactInfo(organization.getPerson().getContactinfo());
-				organizationDAO.flushSession();
 			} else {
 				return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
 			}
@@ -222,8 +220,7 @@ public class InventoryService {
 			ResourceUtil.savePerson(formData, person, personContactinfo);
 			organization.setPerson(person);
 			
-			organizationDAO.save(organization);
-			organizationDAO.flushSession();
+			organizationDAO.saveOrUpdate(organization);
 		}
 		catch (Exception e) {
 			logger.error("", e);
@@ -292,8 +289,6 @@ public class InventoryService {
 				
 				projectDAO.delete(project);
 				ResourceUtil.deleteAddress(project.getAddress());
-				
-				projectDAO.flushSession();
 			} else {
 				return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
 			}
@@ -338,9 +333,7 @@ public class InventoryService {
 			project.setTotalphases(ResourceUtil.getFormDataValueAsLong(formData, "totalphases"));
 			project.setTermsandconditions(ResourceUtil.getFormDataValueAsClob(formData, "termsandconditions"));
 			
-			projectDAO.save(project);
-			projectDAO.flushSession();
-			
+			projectDAO.saveOrUpdate(project);
 		}
 		catch (Exception e) {
 			logger.error("", e);
@@ -402,7 +395,6 @@ public class InventoryService {
 			Projectbankaccount projectBankAccount = projectbankaccountDAO.findById(Long.parseLong(rowId));
 			if (projectBankAccount != null) {
 				projectbankaccountDAO.delete(projectBankAccount);
-				projectbankaccountDAO.flushSession();
 			} else {
 				return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
 			}
@@ -448,9 +440,7 @@ public class InventoryService {
 			projectBankAccount.setMicrcode(ResourceUtil.getFormDataValue(formData, "micrcode"));
 			projectBankAccount.setProjectmaster(project);
 			
-			projectbankaccountDAO.save(projectBankAccount);
-			projectbankaccountDAO.flushSession();
-			
+			projectbankaccountDAO.saveOrUpdate(projectBankAccount);
 		}
 		catch (Exception e) {
 			logger.error("", e);
@@ -533,7 +523,6 @@ public class InventoryService {
 			Projectphase projectphase = projectphaseDAO.findById(Long.parseLong(rowId));
 			if (projectphase != null) {
 				projectphaseDAO.delete(projectphase);
-				projectphaseDAO.flushSession();
 			} else {
 				return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
 			}
@@ -570,9 +559,7 @@ public class InventoryService {
 			projectphase.setProjectphasename(ResourceUtil.getFormDataValue(formData, "name"));
 			projectphase.setProjectphasedescription(ResourceUtil.getFormDataValueAsClob(formData, "description"));
 			projectphase.setProjectmaster(project);
-			projectphaseDAO.save(projectphase);
-			projectphaseDAO.flushSession();
-			
+			projectphaseDAO.saveOrUpdate(projectphase);
 		}
 		catch (Exception e) {
 			logger.error("", e);
@@ -634,7 +621,6 @@ public class InventoryService {
 			Projectbuilding projectbuilding = projectbuildingDAO.findById(Long.parseLong(rowId));
 			if (projectbuilding != null) {
 				projectbuildingDAO.delete(projectbuilding);
-				projectbuildingDAO.flushSession();
 			} else {
 				return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
 			}
@@ -677,9 +663,7 @@ public class InventoryService {
 			projectbuilding.setRemarks(ResourceUtil.getFormDataValueAsClob(formData, "remarks"));
 			projectbuilding.setHasmultiplepaymentschedules(ResourceUtil.getFormDataValueAsBoolean(formData, "hasmultiplepaymentschedule"));
 			projectbuilding.setWingname(ResourceUtil.getFormDataValue(formData, "wingname"));
-			projectbuildingDAO.save(projectbuilding);
-			projectbuildingDAO.flushSession();
-			
+			projectbuildingDAO.saveOrUpdate(projectbuilding);
 		}
 		catch (Exception e) {
 			logger.error("", e);
@@ -806,10 +790,8 @@ public class InventoryService {
 				
 				parkingmaster.setAvailable(available);
 				parkingmaster.setTotal(total);
-				parkingmasterDAO.save(parkingmaster);
+				parkingmasterDAO.saveOrUpdate(parkingmaster);
 			}
-			
-			parkingmasterDAO.flushSession();
 		}
 		catch (Exception e) {
 			logger.error("", e);
@@ -831,12 +813,12 @@ public class InventoryService {
 			for (Unitmaster unit : allUnits) {
 				result.add(ResourceUtil.getUnitFromDAO(unit));
 			} 
-			
+			HibernateConnection.getSession().clear();
 		} catch (Exception e) {
 			logger.error("", e);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
 		}
-		HibernateConnection.getSession().clear();
+		
 		int size = result.size();
 		return Response.ok(result).header("Content-Range", "items 0-" + (size - 1) + "/" + size).build();
 	}
@@ -879,7 +861,6 @@ public class InventoryService {
 				}
 				
 				unitmasterDAO.delete(unit);
-				unitmasterDAO.flushSession();
 			} else {
 				return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
 			}
@@ -1080,7 +1061,7 @@ public class InventoryService {
 					updateMade = true;
 					ResourceUtil.saveUnitPriceInformation(unit, unitpricepolicy, floorRise, 0, 0, 0, 0);
 					unit.setFloorrise(floorRise);
-					unitmasterDAO.save(unit);
+					unitmasterDAO.saveOrUpdate(unit);
 				} 
 			}
 			
@@ -1088,7 +1069,6 @@ public class InventoryService {
 				return Response.status(Response.Status.NOT_IMPLEMENTED).entity(new ApplicationException("No updates has been made. "
 						+ "This could be due to the fact that no unit of building qualifies for updation of floor rise.")).build();
 			}
-			unitmasterDAO.flushSession();
 		}
 		catch (Exception e) {
 			logger.error("", e);
@@ -1121,14 +1101,13 @@ public class InventoryService {
 					updateMade = true;
 					unit.setOthercharges(otherCharges);
 				}
-				unitmasterDAO.save(unit);
+				unitmasterDAO.saveOrUpdate(unit);
 			}
 			
 			if (!updateMade) {
 				return Response.status(Response.Status.NOT_IMPLEMENTED).entity(new ApplicationException("No updates has been made. "
 						+ "This could be due to the fact that no unit of building qualifies for updation unit charges.")).build();
 			}
-			unitmasterDAO.flushSession();
 		}
 		catch (Exception e) {
 			logger.error("", e);
@@ -1159,7 +1138,7 @@ public class InventoryService {
 				unit.setUnitpricepolicy(unitpricepolicy);
 				double floorRise = (unit.getFloorrise() == null) ? 0 : unit.getFloorrise();
 				ResourceUtil.saveUnitPriceInformation(unit, unitpricepolicy, floorRise, 0, 0, 0, 0);
-				unitmasterDAO.save(unit);
+				unitmasterDAO.saveOrUpdate(unit);
 			}
 			
 			HibernateConnection.getSession().flush();
@@ -1181,7 +1160,7 @@ public class InventoryService {
 		try {
 			Unitmaster unit = ResourceUtil.getUnitPOJO(formData);
 			unit.setRegistrationdone(true);
-			unitmasterDAO.flushSession();
+			unitmasterDAO.saveOrUpdate(unit);
 		}
 		catch (Exception e) {
 			logger.error("", e);
@@ -1195,12 +1174,12 @@ public class InventoryService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response modifyUnitClassification(MultivaluedMap<String, String> formData) {
 		UnitmasterDAO unitmasterDAO = new UnitmasterDAO();
-		UnitClassificationmasterDAO masterDAO = new UnitClassificationmasterDAO();
+		
 		try {
 			Unitmaster unit = ResourceUtil.getUnitPOJO(formData);
 			Unitclassificationmaster classification = ResourceUtil.getUnitClassificationPOJO(formData);
 			unit.setUnitclassificationmaster(classification);
-			unitmasterDAO.flushSession();
+			unitmasterDAO.saveOrUpdate(unit);
 		}
 		catch (Exception e) {
 			logger.error("", e);
@@ -1262,7 +1241,6 @@ public class InventoryService {
 			Unitpricepolicy unitPricePolicy = unitpricepolicyDAO.findById(Long.parseLong(rowId));
 			if (unitPricePolicy != null) {
 				unitpricepolicyDAO.delete(unitPricePolicy);
-				unitpricepolicyDAO.flushSession();
 			} else {
 				return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
 			}
@@ -1316,9 +1294,7 @@ public class InventoryService {
 			unitPricePolicy.setMaintenancecharge2(ResourceUtil.getFormDataValueAsDouble(formData, "maintenancecharge2"));
 			unitPricePolicy.setLegalcharge(ResourceUtil.getFormDataValueAsDouble(formData, "legalcharge"));
 			
-			unitpricepolicyDAO.save(unitPricePolicy);
-			unitpricepolicyDAO.flushSession();
-			
+			unitpricepolicyDAO.saveOrUpdate(unitPricePolicy);
 		}
 		catch (Exception e) {
 			logger.error("", e);
@@ -1352,11 +1328,9 @@ public class InventoryService {
 					amenitypricepolicy.setUnitpricepolicy(unitpricepolicy);
 					amenitypricepolicy.setAmenitycharge(amenityCharge);
 					
-					amenitypricepolicyDAO.save(amenitypricepolicy);
+					amenitypricepolicyDAO.saveOrUpdate(amenitypricepolicy);
 				}
 			}
-			
-			amenitypricepolicyDAO.flushSession();
 		}
 		catch (Exception e) {
 			logger.error("", e);
@@ -1421,7 +1395,6 @@ public class InventoryService {
 			Unitpaymentschedule paymentSchedule = unitpaymentscheduleDAO.findById(Long.parseLong(rowId));
 			if (paymentSchedule != null) {
 				unitpaymentscheduleDAO.delete(paymentSchedule);
-				unitpaymentscheduleDAO.flushSession();
 			} else {
 				return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
 			}
@@ -1463,9 +1436,7 @@ public class InventoryService {
 			paymentSchedule.setPercentamount(ResourceUtil.getFormDataValueAsDouble(formData, "percentamount"));
 			paymentSchedule.setProjectbuilding(projectbuilding);
 			
-			unitpaymentscheduleDAO.save(paymentSchedule);
-			unitpaymentscheduleDAO.flushSession();
-			
+			unitpaymentscheduleDAO.saveOrUpdate(paymentSchedule);
 		}
 		catch (Exception e) {
 			logger.error("", e);
@@ -1680,7 +1651,6 @@ public class InventoryService {
 				}
 				
 				unitbookingDAO.delete(unitbooking);
-				unitbookingDAO.flushSession();
 			} else {
 				return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
 			}
@@ -1730,7 +1700,7 @@ public class InventoryService {
 				} else {
 					parkingmaster.setAvailable(parkingmaster.getAvailable() - 1);
 					parkingmaster.setBooked(parkingmaster.getBooked() + 1);
-					parkingmasterDAO.save(parkingmaster);
+					parkingmasterDAO.saveOrUpdate(parkingmaster);
 				}
 			}
 			
@@ -1760,7 +1730,7 @@ public class InventoryService {
 			unitbooking.setBookingdiscount(discount);
 			unitbooking.setDeductiononothercharges(deductionOnOtherCharges);
 			unitbooking.setIscancelled(false);
-			unitbookingDAO.save(unitbooking);
+			unitbookingDAO.saveOrUpdate(unitbooking);
 			
 			// Prices may have been modified due to discount and deductionOnOtherCharges
 			double floorRise = (unit.getFloorrise() == null) ? 0 : unit.getFloorrise();
@@ -1772,9 +1742,7 @@ public class InventoryService {
 			unit.setParkingarea(parkingAreaDouble);
 			ResourceUtil.saveUnitPriceInformation(unit, unit.getUnitpricepolicy(), floorRise, discount, 
 					deductionOnOtherCharges, parkingTypeReadyReckoner, parkingAreaDouble);
-			unitmasterDAO.save(unit);
-			unitbookingDAO.flushSession();
-			
+			unitmasterDAO.saveOrUpdate(unit);
 			result = ResourceUtil.getUnitbookingFromDAO(unitbooking);
 		}
 		catch (Exception e) {
@@ -1813,7 +1781,7 @@ public class InventoryService {
 				refundmaster.setRefundamount(refundamount);
 				refundmaster.setRefunddate(Calendar.getInstance().getTime());
 				refundmaster.setUnitbooking(unitbooking);
-				refundmasterDAO.save(refundmaster);
+				refundmasterDAO.saveOrUpdate(refundmaster);
 			}
 			
 			unitbooking.setCanceldeduction(deduction);
@@ -1822,8 +1790,7 @@ public class InventoryService {
 			unitbooking.setIscancelled(true);
 			unitbooking.setUsermasterByCancelledby(user);
 			
-			unitbookingDAO.save(unitbooking);
-			unitbookingDAO.flushSession();
+			unitbookingDAO.saveOrUpdate(unitbooking);
 		}
 		catch (Exception e) {
 			logger.error("", e);
@@ -1870,7 +1837,7 @@ public class InventoryService {
 				unitmodificationstatus = unitmodificationstatusDAO.findLatestByBookingIdAndState(unitbooking.getUnitbookingid(), unitmodificationstateID);
 			} else {
 				unitbooking.setUnitmodificationdetails(ResourceUtil.getFormDataValueAsClob(formData, "unitmodificationdetails"));
-				unitbookingDAO.save(unitbooking);
+				unitbookingDAO.saveOrUpdate(unitbooking);
 			}
 			
 			if (unitmodificationstatus == null) {
@@ -1882,9 +1849,7 @@ public class InventoryService {
 			unitmodificationstatus.setStatusdate(Calendar.getInstance().getTime());
 			unitmodificationstatus.setStatuscomment(ResourceUtil.getFormDataValueAsClob(formData, "unitmodificationstatuscomment"));
 			unitmodificationstatus.setUsermaster(user);
-			unitmodificationstatusDAO.save(unitmodificationstatus);
-			
-			unitmodificationstatusDAO.flushSession();
+			unitmodificationstatusDAO.saveOrUpdate(unitmodificationstatus);
 		}
 		catch (Exception e) {
 			logger.error("", e);
@@ -2079,7 +2044,6 @@ public class InventoryService {
 				}
 				
 				paymentmasterDAO.delete(payment);
-				paymentmasterDAO.flushSession();
 			} else {
 				return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
 			}
@@ -2156,7 +2120,7 @@ public class InventoryService {
 			payment.setCardholdername(ResourceUtil.getFormDataValue(formData, "cardholdername"));
 			payment.setCardtype(ResourceUtil.getFormDataValue(formData, "cardtype"));
 			
-			paymentmasterDAO.save(payment);
+			paymentmasterDAO.saveOrUpdate(payment);
 			
 			String paymentStatusFormValue = ResourceUtil.getFormDataValue(formData, "paymentstatus");
 			if (paymentStatusFormValue != null && paymentStatusFormValue.length() > 0) {
@@ -2171,7 +2135,7 @@ public class InventoryService {
 				paymentstatus.setStatusdate(Calendar.getInstance().getTime());
 				paymentstatus.setStatuscomment(ResourceUtil.getFormDataValueAsClob(formData, "paymentstatuscomment"));
 				paymentstatus.setUsermaster(user);
-				paymentstatusDAO.save(paymentstatus);
+				paymentstatusDAO.saveOrUpdate(paymentstatus);
 			}
 			
 			List<Paymentstage> paymentstageList = paymentstageDAO.findByPayment(payment.getPaymentid());
@@ -2185,12 +2149,9 @@ public class InventoryService {
 					 Paymentstage paymentstage = new Paymentstage();
 					 paymentstage.setPaymentstagetype(Integer.parseInt(value));
 					 paymentstage.setPaymentmaster(payment);
-					 paymentstageDAO.save(paymentstage);
+					 paymentstageDAO.saveOrUpdate(paymentstage);
 				 }
 			 }
-			 
-			paymentmasterDAO.flushSession();
-			
 		}
 		catch (Exception e) {
 			logger.error("", e);
@@ -2317,7 +2278,6 @@ public class InventoryService {
 					enquirycommentDAO.delete(enquirycomment);
 				}
 				enquiryDAO.delete(enquiry);
-				enquiryDAO.flushSession();
 			} else {
 				return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
 			}
@@ -2364,7 +2324,7 @@ public class InventoryService {
 				enquiry.setUnittype(interest);
 				enquiry.setProbability(ResourceUtil.getFormDataValueAsInt(formData, "probability"));
 				
-				enquiryDAO.save(enquiry);
+				enquiryDAO.saveOrUpdate(enquiry);
 			}
 			
 			enquirycomment.setVisitdate(Calendar.getInstance().getTime());
@@ -2373,9 +2333,7 @@ public class InventoryService {
 			enquirycomment.setFollowupdate(ResourceUtil.getFormDataValueAsDate(formData, "followupdate"));
 			enquirycomment.setUsermaster(user);
 			
-			enquirycommentDAO.save(enquirycomment);
-			enquiryDAO.flushSession();
-			
+			enquirycommentDAO.saveOrUpdate(enquirycomment);
 		}
 		catch (Exception e) {
 			logger.error("", e);

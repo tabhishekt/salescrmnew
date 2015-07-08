@@ -1,12 +1,10 @@
 package com.propmgr.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
-import org.hibernate.LockMode;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Example;
@@ -20,65 +18,7 @@ import com.propmgr.hibernate.SuperDAO;
  */
 public class AmenitypricepolicyDAO extends SuperDAO {
 
-	private static final Log log = LogFactory
-			.getLog(AmenitypricepolicyDAO.class);
-
-
-	public void persist(Amenitypricepolicy transientInstance) {
-		log.debug("persisting Amenitypricepolicy instance");
-		try {
-			getSession().persist(transientInstance);
-			log.debug("persist successful");
-		} catch (RuntimeException re) {
-			log.error("persist failed", re);
-			throw re;
-		}
-	}
-
-	public void attachDirty(Amenitypricepolicy instance) {
-		log.debug("attaching dirty Amenitypricepolicy instance");
-		try {
-			getSession().saveOrUpdate(instance);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
-
-	public void attachClean(Amenitypricepolicy instance) {
-		log.debug("attaching clean Amenitypricepolicy instance");
-		try {
-			getSession().lock(instance, LockMode.NONE);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
-
-	public void delete(Amenitypricepolicy persistentInstance) {
-		log.debug("deleting Amenitypricepolicy instance");
-		try {
-			getSession().delete(persistentInstance);
-			log.debug("delete successful");
-		} catch (RuntimeException re) {
-			log.error("delete failed", re);
-			throw re;
-		}
-	}
-
-	public Amenitypricepolicy merge(Amenitypricepolicy detachedInstance) {
-		log.debug("merging Amenitypricepolicy instance");
-		try {
-			Amenitypricepolicy result = (Amenitypricepolicy) getSession().merge(detachedInstance);
-			log.debug("merge successful");
-			return result;
-		} catch (RuntimeException re) {
-			log.error("merge failed", re);
-			throw re;
-		}
-	}
+	private static final Log log = LogFactory.getLog(AmenitypricepolicyDAO.class);
 
 	public Amenitypricepolicy findById(java.lang.Long id) {
 		log.debug("getting Amenitypricepolicy instance with id: " + id);
