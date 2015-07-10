@@ -21,6 +21,9 @@ define([
 			if (this.userId) {
 				this.user.set("value", this.userId);
 			}
+	       	this.personaldetails.dateofbirth.set("required", false);
+	       	this.address.zipcode.set("required", false);
+			
 		},
 		
 		setData: function (data) {
@@ -61,7 +64,10 @@ define([
 		},
 		
 		validate: function() {
-        	var isValid = this.inherited(arguments);
+        	var isValid = this.inherited(arguments);4
+        	console.log('test');
+        	console.log(this.personaldetails.dateofbirth);
+        	this.personaldetails.dateofbirth.setAttribute("data-dojo-props", "required:false");
         	
         	if (isValid) {
         		var phoneNumber = this.contactinfo.personphone.get("value");
