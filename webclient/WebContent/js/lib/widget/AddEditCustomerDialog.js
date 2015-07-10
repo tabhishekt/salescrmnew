@@ -64,9 +64,7 @@ define([
 		},
 		
 		validate: function() {
-        	var isValid = this.inherited(arguments);4
-        	console.log('test');
-        	console.log(this.personaldetails.dateofbirth);
+        	var isValid = this.inherited(arguments);
         	this.personaldetails.dateofbirth.setAttribute("data-dojo-props", "required:false");
         	
         	if (isValid) {
