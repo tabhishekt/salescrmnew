@@ -18,9 +18,19 @@ define([
 		},
 		
 		show: function() {
+			
+			if(this.gridHandler)
+			{
+				while (dataGridEnquiryComment.hasChildNodes()) {
+					dataGridEnquiryComment.removeChild(dataGridEnquiryComment.lastChild);
+				}
+				this.startup();
+				
+			}
 			this.inherited(arguments);
 			this.gridHandler.resizeGrid(this.dimensions[0]*0.95, this.dimensions[1]*0.5);
 			this.gridHandler.refreshGrid();
+			
 		},
 		
 		formatDate : function (value) {
@@ -42,6 +52,12 @@ define([
 			  } catch (e) {
 			    console.error('error decorating date: ' + e.toString());
 			  }
+		},
+		
+		removeGrid: function(){
+			while (dataGridEnquiryComment.hasChildNodes()) {
+				dataGridEnquiryComment.removeChild(node.lastChild);
+			}
 		},
 		
 		startup: function() {
