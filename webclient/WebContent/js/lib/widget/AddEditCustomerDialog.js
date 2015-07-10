@@ -22,7 +22,7 @@ define([
 				this.user.set("value", this.userId);
 			}
 	       	this.personaldetails.dateofbirth.set("required", false);
-	       	this.address.zipcode.set("required", false);
+	       	this.address.zipcode.set("required", false); 
 			
 		},
 		
