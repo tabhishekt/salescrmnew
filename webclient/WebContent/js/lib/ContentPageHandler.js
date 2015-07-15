@@ -223,15 +223,26 @@ define(
               		}
             	} else if (this.page == "unitbooking") {
             		if (this.userData) {
-            			return [
- 	   	   			           ["delete", "Delete", "Delete"],
- 	   	   			           ["payment", "Manage Payment", "NewPage"],
- 	   	   			           ["cancelbooking", "Cancel Booking", "NewPage"],
- 	   	   			           ["unitmodificationrequest", "Unit Modification Request", "NewPage"],
- 	   	   			           ["printbookingform", "Print Booking Form", "NewPage"],
- 	   	   			           ["printdemandletter", "Print Demand Letter", "NewPage"],
- 	   	   			           ["refresh", "Refresh", "NewPage"]
- 	   	   			       ];
+            			if (this.userData.admin == true) {
+            				return [
+      	   	   			           ["delete", "Delete", "Delete"],
+      	   	   			           ["payment", "Manage Payment", "NewPage"],
+      	   	   			           ["cancelbooking", "Cancel Booking", "NewPage"],
+      	   	   			           ["unitmodificationrequest", "Unit Modification Request", "NewPage"],
+      	   	   			           ["printbookingform", "Print Booking Form", "NewPage"],
+      	   	   			           ["printdemandletter", "Print Demand Letter", "NewPage"],
+      	   	   			           ["refresh", "Refresh", "NewPage"]
+      	   	   			       ];
+            			} else {
+            				return [
+      	   	   			           ["payment", "Manage Payment", "NewPage"],
+      	   	   			           ["cancelbooking", "Cancel Booking", "NewPage"],
+      	   	   			           ["unitmodificationrequest", "Unit Modification Request", "NewPage"],
+      	   	   			           ["printbookingform", "Print Booking Form", "NewPage"],
+      	   	   			           ["printdemandletter", "Print Demand Letter", "NewPage"],
+      	   	   			           ["refresh", "Refresh", "NewPage"]
+      	   	   			       ];
+            			}
     	   	   		} else {
     	   	   			return [
     	   			               ["refresh", "Refresh", "NewPage"]

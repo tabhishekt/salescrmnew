@@ -245,6 +245,10 @@ define(
     						}
     						this.editRecord(this.getURL("get") + "?rowId=" + rowData.id, rowData);
     					} else if (action[0] == "delete") {
+    						if (this.page == "unitbooking" && rowData.userId != this.userId) {
+    							this.updateMessage("You cannot delete this booking made by \"" + rowData.userDisplayName + "\". Please delete only bookings made by you.", "error");
+    							return;
+    						}
     						var gridHandler = this;
     						var deferred = new Deferred();
 	        	        	var options = {

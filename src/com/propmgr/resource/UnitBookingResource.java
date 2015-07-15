@@ -2,6 +2,7 @@ package com.propmgr.resource;
 
 public class UnitBookingResource {
 	private long id;
+	private long userId;
 	private long buildingId;
 	private long bookingFormNumber;
 	private String customerDisplayName;
@@ -28,7 +29,7 @@ public class UnitBookingResource {
 	private String unitModificationStatusDate;
 	private String unitModificationStatusComment;
 	
-	public UnitBookingResource(long id, long buildingId, long bookingFormNumber,
+	public UnitBookingResource(long id, long userId, long buildingId, long bookingFormNumber,
 			String customerDisplayName, String unitDisplayName,
 			String userDisplayName, String bookingDate, double bookingAmount, double discount,
 			double deductionOnOtherCharges, String comment, double totalUnitCost,
@@ -40,6 +41,7 @@ public class UnitBookingResource {
 			String unitModificationStatusComment) {
 		super();
 		this.id = id;
+		this.userId = userId;
 		this.buildingId = buildingId;
 		this.bookingFormNumber = bookingFormNumber;
 		this.customerDisplayName = customerDisplayName;
@@ -69,6 +71,10 @@ public class UnitBookingResource {
 
 	public long getId() {
 		return id;
+	}
+
+	public long getUserId() {
+		return userId;
 	}
 
 	public long getBuildingId() {

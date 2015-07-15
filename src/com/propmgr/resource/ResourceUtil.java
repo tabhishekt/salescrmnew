@@ -300,8 +300,8 @@ public class ResourceUtil {
 					aUnitmodificationState.getUnitmodificationstatename());
 		}
 				
-		return new UnitBookingResource(unitbooking.getUnitbookingid(), buildingId, unitbooking.getBookingformnumber(),
-			getCustomerDisplayName(customer), getUnitDisplayName(unit), 
+		return new UnitBookingResource(unitbooking.getUnitbookingid(), user.getUsermasterid(), 
+				buildingId, unitbooking.getBookingformnumber(), getCustomerDisplayName(customer), getUnitDisplayName(unit), 
 			getUserDisplayName(user), convertDateToString(unitbooking.getBookingdate()), unit.getBookingamount(), 
 			bookingDiscount, deductionOnOtherCharges, convertClobToString(unitbooking.getBookingcomment()), priceWithoutDiscount.getTotalCost(),
 			priceWithDiscount.getTotalCost(), totalPaymentReceived, balancePayment, unitbooking.getIscancelled(), cancelUserDisplayName,

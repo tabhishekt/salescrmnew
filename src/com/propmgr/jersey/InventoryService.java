@@ -1617,6 +1617,7 @@ public class InventoryService {
 		RefundmasterDAO refundmasterDAO = new RefundmasterDAO();
 		PaymentstatusDAO paymentstatusDAO = new PaymentstatusDAO();
 		PaymentstageDAO paymentstageDAO = new PaymentstageDAO();
+		ParkingmasterDAO parkingmasterDAO = new ParkingmasterDAO();
 		UnitmodificationstatusDAO unitmodificationstatusDAO = new UnitmodificationstatusDAO();
 		
 		try {
@@ -1648,6 +1649,14 @@ public class InventoryService {
 						
 						paymentmasterDAO.delete(payment);
 					}
+				}
+				
+				// Release parking
+				Parkingmaster parkingmaster = unitbooking.getParkingmaster();
+				if (parkingmaster != null) {
+					parkingmaster.setAvailable(parkingmaster.getAvailable() + 1);
+					parkingmaster.setBooked(parkingmaster.getBooked() - 1);
+					parkingmasterDAO.saveOrUpdate(parkingmaster);
 				}
 				
 				unitbookingDAO.delete(unitbooking);
@@ -1760,6 +1769,7 @@ public class InventoryService {
 		UnitbookingDAO unitbookingDAO = new UnitbookingDAO();
 		RefundmasterDAO refundmasterDAO = new RefundmasterDAO();
 		Refundmaster refundmaster = new Refundmaster();
+		ParkingmasterDAO parkingmasterDAO = new ParkingmasterDAO();
 		
 		try {
 			Unitbooking unitbooking = ResourceUtil.getUnitbookingPOJO(formData);
@@ -1782,6 +1792,14 @@ public class InventoryService {
 				refundmaster.setRefunddate(Calendar.getInstance().getTime());
 				refundmaster.setUnitbooking(unitbooking);
 				refundmasterDAO.saveOrUpdate(refundmaster);
+			}
+			
+			// Release parking
+			Parkingmaster parkingmaster = unitbooking.getParkingmaster();
+			if (parkingmaster != null) {
+				parkingmaster.setAvailable(parkingmaster.getAvailable() + 1);
+				parkingmaster.setBooked(parkingmaster.getBooked() - 1);
+				parkingmasterDAO.saveOrUpdate(parkingmaster);
 			}
 			
 			unitbooking.setCanceldeduction(deduction);

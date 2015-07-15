@@ -42,5 +42,13 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="webclient/WebContent/WEB-INF/lib/h2-1.3.176.jar"/>
 	<classpathentry kind="lib" path="webclient/WebContent/WEB-INF/lib/jackson-datatype-hibernate4-2.4.3.jar"/>
+	<classpathentry kind="lib" path="webclient/WebContent/WEB-INF/lib/commons-beanutils-1.8.0.jar"/>
+	<classpathentry kind="lib" path="webclient/WebContent/WEB-INF/lib/commons-digester-1.8.jar"/>
+	<classpathentry kind="lib" path="webclient/WebContent/WEB-INF/lib/itext-pdfa-5.5.3.jar"/>
+	<classpathentry kind="lib" path="webclient/WebContent/WEB-INF/lib/itext-xtra-5.5.3.jar"/>
+	<classpathentry kind="lib" path="webclient/WebContent/WEB-INF/lib/itextpdf-5.5.3.jar"/>
+	<classpathentry kind="lib" path="webclient/WebContent/WEB-INF/lib/jasperreports-6.0.0.jar"/>
+	<classpathentry kind="lib" path="webclient/WebContent/WEB-INF/lib/jasperreports-javaflow-6.1.0.jar"/>
+	<classpathentry kind="lib" path="webclient/WebContent/WEB-INF/lib/jnp-client.jar"/>
 	<classpathentry kind="output" path="webclient/WebContent/WEB-INF/classes"/>
 </classpath>

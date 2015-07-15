@@ -105,6 +105,11 @@
             	this.baserate.innerHTML = this.formatCurrency(data.priceDetails.baserate) + " /sq ft";
             	this.reckonerrate.innerHTML = this.formatCurrency(data.priceDetails.readyreckonerrate) + " /sq mt";
             	this.discount.innerHTML = this.formatCurrency(data.priceDetails.discount) + " /sq ft";
+            	if (data.unit.amenities.length > 0) {
+            		this.amenitiesfacing.innerHTML = "Yes"
+            	} else {
+            		this.amenitiesfacing.innerHTML = "No"
+            	}
             	this.amenitycharges.innerHTML = this.formatCurrency(data.priceDetails.amenityCharges) + " /sq ft";
             	this.unitnumber.innerHTML = data.unit.unitNumber;
             	if (data.unit.floorRise > 0) {
@@ -324,7 +329,11 @@
 					this.createSpan(td6, payment.altReceiptNumber);
 					this.createSpan(td7, payment.paymentTypeName);
 					this.createSpan(td8, this.formatCurrency(payment.receiptAmount));
-					this.createSpan(td9, payment.paymentStatus.name);
+					if (payment.paymentStatus != null) {
+						this.createSpan(td9, payment.paymentStatus.name);	
+					} else {
+						this.createSpan(td9, "Not available");
+					}
 				}
             };
             
