@@ -39,7 +39,7 @@ define([
 		updateBookingDetails : function () {
 			var widget = this;
 			var promise = request.get('../rest/json/data/inventory/unitbooking/get?rowId=' + this.unitbookingId, {
- 				timeout: 2000,
+ 				timeout: 5000,
  				handleAs: "json"
  			});
  			

@@ -16,9 +16,11 @@ public class HibernateConnection {
     // the logger for this class
     private static final Log logger = LogFactory.getLog(HibernateConnection.class);
 
-    private static final ThreadLocal threadSession = new ThreadLocal();
+    private static final ThreadLocal<SessionFactory> threadSessionFactory = new ThreadLocal<SessionFactory>();
+    
+    private static final ThreadLocal<Session> threadSession = new ThreadLocal<Session>();
 
-    private static final ThreadLocal threadTransaction = new ThreadLocal();
+    private static final ThreadLocal<Transaction> threadTransaction = new ThreadLocal<Transaction>();
 
 	
 
@@ -33,11 +35,16 @@ public class HibernateConnection {
     }
 
     public static Session getSession() {
-        Session s = (Session) threadSession.get();
+        Session s = threadSession.get();
+        SessionFactory sf = threadSessionFactory.get();
         // Open a new, if this thread has none yet
         try {
             if (s == null) {
-                s = getSessionFactory().openSession();
+            	if (sf == null) {
+            		sf = getSessionFactory();
+            		threadSessionFactory.set(sf);
+            	}
+                s = sf.openSession();
                 setIsolationLevel(s); // Set the isolation from the configuration
                 threadSession.set(s);
             }else { //This was commented for some reason
@@ -91,7 +98,7 @@ public class HibernateConnection {
 
     public static void closeSession() {
         try {
-            Session s = (Session) threadSession.get();
+            Session s = threadSession.get();
             threadSession.set(null);
             if (s != null && s.isOpen())
                 s.close();
@@ -103,7 +110,7 @@ public class HibernateConnection {
     }
 
     public static void beginTransaction() {
-        Transaction tx = (Transaction) threadTransaction.get();
+        Transaction tx = threadTransaction.get();
         try {
             if (tx == null) {
                 tx = getSession().beginTransaction();
@@ -115,7 +122,7 @@ public class HibernateConnection {
     }
 
     public static void commitTransaction() {
-        Transaction tx = (Transaction) threadTransaction.get();
+        Transaction tx = threadTransaction.get();
         try {
             if (tx != null && !tx.wasCommitted() && !tx.wasRolledBack()) {
                 tx.commit();
@@ -130,7 +137,7 @@ public class HibernateConnection {
     }
 
     public static void rollbackTransaction() {
-        Transaction tx = (Transaction) threadTransaction.get();
+        Transaction tx = threadTransaction.get();
         try {
             threadTransaction.set(null);
             if (tx != null && !tx.wasCommitted() && !tx.wasRolledBack()) {

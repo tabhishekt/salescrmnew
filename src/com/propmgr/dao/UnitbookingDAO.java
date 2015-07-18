@@ -153,6 +153,21 @@ public class UnitbookingDAO extends SuperDAO {
 		return null;
 	}
 	
+	public List<Unitbooking> findAllBookingsByProject(long projectId) {
+		Session hbmSession = getSession();
+		
+		try {
+			String queryString = "from Unitbooking u where u.unitmaster.projectbuilding.projectphase.projectmaster.projectid = " + projectId;
+			Query query = hbmSession.createQuery(queryString);
+			
+			return query.list ();
+		} catch (Exception e) {
+			log.error ("", e);
+		}
+		
+		return null;
+	}
+	
 	@Override
 	protected Object getPojoObj() {
 		return new Unitbooking();

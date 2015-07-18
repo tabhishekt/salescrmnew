@@ -261,7 +261,9 @@ public class ResourceUtil {
 	public static UnitBookingResource getUnitbookingFromDAO(Unitbooking unitbooking)  throws SQLException, IOException {
 		UnitmodificationstatusDAO unitmodificationstatusDAO = new UnitmodificationstatusDAO();
 		Unitmaster unit = unitbooking.getUnitmaster();
-		long buildingId = unit.getProjectbuilding().getProjectbuildingid();
+		Projectbuilding projectbuilding = unit.getProjectbuilding();
+		long buildingId = projectbuilding.getProjectbuildingid();
+		long projectId = projectbuilding.getProjectphase().getProjectmaster().getProjectid();
 		Customermaster customer = unitbooking.getCustomermaster();
 		Usermaster user = unitbooking.getUsermasterByBookedby();
 		double bookingDiscount = (unitbooking.getBookingdiscount() == null) ? 0 : unitbooking.getBookingdiscount();
@@ -301,7 +303,7 @@ public class ResourceUtil {
 		}
 				
 		return new UnitBookingResource(unitbooking.getUnitbookingid(), user.getUsermasterid(), 
-				buildingId, unitbooking.getBookingformnumber(), getCustomerDisplayName(customer), getUnitDisplayName(unit), 
+				buildingId, projectId, unitbooking.getBookingformnumber(), getCustomerDisplayName(customer), getUnitDisplayName(unit), 
 			getUserDisplayName(user), convertDateToString(unitbooking.getBookingdate()), unit.getBookingamount(), 
 			bookingDiscount, deductionOnOtherCharges, convertClobToString(unitbooking.getBookingcomment()), priceWithoutDiscount.getTotalCost(),
 			priceWithDiscount.getTotalCost(), totalPaymentReceived, balancePayment, unitbooking.getIscancelled(), cancelUserDisplayName,

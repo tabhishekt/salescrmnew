@@ -271,7 +271,7 @@ define(
     					} else if (action[0] == "unitpaymentschedule") {
     						window.location = "contentTabPage.jsp?page=" + action[0] + "&buildingId=" + rowData.id + "&buildingName=" + rowData.name;
     					} else if (action[0] == "payment") {
-    						window.location = "contentTabPage.jsp?page=" + action[0] + "&unitbookingId=" + rowData.id + "&buildingId=" + rowData.buildingId + "&unitInfo=" + rowData.unitDisplayName;
+    						window.location = "contentTabPage.jsp?page=" + action[0] + "&unitbookingId=" + rowData.id + "&buildingId=" + rowData.buildingId + "&projectId=" + rowData.projectId + "&unitInfo=" + rowData.unitDisplayName;
     					} else if (action[0] == "enquiry") {
     						window.location = "contentTabPage.jsp?page=" + action[0] + "&customerId=" + rowData.id + "&customerName=" + rowData.displayName;
     					} else if (action[0] == "createbooking") {
@@ -472,8 +472,8 @@ define(
                 }
 				if (this.page == "payment") {
 					var gridHandler = this;
-	    			var promise = request.get(this.getURL("get") + "/receiptnumber?unitbookingId=" + this.unitbookingId, {
-	       				timeout: 2000,
+	    			var promise = request.get(this.getURL("get") + "/receiptnumber?projectId=" + this.projectId, {
+	       				timeout: 5000,
 	       				handleAs: "json"
 	       			});
 	       			
@@ -494,7 +494,7 @@ define(
     		editRecord : function(url, rowData) {
     			var gridHandler = this;
     			var promise = request.get(url, {
-       				timeout: 2000,
+       				timeout: 5000,
        				handleAs: "json"
        			});
        			
@@ -526,7 +526,7 @@ define(
     		deleteRecord : function(url) {
     			var gridHandler = this;
     			var promise = request.del(url, {
-     				timeout: 2000,
+     				timeout: 5000,
      				handleAs: "json"
      			});
      			
@@ -552,7 +552,7 @@ define(
      	   		if (this.page == "payment") {
      	   			domClass.remove(overallPaymentDetailsDiv);
 	    			var promise = request.get("../rest/json/data/inventory/unitbooking/get?rowId=" + this.unitbookingId, {
-	       				timeout: 2000,
+	       				timeout: 5000,
 	       				handleAs: "json"
 	       			});
 	       			

@@ -59,7 +59,7 @@ public class HibernateUtil {
         String sfName = configuration.getProperty(Environment.SESSION_FACTORY_NAME);
         
         if ( sfName != null) {
-            log.info("Looking up SessionFactory ["+sfName+"] in JNDI.");
+           log.debug("Looking up SessionFactory ["+sfName+"] in JNDI.");
             try {
                 sf = (SessionFactory) new InitialContext().lookup(sfName);
             } catch (NamingException ex) {

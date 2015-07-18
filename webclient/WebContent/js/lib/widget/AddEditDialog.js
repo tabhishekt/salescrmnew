@@ -101,13 +101,14 @@ define([
 		onSubmit: function(){
 			 this.inherited(arguments);
 			 var widget = this;
+			 this.submitButton.setDisabled(true);
              if (this.validate()) {
             	widget.setStatus(null);
 				widget.setMessage(null);
             	
      			var promise = request.post(this.url, {
      				data: domForm.toObject(this.codetableForm.id),
-     				timeout: 2000,
+     				timeout: 5000,
      				handleAs: "json"
      			});
      			
@@ -118,6 +119,7 @@ define([
      					(widget.mode == "new") ? widget.setMessage("Record successfully added.") 
      							: widget.setMessage("Record successfully updated.");  
      					widget.updatePage();
+     					widget.submitButton.setDisabled(false);
      				},
      				function(error) {
      					widget.setStatus("error");
@@ -125,6 +127,7 @@ define([
      							: widget.setMessage("Record updation error: " + error.response.data.message);
      					
      					widget.updatePage();
+     					widget.submitButton.setDisabled(false);
      				}
      			);
              } else {

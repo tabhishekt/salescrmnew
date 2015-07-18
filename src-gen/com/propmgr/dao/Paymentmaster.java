@@ -1,6 +1,6 @@
 package com.propmgr.dao;
 
-// Generated Jul 1, 2015 11:15:39 PM by Hibernate Tools 3.4.0.CR1
+// Generated Jul 18, 2015 11:02:19 PM by Hibernate Tools 3.4.0.CR1
 
 import java.sql.Clob;
 import java.util.Date;
@@ -31,6 +31,7 @@ public class Paymentmaster implements java.io.Serializable {
 	private String cardtype;
 	private boolean editable;
 	private String utrnumber;
+	private Long project;
 	private Set paymentstatuses = new HashSet(0);
 	private Set paymentstages = new HashSet(0);
 
@@ -54,8 +55,8 @@ public class Paymentmaster implements java.io.Serializable {
 			Date paymentreceiveddate, String bankname, String bankbranch,
 			String chequenumber, Date chequedate, String cardnumber,
 			String cardexpirydate, String cardholdername, String cardtype,
-			boolean editable, String utrnumber, Set paymentstatuses,
-			Set paymentstages) {
+			boolean editable, String utrnumber, Long project,
+			Set paymentstatuses, Set paymentstages) {
 		this.usermaster = usermaster;
 		this.unitbooking = unitbooking;
 		this.paymenttype = paymenttype;
@@ -74,6 +75,7 @@ public class Paymentmaster implements java.io.Serializable {
 		this.cardtype = cardtype;
 		this.editable = editable;
 		this.utrnumber = utrnumber;
+		this.project = project;
 		this.paymentstatuses = paymentstatuses;
 		this.paymentstages = paymentstages;
 	}
@@ -228,6 +230,14 @@ public class Paymentmaster implements java.io.Serializable {
 
 	public void setUtrnumber(String utrnumber) {
 		this.utrnumber = utrnumber;
+	}
+
+	public Long getProject() {
+		return this.project;
+	}
+
+	public void setProject(Long project) {
+		this.project = project;
 	}
 
 	public Set getPaymentstatuses() {

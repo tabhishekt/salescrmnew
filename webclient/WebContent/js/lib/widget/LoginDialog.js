@@ -25,7 +25,7 @@ define([
             if (this.validate()) {
     			var promise = request.post(this.url, {
     				data: domForm.toObject(this.codetableForm.id),
-    				timeout: 2000,
+    				timeout: 5000,
     				handleAs: "json"
     			});
     			

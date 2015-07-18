@@ -31,7 +31,7 @@ define([
 			var dialog = this;
 			var promise = request.get("../rest/json/data/inventory/unit/get/pricedetail?rowId=" + 
 					this.unitId + "&discount=" + this.booingdiscount + "&deductiononothercharges=" + this.deductiononothercharges, {
-   				timeout: 2000,
+   				timeout: 5000,
    				handleAs: "json"
    			});
    			

@@ -74,7 +74,7 @@ public class PaymentmasterDAO extends SuperDAO {
 		List<Long> resultList = null;
 		try {
 			String queryString = "Select max(receiptnumber) from Paymentmaster p "
-					+ "where p.unitbooking.unitmaster.projectbuilding.projectphase.projectmaster.projectid = " + projectId;
+					+ "where p.project = " + projectId;
 			
 			Query query = hbmSession.createQuery(queryString);
 			resultList = query.list ();
@@ -126,7 +126,7 @@ public class PaymentmasterDAO extends SuperDAO {
 		
 		try {
 			String queryString = "from Paymentmaster u where u.altreceiptnumber = " 
-				+ altReceiptNumber + " and u.unitbooking.unitmaster.projectbuilding.projectphase.projectmaster.projectid = " + projectId;
+				+ altReceiptNumber + " and u.project = " + projectId;
 			Query query = hbmSession.createQuery(queryString);
 			resultList = query.list ();
 			if (resultList.size() > 0) {

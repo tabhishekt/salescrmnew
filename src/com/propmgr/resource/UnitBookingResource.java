@@ -4,6 +4,7 @@ public class UnitBookingResource {
 	private long id;
 	private long userId;
 	private long buildingId;
+	private long projectId;
 	private long bookingFormNumber;
 	private String customerDisplayName;
 	private String unitDisplayName;
@@ -29,8 +30,8 @@ public class UnitBookingResource {
 	private String unitModificationStatusDate;
 	private String unitModificationStatusComment;
 	
-	public UnitBookingResource(long id, long userId, long buildingId, long bookingFormNumber,
-			String customerDisplayName, String unitDisplayName,
+	public UnitBookingResource(long id, long userId, long buildingId, long projectId, 
+			long bookingFormNumber, String customerDisplayName, String unitDisplayName,
 			String userDisplayName, String bookingDate, double bookingAmount, double discount,
 			double deductionOnOtherCharges, String comment, double totalUnitCost,
 			double totalUnitCostWithDiscount, double totalPaymentReceived,
@@ -43,6 +44,7 @@ public class UnitBookingResource {
 		this.id = id;
 		this.userId = userId;
 		this.buildingId = buildingId;
+		this.projectId = projectId;
 		this.bookingFormNumber = bookingFormNumber;
 		this.customerDisplayName = customerDisplayName;
 		this.unitDisplayName = unitDisplayName;
@@ -79,6 +81,10 @@ public class UnitBookingResource {
 
 	public long getBuildingId() {
 		return buildingId;
+	}
+
+	public long getProjectId() {
+		return projectId;
 	}
 	
 	public long getBookingFormNumber() {

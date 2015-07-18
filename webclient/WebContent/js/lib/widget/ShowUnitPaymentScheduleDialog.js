@@ -63,7 +63,7 @@ define([
 			this.inherited(arguments);
 			var dialog = this;
 			var promise = request.get("../rest/json/data/inventory/unit/get/paymentschedule?rowId=" + this.unitId, {
-   				timeout: 2000,
+   				timeout: 5000,
    				handleAs: "json"
    			});
    			

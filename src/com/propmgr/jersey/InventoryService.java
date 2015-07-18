@@ -1879,15 +1879,12 @@ public class InventoryService {
 	@GET
 	@Path("/payment/get/receiptnumber")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getReceiptNumberForPayment(@QueryParam("unitbookingId") String unitbookingId) {
-		UnitbookingDAO unitbookingDAO = new UnitbookingDAO();
+	public Response getReceiptNumberForPayment(@QueryParam("projectId") String projectId) {
 		PaymentmasterDAO paymentmasterDAO = new PaymentmasterDAO();
 		long receiptNumber = 1;
 		
 		try {
-			Unitbooking unitbooking = unitbookingDAO.findById(Long.parseLong(unitbookingId));
-			long projectId = unitbooking.getUnitmaster().getProjectbuilding().getProjectphase().getProjectmaster().getProjectid();
-			receiptNumber = paymentmasterDAO.getMaxReceiptNumber(projectId);
+			receiptNumber = paymentmasterDAO.getMaxReceiptNumber(Long.parseLong(projectId));
 			if (receiptNumber == -1) {
 				receiptNumber = 1; 
 			} else {
@@ -1950,6 +1947,29 @@ public class InventoryService {
 		}
 
 	    return Response.ok(result).build();
+	}
+
+	@GET
+	@Path("/payment/update/all")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response updatePaymentsWithProjectId() {
+		PaymentmasterDAO paymentmasterDAO = new PaymentmasterDAO();
+		
+		try {
+			List<Paymentmaster> payments = paymentmasterDAO.findAll();
+			if (payments != null && payments.size() > 0) {
+				for (Paymentmaster payment : payments) {
+					long projectId = payment.getUnitbooking().getUnitmaster().getProjectbuilding().getProjectphase().getProjectmaster().getProjectid();
+					payment.setProject(projectId);
+					paymentmasterDAO.update(payment);
+				}
+			}
+		} catch (Exception e) {
+			logger.error("", e);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
+		}
+
+		return Response.ok("Update done").build();
 	}
 	
 	@GET
@@ -2115,6 +2135,7 @@ public class InventoryService {
 								bankName + " and cheque number " + chequeNumber)).build();
 					}
 				}
+				payment.setProject(projectId);
 			}
 			
 			

@@ -1,6 +1,6 @@
 package com.propmgr.dao;
 
-// Generated Jul 1, 2015 11:15:39 PM by Hibernate Tools 3.4.0.CR1
+// Generated Jul 18, 2015 11:02:19 PM by Hibernate Tools 3.4.0.CR1
 
 import java.util.HashSet;
 import java.util.Set;
