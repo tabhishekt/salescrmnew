@@ -1,5 +1,5 @@
 ALTER TABLE unitPricePolicy
-	ADD unitPricePolicy double;
+	ADD interestRate double;
 	
 ALTER TABLE projectBuilding
 	ADD parkingFloorCount int;
