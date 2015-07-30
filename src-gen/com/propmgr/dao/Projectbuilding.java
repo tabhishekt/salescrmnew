@@ -1,6 +1,6 @@
 package com.propmgr.dao;
 
-// Generated Jul 18, 2015 11:02:19 PM by Hibernate Tools 3.4.0.CR1
+// Generated Jul 28, 2015 11:20:32 PM by Hibernate Tools 3.4.0.CR1
 
 import java.sql.Clob;
 import java.util.Date;
@@ -22,6 +22,7 @@ public class Projectbuilding implements java.io.Serializable {
 	private Date expectedcompletiondate;
 	private boolean hasmultiplepaymentschedules;
 	private Clob remarks;
+	private Integer parkingfloorcount;
 	private Set unitpaymentschedules = new HashSet(0);
 	private Set parkingmasters = new HashSet(0);
 	private Set unitmasters = new HashSet(0);
@@ -41,7 +42,8 @@ public class Projectbuilding implements java.io.Serializable {
 			String wingname, long floorcount, String buildingtype,
 			Integer currentstatus, Date expectedcompletiondate,
 			boolean hasmultiplepaymentschedules, Clob remarks,
-			Set unitpaymentschedules, Set parkingmasters, Set unitmasters) {
+			Integer parkingfloorcount, Set unitpaymentschedules,
+			Set parkingmasters, Set unitmasters) {
 		this.projectphase = projectphase;
 		this.buildingname = buildingname;
 		this.wingname = wingname;
@@ -51,6 +53,7 @@ public class Projectbuilding implements java.io.Serializable {
 		this.expectedcompletiondate = expectedcompletiondate;
 		this.hasmultiplepaymentschedules = hasmultiplepaymentschedules;
 		this.remarks = remarks;
+		this.parkingfloorcount = parkingfloorcount;
 		this.unitpaymentschedules = unitpaymentschedules;
 		this.parkingmasters = parkingmasters;
 		this.unitmasters = unitmasters;
@@ -135,6 +138,14 @@ public class Projectbuilding implements java.io.Serializable {
 
 	public void setRemarks(Clob remarks) {
 		this.remarks = remarks;
+	}
+
+	public Integer getParkingfloorcount() {
+		return this.parkingfloorcount;
+	}
+
+	public void setParkingfloorcount(Integer parkingfloorcount) {
+		this.parkingfloorcount = parkingfloorcount;
 	}
 
 	public Set getUnitpaymentschedules() {

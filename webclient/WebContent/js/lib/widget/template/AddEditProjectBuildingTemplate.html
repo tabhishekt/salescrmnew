@@ -50,16 +50,6 @@
 									</table>
 								</td><td>
 									<table>
-										<tr><td><label for="floorcount">Floor count:</label></td></tr>
-										<tr><td><input id="floorcount" name="floorcount"
-												data-dojo-type='dijit/form/ValidationTextBox'
-												data-dojo-attach-point='floorcount'
-												data-dojo-props="required:true, regExp:'^[0-9]{1,3}$', invalidMessage:'Enter upto three digit number only.'"
-												type="text" /></td></tr>
-									</table>
-								</td></tr>
-								<tr><td>
-									<table>
 										<tr><td><label for="type">Building type:</label></td></tr>
 										<tr><td><input id="type" name="type"
 												data-dojo-type='dijit/form/ValidationTextBox'
@@ -67,7 +57,27 @@
 												data-dojo-props="required:true"
 												type="text" /></td></tr>
 									</table>
+								</td></tr>
+								<tr><td>
+									<table>
+										<tr><td><label for="floorcount">Floor count:</label></td></tr>
+										<tr><td><input id="floorcount" name="floorcount"
+												data-dojo-type='dijit/form/ValidationTextBox'
+												data-dojo-attach-point='floorcount'
+												data-dojo-props="required:true, regExp:'^[0-9]{1,3}$', invalidMessage:'Enter upto three digit number only.'"
+												type="text" /></td></tr>
+									</table>
 								</td><td>
+									<table>
+										<tr><td><label for="parkingfloorcount">Parking Floor count:</label></td></tr>
+										<tr><td><input id="parkingfloorcount" name="parkingfloorcount"
+												data-dojo-type='dijit/form/ValidationTextBox'
+												data-dojo-attach-point='parkingfloorcount'
+												data-dojo-props="required:true, regExp:'^[0-9]{1,3}$', invalidMessage:'Enter upto three digit number only.'"
+												type="text" /></td></tr>
+									</table>
+								</td></tr>
+								<tr><td>
 									<table>
 										<tr><td><label for="remarks">Remarks:</label></td></tr>
 										<tr><td><textarea id="remarks" name="remarks"

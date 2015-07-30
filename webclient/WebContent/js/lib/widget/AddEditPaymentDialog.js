@@ -119,7 +119,7 @@ define([
         validate: function() {
         	var isValid = this.inherited(arguments);
         	
-        	if (isValid) {
+        	/* if (isValid) {
         		if (this.paymenttype.get("item").name == "Bank Cheque") {
         				if (this.bankname.get("value") == "") {
         					this.messageNode.innerHTML = "Bank name should be provided.";
@@ -148,8 +148,8 @@ define([
     					this.messageNode.innerHTML = "For cash payment status cannot be Bounced.";
                 		return false
     				}
-    			}
-        	}
+    			} 
+        	} */
         	
         	return isValid;
         },

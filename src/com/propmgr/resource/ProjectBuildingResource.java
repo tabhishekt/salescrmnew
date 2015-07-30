@@ -11,6 +11,7 @@ public class ProjectBuildingResource {
 	private String name;
 	private String wingName;
 	private long floorCount;
+	private int parkingFloorCount;
 	private String type;
 	private CodeTableResource currentStatus;
 	private String expectedCompletionDate;
@@ -23,8 +24,8 @@ public class ProjectBuildingResource {
 	private Map<String, ParkingResource> parking;
 	
 	public ProjectBuildingResource(long id, long projectId, ProjectPhaseResource projectPhase,
-			String projectPhaseName, String name, String wingName,
-			long floorCount, String type, CodeTableResource currentStatus, 
+			String projectPhaseName, String name, String wingName, long floorCount, 
+			int parkingFloorCount, String type, CodeTableResource currentStatus, 
 			String expectedCompletionDate, String remarks, boolean hasMultiplePaymentSchedules, 
 			Map<String, UnitPaymentScheduleResource> paymentSchedule, 
 			Map<Integer, Double> floorRise, Map<Integer, List<UnitAvailabilityResource>> availability,
@@ -37,6 +38,7 @@ public class ProjectBuildingResource {
 		this.name = name;
 		this.wingName = wingName;
 		this.floorCount = floorCount;
+		this.parkingFloorCount = parkingFloorCount;
 		this.type = type;
 		this.currentStatus = currentStatus;
 		this.expectedCompletionDate = expectedCompletionDate;
@@ -75,6 +77,10 @@ public class ProjectBuildingResource {
 
 	public long getFloorCount() {
 		return floorCount;
+	}
+
+	public int getParkingFloorCount() {
+		return parkingFloorCount;
 	}
 
 	public String getType() {

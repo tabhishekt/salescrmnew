@@ -41,10 +41,18 @@ define([
 				
 				this.setValueToScheduleRow(data, "Registration payment", "percentamount_even_reg", "date_even_reg", "desc_even_reg", 1);
 				this.setValueToScheduleRow(data, "Plinth payment", "percentamount_even_pli", "date_even_pli", "desc_even_pli", 1);
+				for (var i=0; i<this.parkingfloorcount; i++) {
+					var slab = i + 1;
+					if (slab%2 == 0) {
+						this.setValueToScheduleRow(data, "Parking Slab " + slab + " payment", 
+								"percentamount_even_parking_" + slab, "date_even_parking_" + slab, "desc_even_parking_" + slab, 1);
+					}
+				}
 				for (var i=0; i<this.floorcount; i++) {
 					var slab = i + 1;
 					if (slab%2 == 0) {
-						this.setValueToScheduleRow(data, "Slab " + (i+1) + " payment", "percentamount_even_" + (i+1), "date_even_" + (i+1), "desc_even_" + (i+1), 1);
+						this.setValueToScheduleRow(data, "Slab " + slab + " payment", 
+								"percentamount_even_" + slab, "date_even_" + slab, "desc_even_" + slab, 1);
 					}
 				}
 				this.setValueToScheduleRow(data, "Brick payment", "percentamount_even_bri", "date_even_even_bri", "desc_even_bri", 1);
@@ -54,10 +62,17 @@ define([
 				
 				this.setValueToScheduleRow(data, "Registration payment", "percentamount_odd_reg", "date_odd_reg", "desc_odd_reg", 2);
 				this.setValueToScheduleRow(data, "Plinth payment", "percentamount_odd_pli", "date_odd_pli", "desc_odd_pli", 2);
+				for (var i=0; i<this.parkingfloorcount; i++) {
+					var slab = i + 1;
+					if (slab%2 != 0) {
+						this.setValueToScheduleRow(data, "Parking Slab " + slab + " payment", 
+								"percentamount_odd_parking_" + slab, "date_odd_parking_" + slab, "desc_odd_parking_" + slab, 2);
+					}
+				}
 				for (var i=0; i<this.floorcount; i++) {
 					var slab = i + 1;
 					if (slab%2 != 0) {
-						this.setValueToScheduleRow(data, "Slab " + (i+1) + " payment", "percentamount_odd_" + (i+1), "date_odd_" + (i+1), "desc_odd_" + (i+1), 2);
+						this.setValueToScheduleRow(data, "Slab " + slab + " payment", "percentamount_odd_" + slab, "date_odd_" + slab, "desc_odd_" + slab, 2);
 					}
 				}
 				this.setValueToScheduleRow(data, "Brick payment", "percentamount_odd_bri", "date_odd_bri", "desc_odd_bri", 2);
@@ -72,6 +87,9 @@ define([
 				
 				this.setValueToScheduleRow(data, "Registration payment", "percentamount_reg", "date_reg", "desc_reg", 0);
 				this.setValueToScheduleRow(data, "Plinth payment", "percentamount_pli", "date_pli", "desc_pli", 0);
+				for (var i=0; i<this.parkingfloorcount; i++) {
+					this.setValueToScheduleRow(data, "Parking Slab " + (i+1) + " payment", "percentamount_parking_" + (i+1), "date_parking_" + (i+1), "desc_parking_" + (i+1), 0);
+				}
 				for (var i=0; i<this.floorcount; i++) {
 					this.setValueToScheduleRow(data, "Slab " + (i+1) + " payment", "percentamount_" + (i+1), "date_" + (i+1), "desc_" + (i+1), 0);
 				}
@@ -93,6 +111,11 @@ define([
 					"Percent Amount:", "date_reg", "Date:", "desc_reg", "Description:");
 			this.createScheduleRow (table, "Plinth payment", "type_pli", "Type:", "percentamount_pli", 
 					"Percent Amount:", "date_pli", "Date:", "desc_pli", "Description:");
+			for (var i=0; i<this.parkingfloorcount; i++) {
+				var slab = i + 1;
+				this.createScheduleRow (table, "Parking Slab " + slab + " payment", "type_parking_" + slab, "Type:", "percentamount_parking_" + slab, 
+					"Percent Amount:", "date_parking_" + slab, "Date:", "desc_parking_" + slab, "Description:");
+			}
 			for (var i=0; i<this.floorcount; i++) {
 				var slab = i + 1;
 				this.createScheduleRow (table, "Slab " + slab + " payment", "type_" + slab, "Type:", "percentamount_" + slab, 
@@ -159,6 +182,13 @@ define([
 						"Percent Amount:", "date_even_reg", "Date:", "desc_even_reg", "Description:");
 				this.createScheduleRow (table, "Plinth payment", "type_even_pli", "Type:", "percentamount_even_pli", 
 						"Percent Amount:", "date_even_pli", "Date:", "desc_even_pli", "Description:");
+				for (var i=0; i<this.parkingfloorcount; i++) {
+					var slab = i + 1;
+					if (slab%2 == 0) {
+						this.createScheduleRow (table, "Parking Slab " + slab + " payment", "type_even_parking_" + slab, "Type:", "percentamount_even_parking_" + slab, 
+								"Percent Amount:", "date_even_parking_" + slab, "Date:", "desc_even_parking_" + slab, "Description:");
+					}
+				}
 				for (var i=0; i<this.floorcount; i++) {
 					var slab=i+1;
 					if (slab%2 == 0) {
@@ -179,6 +209,13 @@ define([
 						"Percent Amount:", "date_odd_reg", "Date:", "desc_odd_reg", "Description:");
 				this.createScheduleRow (table, "Plinth payment", "type_odd_pli", "Type:", "percentamount_odd_pli", 
 						"Percent Amount:", "date_odd_pli", "Date:", "desc_odd_pli", "Description:");
+				for (var i=0; i<this.parkingfloorcount; i++) {
+					var slab = i + 1;
+					if (slab%2 != 0) {
+						this.createScheduleRow (table, "Parking Slab " + slab + " payment", "type_odd_parking_" + slab, "Type:", "percentamount_odd_parking_" + slab, 
+								"Percent Amount:", "date_odd_parking_" + slab, "Date:", "desc_odd_parking_" + slab, "Description:");
+					}  
+				}
 				for (var i=0; i<this.floorcount; i++) {
 					var slab=i+1;
 					if (slab%2 != 0) {
@@ -225,10 +262,18 @@ define([
 			if (this.hasMultiplePaymentSchedules) {
 				this.destroyScheduleRow("type_even_reg", "percentamount_even_reg", "date_even_reg", "desc_even_reg");
 				this.destroyScheduleRow("type_even_pli", "percentamount_even_pli", "date_even_pli", "desc_even_pli");
+				for (var i=0; i<this.parkingfloorcount; i++) {
+					var slab = i + 1;
+					if (slab%2 == 0) {
+						this.destroyScheduleRow("type_even_parking_" + slab, "percentamount_even_parking_" + slab, 
+								"date_even_parking_" + slab, "desc_even_parking_" + slab);
+					}
+				}
 				for (var i=0; i<this.floorcount; i++) {
 					var slab = i + 1;
 					if (slab%2 == 0) {
-						this.destroyScheduleRow("type_even_" + (i+1), "percentamount_even_" + (i+1), "date_even_" + (i+1), "desc_even_" + (i+1));
+						this.destroyScheduleRow("type_even_" + slab, "percentamount_even_" + slab, 
+								"date_even_" + slab, "desc_even_" + slab);
 					}
 				}
 				this.destroyScheduleRow("type_even_bri", "percentamount_even_bri", "date_even_bri", "desc_even_bri");
@@ -238,10 +283,17 @@ define([
 				
 				this.destroyScheduleRow("type_odd_reg", "percentamount_odd_reg", "date_odd_reg", "desc_odd_reg");
 				this.destroyScheduleRow("type_odd_pli", "percentamount_odd_pli", "date_odd_pli", "desc_odd_pli");
+				for (var i=0; i<this.parkingfloorcount; i++) {
+					var slab = i + 1;
+					if (slab%2 != 0) {
+						this.destroyScheduleRow("type_odd_parking_" + slab, "percentamount_odd_parking_" + slab, 
+								"date_odd_parking_" + slab, "desc_odd_parking_" + slab);
+					}
+				}
 				for (var i=0; i<this.floorcount; i++) {
 					var slab = i + 1;
 					if (slab%2 != 0) {
-						this.destroyScheduleRow("type_odd_" + (i+1), "percentamount_odd_" + (i+1), "date_odd_" + (i+1), "desc_odd_" + (i+1));
+						this.destroyScheduleRow("type_odd_" + slab, "percentamount_odd_" + slab, "date_odd_" + slab, "desc_odd_" + slab);
 					}
 				}
 				this.destroyScheduleRow("type_odd_bri", "percentamount_odd_bri", "date_odd_bri", "desc_odd_bri");
@@ -251,6 +303,9 @@ define([
 			} else {
 				this.destroyScheduleRow("type_reg", "percentamount_reg", "date_reg", "desc_reg");
 				this.destroyScheduleRow("type_pli", "percentamount_pli", "date_pli", "desc_pli");
+				for (var i=0; i<this.parkingfloorcount; i++) {
+					this.destroyScheduleRow("type_parking_" + (i+1), "percentamount_parking_" + (i+1), "date_parking_" + (i+1), "desc_parking_" + (i+1));
+				}
 				for (var i=0; i<this.floorcount; i++) {
 					this.destroyScheduleRow("type_" + (i+1), "percentamount_" + (i+1), "date_" + (i+1), "desc_" + (i+1));
 				}
@@ -278,6 +333,10 @@ define([
 				totalValue += this.getPercentValueFromWidget("percentamount_reg");
 				totalValue += this.getPercentValueFromWidget("percentamount_pli");
 				
+				for (var i=0; i<this.parkingfloorcount; i++) {
+					totalValue += this.getPercentValueFromWidget("percentamount_parking_" + (i+1));
+				}
+				
 				for (var i=0; i<this.floorcount; i++) {
 					totalValue += this.getPercentValueFromWidget("percentamount_" + (i+1));
 				}
@@ -290,6 +349,10 @@ define([
 				totalValue += this.getPercentValueFromWidget("percentamount_even_reg");
 				totalValue += this.getPercentValueFromWidget("percentamount_even_pli");
 				
+				for (var i=0; i<this.parkingfloorcount; i++) {
+					totalValue += this.getPercentValueFromWidget("percentamount_even_parking_" + (i+1));
+				}
+				
 				for (var i=0; i<this.floorcount; i++) {
 					totalValue += this.getPercentValueFromWidget("percentamount_even_" + (i+1));
 				}
@@ -301,6 +364,10 @@ define([
 			} else if (type == 2) {
 				totalValue += this.getPercentValueFromWidget("percentamount_odd_reg");
 				totalValue += this.getPercentValueFromWidget("percentamount_odd_pli");
+				
+				for (var i=0; i<this.parkingfloorcount; i++) {
+					totalValue += this.getPercentValueFromWidget("percentamount_odd_parking_" + (i+1));
+				}
 				
 				for (var i=0; i<this.floorcount; i++) {
 					totalValue += this.getPercentValueFromWidget("percentamount_odd_" + (i+1));

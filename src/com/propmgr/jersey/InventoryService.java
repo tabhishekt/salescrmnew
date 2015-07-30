@@ -659,6 +659,7 @@ public class InventoryService {
 			projectbuilding.setBuildingname(ResourceUtil.getFormDataValue(formData, "name"));
 			projectbuilding.setBuildingtype(ResourceUtil.getFormDataValue(formData, "type"));
 			projectbuilding.setFloorcount(ResourceUtil.getFormDataValueAsLong(formData, "floorcount"));
+			projectbuilding.setParkingfloorcount(ResourceUtil.getFormDataValueAsInt(formData, "parkingfloorcount"));
 			projectbuilding.setProjectphase(projectPhase);
 			projectbuilding.setRemarks(ResourceUtil.getFormDataValueAsClob(formData, "remarks"));
 			projectbuilding.setHasmultiplepaymentschedules(ResourceUtil.getFormDataValueAsBoolean(formData, "hasmultiplepaymentschedule"));
@@ -682,17 +683,23 @@ public class InventoryService {
 		try {
 			Projectbuilding projectbuilding = projectbuildingDAO.findById(Long.parseLong(rowId));
 			int floorCount = (int)projectbuilding.getFloorcount();
+			int parkingFloorCount = (projectbuilding.getParkingfloorcount() == null) ? 0 : projectbuilding.getParkingfloorcount();
+			int index = 0;
 			
-			result.add(new CodeTableResource(0, "PLI", "Registration in progress"));
-			result.add(new CodeTableResource(1, "PLI", "Plinth in progress"));
+			result.add(new CodeTableResource(index, "PLI", "Registration in progress"));
+			result.add(new CodeTableResource(++index, "PLI", "Plinth in progress"));
+			for (int i=0; i<parkingFloorCount; i++) {
+				int slab = i+1;
+				result.add(new CodeTableResource(++index, "PARKINGSLB "+ slab, "Parking Slab " + slab + "  in progress"));
+			}
 			for (int i=0; i<floorCount; i++) {
 				int slab = i+1;
-				result.add(new CodeTableResource(slab + 1, "SLB"+ slab, "Slab " + slab + "  in progress"));
+				result.add(new CodeTableResource(++index, "SLB"+ slab, "Slab " + slab + "  in progress"));
 			}
-			result.add(new CodeTableResource(floorCount+2, "BRI", "Brickwork in progress"));
-			result.add(new CodeTableResource(floorCount+3, "PLA", "Plastering in progress"));
-			result.add(new CodeTableResource(floorCount+4, "FLO", "Flooring in progress"));
-			result.add(new CodeTableResource(floorCount+5, "POS", "Ready for Possession"));
+			result.add(new CodeTableResource(++index, "BRI", "Brickwork in progress"));
+			result.add(new CodeTableResource(++index, "PLA", "Plastering in progress"));
+			result.add(new CodeTableResource(++index, "FLO", "Flooring in progress"));
+			result.add(new CodeTableResource(++index, "POS", "Ready for Possession"));
 		} catch (Exception e) {
 			logger.error("", e);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
@@ -709,16 +716,26 @@ public class InventoryService {
 		try {
 			Projectbuilding projectBuilding = ResourceUtil.getProjectBuildingPOJO(formData);
 			int floorCount = (int)projectBuilding.getFloorcount();
+			int parkingFloorCount = (projectBuilding.getParkingfloorcount() == null) ? 0 : projectBuilding.getParkingfloorcount();
 			
 			if (projectBuilding.isHasmultiplepaymentschedules()) {
 				// For even floors
 				ResourceUtil.saveUnitPaymentSchedule(formData, "type_even_reg", "percentamount_even_reg", "date_even_reg", "desc_even_reg", 1);
 				ResourceUtil.saveUnitPaymentSchedule(formData, "type_even_pli", "percentamount_even_pli", "date_even_pli", "desc_even_pli", 1);
 				
+				for (int i=0; i< parkingFloorCount; i++) {
+					int slab = i + 1;
+					if (slab % 2 == 0) {
+						ResourceUtil.saveUnitPaymentSchedule(formData, "type_even_parking_" + slab, 
+								"percentamount_even_parking_" + slab, "date_even_parking_" + slab, "desc_even_parking_" + slab, 1);
+					}
+				}
+				
 				for (int i=0; i< floorCount; i++) {
 					int slab = i + 1;
 					if (slab % 2 == 0) {
-						ResourceUtil.saveUnitPaymentSchedule(formData, "type_even_" + slab, "percentamount_even_" + slab, "date_even_" + slab, "desc_even_" + slab, 1);
+						ResourceUtil.saveUnitPaymentSchedule(formData, "type_even_" + slab, 
+								"percentamount_even_" + slab, "date_even_" + slab, "desc_even_" + slab, 1);
 					}
 				}
 				
@@ -730,6 +747,14 @@ public class InventoryService {
 				// For odd floors
 				ResourceUtil.saveUnitPaymentSchedule(formData, "type_odd_reg", "percentamount_odd_reg", "date_odd_reg", "desc_odd_reg", 2);
 				ResourceUtil.saveUnitPaymentSchedule(formData, "type_odd_pli", "percentamount_odd_pli", "date_odd_pli", "desc_odd_pli", 2);
+				
+				for (int i=0; i< parkingFloorCount; i++) {
+					int slab = i + 1;
+					if (slab % 2 != 0) {
+						ResourceUtil.saveUnitPaymentSchedule(formData, "type_odd_parking_" + slab, 
+								"percentamount_odd_parking_" + slab, "date_odd_parking_" + slab, "desc_odd_parking_" + slab, 2);
+					}
+				}
 				
 				for (int i=0; i< floorCount; i++) {
 					int slab = i + 1;
@@ -746,8 +771,14 @@ public class InventoryService {
 				ResourceUtil.saveUnitPaymentSchedule(formData, "type_reg", "percentamount_reg", "date_reg", "desc_reg", 0);
 				ResourceUtil.saveUnitPaymentSchedule(formData, "type_pli", "percentamount_pli", "date_pli", "desc_pli", 0);
 				
+				for (int i=0; i< parkingFloorCount; i++) {
+					ResourceUtil.saveUnitPaymentSchedule(formData, "type_parking_" + (i+1), 
+							"percentamount_parking_" + (i+1), "date_parking_" + (i+1), "desc_parking_" + (i+1), 0);
+				}
+				
 				for (int i=0; i< floorCount; i++) {
-					ResourceUtil.saveUnitPaymentSchedule(formData, "type_" + (i+1), "percentamount_" + (i+1), "date_" + (i+1), "desc_" + (i+1), 0);
+					ResourceUtil.saveUnitPaymentSchedule(formData, "type_" + (i+1), 
+							"percentamount_" + (i+1), "date_" + (i+1), "desc_" + (i+1), 0);
 				}
 				
 				ResourceUtil.saveUnitPaymentSchedule(formData, "type_bri", "percentamount_bri", "date_bri", "desc_bri", 0);
@@ -1429,7 +1460,9 @@ public class InventoryService {
 			} 
 			
 			String paymentScheduleType = ResourceUtil.getFormDataValue(formData, "type");
-			paymentSchedule.setPaymentscheduleposition(ResourceUtil.getPaymentSchedulePosition(paymentScheduleType, (int)projectbuilding.getFloorcount()));
+			int parkingFloorCount = (projectbuilding.getParkingfloorcount() == null) ? 0 : projectbuilding.getParkingfloorcount();
+			paymentSchedule.setPaymentscheduleposition(ResourceUtil.getPaymentSchedulePosition(paymentScheduleType, 
+					parkingFloorCount, (int)projectbuilding.getFloorcount()));
 			paymentSchedule.setPaymentscheduledate(ResourceUtil.getFormDataValueAsDate(formData, "scheduledate"));
 			paymentSchedule.setPaymentscheduledescription(ResourceUtil.getFormDataValueAsClob(formData, "description"));
 			paymentSchedule.setPaymentscheduletype(paymentScheduleType);
@@ -1924,52 +1957,36 @@ public class InventoryService {
 		try {
 			Projectbuilding projectbuilding = projectbuildingDAO.findById(Long.parseLong(rowId));
 			int floorCount = (int)projectbuilding.getFloorcount();
+			int parkingFloorCount = (projectbuilding.getParkingfloorcount() == null) ? 0 : projectbuilding.getParkingfloorcount();
+			int index = 0;
 			
-			result.add(new CodeTableResource(0, "BOK", "Booking Payment"));
-			result.add(new CodeTableResource(1, "REG", "Registration Payment"));
-			result.add(new CodeTableResource(2, "PLI", "Plinth Payment"));
+			result.add(new CodeTableResource(index, "BOK", "Booking Payment"));
+			result.add(new CodeTableResource(++index, "REG", "Registration Payment"));
+			result.add(new CodeTableResource(++index, "PLI", "Plinth Payment"));
+			for (int i=0; i<parkingFloorCount; i++) {
+				int slab = i+1;
+				result.add(new CodeTableResource(++index, "PARKINGSLB"+ slab, "Parking Slab " + slab + "  payment"));
+			}
 			for (int i=0; i<floorCount; i++) {
 				int slab = i+1;
-				result.add(new CodeTableResource(slab + 2, "SLB"+ slab, "Slab " + slab + "  payment"));
+				result.add(new CodeTableResource(++index, "SLB"+ slab, "Slab " + slab + "  payment"));
 			}
-			result.add(new CodeTableResource(floorCount+3, "BRI", "Brickwork payment"));
-			result.add(new CodeTableResource(floorCount+4, "PLA", "Plastering payment"));
-			result.add(new CodeTableResource(floorCount+5, "FLO", "Flooring payment"));
-			result.add(new CodeTableResource(floorCount+6, "POS", "Possession payment"));
-			result.add(new CodeTableResource(floorCount+7, "TAX1", "Stampduty payment"));
-			result.add(new CodeTableResource(floorCount+8, "TAX2", "Registration charges payment"));
-			result.add(new CodeTableResource(floorCount+9, "TAX3", "Service tax payment"));
-			result.add(new CodeTableResource(floorCount+10, "TAX4", "MVAT payment"));
-			result.add(new CodeTableResource(floorCount+11, "EXTRA", "Extra work payment"));
+			
+			result.add(new CodeTableResource(++index, "BRI", "Brickwork payment"));
+			result.add(new CodeTableResource(++index, "PLA", "Plastering payment"));
+			result.add(new CodeTableResource(++index, "FLO", "Flooring payment"));
+			result.add(new CodeTableResource(++index, "POS", "Possession payment"));
+			result.add(new CodeTableResource(++index, "TAX1", "Stampduty payment"));
+			result.add(new CodeTableResource(++index, "TAX2", "Registration charges payment"));
+			result.add(new CodeTableResource(++index, "TAX3", "Service tax payment"));
+			result.add(new CodeTableResource(++index, "TAX4", "MVAT payment"));
+			result.add(new CodeTableResource(++index, "EXTRA", "Extra work payment"));
 		} catch (Exception e) {
 			logger.error("", e);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
 		}
 
 	    return Response.ok(result).build();
-	}
-
-	@GET
-	@Path("/payment/update/all")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response updatePaymentsWithProjectId() {
-		PaymentmasterDAO paymentmasterDAO = new PaymentmasterDAO();
-		
-		try {
-			List<Paymentmaster> payments = paymentmasterDAO.findAll();
-			if (payments != null && payments.size() > 0) {
-				for (Paymentmaster payment : payments) {
-					long projectId = payment.getUnitbooking().getUnitmaster().getProjectbuilding().getProjectphase().getProjectmaster().getProjectid();
-					payment.setProject(projectId);
-					paymentmasterDAO.update(payment);
-				}
-			}
-		} catch (Exception e) {
-			logger.error("", e);
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
-		}
-
-		return Response.ok("Update done").build();
 	}
 	
 	@GET

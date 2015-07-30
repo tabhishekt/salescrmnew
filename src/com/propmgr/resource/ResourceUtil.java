@@ -217,9 +217,10 @@ public class ResourceUtil {
 			}
 		}
 		
+		int parkingFloorCount = (projectBuilding.getParkingfloorcount() == null) ? 0 : projectBuilding.getParkingfloorcount();
 		return new ProjectBuildingResource(projectBuilding.getProjectbuildingid(), projectId, getProjectPhaseFromDAO(projectPhase), 
 				projectPhase.getProjectphasename(), projectBuilding.getBuildingname(), projectBuilding.getWingname(),
-				projectBuilding.getFloorcount(), projectBuilding.getBuildingtype(), currentStatus,
+				projectBuilding.getFloorcount(), parkingFloorCount, projectBuilding.getBuildingtype(), currentStatus,
 				convertDateToString(projectBuilding.getExpectedcompletiondate()), convertClobToString(projectBuilding.getRemarks()), 
 				projectBuilding.isHasmultiplepaymentschedules(), paymentSchedule, floorRise, availability, unitCharges, parking);
 	}
@@ -342,7 +343,9 @@ public class ResourceUtil {
 			String statusDate = null;
 			String statusComment = null;
 			List<CodeTableResource> paymentStages = new ArrayList<CodeTableResource>();
-			int floorCount = (int)unitbooking.getUnitmaster().getProjectbuilding().getFloorcount();
+			Projectbuilding parjectBuilding = unitbooking.getUnitmaster().getProjectbuilding();
+			int floorCount = (int)parjectBuilding.getFloorcount();
+			int parkingFloorCount = (parjectBuilding.getParkingfloorcount() == null) ? 0 : parjectBuilding.getParkingfloorcount();
 			
 			if (paymentstatusPOJO != null) {
 				Paymentstate aPaymentState = paymentstatusPOJO.getPaymentstate();
@@ -356,7 +359,7 @@ public class ResourceUtil {
 			Iterator<Paymentstage> iterator = payment.getPaymentstages().iterator();
 			while(iterator.hasNext()) {
 				Paymentstage paymentstage = iterator.next(); 
-				paymentStages.add(getPaymentStage(floorCount, paymentstage.getPaymentstagetype()));
+				paymentStages.add(getPaymentStage(parkingFloorCount, floorCount, paymentstage.getPaymentstagetype()));
 			}
 			
 			result = new PaymentResource(payment.getPaymentid(), user.getUsermasterid(), getUserDisplayName(user), 
@@ -371,34 +374,38 @@ public class ResourceUtil {
 		return result;
 	}
 	
-	public static CodeTableResource getPaymentStage(int floorCount, int paymentStage) {
-		
+	public static CodeTableResource getPaymentStage(int parkingFloorCount, int floorCount, int paymentStage) {
+		int slabCount = parkingFloorCount + floorCount;
 		if (paymentStage == 0) {
-			return new CodeTableResource(0, "BOK", "Booking Payment");
+			return new CodeTableResource(paymentStage, "BOK", "Booking Payment");
 		} else if (paymentStage == 1) {
-			return new CodeTableResource(1, "REG", "Registration payment");
+			return new CodeTableResource(paymentStage, "REG", "Registration payment");
 		} else if (paymentStage == 2) {
-			return new CodeTableResource(2, "PLI", "Plinth payment");
-		} else if (paymentStage > 2 && paymentStage <= floorCount + 2) { 
-			return new CodeTableResource(paymentStage, "SLB"+ (paymentStage - 2), "Slab " + (paymentStage - 2) + "  payment");
-		} else if (paymentStage == floorCount+3) {
-			return new CodeTableResource(floorCount+3, "BRI", "Brickwork in progress");
-		} else if (paymentStage == floorCount+4) {
-			return new CodeTableResource(floorCount+4, "PLA", "Plastering in progress");
-		} else if (paymentStage == floorCount+5) {
-			return new CodeTableResource(floorCount+5, "FLO", "Flooring in progress");
-		} else if (paymentStage == floorCount+6) {
-			return new CodeTableResource(floorCount+6, "POS", "Ready for Possession");
-		} else if (paymentStage == floorCount+7) {
-			return new CodeTableResource(floorCount+7, "TAX1", "Stampduty payment");
-		} else if (paymentStage == floorCount+8) {
-			return new CodeTableResource(floorCount+8, "TAX2", "Registration charges payment");
-		} else if (paymentStage == floorCount+9) {
-			return new CodeTableResource(floorCount+9, "TAX3", "Service tax payment");
-		} else if (paymentStage == floorCount+10) {
-			return new CodeTableResource(floorCount+10, "TAX4", "MVAT payment");
-		} else if (paymentStage == floorCount+11) {
-			return new CodeTableResource(floorCount+11, "EXTRA", "Extra work payment");
+			return new CodeTableResource(paymentStage, "PLI", "Plinth payment");
+		} else if (paymentStage > 2 && paymentStage <= parkingFloorCount + 2) { 
+			return new CodeTableResource(paymentStage, "PARKINGSLB"+ (paymentStage - 2), 
+					"Parking Slab " + (paymentStage - 2) + "  payment");
+		} else if (paymentStage > 2 + parkingFloorCount && paymentStage <= slabCount + 2) { 
+			return new CodeTableResource(paymentStage, "SLB"+ (paymentStage - 2 - parkingFloorCount), 
+					"Slab " + (paymentStage - 2 - parkingFloorCount) + "  payment");
+		} else if (paymentStage == slabCount+3) {
+			return new CodeTableResource(paymentStage, "BRI", "Brickwork in progress");
+		} else if (paymentStage == slabCount+4) {
+			return new CodeTableResource(paymentStage, "PLA", "Plastering in progress");
+		} else if (paymentStage == slabCount+5) {
+			return new CodeTableResource(paymentStage, "FLO", "Flooring in progress");
+		} else if (paymentStage == slabCount+6) {
+			return new CodeTableResource(paymentStage, "POS", "Ready for Possession");
+		} else if (paymentStage == slabCount+7) {
+			return new CodeTableResource(paymentStage, "TAX1", "Stampduty payment");
+		} else if (paymentStage == slabCount+8) {
+			return new CodeTableResource(paymentStage, "TAX2", "Registration charges payment");
+		} else if (paymentStage == slabCount+9) {
+			return new CodeTableResource(paymentStage, "TAX3", "Service tax payment");
+		} else if (paymentStage == slabCount+10) {
+			return new CodeTableResource(paymentStage, "TAX4", "MVAT payment");
+		} else if (paymentStage == slabCount+11) {
+			return new CodeTableResource(paymentStage, "EXTRA", "Extra work payment");
 		}
 		
 		return null;
@@ -657,22 +664,27 @@ public class ResourceUtil {
 	public static CodeTableResource getBuildingCurrentStatus(Projectbuilding projectBuilding) {
 		CodeTableResource currentStatus = null;
 		int floorCount = (int)projectBuilding.getFloorcount();
+		int parkingFloorCount = (projectBuilding.getParkingfloorcount() == null) ? 0 : projectBuilding.getParkingfloorcount();
+		int slabCount = parkingFloorCount + floorCount;
 		
 		int buildingStatus = (projectBuilding.getCurrentstatus() == null) ? 0 : projectBuilding.getCurrentstatus().intValue();
 		if (buildingStatus == 0) {
 			currentStatus = new CodeTableResource(0, "REG", "Registration in progress");
 		} else if (buildingStatus == 1) {
 			currentStatus = new CodeTableResource(1, "PLI", "Plinth in progress");
-		} else if (buildingStatus > 1 && buildingStatus <= floorCount + 1) { 
-			currentStatus = new CodeTableResource(buildingStatus, "SLB"+ (buildingStatus - 1), "Slab " + (buildingStatus - 1) + "  in progress");
-		} else if (buildingStatus == floorCount+2) {
-			currentStatus = new CodeTableResource(floorCount+2, "BRI", "Brickwork in progress");
-		} else if (buildingStatus == floorCount+3) {
-			currentStatus = new CodeTableResource(floorCount+3, "PLA", "Plastering in progress");
-		} else if (buildingStatus == floorCount+4) {
-			currentStatus = new CodeTableResource(floorCount+4, "FLO", "Flooring in progress");
-		} else if (buildingStatus == floorCount+5) {
-			currentStatus = new CodeTableResource(floorCount+5, "POS", "Ready for Possession");
+		} else if (buildingStatus > 1 && buildingStatus <= parkingFloorCount + 1) { 
+			currentStatus = new CodeTableResource(buildingStatus, "PARKINGSLB"+ (buildingStatus - 1), "Parking Slab " + (buildingStatus - 1) + "  in progress");
+		} else if (buildingStatus > parkingFloorCount + 1 && buildingStatus <= slabCount + 1) { 
+			currentStatus = new CodeTableResource(buildingStatus, "SLB"+ (buildingStatus - 1 - parkingFloorCount), 
+					"Slab " + (buildingStatus - 1 - parkingFloorCount) + "  in progress");
+		} else if (buildingStatus == slabCount+2) {
+			currentStatus = new CodeTableResource(buildingStatus, "BRI", "Brickwork in progress");
+		} else if (buildingStatus == slabCount+3) {
+			currentStatus = new CodeTableResource(buildingStatus, "PLA", "Plastering in progress");
+		} else if (buildingStatus == slabCount+4) {
+			currentStatus = new CodeTableResource(buildingStatus, "FLO", "Flooring in progress");
+		} else if (buildingStatus == slabCount+5) {
+			currentStatus = new CodeTableResource(buildingStatus, "POS", "Ready for Possession");
 		}
 		
 		return currentStatus;
@@ -1281,8 +1293,9 @@ public class ResourceUtil {
 			 if (paymentSchedule == null) {
 				 paymentSchedule = new Unitpaymentschedule();
 			 }
-	
-			 paymentSchedule.setPaymentscheduleposition(getPaymentSchedulePosition(paymentScheduleType, (int)projectBuilding.getFloorcount()));
+			 int parkingFloorCount = (projectBuilding.getParkingfloorcount() == null) ? 0 : projectBuilding.getParkingfloorcount();
+			 paymentSchedule.setPaymentscheduleposition(getPaymentSchedulePosition(paymentScheduleType, 
+					 parkingFloorCount, (int)projectBuilding.getFloorcount()));
 			 paymentSchedule.setPaymentscheduledate(getFormDataValueAsDate(formData, dateFieldName));
 			 paymentSchedule.setPaymentscheduletype(paymentScheduleType);
 			 paymentSchedule.setPaymentscheduledescription(getFormDataValueAsClob(formData, descFieldName));
@@ -1323,23 +1336,28 @@ public class ResourceUtil {
 	 }
 	 
 	 
-	 public static int getPaymentSchedulePosition(String type, int floorCount) {
+	 public static int getPaymentSchedulePosition(String type, int parkingFloorCount, int floorCount) {
 		 if (type.equalsIgnoreCase("Registration payment")) {
 			 return 0;
 		 } else if (type.equalsIgnoreCase("Plinth payment")) {
 			 return 1;
+		 } else if (type.startsWith("Parking Slab")) {
+			 StringTokenizer sTok = new StringTokenizer(type, " ");
+			 sTok.nextToken();
+			 sTok.nextToken();
+			 return Integer.parseInt(sTok.nextToken()) + 1;
 		 } else if (type.startsWith("Slab")) {
 			 StringTokenizer sTok = new StringTokenizer(type, " ");
 			 sTok.nextToken();
-			 return Integer.parseInt(sTok.nextToken()) + 1;
+			 return Integer.parseInt(sTok.nextToken()) + 1 + parkingFloorCount;
 		 } else if (type.equalsIgnoreCase("Brick payment")) {
-			 return floorCount + 2;
+			 return parkingFloorCount + floorCount + 2;
 		 } else if (type.equalsIgnoreCase("Plastering payment")) {
-			 return floorCount + 3;
+			 return parkingFloorCount + floorCount + 3;
 		 } else if (type.equalsIgnoreCase("Flooring payment")) {
-			 return floorCount + 4;
+			 return parkingFloorCount + floorCount + 4;
 		 } else if (type.equalsIgnoreCase("Possession payment")) {
-			 return floorCount + 5;
+			 return parkingFloorCount + floorCount + 5;
 		 }
 		 
 		 return 0;

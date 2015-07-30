@@ -29,6 +29,7 @@ define([
 			this.name.set("value", data.name);
 			this.wingname.set("value", data.wingName);
 			this.floorcount.set("value", data.floorCount);
+			this.parkingfloorcount.set("value", data.parkingFloorCount);
 			this.type.set("value", data.type);
 			this.expectedcompletiondate.set("value", data.expectedCompletionDate);
 			this.remarks.set("value", data.remarks);

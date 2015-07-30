@@ -301,6 +301,7 @@ define(
     		                    	buildingId: rowData.id,
     		                    	data: rowData.paymentSchedule,
     		                    	floorcount: rowData.floorCount,
+    		                    	parkingfloorcount: rowData.parkingFloorCount, 
     		                    	hasMultiplePaymentSchedules: rowData.hasMultiplePaymentSchedules,
     		                    	url: "../rest/json/data/inventory/projectbuilding/post/paymentschedule",
     		                    	mode: "edit",
