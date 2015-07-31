@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated Jul 28, 2015 11:20:32 PM by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated Jul 30, 2015 6:25:17 PM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
     <class name="com.propmgr.dao.Unitpricepolicy" table="UNITPRICEPOLICY" schema="PUBLIC" catalog="PROPMGR">
         <id name="unitpricepolicyid" type="java.lang.Long">
@@ -44,8 +44,8 @@
         <property name="landrate" type="java.lang.Double">
             <column name="LANDRATE" precision="17" scale="0" />
         </property>
-        <property name="unitpricepolicy" type="java.lang.Double">
-            <column name="UNITPRICEPOLICY" precision="17" scale="0" />
+        <property name="interestrate" type="java.lang.Double">
+            <column name="INTERESTRATE" precision="17" scale="0" />
         </property>
         <set name="unitmasters" table="UNITMASTER" inverse="true" lazy="true" fetch="select">
             <key>
