@@ -391,13 +391,13 @@ public class ResourceUtil {
 			return new CodeTableResource(paymentStage, "SLB"+ (paymentStage - 2 - parkingFloorCount), 
 					"Slab " + (paymentStage - 2 - parkingFloorCount) + "  payment");
 		} else if (paymentStage == slabCount+3) {
-			return new CodeTableResource(paymentStage, "BRI", "Brickwork in progress");
+			return new CodeTableResource(paymentStage, "BRI", "Brickwork payment");
 		} else if (paymentStage == slabCount+4) {
-			return new CodeTableResource(paymentStage, "PLA", "Plastering in progress");
+			return new CodeTableResource(paymentStage, "PLA", "Plastering payment");
 		} else if (paymentStage == slabCount+5) {
-			return new CodeTableResource(paymentStage, "FLO", "Flooring in progress");
+			return new CodeTableResource(paymentStage, "FLO", "Flooring payment");
 		} else if (paymentStage == slabCount+6) {
-			return new CodeTableResource(paymentStage, "POS", "Ready for Possession");
+			return new CodeTableResource(paymentStage, "POS", "Possession payment");
 		} else if (paymentStage == slabCount+7) {
 			return new CodeTableResource(paymentStage, "TAX1", "Stampduty payment");
 		} else if (paymentStage == slabCount+8) {
@@ -408,6 +408,8 @@ public class ResourceUtil {
 			return new CodeTableResource(paymentStage, "TAX4", "MVAT payment");
 		} else if (paymentStage == slabCount+11) {
 			return new CodeTableResource(paymentStage, "EXTRA", "Extra work payment");
+		} else if (paymentStage == slabCount+12) {
+			return new CodeTableResource(paymentStage, "INTEREST", "Interest payment");
 		}
 		
 		return null;

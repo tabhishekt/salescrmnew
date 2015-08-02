@@ -2019,6 +2019,7 @@ public class InventoryService {
 			result.add(new CodeTableResource(++index, "TAX3", "Service tax payment"));
 			result.add(new CodeTableResource(++index, "TAX4", "MVAT payment"));
 			result.add(new CodeTableResource(++index, "EXTRA", "Extra work payment"));
+			result.add(new CodeTableResource(++index, "INTEREST", "Interest payment"));
 		} catch (Exception e) {
 			logger.error("", e);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
