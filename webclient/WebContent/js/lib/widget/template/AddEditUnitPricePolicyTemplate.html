@@ -58,6 +58,27 @@
 												type="text" /></td></tr>
 									</table>
 								</td></tr>
+								<tr><td>
+									<table>
+										<tr><td><label for="interestrate">Interest Rate:</label></td></tr>
+										<tr><td>Annual Rate (%)</td></tr>
+										<tr><td><input id="interestrate" name="interestrate"
+												data-dojo-type='dijit/form/ValidationTextBox'
+												data-dojo-attach-point='interestrate'
+												data-dojo-props="required:true, regExp:'100|(([1-9][0-9])|[0-9])(\.(([0-9][1-9])|[1-9]))?', invalidMessage:'Enter valid percent value.'"
+												type="text" /></td></tr>
+									</table>
+								</td><td>
+									<table>
+										<tr><td><label for="graceperiod">Grace Period (for Interest Rate):</label></td></tr>
+										<tr><td>Days</td></tr>
+										<tr><td><input id="graceperiod" name="graceperiod"
+												data-dojo-type='dijit/form/ValidationTextBox'
+												data-dojo-attach-point='graceperiod'
+												data-dojo-props="required:true, regExp:'\\d{1,3}', invalidMessage:'Grace Period should be min 1 and max 3 digit number.'"
+												type="text" /></td></tr>
+									</table>
+								</td></tr>
 							</table>
 	 					</div>
 					<fieldset style="width: 80%;">

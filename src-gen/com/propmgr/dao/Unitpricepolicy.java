@@ -1,6 +1,6 @@
 package com.propmgr.dao;
 
-// Generated Jul 30, 2015 6:25:17 PM by Hibernate Tools 3.4.0.CR1
+// Generated Aug 2, 2015 5:17:33 PM by Hibernate Tools 3.4.0.CR1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -24,6 +24,7 @@ public class Unitpricepolicy implements java.io.Serializable {
 	private Integer maintenancecharge1duration;
 	private Double landrate;
 	private Double interestrate;
+	private Integer graceperiod;
 	private Set unitmasters = new HashSet(0);
 	private Set amenitypricepolicies = new HashSet(0);
 
@@ -52,8 +53,8 @@ public class Unitpricepolicy implements java.io.Serializable {
 			double registrationcharge, double servicetax, double valueaddedtax,
 			double maintenancecharge1, double maintenancecharge2,
 			double legalcharge, Integer maintenancecharge1duration,
-			Double landrate, Double interestrate, Set unitmasters,
-			Set amenitypricepolicies) {
+			Double landrate, Double interestrate, Integer graceperiod,
+			Set unitmasters, Set amenitypricepolicies) {
 		this.policyname = policyname;
 		this.baserate = baserate;
 		this.readyreckonerrate = readyreckonerrate;
@@ -67,6 +68,7 @@ public class Unitpricepolicy implements java.io.Serializable {
 		this.maintenancecharge1duration = maintenancecharge1duration;
 		this.landrate = landrate;
 		this.interestrate = interestrate;
+		this.graceperiod = graceperiod;
 		this.unitmasters = unitmasters;
 		this.amenitypricepolicies = amenitypricepolicies;
 	}
@@ -181,6 +183,14 @@ public class Unitpricepolicy implements java.io.Serializable {
 
 	public void setInterestrate(Double interestrate) {
 		this.interestrate = interestrate;
+	}
+
+	public Integer getGraceperiod() {
+		return this.graceperiod;
+	}
+
+	public void setGraceperiod(Integer graceperiod) {
+		this.graceperiod = graceperiod;
 	}
 
 	public Set getUnitmasters() {

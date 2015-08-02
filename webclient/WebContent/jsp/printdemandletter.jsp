@@ -52,7 +52,7 @@
             };
             
             populateData = function(data) {
-            	this.datespan.innerHTML = this.formatDate(data.currentDate);
+            	this.datespan.innerHTML = this.formatDate(data.demandLetterGenerationDate);
             	this.customername.innerHTML = data.customer.displayName;
             	this.displayprojectinfo.innerHTML = data.displayProjectInfo;
             	this.unitnumber.innerHTML = data.unit.unitNumber;
@@ -60,7 +60,9 @@
             	this.agreementvalue.innerHTML = this.formatCurrency(data.priceDetails.agreementvalue);
             	this.totaldue.innerHTML = this.formatCurrency(data.totalDueForCurrentStatus);
             	this.totalpaymentreceived.innerHTML = this.formatCurrency(data.totalPaymentReceived);
-            	this.totaloutstanding.innerHTML = this.formatCurrency(data.balancePaymentForCurrentStatus);
+            	this.balancepayment.innerHTML = this.formatCurrency(data.balancePaymentForCurrentStatus);
+            	this.interestapplicable.innerHTML = this.formatCurrency(data.interestAmountDue);
+            	this.totaloutstanding.innerHTML = this.formatCurrency(data.totalOutstandingForCurrentStatus);
             	this.builderaccountinformation.innerHTML = data.projectBankAccounts["BLDRAC"];
             	this.servicetax.innerHTML = this.formatCurrency(data.priceDetails.servicetax);
             	this.servicetaxpercent.innerHTML = data.unit.unitPricePolicy.servicetax + "%";
@@ -151,6 +153,14 @@
 			<tr>
 				<td class="demandLetterTableColLabel"><span>Payment Received Till Date</span></td>
 				<td class="demandLetterTableCol"><span id="totalpaymentreceived" data-dojo-attach-point="totalpaymentreceived"></span></td>
+			</tr>
+			<tr>
+				<td class="demandLetterTableColLabel"><span>Balance Payment Till Date</span></td>
+				<td class="demandLetterTableCol"><span id="balancepayment" data-dojo-attach-point="balancepayment"></span></td>
+			</tr>
+			<tr>
+				<td class="demandLetterTableColLabel"><span>Total Interest Applicable</span></td>
+				<td class="demandLetterTableCol"><span id="interestapplicable" data-dojo-attach-point="interestapplicable"></span></td>
 			</tr>
 			<tr>
 				<td class="demandLetterTableColLabel"><span>Total Outstanding Till Date</span></td>

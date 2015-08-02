@@ -14,6 +14,8 @@ define([
 			this.baserate.set("value", data.baserate);
 			this.readyreckonerrate.set("value", data.readyreckonerrate);
 			this.landrate.set("value", data.landrate);
+			this.interestrate.set("value", data.interestRate);
+			this.graceperiod.set("value", data.gracePeriod);
 			this.stampduty.set("value", data.stampduty);
 			this.registrationcharge.set("value", data.registrationcharge);
 			this.servicetax.set("value", data.servicetax);

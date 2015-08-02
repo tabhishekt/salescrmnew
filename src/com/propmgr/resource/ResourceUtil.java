@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -218,11 +219,12 @@ public class ResourceUtil {
 		}
 		
 		int parkingFloorCount = (projectBuilding.getParkingfloorcount() == null) ? 0 : projectBuilding.getParkingfloorcount();
+		String planApprovalDate = convertDateToString(projectBuilding.getPlanapprovaldate());
 		return new ProjectBuildingResource(projectBuilding.getProjectbuildingid(), projectId, getProjectPhaseFromDAO(projectPhase), 
 				projectPhase.getProjectphasename(), projectBuilding.getBuildingname(), projectBuilding.getWingname(),
 				projectBuilding.getFloorcount(), parkingFloorCount, projectBuilding.getBuildingtype(), currentStatus,
 				convertDateToString(projectBuilding.getExpectedcompletiondate()), convertClobToString(projectBuilding.getRemarks()), 
-				projectBuilding.isHasmultiplepaymentschedules(), paymentSchedule, floorRise, availability, unitCharges, parking);
+				projectBuilding.isHasmultiplepaymentschedules(), planApprovalDate, paymentSchedule, floorRise, availability, unitCharges, parking);
 	}
 	
 	public static UnitResource getUnitFromDAO(Unitmaster unit)  throws SQLException, IOException {
@@ -463,11 +465,13 @@ public class ResourceUtil {
 		}
 		
 		double landRate = (unitPricePolicy.getLandrate() == null) ? 0 : unitPricePolicy.getLandrate();
+		double interestRate = (unitPricePolicy.getInterestrate() == null) ? 0 : unitPricePolicy.getInterestrate();
+		int gracePeriod = (unitPricePolicy.getGraceperiod() == null) ? 0 : unitPricePolicy.getGraceperiod();
 		return new UnitPricePolicyResource(unitPricePolicy.getUnitpricepolicyid(), unitPricePolicy.getPolicyname(), 
-				unitPricePolicy.getBaserate(), unitPricePolicy.getReadyreckonerrate(), landRate, unitPricePolicy.getStampduty(), 
-				unitPricePolicy.getRegistrationcharge(), unitPricePolicy.getServicetax(), unitPricePolicy.getValueaddedtax(), totalTax, 
-				unitPricePolicy.getMaintenancecharge1(), maintenancecharge1duration, unitPricePolicy.getMaintenancecharge2(), 
-				unitPricePolicy.getLegalcharge(), assignedToProjects.toString(), amenityCharges);
+				unitPricePolicy.getBaserate(), unitPricePolicy.getReadyreckonerrate(), landRate, interestRate, gracePeriod, 
+				unitPricePolicy.getStampduty(), unitPricePolicy.getRegistrationcharge(), unitPricePolicy.getServicetax(), 
+				unitPricePolicy.getValueaddedtax(), totalTax, unitPricePolicy.getMaintenancecharge1(), maintenancecharge1duration, 
+				unitPricePolicy.getMaintenancecharge2(), unitPricePolicy.getLegalcharge(), assignedToProjects.toString(), amenityCharges);
 	}
 	
 	public static CustomerResource getCustomerFromDAO(Customermaster customer)  throws SQLException, IOException {
@@ -688,6 +692,46 @@ public class ResourceUtil {
 		}
 		
 		return currentStatus;
+	}
+	
+	public static Date getDueDateForCurrentStatus(Set<UnitPaymentScheduleResource> scheduleList, int currentStatus) {
+		Date dueDateForCurrentStatus = null;
+		
+		try {
+			for (UnitPaymentScheduleResource paymentSchedule : scheduleList) {
+				if (paymentSchedule.getPosition() <= currentStatus) {
+					Date paymentScheduleDate = convertStringToDate(paymentSchedule.getScheduledate());
+					if (dueDateForCurrentStatus == null) {
+						dueDateForCurrentStatus = paymentScheduleDate;
+					} else {
+						if (dueDateForCurrentStatus.before(paymentScheduleDate)) {
+							dueDateForCurrentStatus = paymentScheduleDate;
+						}
+					}
+				}
+			}
+		} catch (ParseException pe) {
+			
+		}
+		return dueDateForCurrentStatus;
+	}
+	
+	public static double getInterestApplicationToBooking(double interestRate, int gracePeriod, Date demandLetterGenerationDate,
+			Date planApprovalDate, Set<UnitPaymentScheduleResource> scheduleList, int currentStatus, double balancePaymentForCurrentStatus) {
+		double interestAmountDue = 0;
+		Date dueDateForCurrentStatus = getDueDateForCurrentStatus(scheduleList, currentStatus);
+		if (dueDateForCurrentStatus != null) {
+			if (demandLetterGenerationDate == null) {
+				demandLetterGenerationDate = Calendar.getInstance().getTime();
+			}
+			if (planApprovalDate != null && 
+					planApprovalDate.before(dueDateForCurrentStatus)) {
+				long interestApplicableForDays = (demandLetterGenerationDate.getTime() - dueDateForCurrentStatus.getTime()) / (24 * 60 * 60 * 1000);
+				interestApplicableForDays = interestApplicableForDays - gracePeriod;
+				interestAmountDue = (balancePaymentForCurrentStatus * interestRate * interestApplicableForDays);
+			}
+		}
+		return interestAmountDue;
 	}
 	
 	public static double getTotalDueForCurrentStatus(Set<UnitPaymentScheduleResource> scheduleList, 
@@ -976,6 +1020,9 @@ public class ResourceUtil {
 		 }
 		 if (projectbuildingId == null || projectbuildingId.length() == 0) {
 			 projectbuildingId = getFormDataValue(formData, "projectbuilding2");
+		 }
+		 if (projectbuildingId == null || projectbuildingId.length() == 0) {
+			 projectbuildingId = getFormDataValue(formData, "projectbuilding3");
 		 }
 		 ProjectbuildingDAO dao = new ProjectbuildingDAO();
 		 return dao.findById(Long.parseLong(projectbuildingId));

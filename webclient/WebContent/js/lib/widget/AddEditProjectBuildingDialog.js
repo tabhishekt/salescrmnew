@@ -35,6 +35,7 @@ define([
 			this.remarks.set("value", data.remarks);
 			this.hasmultiplepaymentschedule.set("value", data.hasMultiplePaymentSchedules);
 			this.projectphase.set("item", data.projectPhase	);
+			this.planapprovaldate.set("value", data.planApprovalDate);
 		},
 		
 		setDataToCurrentStatus: function (url, node, selectedItem) {

@@ -1,6 +1,6 @@
 package com.propmgr.dao;
 
-// Generated Jul 30, 2015 6:25:17 PM by Hibernate Tools 3.4.0.CR1
+// Generated Aug 2, 2015 5:17:33 PM by Hibernate Tools 3.4.0.CR1
 
 import java.sql.Clob;
 import java.util.Date;
@@ -23,6 +23,7 @@ public class Projectbuilding implements java.io.Serializable {
 	private boolean hasmultiplepaymentschedules;
 	private Clob remarks;
 	private Integer parkingfloorcount;
+	private Date planapprovaldate;
 	private Set unitpaymentschedules = new HashSet(0);
 	private Set parkingmasters = new HashSet(0);
 	private Set unitmasters = new HashSet(0);
@@ -42,8 +43,8 @@ public class Projectbuilding implements java.io.Serializable {
 			String wingname, long floorcount, String buildingtype,
 			Integer currentstatus, Date expectedcompletiondate,
 			boolean hasmultiplepaymentschedules, Clob remarks,
-			Integer parkingfloorcount, Set unitpaymentschedules,
-			Set parkingmasters, Set unitmasters) {
+			Integer parkingfloorcount, Date planapprovaldate,
+			Set unitpaymentschedules, Set parkingmasters, Set unitmasters) {
 		this.projectphase = projectphase;
 		this.buildingname = buildingname;
 		this.wingname = wingname;
@@ -54,6 +55,7 @@ public class Projectbuilding implements java.io.Serializable {
 		this.hasmultiplepaymentschedules = hasmultiplepaymentschedules;
 		this.remarks = remarks;
 		this.parkingfloorcount = parkingfloorcount;
+		this.planapprovaldate = planapprovaldate;
 		this.unitpaymentschedules = unitpaymentschedules;
 		this.parkingmasters = parkingmasters;
 		this.unitmasters = unitmasters;
@@ -146,6 +148,14 @@ public class Projectbuilding implements java.io.Serializable {
 
 	public void setParkingfloorcount(Integer parkingfloorcount) {
 		this.parkingfloorcount = parkingfloorcount;
+	}
+
+	public Date getPlanapprovaldate() {
+		return this.planapprovaldate;
+	}
+
+	public void setPlanapprovaldate(Date planapprovaldate) {
+		this.planapprovaldate = planapprovaldate;
 	}
 
 	public Set getUnitpaymentschedules() {

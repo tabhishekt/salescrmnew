@@ -1,6 +1,6 @@
 package com.propmgr.dao;
 
-// Generated Jul 30, 2015 6:25:17 PM by Hibernate Tools 3.4.0.CR1
+// Generated Aug 2, 2015 5:17:33 PM by Hibernate Tools 3.4.0.CR1
 
 import java.sql.Clob;
 import java.util.Date;
@@ -29,6 +29,7 @@ public class Unitbooking implements java.io.Serializable {
 	private Clob cancellationcomment;
 	private Clob unitmodificationdetails;
 	private Integer parkingtype;
+	private Date demandlettergenerationdate;
 	private Set refundmasters = new HashSet(0);
 	private Set unitmodificationstatuses = new HashSet(0);
 	private Set paymentmasters = new HashSet(0);
@@ -53,8 +54,8 @@ public class Unitbooking implements java.io.Serializable {
 			Double deductiononothercharges, Clob bookingcomment,
 			Boolean iscancelled, Double canceldeduction, Date cancellationdate,
 			Clob cancellationcomment, Clob unitmodificationdetails,
-			Integer parkingtype, Set refundmasters,
-			Set unitmodificationstatuses, Set paymentmasters) {
+			Integer parkingtype, Date demandlettergenerationdate,
+			Set refundmasters, Set unitmodificationstatuses, Set paymentmasters) {
 		this.usermasterByBookedby = usermasterByBookedby;
 		this.usermasterByCancelledby = usermasterByCancelledby;
 		this.parkingmaster = parkingmaster;
@@ -71,6 +72,7 @@ public class Unitbooking implements java.io.Serializable {
 		this.cancellationcomment = cancellationcomment;
 		this.unitmodificationdetails = unitmodificationdetails;
 		this.parkingtype = parkingtype;
+		this.demandlettergenerationdate = demandlettergenerationdate;
 		this.refundmasters = refundmasters;
 		this.unitmodificationstatuses = unitmodificationstatuses;
 		this.paymentmasters = paymentmasters;
@@ -210,6 +212,14 @@ public class Unitbooking implements java.io.Serializable {
 
 	public void setParkingtype(Integer parkingtype) {
 		this.parkingtype = parkingtype;
+	}
+
+	public Date getDemandlettergenerationdate() {
+		return this.demandlettergenerationdate;
+	}
+
+	public void setDemandlettergenerationdate(Date demandlettergenerationdate) {
+		this.demandlettergenerationdate = demandlettergenerationdate;
 	}
 
 	public Set getRefundmasters() {

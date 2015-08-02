@@ -9,6 +9,8 @@ public class UnitPricePolicyResource {
 	private double baserate;
 	private double readyreckonerrate;
 	private double landrate;
+	private double interestRate;
+	private int gracePeriod;
 	private double stampduty;
 	private double registrationcharge;
 	private double servicetax;
@@ -22,8 +24,8 @@ public class UnitPricePolicyResource {
 	private Map<String, Double> amenityCharges;
 	
 	public UnitPricePolicyResource(Long id, String policyName, double baserate, double readyreckonerrate, double landrate,
-			double stampduty, double registrationcharge, double servicetax, double valueaddedtax, double totaltax, 
-			double maintenancecharge1, int maintenancecharge1duration, double maintenancecharge2, 
+			double interestRate, int gracePeriod, double stampduty, double registrationcharge, double servicetax, double valueaddedtax, 
+			double totaltax, double maintenancecharge1, int maintenancecharge1duration, double maintenancecharge2, 
 			double legalcharge, String assignedToProjects, Map<String, Double> amenityCharges) {
 		super();
 		this.id = id;
@@ -31,6 +33,8 @@ public class UnitPricePolicyResource {
 		this.baserate = baserate;
 		this.readyreckonerrate = readyreckonerrate;
 		this.landrate = landrate;
+		this.interestRate = interestRate;
+		this.gracePeriod = gracePeriod;
 		this.stampduty = stampduty;
 		this.registrationcharge = registrationcharge;
 		this.servicetax = servicetax;
@@ -62,6 +66,14 @@ public class UnitPricePolicyResource {
 
 	public double getLandrate() {
 		return landrate;
+	}
+
+	public double getInterestRate() {
+		return interestRate;
+	}
+
+	public int getGracePeriod() {
+		return gracePeriod;
 	}
 
 	public double getStampduty() {

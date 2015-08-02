@@ -18,14 +18,15 @@ define(
         'lib/widget/ShowCancelledBookingDetailDialog',
         'lib/widget/DefineBuildingParkingDialog',
         'lib/widget/UnitModificationRequestDialog',
-        'lib/widget/DefineAmenityChargesDialog'
+        'lib/widget/DefineAmenityChargesDialog',
+        'lib/widget/UpdateDemandLetterGenDateDialog'
     ],
     function (
         declare, lang, LoginDialog, ConfirmDialog, YesNoDialog, InformationDialog, ShowEnquiryCommentDialog, 
         ShowUnitPriceDetailDialog, AddEditUnitFloorRiseDialog, AddEditUnitPriceDialog, AddEditUnitChargesDialog,
         ShowUnitPaymentScheduleDialog, DefineBuildingPaymentScheduleDialog, ShowUnitAvailabilityDialog,
         CancelUnitBookingDialog, ShowCancelledBookingDetailDialog, DefineBuildingParkingDialog, UnitModificationRequestDialog,
-        DefineAmenityChargesDialog
+        DefineAmenityChargesDialog, UpdateDemandLetterGenDateDialog
     ) {
         return declare([], {
             
@@ -159,6 +160,17 @@ define(
         			this.updateUnitChargesDialog.set("dimensions", [width, height]);  
         			this.updateUnitChargesDialog.layout();
         			this.updateUnitChargesDialog.show();
+            	} else if (options.action == "updatedemandlettergendate") {
+            		if(!this.updateDemandLetterGenDateDialog) {
+                		options.draggable = false;
+                    	options.showTitle = true;	
+                		this.updateDemandLetterGenDateDialog = new UpdateDemandLetterGenDateDialog(options);
+                	}
+            		this.updateDemandLetterGenDateDialog.buildingId = options.buildingId;
+                	this.updateDemandLetterGenDateDialog.set("title", options.title);
+        			this.updateDemandLetterGenDateDialog.set("dimensions", [width, height]);  
+        			this.updateDemandLetterGenDateDialog.layout();
+        			this.updateDemandLetterGenDateDialog.show();
             	} else if (options.action == "updateamenitycharges") {
             		if(!this.updateAmenityChargesDialog) {
                 		options.draggable = false;

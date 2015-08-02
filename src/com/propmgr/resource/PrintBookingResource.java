@@ -10,10 +10,12 @@ public class PrintBookingResource {
 	private long bookingFormNumber;
 	private String userDisplayName;
 	private String currentDate;
+	private String demandLetterGenerationDate;
 	private String bookingDate;
 	private CodeTableResource buildingCurrentStatus;
 	private double totalDueForCurrentStatus;
 	private double balancePaymentForCurrentStatus;
+	private double interestAmountDue;
 	private OrganizationResource organization;
 	private String projectName;
 	private String projectPhaseName;
@@ -30,24 +32,26 @@ public class PrintBookingResource {
 	private double totalPaymentReceived;
 	private String termsAndConditions;
 	private Set<UnitPaymentScheduleResource> scheduleList;
+	private double totalOutstandingForCurrentStatus;
 	
-	public PrintBookingResource(long id, long bookingFormNumber, String userDisplayName, String currentDate, 
+	public PrintBookingResource(long id, long bookingFormNumber, String userDisplayName, String currentDate, String demandLetterGenDate,
 			String bookingDate, CodeTableResource buildingCurrentStatus, double totalDueForCurrentStatus,
-			double balancePaymentForCurrentStatus, OrganizationResource organization, String displayProjectInfo,
+			double balancePaymentForCurrentStatus, double interestAmountDue, OrganizationResource organization, String displayProjectInfo,
 			String projectName, String projectPhaseName, String projectBuildingName, CustomerResource customer, UnitResource unit, 
 			double discount, double deductionOnOtherCharges, String comment, UnitPriceDetailResource priceDetails,
-			List<PaymentResource> paymentList, double totalPaymentReceived,
-			Map<String, String> projectBankAccounts, String termsAndConditions,
-			Set<UnitPaymentScheduleResource> scheduleList) {
+			List<PaymentResource> paymentList, double totalPaymentReceived, Map<String, String> projectBankAccounts, String termsAndConditions,
+			Set<UnitPaymentScheduleResource> scheduleList, double totalOutstandingForCurrentStatus) {
 		super();
 		this.id = id;
 		this.bookingFormNumber = bookingFormNumber;
 		this.userDisplayName = userDisplayName;
 		this.currentDate = currentDate;
+		this.demandLetterGenerationDate = demandLetterGenDate;
 		this.bookingDate = bookingDate;
 		this.buildingCurrentStatus = buildingCurrentStatus;
 		this.totalDueForCurrentStatus = totalDueForCurrentStatus;
 		this.balancePaymentForCurrentStatus = balancePaymentForCurrentStatus;
+		this.interestAmountDue = interestAmountDue;
 		this.organization = organization;
 		this.displayProjectInfo = displayProjectInfo;
 		this.projectName = projectName;
@@ -64,6 +68,7 @@ public class PrintBookingResource {
 		this.projectBankAccounts = projectBankAccounts;
 		this.termsAndConditions = termsAndConditions;
 		this.scheduleList = scheduleList;
+		this.totalOutstandingForCurrentStatus = totalOutstandingForCurrentStatus;
 	}
 
 	public long getId() {
@@ -82,6 +87,10 @@ public class PrintBookingResource {
 		return currentDate;
 	}
 
+	public String getDemandLetterGenerationDate() {
+		return demandLetterGenerationDate;
+	}
+
 	public String getBookingDate() {
 		return bookingDate;
 	}
@@ -96,6 +105,10 @@ public class PrintBookingResource {
 
 	public double getBalancePaymentForCurrentStatus() {
 		return balancePaymentForCurrentStatus;
+	}
+
+	public double getInterestAmountDue() {
+		return interestAmountDue;
 	}
 
 	public OrganizationResource getOrganization() {
@@ -160,5 +173,9 @@ public class PrintBookingResource {
 
 	public Set<UnitPaymentScheduleResource> getScheduleList() {
 		return scheduleList;
+	}
+
+	public double getTotalOutstandingForCurrentStatus() {
+		return totalOutstandingForCurrentStatus;
 	}
 }

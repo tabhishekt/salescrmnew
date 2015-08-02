@@ -663,6 +663,7 @@ public class InventoryService {
 			projectbuilding.setProjectphase(projectPhase);
 			projectbuilding.setRemarks(ResourceUtil.getFormDataValueAsClob(formData, "remarks"));
 			projectbuilding.setHasmultiplepaymentschedules(ResourceUtil.getFormDataValueAsBoolean(formData, "hasmultiplepaymentschedule"));
+			projectbuilding.setPlanapprovaldate(ResourceUtil.getFormDataValueAsDate(formData, "planapprovaldate"));
 			projectbuilding.setWingname(ResourceUtil.getFormDataValue(formData, "wingname"));
 			projectbuildingDAO.saveOrUpdate(projectbuilding);
 		}
@@ -822,6 +823,31 @@ public class InventoryService {
 				parkingmaster.setAvailable(available);
 				parkingmaster.setTotal(total);
 				parkingmasterDAO.saveOrUpdate(parkingmaster);
+			}
+		}
+		catch (Exception e) {
+			logger.error("", e);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
+		}
+	    return Response.ok().build();
+	}
+	
+	@POST
+	@Path("/projectbuilding/post/demandlettergendate")
+	@Consumes("application/x-www-form-urlencoded")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response modifyProjectBuildingDefineDemandLetterGenDate(MultivaluedMap<String, String> formData) {
+		UnitbookingDAO unitbookingDAO = new UnitbookingDAO();
+		
+		try {
+			Projectbuilding projectBuilding = ResourceUtil.getProjectBuildingPOJO(formData);
+			boolean updateallbookings = ResourceUtil.getFormDataValueAsBoolean(formData, "updateallbookings");
+			List<Unitbooking> allUnitBookings = unitbookingDAO.findByBuilding(projectBuilding.getProjectbuildingid()); 
+			for (Unitbooking unitbooking : allUnitBookings) {
+				if (unitbooking.getDemandlettergenerationdate() == null || updateallbookings) {
+					unitbooking.setDemandlettergenerationdate(ResourceUtil.getFormDataValueAsDate(formData, "demandlettergendate"));
+				}
+				unitbookingDAO.saveOrUpdate(unitbooking);
 			}
 		}
 		catch (Exception e) {
@@ -1067,7 +1093,7 @@ public class InventoryService {
 		@Override
 		public int compare(UnitPaymentScheduleResource o1,
 				UnitPaymentScheduleResource o2) {
-			return (o1.getId() > o2.getId()) ? 1 : -1;
+			return (o1.getPosition() > o2.getPosition()) ? 1 : -1;
 		}
 	}  
 	
@@ -1314,6 +1340,8 @@ public class InventoryService {
 			unitPricePolicy.setBaserate(ResourceUtil.getFormDataValueAsDouble(formData, "baserate"));
 			unitPricePolicy.setReadyreckonerrate(ResourceUtil.getFormDataValueAsDouble(formData, "readyreckonerrate"));
 			unitPricePolicy.setLandrate(ResourceUtil.getFormDataValueAsDouble(formData, "landrate"));
+			unitPricePolicy.setInterestrate(ResourceUtil.getFormDataValueAsDouble(formData, "interestrate"));
+			unitPricePolicy.setGraceperiod(ResourceUtil.getFormDataValueAsInt(formData, "graceperiod"));
 			
 			unitPricePolicy.setServicetax(ResourceUtil.getFormDataValueAsDouble(formData, "servicetax"));
 			unitPricePolicy.setValueaddedtax(ResourceUtil.getFormDataValueAsDouble(formData, "valueaddedtax"));
@@ -1610,6 +1638,12 @@ public class InventoryService {
 						projectBankAccounts.put(res.getBankAccountType().getCode(), res.getDisplayBankInformation());
 					}
 					
+					Date demandLetterGenerationDate = null; 
+					if (unitbooking.getDemandlettergenerationdate() == null) {
+						demandLetterGenerationDate = Calendar.getInstance().getTime();
+					} else {
+						demandLetterGenerationDate = unitbooking.getDemandlettergenerationdate();
+					}
 					double totalPaymentReceived = ResourceUtil.getTotalPaymentReceivedForBooking(unitbooking);
 					double totalDueForCurrentStatus = ResourceUtil.getTotalDueForCurrentStatus(scheduleList, bookingAmount, 
 							unitbooking, (int)buildingCurrentStatus.getId());
@@ -1617,17 +1651,21 @@ public class InventoryService {
 					if (balancePaymentForCurrentStatus < 0) {
 						balancePaymentForCurrentStatus = 0;
 					}
+					double interestAmountDue = ResourceUtil.getInterestApplicationToBooking(unit.getUnitpricepolicy().getInterestrate(), 
+							unit.getUnitpricepolicy().getGraceperiod(), demandLetterGenerationDate, 
+							projectbuilding.getPlanapprovaldate(), scheduleList, (int)buildingCurrentStatus.getId(), balancePaymentForCurrentStatus);
+					double totalOutstandingForCurrentStatus = balancePaymentForCurrentStatus + interestAmountDue;
+					String termsAndConditions = ResourceUtil.convertClobToString(project.getTermsandconditions());
 					
-					
-					String termsAndConditions = ResourceUtil.convertClobToString(project.getTermsandconditions());		
-							
 					result = new PrintBookingResource(unitbooking.getUnitbookingid(), unitbooking.getBookingformnumber(), 
-							ResourceUtil.getUserDisplayName(user), currentDate, ResourceUtil.convertDateToString(unitbooking.getBookingdate()), 
-							buildingCurrentStatus, totalDueForCurrentStatus, balancePaymentForCurrentStatus, ResourceUtil.getOrganizationFromDAO(org), displayProjectInfo,
-							project.getProjectname(), projectbuilding.getProjectphase().getProjectphasename(), projectbuilding.getBuildingname(),
+							ResourceUtil.getUserDisplayName(user), currentDate, ResourceUtil.convertDateToString(demandLetterGenerationDate),
+							ResourceUtil.convertDateToString(unitbooking.getBookingdate()), 
+							buildingCurrentStatus, totalDueForCurrentStatus, balancePaymentForCurrentStatus, interestAmountDue, 
+							ResourceUtil.getOrganizationFromDAO(org), displayProjectInfo, project.getProjectname(), 
+							projectbuilding.getProjectphase().getProjectphasename(), projectbuilding.getBuildingname(),
 							customer, ResourceUtil.getUnitFromDAO(unit), bookingDiscount, deductionOnOtherCharges,
 							ResourceUtil.convertClobToString(unitbooking.getBookingcomment()), priceWithDiscount, paymentList, totalPaymentReceived, 
-							projectBankAccounts, termsAndConditions, scheduleList);
+							projectBankAccounts, termsAndConditions, scheduleList, totalOutstandingForCurrentStatus);
 				} else {
 					return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
 				}

@@ -17,6 +17,7 @@ public class ProjectBuildingResource {
 	private String expectedCompletionDate;
 	private String remarks;
 	private boolean hasMultiplePaymentSchedules;
+	private String planApprovalDate;
 	private Map<String, UnitPaymentScheduleResource> paymentSchedule;
 	private Map<Integer, Double> floorRise;
 	private Map<Integer, List<UnitAvailabilityResource>> availability;
@@ -27,7 +28,7 @@ public class ProjectBuildingResource {
 			String projectPhaseName, String name, String wingName, long floorCount, 
 			int parkingFloorCount, String type, CodeTableResource currentStatus, 
 			String expectedCompletionDate, String remarks, boolean hasMultiplePaymentSchedules, 
-			Map<String, UnitPaymentScheduleResource> paymentSchedule, 
+			String planApprovalDate, Map<String, UnitPaymentScheduleResource> paymentSchedule, 
 			Map<Integer, Double> floorRise, Map<Integer, List<UnitAvailabilityResource>> availability,
 			Map<String, Map<String, Double>> unitCharges, Map<String, ParkingResource> parking) {
 		super();
@@ -47,6 +48,7 @@ public class ProjectBuildingResource {
 		this.floorRise = floorRise;
 		this.availability = availability;
 		this.hasMultiplePaymentSchedules = hasMultiplePaymentSchedules;
+		this.planApprovalDate = planApprovalDate;
 		this.unitCharges = unitCharges;
 		this.parking = parking;
 	}
@@ -113,6 +115,10 @@ public class ProjectBuildingResource {
 
 	public boolean isHasMultiplePaymentSchedules() {
 		return hasMultiplePaymentSchedules;
+	}
+
+	public String getPlanApprovalDate() {
+		return planApprovalDate;
 	}
 
 	public void setHasMultiplePaymentSchedules(boolean hasMultiplePaymentSchedules) {

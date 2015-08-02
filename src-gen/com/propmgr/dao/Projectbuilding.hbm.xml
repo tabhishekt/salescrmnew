@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated Jul 30, 2015 6:25:17 PM by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated Aug 2, 2015 5:17:34 PM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
     <class name="com.propmgr.dao.Projectbuilding" table="PROJECTBUILDING" schema="PUBLIC" catalog="PROPMGR">
         <id name="projectbuildingid" type="java.lang.Long">
@@ -37,6 +37,9 @@
         </property>
         <property name="parkingfloorcount" type="java.lang.Integer">
             <column name="PARKINGFLOORCOUNT" />
+        </property>
+        <property name="planapprovaldate" type="date">
+            <column name="PLANAPPROVALDATE" length="8" />
         </property>
         <set name="unitpaymentschedules" table="UNITPAYMENTSCHEDULE" inverse="true" lazy="true" fetch="select">
             <key>

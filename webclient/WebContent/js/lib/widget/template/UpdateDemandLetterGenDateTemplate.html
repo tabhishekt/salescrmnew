@@ -1,0 +1,67 @@
+<div class="dojoxDialog" tabindex="-1">
+	<div dojoAttachPoint="titleBar" class="dojoxDialogTitleBar">
+		<span dojoAttachPoint="titleNode" class="dojoxDialogTitle"
+			id="${id}_title">${title}</span>
+		<div dojoAttachPoint="closeButtonNode" class="dojoxDialogCloseIcon hiddenDialogCloseIcon"
+			dojoAttachEvent="onclick: onCancel">
+			<span dojoAttachPoint="closeText" class="closeText">x</span>
+		</div>
+	</div>
+	<div dojoAttachPoint="dojoxDialogWrapper">
+		<div dojoAttachPoint="containerNode" class="dojoxDialogPaneContent">
+			<div data-dojo-attach-point="codetableForm"
+				data-dojo-type="dijit/form/Form" enctype="multipart/form-data"
+				action="" method="POST">
+				<div>
+					<input data-dojo-type='dijit/form/TextBox' id="projectbuilding3" name="projectbuilding3" 
+					data-dojo-attach-point='projectbuilding3' class="hiddenInput" value=""></input>
+				</div>
+				<fieldset style="width: 80%;">
+	 					<legend>Demand Letter Generation Date:</legend>
+						<div>
+							<p>By default only those bookings will be modified where demand letter generation date is <br> not already available.</p>
+							<table align="left" style="width: 100%;">
+								<tr><td colspan="2">
+									<table>
+										<tr><td><label for="demandlettergendate">Demand letter generation date:</label></td></tr>
+										<tr><td><input id="demandlettergendate" name="demandlettergendate"
+												data-dojo-type='dijit/form/DateTextBox'
+												data-dojo-attach-point='demandlettergendate'
+												data-dojo-props="required:true"
+												type="text" /></td></tr>
+									</table>
+								</td></tr>
+								<tr><td colspan="2">
+									<table>
+										<tr><td><input id="updateallbookings" name="updateallbookings" 
+										data-dojo-type="dijit/form/CheckBox" 
+										data-dojo-attach-point='updateallbookings'/></td>
+										<td><label data-dojo-attach-point='updateallbookingslabel' 
+											for="updateallbookings">Update all active bookings of this building:</label></td></tr>
+									</table>
+								</td></tr>
+							</table>
+						</div>
+				</fieldset>
+				<div>
+					<table>
+						<tr>
+							<td>
+								<div class="dialogMessageSpan"
+									data-dojo-attach-point="messageNode"></div>
+							</td>
+							<td><div>
+									<button data-dojo-type="dijit.form.Button" data-dojo-props=""
+										data-dojo-attach-point="submitButton"
+										data-dojo-attach-event="onClick: onSubmit">Submit</button>
+									<button data-dojo-type="dijit.form.Button" data-dojo-props=""
+										data-dojo-attach-point="cancelButton"
+										data-dojo-attach-event="onClick: onCancel">Cancel</button>
+								</div></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
