@@ -1,6 +1,6 @@
 package com.propmgr.dao;
 
-// Generated Aug 2, 2015 5:17:33 PM by Hibernate Tools 3.4.0.CR1
+// Generated Aug 3, 2015 11:44:40 PM by Hibernate Tools 3.4.0.CR1
 
 import java.sql.Clob;
 import java.util.Date;
@@ -16,13 +16,12 @@ public class Paymentmaster implements java.io.Serializable {
 	private Usermaster usermaster;
 	private Unitbooking unitbooking;
 	private Paymenttype paymenttype;
+	private Bankbranch bankbranch;
 	private long receiptnumber;
 	private Long altreceiptnumber;
 	private double paymentamount;
 	private Clob paymentdescription;
 	private Date paymentreceiveddate;
-	private String bankname;
-	private String bankbranch;
 	private String chequenumber;
 	private Date chequedate;
 	private String cardnumber;
@@ -50,9 +49,9 @@ public class Paymentmaster implements java.io.Serializable {
 	}
 
 	public Paymentmaster(Usermaster usermaster, Unitbooking unitbooking,
-			Paymenttype paymenttype, long receiptnumber, Long altreceiptnumber,
-			double paymentamount, Clob paymentdescription,
-			Date paymentreceiveddate, String bankname, String bankbranch,
+			Paymenttype paymenttype, Bankbranch bankbranch, long receiptnumber,
+			Long altreceiptnumber, double paymentamount,
+			Clob paymentdescription, Date paymentreceiveddate,
 			String chequenumber, Date chequedate, String cardnumber,
 			String cardexpirydate, String cardholdername, String cardtype,
 			boolean editable, String utrnumber, Long project,
@@ -60,13 +59,12 @@ public class Paymentmaster implements java.io.Serializable {
 		this.usermaster = usermaster;
 		this.unitbooking = unitbooking;
 		this.paymenttype = paymenttype;
+		this.bankbranch = bankbranch;
 		this.receiptnumber = receiptnumber;
 		this.altreceiptnumber = altreceiptnumber;
 		this.paymentamount = paymentamount;
 		this.paymentdescription = paymentdescription;
 		this.paymentreceiveddate = paymentreceiveddate;
-		this.bankname = bankname;
-		this.bankbranch = bankbranch;
 		this.chequenumber = chequenumber;
 		this.chequedate = chequedate;
 		this.cardnumber = cardnumber;
@@ -112,6 +110,14 @@ public class Paymentmaster implements java.io.Serializable {
 		this.paymenttype = paymenttype;
 	}
 
+	public Bankbranch getBankbranch() {
+		return this.bankbranch;
+	}
+
+	public void setBankbranch(Bankbranch bankbranch) {
+		this.bankbranch = bankbranch;
+	}
+
 	public long getReceiptnumber() {
 		return this.receiptnumber;
 	}
@@ -150,22 +156,6 @@ public class Paymentmaster implements java.io.Serializable {
 
 	public void setPaymentreceiveddate(Date paymentreceiveddate) {
 		this.paymentreceiveddate = paymentreceiveddate;
-	}
-
-	public String getBankname() {
-		return this.bankname;
-	}
-
-	public void setBankname(String bankname) {
-		this.bankname = bankname;
-	}
-
-	public String getBankbranch() {
-		return this.bankbranch;
-	}
-
-	public void setBankbranch(String bankbranch) {
-		this.bankbranch = bankbranch;
 	}
 
 	public String getChequenumber() {

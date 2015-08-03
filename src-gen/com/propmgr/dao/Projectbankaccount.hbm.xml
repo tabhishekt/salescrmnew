@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated Aug 2, 2015 5:17:34 PM by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated Aug 3, 2015 11:44:40 PM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
     <class name="com.propmgr.dao.Projectbankaccount" table="PROJECTBANKACCOUNT" schema="PUBLIC" catalog="PROPMGR">
         <id name="projectbankaccountid" type="java.lang.Long">
             <column name="PROJECTBANKACCOUNTID" />
             <generator class="identity" />
         </id>
-        <many-to-one name="address" class="com.propmgr.dao.Address" fetch="select">
-            <column name="BANKADDRESS" not-null="true" />
+        <many-to-one name="bankbranch" class="com.propmgr.dao.Bankbranch" fetch="select">
+            <column name="BANKBRANCH" />
         </many-to-one>
         <many-to-one name="bankaccounttype" class="com.propmgr.dao.Bankaccounttype" fetch="select">
             <column name="ACCOUNTTYPE" not-null="true" />
@@ -17,20 +17,11 @@
         <many-to-one name="projectmaster" class="com.propmgr.dao.Projectmaster" fetch="select">
             <column name="PROJECT" not-null="true" />
         </many-to-one>
-        <property name="bankname" type="string">
-            <column name="BANKNAME" length="64" />
-        </property>
         <property name="accountnumber" type="string">
             <column name="ACCOUNTNUMBER" length="64" />
         </property>
         <property name="accountholdername" type="string">
             <column name="ACCOUNTHOLDERNAME" length="64" />
-        </property>
-        <property name="ifsccode" type="string">
-            <column name="IFSCCODE" length="64" />
-        </property>
-        <property name="micrcode" type="string">
-            <column name="MICRCODE" length="64" />
         </property>
     </class>
 </hibernate-mapping>

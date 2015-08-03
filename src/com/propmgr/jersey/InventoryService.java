@@ -31,6 +31,8 @@ import com.propmgr.dao.Amenity;
 import com.propmgr.dao.AmenityDAO;
 import com.propmgr.dao.Amenitypricepolicy;
 import com.propmgr.dao.AmenitypricepolicyDAO;
+import com.propmgr.dao.Bankbranch;
+import com.propmgr.dao.BankbranchDAO;
 import com.propmgr.dao.Contactinfo;
 import com.propmgr.dao.Customermaster;
 import com.propmgr.dao.Enquiry;
@@ -82,6 +84,7 @@ import com.propmgr.dao.UnitpricepolicyDAO;
 import com.propmgr.dao.Unittype;
 import com.propmgr.dao.Usermaster;
 import com.propmgr.hibernate.HibernateConnection;
+import com.propmgr.resource.BankBranchResource;
 import com.propmgr.resource.CodeTableResource;
 import com.propmgr.resource.CustomerResource;
 import com.propmgr.resource.EnquiryCommentResource;
@@ -417,10 +420,10 @@ public class InventoryService {
 	public Response modifyProjectBankAccount(MultivaluedMap<String, String> formData) {
 		ProjectbankaccountDAO projectbankaccountDAO = new ProjectbankaccountDAO();
 		Projectbankaccount projectBankAccount = new Projectbankaccount();
-		Address address = new Address();
 		
 		try {
 			Projectmaster project = ResourceUtil.getProjectPOJO(formData);
+			Bankbranch bankbranch = ResourceUtil.getBankbranchPOJO(formData);
 			String rowId = ResourceUtil.getFormDataValue(formData, "rowId");
 			if (rowId != null && rowId.length() > 0) {
 				projectBankAccount = projectbankaccountDAO.findById(Long.parseLong(rowId));
@@ -429,15 +432,10 @@ public class InventoryService {
 				}
 			} 
 			
-			ResourceUtil.saveAddress(formData, address);
-			projectBankAccount.setAddress(address);
-			
 			projectBankAccount.setAccountholdername(ResourceUtil.getFormDataValue(formData, "accountholdername"));
 			projectBankAccount.setAccountnumber(ResourceUtil.getFormDataValue(formData, "accountnumber"));
 			projectBankAccount.setBankaccounttype(ResourceUtil.getBankAccountTypePOJO(formData));
-			projectBankAccount.setBankname(ResourceUtil.getFormDataValue(formData, "bankname"));
-			projectBankAccount.setIfsccode(ResourceUtil.getFormDataValue(formData, "ifsccode"));
-			projectBankAccount.setMicrcode(ResourceUtil.getFormDataValue(formData, "micrcode"));
+			projectBankAccount.setBankbranch(bankbranch);
 			projectBankAccount.setProjectmaster(project);
 			
 			projectbankaccountDAO.saveOrUpdate(projectBankAccount);
@@ -1399,6 +1397,108 @@ public class InventoryService {
 	}
 	
 	@GET
+	@Path("/bankbranch/get/all")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAllBankBranches(@QueryParam("projectId") String projectId) {
+		BankbranchDAO bankbranchDAO = new BankbranchDAO();
+		List<BankBranchResource> result = new ArrayList<BankBranchResource>();
+		
+		try {
+			List<Bankbranch> allBankBranches = bankbranchDAO.findAll();
+			for (Bankbranch bankbranch : allBankBranches) {
+				result.add(ResourceUtil.getBankBranchFromDAO(bankbranch));
+			} 
+		} catch (Exception e) {
+			logger.error("", e);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
+		}
+		
+		int size = result.size();
+		return Response.ok(result).header("Content-Range", "items 0-" + (size - 1) + "/" + size).build();
+	}
+	
+	@GET
+	@Path("/bankbranch/get")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getBankBranch(@QueryParam("rowId") String rowId) {
+		BankbranchDAO bankbranchDAO = new BankbranchDAO();
+		BankBranchResource result = null;
+		
+		try {
+			Bankbranch bankbranch = bankbranchDAO.findById(Long.parseLong(rowId));
+			if (bankbranch != null) {
+				result = ResourceUtil.getBankBranchFromDAO(bankbranch);
+			} else {
+				return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
+			}
+		} catch (Exception e) {
+			logger.error("", e);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
+		}
+
+	    return Response.ok(result).build();
+	}
+	
+	@DELETE
+	@Path("/bankbranch/delete")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response deleteBankBranch(@QueryParam("rowId") String rowId) {		
+		BankbranchDAO bankbranchDAO = new BankbranchDAO();
+		
+		try {
+			Bankbranch bankbranch = bankbranchDAO.findById(Long.parseLong(rowId));
+			if (bankbranch != null) {
+				bankbranchDAO.delete(bankbranch);
+			} else {
+				return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
+			}
+		} catch (ConstraintViolationException cve) {
+			logger.error("", cve);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new 
+					ApplicationException("Record could not be deleted as it is being referenced by other data present on system. " + cve.getMessage())).build();
+		} catch (Exception e) {
+			logger.error("", e);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
+		}
+		
+	    return Response.ok().build();
+	}
+	
+	@POST
+	@Path("/bankbranch/post")
+	@Consumes("application/x-www-form-urlencoded")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response modifyBankBranch(MultivaluedMap<String, String> formData) {
+		BankbranchDAO bankbranchDAO = new BankbranchDAO();
+		Bankbranch bankbranch = new Bankbranch();
+		Address address = new Address();
+		
+		try {
+			String rowId = ResourceUtil.getFormDataValue(formData, "rowId");
+			if (rowId != null && rowId.length() > 0) {
+				bankbranch = bankbranchDAO.findById(Long.parseLong(rowId));
+				if (bankbranch == null) {
+					return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("entity with id " + rowId + " not found.")).build();
+				}
+			} 
+			
+			ResourceUtil.saveAddress(formData, address);
+			bankbranch.setAddress(address);
+			bankbranch.setBankname(ResourceUtil.getFormDataValue(formData, "bankname"));
+			bankbranch.setBranchname(ResourceUtil.getFormDataValue(formData, "branchname"));
+			bankbranch.setIfsccode(ResourceUtil.getFormDataValue(formData, "ifsccode"));
+			bankbranch.setMicrcode(ResourceUtil.getFormDataValue(formData, "micrcode"));
+			
+			bankbranchDAO.saveOrUpdate(bankbranch);
+		}
+		catch (Exception e) {
+			logger.error("", e);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
+		}
+	    return Response.ok().build();
+	}
+	
+	@GET
 	@Path("/unitpaymentschedule/get/all")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getUnitPaymentScheduleForBuilding(@QueryParam("buildingId") String buildingId) {
@@ -1846,6 +1946,7 @@ public class InventoryService {
 			Unitbooking unitbooking = ResourceUtil.getUnitbookingPOJO(formData);
 			UnitBookingResource unitBookingResource = ResourceUtil.getUnitbookingFromDAO(unitbooking);
 			Usermaster user = ResourceUtil.getUserPOJO(formData);
+			Bankbranch bankbranch = ResourceUtil.getBankbranchPOJO(formData);
 			double deduction = ResourceUtil.getFormDataValueAsDouble(formData, "canceldeduction");
 			double refundamount = unitBookingResource.getTotalPaymentReceived() - deduction;
 			
@@ -1855,8 +1956,7 @@ public class InventoryService {
 			}
 			
 			if (refundamount > 0) {
-				refundmaster.setBankname(ResourceUtil.getFormDataValue(formData, "bankname"));
-				refundmaster.setBankbranch(ResourceUtil.getFormDataValue(formData, "bankbranch"));
+				refundmaster.setBankbranch(bankbranch);
 				refundmaster.setChequenumber(ResourceUtil.getFormDataValue(formData, "chequenumber"));
 				refundmaster.setChequedate(ResourceUtil.getFormDataValueAsDate(formData, "chequedate"));
 				refundmaster.setRefundamount(refundamount);
@@ -2169,7 +2269,7 @@ public class InventoryService {
 			Unitbooking unitbooking = ResourceUtil.getUnitbookingPOJO(formData);
 			Usermaster user = ResourceUtil.getUserPOJO(formData);
 			Paymenttype paymenttype = ResourceUtil.getPaymenttypePOJO(formData);
-			String bankName = ResourceUtil.getFormDataValue(formData, "bankname");
+			Bankbranch bankbranch = ResourceUtil.getBankbranchPOJO(formData);
 			String chequeNumber = ResourceUtil.getFormDataValue(formData, "chequenumber");
 			
 			if (rowId != null && rowId.length() > 0) {
@@ -2186,9 +2286,9 @@ public class InventoryService {
 				}
 				
 				if (ResourceUtil.convertClobToString(paymenttype.getPaymenttypedescription()).equalsIgnoreCase("Bank Cheque")) {
-					if (paymentmasterDAO.isDuplicateCheque(bankName, chequeNumber)) {
+					if (paymentmasterDAO.isDuplicateCheque(bankbranch.getBankbranchid(), chequeNumber)) {
 						return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("Payment already exists with bankName " + 
-								bankName + " and cheque number " + chequeNumber)).build();
+								bankbranch.getBankname() + ", branch " + bankbranch.getBranchname() + " and cheque number " + chequeNumber)).build();
 					}
 				}
 				payment.setProject(projectId);
@@ -2205,8 +2305,7 @@ public class InventoryService {
 			payment.setPaymentreceiveddate(ResourceUtil.getFormDataValueAsDate(formData, "receiptdate"));
 			payment.setPaymenttype(paymenttype);
 			
-			payment.setBankname(bankName);
-			payment.setBankbranch(ResourceUtil.getFormDataValue(formData, "bankbranch"));
+			payment.setBankbranch(bankbranch);
 			payment.setChequenumber(chequeNumber);
 			payment.setChequedate(ResourceUtil.getFormDataValueAsDate(formData, "chequedate"));
 			payment.setUtrnumber(ResourceUtil.getFormDataValue(formData, "utrnumber"));

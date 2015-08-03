@@ -30,6 +30,8 @@ import com.propmgr.dao.Amenitypricepolicy;
 import com.propmgr.dao.AmenitypricepolicyDAO;
 import com.propmgr.dao.Bankaccounttype;
 import com.propmgr.dao.BankaccounttypeDAO;
+import com.propmgr.dao.Bankbranch;
+import com.propmgr.dao.BankbranchDAO;
 import com.propmgr.dao.Citymaster;
 import com.propmgr.dao.CitymasterDAO;
 import com.propmgr.dao.Contactinfo;
@@ -113,21 +115,33 @@ public class ResourceUtil {
 				convertClobToString(project.getTermsandconditions()));
 	}
 	
+	public static BankBranchResource getBankBranchFromDAO(Bankbranch bankbranch) throws SQLException, IOException {
+		AddressResource branchAddress = getAddressFromDAO(bankbranch.getAddress());
+		String name = bankbranch.getBranchname() + " - " + bankbranch.getBankname();
+		return new BankBranchResource(bankbranch.getBankbranchid(), name, bankbranch.getBankname(), 
+				bankbranch.getBranchname(), bankbranch.getIfsccode(), bankbranch.getMicrcode(), 
+				branchAddress, getDisplayAddressFromAddressResource(branchAddress));
+	}
+	
 	public static ProjectBankAccountResource getProjectBankAccountFromDAO(Projectbankaccount projectbankaccount) throws SQLException, IOException {
-		AddressResource address = getAddressFromDAO(projectbankaccount.getAddress());
+		AddressResource address = getAddressFromDAO(projectbankaccount.getBankbranch().getAddress());
 		CodeTableResource bankAccountType = getBankAccountTypeResourceFromDAO(projectbankaccount.getBankaccounttype());
-		String displayBankInformation = projectbankaccount.getAccountholdername() + ", " + projectbankaccount.getBankname();
+		String displayBankInformation = projectbankaccount.getAccountholdername() + ", " + projectbankaccount.getBankbranch().getBankname();
 		displayBankInformation += ", Account # " + projectbankaccount.getAccountnumber();
-		displayBankInformation += ", IFSC Code " + projectbankaccount.getIfsccode();
-		displayBankInformation += ", MICR Code " + projectbankaccount.getMicrcode();
+		displayBankInformation += ", IFSC Code " + projectbankaccount.getBankbranch().getIfsccode();
+		displayBankInformation += ", MICR Code " + projectbankaccount.getBankbranch().getMicrcode();
 		displayBankInformation += ", " + getDisplayAddressFromAddressResource(address);
+		String displayBankName = null;
+		BankBranchResource bankBranch = null;
+		if (projectbankaccount.getBankbranch() != null) {
+			displayBankName = projectbankaccount.getBankbranch().getBranchname() + " - "  + projectbankaccount.getBankbranch().getBankname();
+			bankBranch = getBankBranchFromDAO(projectbankaccount.getBankbranch());
+		}
 		
 		return new ProjectBankAccountResource(projectbankaccount.getProjectbankaccountid(), 
-				projectbankaccount.getProjectmaster().getProjectid(), address, 
-				bankAccountType, bankAccountType.getName(), 
-				projectbankaccount.getBankname(), projectbankaccount.getAccountnumber(), 
-				projectbankaccount.getAccountholdername(), projectbankaccount.getIfsccode(), 
-				projectbankaccount.getMicrcode(), displayBankInformation);
+				projectbankaccount.getProjectmaster().getProjectid(), displayBankName, bankAccountType, bankAccountType.getName(), 
+				projectbankaccount.getAccountnumber(), projectbankaccount.getAccountholdername(), 
+				bankBranch, displayBankInformation);
 	}
 	
 	public static ProjectPhaseResource getProjectPhaseFromDAO(Projectphase projectPhase)  throws SQLException, IOException {
@@ -290,8 +304,14 @@ public class ResourceUtil {
 		Set<Refundmaster> refundMasterSet = unitbooking.getRefundmasters();
 		if (refundMasterSet != null && refundMasterSet.size() > 0) {
 			Refundmaster refundMaster = refundMasterSet.iterator().next();
+			String displayBankName = null;
+			BankBranchResource bankBranch = null;
+			if (refundMaster.getBankbranch() != null) {
+				displayBankName = refundMaster.getBankbranch().getBranchname() + " - "  + refundMaster.getBankbranch().getBankname();
+				bankBranch = getBankBranchFromDAO(refundMaster.getBankbranch());
+			}
 			refundDetails = new RefundResource(refundMaster.getRefundmasterid(), refundMaster.getRefundamount(), 
-					convertDateToString(refundMaster.getRefunddate()), refundMaster.getBankname(), refundMaster.getBankbranch(), 
+					convertDateToString(refundMaster.getRefunddate()), displayBankName, bankBranch, 
 					refundMaster.getChequenumber(), convertDateToString(refundMaster.getChequedate()));
 		}
 		
@@ -348,6 +368,12 @@ public class ResourceUtil {
 			Projectbuilding parjectBuilding = unitbooking.getUnitmaster().getProjectbuilding();
 			int floorCount = (int)parjectBuilding.getFloorcount();
 			int parkingFloorCount = (parjectBuilding.getParkingfloorcount() == null) ? 0 : parjectBuilding.getParkingfloorcount();
+			String displayBankName = null;
+			BankBranchResource bankBranch = null;
+			if (payment.getBankbranch() != null) {
+				displayBankName = payment.getBankbranch().getBranchname() + " - "  + payment.getBankbranch().getBankname();
+				bankBranch = getBankBranchFromDAO(payment.getBankbranch());
+			}
 			
 			if (paymentstatusPOJO != null) {
 				Paymentstate aPaymentState = paymentstatusPOJO.getPaymentstate();
@@ -367,10 +393,10 @@ public class ResourceUtil {
 			result = new PaymentResource(payment.getPaymentid(), user.getUsermasterid(), getUserDisplayName(user), 
 					unitbooking.getUnitbookingid(), unitbooking.getBookingformnumber(), getPaymenttypeResourceFromDAO(paymenttype), 
 					convertClobToString(paymenttype.getPaymenttypedescription()), payment.getReceiptnumber(), payment.getAltreceiptnumber(),
-					payment.getPaymentamount(), convertClobToString(payment.getPaymentdescription()), 
-					convertDateToString(payment.getPaymentreceiveddate()), payment.getBankname(), payment.getBankbranch(), 
-					payment.getChequenumber(), convertDateToString(payment.getChequedate()), payment.getUtrnumber(), payment.getCardnumber(), payment.getCardexpirydate(), 
-					payment.getCardholdername(), payment.getCardtype(), displayPaymentStatus, paymentStatus, statusUpdatedBy, statusDate, statusComment, paymentStages);
+					payment.getPaymentamount(), convertClobToString(payment.getPaymentdescription()), convertDateToString(payment.getPaymentreceiveddate()), 
+					displayBankName, bankBranch, payment.getChequenumber(), convertDateToString(payment.getChequedate()), 
+					payment.getUtrnumber(), payment.getCardnumber(), payment.getCardexpirydate(), payment.getCardholdername(), payment.getCardtype(), 
+					displayPaymentStatus, paymentStatus, statusUpdatedBy, statusDate, statusComment, paymentStages);
 		} 
 		
 		return result;
@@ -1040,6 +1066,15 @@ public class ResourceUtil {
 		 String UnitpricepolicyId = getFormDataValue(formData, "unitpricepolicy");
 		 UnitpricepolicyDAO dao = new UnitpricepolicyDAO();
 		 return dao.findById(Long.parseLong(UnitpricepolicyId));
+	 }
+	 
+	 public static Bankbranch getBankbranchPOJO(MultivaluedMap<String, String> formData) {
+		 String bankbranchId = getFormDataValue(formData, "bankbranch");
+		 if (bankbranchId == null || bankbranchId.isEmpty()) {
+			 return null;
+		 }
+		 BankbranchDAO dao = new BankbranchDAO();
+		 return dao.findById(Long.parseLong(bankbranchId));
 	 }
 	 
 	 public static Unitbooking getUnitbookingPOJO(MultivaluedMap<String, String> formData) {

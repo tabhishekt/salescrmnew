@@ -122,22 +122,13 @@
 	 						<table align="left" style="width: 100%;">
 								<tr><td>
 									<table>
-										<tr><td><label for="bankname">Bank name:</label></td></tr>
-										<tr><td><input id="bankname" name="bankname"
-												data-dojo-type='dijit/form/ValidationTextBox'
-												data-dojo-attach-point='bankname'
-												type="text" /></td></tr>
+										<tr><td><label for="bankbranch">Bank branch:</label></td></tr>
+										<tr><td><select id="bankbranch" name="bankbranch"
+										data-dojo-type="dijit/form/FilteringSelect" 
+										data-dojo-attach-point='bankbranch'
+										data-dojo-props="required:false"></select></td></tr>
 									</table>
 								</td><td>
-									<table>
-										<tr><td><label for="bankbranch">Bank branch:</label></td></tr>
-										<tr><td><input id="bankbranch" name="bankbranch"
-												data-dojo-type='dijit/form/ValidationTextBox'
-												data-dojo-attach-point='bankbranch'
-												type="text" /></td></tr>
-									</table>
-								</td></tr>
-								<tr><td>
 									<table>
 										<tr><td><label for="chequenumber">Cheque number:</label></td></tr>
 										<tr><td><input id="chequenumber" name="chequenumber"
@@ -146,7 +137,8 @@
 												data-dojo-props="regExp:'\\d{5,20}', invalidMessage:'Cheque number should be min 5 and max 20 digit number.'"
 												type="text" /></td></tr>
 									</table>
-								</td><td>
+								</td></tr>
+								<tr><td>
 									<table>
 										<tr><td><label for="chequedate">Cheque date:</label></td></tr>
 										<tr><td><input id="chequedate" name="chequedate"
@@ -154,8 +146,8 @@
 												data-dojo-attach-point='chequedate'
 												type="text" /></td></tr>
 									</table>
-								</td></tr>
-								<tr><td>
+								</td>
+								<td>
 									<table>
 										<tr><td><label for="utrnumber">UTR number (For RTGS payment):</label></td></tr>
 										<tr><td><input id="utrnumber" name="utrnumber"

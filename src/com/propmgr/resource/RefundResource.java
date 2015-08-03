@@ -6,19 +6,19 @@ public class RefundResource {
 	private long id;
 	private double refundAmount;
 	private String refundDate;
-	private String bankName;
-	private String bankBranch;
+	private String displayBankName;
+	private BankBranchResource bankBranch;
 	private String chequeNumber;
 	private String chequeDate;
 	
 	public RefundResource(long id, double refundAmount, String refundDate,
-			String bankName, String bankBranch, String chequeNumber,
+			String displayBankName, BankBranchResource bankBranch, String chequeNumber,
 			String chequeDate) {
 		super();
 		this.id = id;
 		this.refundAmount = refundAmount;
 		this.refundDate = refundDate;
-		this.bankName = bankName;
+		this.displayBankName = displayBankName;
 		this.bankBranch = bankBranch;
 		this.chequeNumber = chequeNumber;
 		this.chequeDate = chequeDate;
@@ -36,11 +36,11 @@ public class RefundResource {
 		return refundDate;
 	}
 
-	public String getBankName() {
-		return bankName;
+	public String getDisplayBankName() {
+		return displayBankName;
 	}
 
-	public String getBankBranch() {
+	public BankBranchResource getBankBranch() {
 		return bankBranch;
 	}
 

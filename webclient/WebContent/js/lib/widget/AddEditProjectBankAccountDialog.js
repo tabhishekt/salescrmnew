@@ -19,22 +19,15 @@ define([
 			this.rowId.set("value", data.id);
 			this.project.set("value", data.projectId);
 			this.bankaccounttype.set("item", data.bankAccountType);
+			this.bankbranch.set("item", data.bankBranch);
 			this.accountholdername.set("value", data.accountHolderName);
-			this.bankname.set("value", data.bankName);
 			this.accountnumber.set("value", data.accountNumber);
-			this.ifsccode.set("value", data.ifscCode);
-			this.micrcode.set("value", data.micrCode);
-			
-			this.address.addressline1.set("value", data.address.addressLine1);
-			this.address.addressline2.set("value", data.address.addressLine2);
-			this.address.city.set("item", data.address.city);
-			this.address.state.set("item", data.address.state);
-			this.address.zipcode.set("value", data.address.zipCode);
 		},
 		
 		postCreate:function () {
 			this.inherited(arguments);
 			this.setDataToDropdown('../rest/json/data/codetable/bankaccounttype/get/all', this.bankaccounttype);
+			this.setDataToDropdown('../rest/json/data/inventory/bankbranch/get/all', this.bankbranch);
         }
     });
 });

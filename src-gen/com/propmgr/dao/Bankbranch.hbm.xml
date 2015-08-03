@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Aug 3, 2015 11:44:40 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.propmgr.dao.Bankbranch" table="BANKBRANCH" schema="PUBLIC" catalog="PROPMGR">
+        <id name="bankbranchid" type="java.lang.Long">
+            <column name="BANKBRANCHID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="address" class="com.propmgr.dao.Address" fetch="select">
+            <column name="BRANCHADDRESS" not-null="true" />
+        </many-to-one>
+        <property name="bankname" type="string">
+            <column name="BANKNAME" length="64" not-null="true" />
+        </property>
+        <property name="branchname" type="string">
+            <column name="BRANCHNAME" length="64" not-null="true" />
+        </property>
+        <property name="ifsccode" type="string">
+            <column name="IFSCCODE" length="64" not-null="true" />
+        </property>
+        <property name="micrcode" type="string">
+            <column name="MICRCODE" length="64" not-null="true" />
+        </property>
+        <set name="projectbankaccounts" table="PROJECTBANKACCOUNT" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="BANKBRANCH" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Projectbankaccount" />
+        </set>
+        <set name="refundmasters" table="REFUNDMASTER" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="BANKBRANCH" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Refundmaster" />
+        </set>
+        <set name="paymentmasters" table="PAYMENTMASTER" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="BANKBRANCH" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Paymentmaster" />
+        </set>
+    </class>
+</hibernate-mapping>

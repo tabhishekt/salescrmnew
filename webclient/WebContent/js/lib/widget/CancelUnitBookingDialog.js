@@ -37,6 +37,11 @@ define([
 			this.balancePayment.innerHTML = this.formatCurrency(this.data.balancePayment);
     	},
     	
+    	postCreate:function () {
+			this.inherited(arguments);
+			this.setDataToDropdown('../rest/json/data/inventory/bankbranch/get/all', this.bankbranch);
+        },
+    	
     	validate: function() {
         	var isValid = this.inherited(arguments);
         	

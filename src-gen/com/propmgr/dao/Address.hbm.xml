@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated Aug 2, 2015 5:17:34 PM by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated Aug 3, 2015 11:44:40 PM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
     <class name="com.propmgr.dao.Address" table="ADDRESS" schema="PUBLIC" catalog="PROPMGR">
         <id name="addressid" type="java.lang.Long">
@@ -23,12 +23,6 @@
         <property name="zipcode" type="string">
             <column name="ZIPCODE" length="64" />
         </property>
-        <set name="projectbankaccounts" table="PROJECTBANKACCOUNT" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="BANKADDRESS" not-null="true" />
-            </key>
-            <one-to-many class="com.propmgr.dao.Projectbankaccount" />
-        </set>
         <set name="customermasters" table="CUSTOMERMASTER" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="ADDRESS" not-null="true" />
@@ -46,6 +40,12 @@
                 <column name="ORGADDRESS" not-null="true" />
             </key>
             <one-to-many class="com.propmgr.dao.Organization" />
+        </set>
+        <set name="bankbranches" table="BANKBRANCH" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="BRANCHADDRESS" not-null="true" />
+            </key>
+            <one-to-many class="com.propmgr.dao.Bankbranch" />
         </set>
         <set name="projectmasters" table="PROJECTMASTER" inverse="true" lazy="true" fetch="select">
             <key>

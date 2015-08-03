@@ -20,12 +20,13 @@ define(
 		'lib/widget/AddEditUserDialog',
 		'lib/widget/AddEditRoleDialog',
 		'lib/widget/AddEditEnquiryDialog',
+		'lib/widget/AddEditBankBranchDialog'
     ],
     function (
         declare, lang, currency, locale, JsonRest, Memory, AddEditCodetableDialog, AddEditOrganizationDialog, AddEditProjectDialog, 
         AddEditProjectBankAccountDialog, AddEditProjectPhaseDialog, AddEditProjectBuildingDialog, AddEditUnitDialog, AddEditUnitPricePolicyDialog, 
 		AddEditUnitPaymentScheduleDialog, AddEditPaymentDialog, AddEditCustomerDialog, AddEditUserDialog, AddEditRoleDialog,
-		AddEditEnquiryDialog
+		AddEditEnquiryDialog, AddEditBankBranchDialog
     ) {
         return declare([], {
             
@@ -356,11 +357,11 @@ define(
             		  this.pageParams.GridDialog = AddEditProjectDialog;
             		  break;
             	  case "projectbankaccount": 
-            		  this.pageParams.dialogDimension.width = window.screen.width*0.60;
-            		  this.pageParams.dialogDimension.height = window.screen.height*0.60;
+            		  this.pageParams.dialogDimension.width = window.screen.width*0.40;
+            		  this.pageParams.dialogDimension.height = window.screen.height*0.25;
             		  this.pageParams.serviceName = "inventory";
             		  this.pageParams.gridLayout = [
-                    	   							{field: "bankName",name: "Bank Name",width: "auto"},
+                    	   							{field: "displayBankName",name: "Bank Name",width: "auto"},
                     	   							{field: "accountNumber",name: "Account Number",width: "auto"},
                     	   							{field: "accountHolderName",name: "Account Holder",width: "auto"},
                     	   							{field: "accountTypeName",name: "Account Type",width: "auto"}
@@ -422,6 +423,19 @@ define(
             		  this.pageParams.dialogTtileField = "policyName";
             		  this.pageParams.dialogTtileString = "unit price policy";
             		  this.pageParams.GridDialog = AddEditUnitPricePolicyDialog;
+            		  break;
+            	  case "bankbranch": 
+            		  this.pageParams.dialogDimension.width = window.screen.width*0.40;
+            		  this.pageParams.dialogDimension.height = window.screen.height*0.55;
+            		  this.pageParams.serviceName = "inventory";
+            		  this.pageParams.gridLayout = [
+													{field: "bankName",name: "Bank Name",width: "auto"},
+                    	   							{field: "branchName",name: "Branch Name",width: "auto"},
+													{field: "displayBranchAddress",name: "Branch Address",width: "auto"}
+                    	   	   			  		   ];
+            		  this.pageParams.dialogTtileField = "bankName";
+            		  this.pageParams.dialogTtileString = "bank branch";
+            		  this.pageParams.GridDialog = AddEditBankBranchDialog;
             		  break;
             	  case "unitpaymentschedule": 
             		  this.pageParams.dialogDimension.width = window.screen.width*0.40;

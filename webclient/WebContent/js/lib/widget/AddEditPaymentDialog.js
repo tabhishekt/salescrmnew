@@ -72,9 +72,7 @@ define([
 			this.receiptdate.set("value", data.receiptDate);
 			this.description.set("value", data.description);
 			
-			
-			this.bankname.set("value", data.bankName);
-			this.bankbranch.set("value", data.bankBranch);
+			this.bankbranch.set("item", data.bankBranch);
 			this.chequenumber.set("value", data.chequeNumber);
 			this.chequedate.set("value", data.chequeDate);
 			this.utrnumber.set("value", data.utrNumber);
@@ -113,18 +111,16 @@ define([
 			this.receiptnumberdisplay.set("disabled", true);
         	this.setDataToDropdown('../rest/json/data/codetable/paymenttype/get/all', this.paymenttype);
         	this.setDataToDropdown('../rest/json/data/inventory/payment/get/states', this.paymentstatus);
+        	this.setDataToDropdown('../rest/json/data/inventory/bankbranch/get/all', this.bankbranch);
         	this.setDataToMultiselect('../rest/json/data/inventory/payment/get/stages?rowId=' + this.buildingId, this.paymentstage.domNode);
         },
 		
         validate: function() {
         	var isValid = this.inherited(arguments);
         	
-        	/* if (isValid) {
+        	if (isValid) {
         		if (this.paymenttype.get("item").name == "Bank Cheque") {
-        				if (this.bankname.get("value") == "") {
-        					this.messageNode.innerHTML = "Bank name should be provided.";
-                    		return false
-        				} else if (this.bankbranch.get("value") == "") {
+        				if (this.bankbranch.get("value") == "") {
         					this.messageNode.innerHTML = "Bank branch should be provided.";
                     		return false
         				} else if (this.chequenumber.get("value") == "") {
@@ -149,7 +145,7 @@ define([
                 		return false
     				}
     			} 
-        	} */
+        	}
         	
         	return isValid;
         },

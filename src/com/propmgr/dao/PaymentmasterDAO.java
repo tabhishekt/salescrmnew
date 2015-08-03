@@ -89,7 +89,7 @@ public class PaymentmasterDAO extends SuperDAO {
 		return -1;
 	}
 	
-	public boolean isDuplicateCheque(String bankName, String chequeNumber) {
+	public boolean isDuplicateCheque(long bankBranchId, String chequeNumber) {
 		Session hbmSession = getSession();
 		List<Paymentmaster> resultList = null;
 		PaymentstatusDAO paymentstatusDAO = new PaymentstatusDAO();
@@ -97,8 +97,8 @@ public class PaymentmasterDAO extends SuperDAO {
 		Paymentstatus paymentstatus = null;
 		
 		try {
-			String queryString = "from Paymentmaster u where u.bankname = '" 
-				+ bankName + "' and u.chequenumber = '" + chequeNumber + "'";
+			String queryString = "from Paymentmaster u where u.bankbranch.bankbranchid = " 
+				+ bankBranchId + " and u.chequenumber = '" + chequeNumber + "'";
 			Query query = hbmSession.createQuery(queryString);
 			resultList = query.list ();
 			

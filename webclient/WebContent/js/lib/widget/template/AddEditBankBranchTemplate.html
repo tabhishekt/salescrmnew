@@ -15,50 +15,53 @@
 				<div>
 					<input data-dojo-type='dijit/form/TextBox' id="rowId" name="rowId" 
 					data-dojo-attach-point='rowId' class="hiddenInput" value=""></input>
-					<input data-dojo-type='dijit/form/TextBox' id="project" name="project" 
-					data-dojo-attach-point='project' class="hiddenInput" value=""></input>
 					<fieldset style="width: 80%;">
-	 					<legend>Project Bank Account Details:</legend>
+	 					<legend>Bank Branch Details:</legend>
 	 					<div>
 	 						<table align="left" style="width: 100%;">
 								<tr><td>
 									<table>
-										<tr><td><label for="bankbranch">Bank branch:</label></td></tr>
-										<tr><td><select id="bankbranch" name="bankbranch"
-										data-dojo-type="dijit/form/FilteringSelect" 
-										data-dojo-attach-point='bankbranch'
-										data-dojo-props="required:true"></select></td></tr>
+										<tr><td><label for="bankname">Bank name:</label></td></tr>
+										<tr><td><input id="bankname" name="bankname"
+												data-dojo-type='dijit/form/ValidationTextBox'
+												data-dojo-attach-point='bankname'
+												type="text" /></td></tr>
 									</table>
 								</td><td>
 									<table>
-										<tr><td><label for="bankaccounttype">Bank Account Type:</label></td></tr>
-										<tr><td><select id="bankaccounttype" name="bankaccounttype"
-										data-dojo-type="dijit/form/FilteringSelect" 
-										data-dojo-attach-point='bankaccounttype'
-										data-dojo-props="required:true"></select></td></tr>
+										<tr><td><label for="branchname">Bank branch name:</label></td></tr>
+										<tr><td><input id="branchname" name="branchname"
+												data-dojo-type='dijit/form/ValidationTextBox'
+												data-dojo-attach-point='branchname'
+												type="text" /></td></tr>
 									</table>
 								</td></tr>
 								<tr><td>
 									<table>
-										<tr><td><label for="accountholdername">Account holder name:</label></td></tr>
-										<tr><td><input id="accountholdername" name="accountholdername"
+										<tr><td><label for="ifsccode">IFSC Code:</label></td></tr>
+										<tr><td><input id="ifsccode" name="ifsccode"
 												data-dojo-type='dijit/form/ValidationTextBox'
-												data-dojo-attach-point='accountholdername'
+												data-dojo-attach-point='ifsccode'
 												data-dojo-props="required:true"
 												type="text" /></td></tr>
 									</table>
 								</td><td>
 									<table>
-										<tr><td><label for="accountnumber">Account Number:</label></td></tr>
-										<tr><td><input id="accountnumber" name="accountnumber"
+										<tr><td><label for="micrcode">MICR Code:</label></td></tr>
+										<tr><td><input id="micrcode" name="micrcode"
 										data-dojo-type='dijit/form/ValidationTextBox'
-										data-dojo-attach-point='accountnumber'
+										data-dojo-attach-point='micrcode'
 										data-dojo-props="required:true"
 										type="text" /></td></tr>
 									</table>
 								</td></tr>
 							</table>
 	 					</div>
+					</fieldset>
+					<fieldset style="width: 80%;">
+	 					<legend>Branch Address:</legend>
+						<div id="branchaddress" data-dojo-attach-point='branchaddress' 
+						data-dojo-type='lib/widget/AddressWidget'></div>
 					</fieldset>
 				</div>
 				<div>

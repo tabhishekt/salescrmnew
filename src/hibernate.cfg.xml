@@ -62,5 +62,6 @@
 		<mapping resource="com/propmgr/dao/Unitmodificationstate.hbm.xml" />
 		<mapping resource="com/propmgr/dao/Unitmodificationstatus.hbm.xml" />
 		<mapping resource="com/propmgr/dao/Amenitypricepolicy.hbm.xml" />
+		<mapping resource="com/propmgr/dao/Bankbranch.hbm.xml" />
 	</session-factory>
 </hibernate-configuration>

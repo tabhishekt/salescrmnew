@@ -1,6 +1,6 @@
 package com.propmgr.dao;
 
-// Generated Aug 2, 2015 5:17:33 PM by Hibernate Tools 3.4.0.CR1
+// Generated Aug 3, 2015 11:44:40 PM by Hibernate Tools 3.4.0.CR1
 
 import java.sql.Clob;
 import java.util.HashSet;
@@ -17,10 +17,10 @@ public class Address implements java.io.Serializable {
 	private Clob addressline1;
 	private Clob addressline2;
 	private String zipcode;
-	private Set projectbankaccounts = new HashSet(0);
 	private Set customermasters = new HashSet(0);
 	private Set usermasters = new HashSet(0);
 	private Set organizations = new HashSet(0);
+	private Set bankbranches = new HashSet(0);
 	private Set projectmasters = new HashSet(0);
 
 	public Address() {
@@ -33,17 +33,17 @@ public class Address implements java.io.Serializable {
 
 	public Address(Statemaster statemaster, Citymaster citymaster,
 			Clob addressline1, Clob addressline2, String zipcode,
-			Set projectbankaccounts, Set customermasters, Set usermasters,
-			Set organizations, Set projectmasters) {
+			Set customermasters, Set usermasters, Set organizations,
+			Set bankbranches, Set projectmasters) {
 		this.statemaster = statemaster;
 		this.citymaster = citymaster;
 		this.addressline1 = addressline1;
 		this.addressline2 = addressline2;
 		this.zipcode = zipcode;
-		this.projectbankaccounts = projectbankaccounts;
 		this.customermasters = customermasters;
 		this.usermasters = usermasters;
 		this.organizations = organizations;
+		this.bankbranches = bankbranches;
 		this.projectmasters = projectmasters;
 	}
 
@@ -95,14 +95,6 @@ public class Address implements java.io.Serializable {
 		this.zipcode = zipcode;
 	}
 
-	public Set getProjectbankaccounts() {
-		return this.projectbankaccounts;
-	}
-
-	public void setProjectbankaccounts(Set projectbankaccounts) {
-		this.projectbankaccounts = projectbankaccounts;
-	}
-
 	public Set getCustomermasters() {
 		return this.customermasters;
 	}
@@ -125,6 +117,14 @@ public class Address implements java.io.Serializable {
 
 	public void setOrganizations(Set organizations) {
 		this.organizations = organizations;
+	}
+
+	public Set getBankbranches() {
+		return this.bankbranches;
+	}
+
+	public void setBankbranches(Set bankbranches) {
+		this.bankbranches = bankbranches;
 	}
 
 	public Set getProjectmasters() {

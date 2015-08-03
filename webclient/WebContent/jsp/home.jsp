@@ -112,6 +112,7 @@
 	            	                ["Manage Project Phases", "contentTabPage.jsp?page=projectphase"],
 	            	                ["Manage Buildings", "contentTabPage.jsp?page=projectbuilding"],
 	            	                ["Manage Unit Price Policies", "contentTabPage.jsp?page=unitpricepolicy"],
+	            	                ["Manage Bank Branches", "contentTabPage.jsp?page=bankbranch"],
 	            	                ["Manage Customers", "contentTabPage.jsp?page=customer"],
 	            	                ["Manage Users", "contentTabPage.jsp?page=user"],
 	            	                ["Manage Roles", "contentTabPage.jsp?page=role"]

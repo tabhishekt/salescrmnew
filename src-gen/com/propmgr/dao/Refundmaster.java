@@ -1,6 +1,6 @@
 package com.propmgr.dao;
 
-// Generated Aug 2, 2015 5:17:33 PM by Hibernate Tools 3.4.0.CR1
+// Generated Aug 3, 2015 11:44:40 PM by Hibernate Tools 3.4.0.CR1
 
 import java.util.Date;
 
@@ -11,10 +11,9 @@ public class Refundmaster implements java.io.Serializable {
 
 	private Long refundmasterid;
 	private Unitbooking unitbooking;
+	private Bankbranch bankbranch;
 	private Double refundamount;
 	private Date refunddate;
-	private String bankname;
-	private String bankbranch;
 	private String chequenumber;
 	private Date chequedate;
 
@@ -25,14 +24,13 @@ public class Refundmaster implements java.io.Serializable {
 		this.unitbooking = unitbooking;
 	}
 
-	public Refundmaster(Unitbooking unitbooking, Double refundamount,
-			Date refunddate, String bankname, String bankbranch,
-			String chequenumber, Date chequedate) {
+	public Refundmaster(Unitbooking unitbooking, Bankbranch bankbranch,
+			Double refundamount, Date refunddate, String chequenumber,
+			Date chequedate) {
 		this.unitbooking = unitbooking;
+		this.bankbranch = bankbranch;
 		this.refundamount = refundamount;
 		this.refunddate = refunddate;
-		this.bankname = bankname;
-		this.bankbranch = bankbranch;
 		this.chequenumber = chequenumber;
 		this.chequedate = chequedate;
 	}
@@ -53,6 +51,14 @@ public class Refundmaster implements java.io.Serializable {
 		this.unitbooking = unitbooking;
 	}
 
+	public Bankbranch getBankbranch() {
+		return this.bankbranch;
+	}
+
+	public void setBankbranch(Bankbranch bankbranch) {
+		this.bankbranch = bankbranch;
+	}
+
 	public Double getRefundamount() {
 		return this.refundamount;
 	}
@@ -67,22 +73,6 @@ public class Refundmaster implements java.io.Serializable {
 
 	public void setRefunddate(Date refunddate) {
 		this.refunddate = refunddate;
-	}
-
-	public String getBankname() {
-		return this.bankname;
-	}
-
-	public void setBankname(String bankname) {
-		this.bankname = bankname;
-	}
-
-	public String getBankbranch() {
-		return this.bankbranch;
-	}
-
-	public void setBankbranch(String bankbranch) {
-		this.bankbranch = bankbranch;
 	}
 
 	public String getChequenumber() {
