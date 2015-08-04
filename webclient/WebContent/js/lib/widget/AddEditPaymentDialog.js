@@ -124,7 +124,7 @@ define([
         					this.messageNode.innerHTML = "Bank branch should be provided.";
                     		return false
         				} else if (this.chequenumber.get("value") == "") {
-        					this.messageNode.innerHTML = "Cheque numbershould be provided.";
+        					this.messageNode.innerHTML = "Cheque number should be provided.";
                     		return false
         				} else if (this.chequedate.get("value") == "") {
         					this.messageNode.innerHTML = "Cheque date should be provided.";
@@ -144,7 +144,21 @@ define([
     					this.messageNode.innerHTML = "For cash payment status cannot be Bounced.";
                 		return false
     				}
-    			} 
+    			} else if (this.paymenttype.get("item").name == "Credit Card" || this.paymenttype.get("item").name == "Debit Card") {
+    				if (this.cardnumber.get("value") == "") {
+    					this.messageNode.innerHTML = "Card number should be provided.";
+                		return false
+    				} else if (this.cardexpirydate.get("value") == "") {
+    					this.messageNode.innerHTML = "Card expiry date should be provided.";
+                		return false
+    				} else if (this.cardholdername.get("value") == "") {
+    					this.messageNode.innerHTML = "Card holder name should be provided.";
+                		return false
+    				} else if (this.cardtype.get("value") == "") {
+    					this.messageNode.innerHTML = "Card type should be provided.";
+                		return false
+    				}
+    			}
         	}
         	
         	return isValid;

@@ -124,16 +124,19 @@ public class ResourceUtil {
 	}
 	
 	public static ProjectBankAccountResource getProjectBankAccountFromDAO(Projectbankaccount projectbankaccount) throws SQLException, IOException {
-		AddressResource address = getAddressFromDAO(projectbankaccount.getBankbranch().getAddress());
-		CodeTableResource bankAccountType = getBankAccountTypeResourceFromDAO(projectbankaccount.getBankaccounttype());
-		String displayBankInformation = projectbankaccount.getAccountholdername() + ", " + projectbankaccount.getBankbranch().getBankname();
-		displayBankInformation += ", Account # " + projectbankaccount.getAccountnumber();
-		displayBankInformation += ", IFSC Code " + projectbankaccount.getBankbranch().getIfsccode();
-		displayBankInformation += ", MICR Code " + projectbankaccount.getBankbranch().getMicrcode();
-		displayBankInformation += ", " + getDisplayAddressFromAddressResource(address);
+		AddressResource address = null;
+		String displayBankInformation = null;
 		String displayBankName = null;
 		BankBranchResource bankBranch = null;
+		
+		CodeTableResource bankAccountType = getBankAccountTypeResourceFromDAO(projectbankaccount.getBankaccounttype());
 		if (projectbankaccount.getBankbranch() != null) {
+			address = getAddressFromDAO(projectbankaccount.getBankbranch().getAddress());
+			displayBankInformation = projectbankaccount.getAccountholdername() + ", " + projectbankaccount.getBankbranch().getBankname();
+			displayBankInformation += ", Account # " + projectbankaccount.getAccountnumber();
+			displayBankInformation += ", IFSC Code " + projectbankaccount.getBankbranch().getIfsccode();
+			displayBankInformation += ", MICR Code " + projectbankaccount.getBankbranch().getMicrcode();
+			displayBankInformation += ", " + getDisplayAddressFromAddressResource(address);
 			displayBankName = projectbankaccount.getBankbranch().getBranchname() + " - "  + projectbankaccount.getBankbranch().getBankname();
 			bankBranch = getBankBranchFromDAO(projectbankaccount.getBankbranch());
 		}
