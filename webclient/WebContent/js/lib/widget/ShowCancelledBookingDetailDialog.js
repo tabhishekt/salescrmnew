@@ -73,8 +73,8 @@ define([
 				
 				this.refundAmount.innerHTML = this.formatCurrency(this.data.refundDetails.refundAmount);
 				this.refundDate.innerHTML = this.formatDate(this.data.refundDetails.refundDate);
-				this.bankName.innerHTML = this.data.refundDetails.bankName;
-				this.bankBranch.innerHTML = this.data.refundDetails.bankBranch;
+				this.bankName.innerHTML = this.data.refundDetails.bankBranch.bankName;
+				this.bankBranch.innerHTML = this.data.refundDetails.bankBranch.branchName;
 				this.chequeNumber.innerHTML = this.data.refundDetails.chequeNumber;
 				this.chequeDate.innerHTML = this.formatDate(this.data.refundDetails.chequeDate);
 			} else {

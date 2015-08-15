@@ -123,9 +123,14 @@ define([
      				},
      				function(error) {
      					widget.setStatus("error");
-     					(widget.mode == "new") ? widget.setMessage("Record addition error: " + error.response.data.message) 
-     							: widget.setMessage("Record updation error: " + error.response.data.message);
-     					
+     					if (error.message == "Timeout exceeded") {
+     						(widget.mode == "new") ? widget.setMessage("Record addition error: " + error.message + " in getting response from server.") 
+         							: widget.setMessage("Record updation error: " + error.message + " in getting response from server.");
+     					} else {
+     						(widget.mode == "new") ? widget.setMessage("Record addition error: " + error.response.data.message) 
+         							: widget.setMessage("Record updation error: " + error.response.data.message);
+     					}
+     					     					
      					widget.updatePage();
      					// widget.submitButton.setDisabled(false);
      				}

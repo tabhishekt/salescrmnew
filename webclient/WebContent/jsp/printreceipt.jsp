@@ -64,8 +64,8 @@
             		this.chequenumber.innerHTML = data.paymentInformation.utrNumber;
             	}
             	
-            	this.bankname.innerHTML = data.paymentInformation.bankName;
-            	this.bankbranch.innerHTML = data.paymentInformation.bankBranch;
+            	this.bankname.innerHTML = data.paymentInformation.bankBranch.bankName;
+            	this.bankbranch.innerHTML = data.paymentInformation.bankBranch.branchName;
             	this.chequedate.innerHTML = this.formatDate(data.paymentInformation.chequeDate);
             	this.projectname.innerHTML = data.project.name;
             	this.unitnumber.innerHTML = data.unit.unitNumber;

@@ -57,7 +57,7 @@
             	var backLinkDiv = dojo.byId("backLinkDiv");
             	
             	if (this.page == "projectbankaccount" || this.page == "unit" || this.page == "unitbooking" || 
-            			this.page == "cancelledbooking" || this.page == "payment") {
+            			this.page == "cancelledbooking" || this.page == "payment" || this.page == "enquiry") {
             		domClass.remove(backLinkDiv, "hiddenInput");
             	} else {
             		domClass.add(backLinkDiv, "hiddenInput");

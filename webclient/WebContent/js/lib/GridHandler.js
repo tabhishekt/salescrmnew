@@ -439,7 +439,7 @@ define(
     						this.dialogHandler.openOtherActionDialog(options, window.screen.width, window.screen.height);
     					} else if (action[0] == "printbookingform") {
     						window.open("printbookingform.jsp?unitbookingId=" + rowData.id);
-    					} else if (action[0] == "printdemandletter") {
+    					} else if (new RegExp("^printdemandletter").test(action[0])) {
     						var gridHandler = this;
     						var deferred = new Deferred();
 	        	        	var options = {
@@ -454,10 +454,18 @@ define(
 		    	        	
 	        	        	deferred.then (
 	        	        		function(res){
-	        	        			window.open("printdemandletter.jsp?unitbookingId=" + rowData.id + "&showtaxes=true");
+	        	        			if (action[0] == "printdemandletterwithinterest") {
+	        	        				window.open("printdemandletter.jsp?unitbookingId=" + rowData.id + "&showtaxes=true&showint=true");
+	        	        			} else if (action[0] == "printdemandletterwithoutinterest") { 
+	        	        				window.open("printdemandletter.jsp?unitbookingId=" + rowData.id + "&showtaxes=true&showint=false");
+	        	        			}
 	        	        		},
 	        	        		function(err){
-	        	        			window.open("printdemandletter.jsp?unitbookingId=" + rowData.id + "&showtaxes=false");
+	        	        			if (action[0] == "printdemandletterwithinterest") {
+	        	        				window.open("printdemandletter.jsp?unitbookingId=" + rowData.id + "&showtaxes=false&showint=true");
+	        	        			} else if (action[0] == "printdemandletterwithoutinterest") {
+	        	        				window.open("printdemandletter.jsp?unitbookingId=" + rowData.id + "&showtaxes=false&showint=false");
+	        	        			}
 	        	        		}
 	        	        	);	
     					} else if (action[0] == "printreceipt") {

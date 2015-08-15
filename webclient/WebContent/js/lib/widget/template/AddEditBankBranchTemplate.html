@@ -42,7 +42,7 @@
 										<tr><td><input id="ifsccode" name="ifsccode"
 												data-dojo-type='dijit/form/ValidationTextBox'
 												data-dojo-attach-point='ifsccode'
-												data-dojo-props="required:true"
+												data-dojo-props="required:true, regExp:'^[A-Z|a-z]{4}[0-9]{7}$', invalidMessage:'IFSC code has first 4 alphabets and than 7 digits.'"
 												type="text" /></td></tr>
 									</table>
 								</td><td>
@@ -51,7 +51,7 @@
 										<tr><td><input id="micrcode" name="micrcode"
 										data-dojo-type='dijit/form/ValidationTextBox'
 										data-dojo-attach-point='micrcode'
-										data-dojo-props="required:true"
+										data-dojo-props="required:true, regExp:'\\d{1,10}', invalidMessage:'Enter upto ten digit number only.'"
 										type="text" /></td></tr>
 									</table>
 								</td></tr>

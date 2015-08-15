@@ -36,6 +36,7 @@
             	readUserDataFromSession();
             	this.unitbookingId = this.getQueryVariable("unitbookingId");
             	this.showtaxes = this.getQueryVariable("showtaxes");
+            	this.showint = this.getQueryVariable("showint");
             	var promise = request.get("../rest/json/data/inventory/unitbooking/get/print?rowId=" + this.unitbookingId, {
        				timeout: 2000,
        				handleAs: "json"
@@ -61,8 +62,12 @@
             	this.totaldue.innerHTML = this.formatCurrency(data.totalDueForCurrentStatus);
             	this.totalpaymentreceived.innerHTML = this.formatCurrency(data.totalPaymentReceived);
             	this.balancepayment.innerHTML = this.formatCurrency(data.balancePaymentForCurrentStatus);
-            	this.interestapplicable.innerHTML = this.formatCurrency(data.interestAmountDue);
-            	this.totaloutstanding.innerHTML = this.formatCurrency(data.totalOutstandingForCurrentStatus);
+            	if (this.showint == "true") {
+            		this.interestapplicable.innerHTML = this.formatCurrency(data.interestAmountDue);
+            		this.totaloutstanding.innerHTML = this.formatCurrency(data.totalOutstandingForCurrentStatus);
+            	} else if (this.showint == "false") {
+            		this.totaloutstanding.innerHTML = this.formatCurrency(data.balancePaymentForCurrentStatus);
+            	}
             	this.builderaccountinformation.innerHTML = data.projectBankAccounts["BLDRAC"];
             	this.servicetax.innerHTML = this.formatCurrency(data.priceDetails.servicetax);
             	this.servicetaxpercent.innerHTML = data.unit.unitPricePolicy.servicetax + "%";
@@ -83,6 +88,10 @@
             	if (this.showtaxes == "false") {
             		domStyle.set(this.demandDiv2, "display", "none");
             		domStyle.set(this.demandDiv3, "display", "none");
+            	}
+            	
+            	if (this.showint == "false") {
+            		document.getElementById("mainDataTable").deleteRow(6);
             	}
             };
             
@@ -133,7 +142,7 @@
 	</div>
 	<br><br>
 	<div id="demandDiv1">
-		<table class="demandLetterTable printPageSpan">
+		<table id="mainDataTable" class="demandLetterTable printPageSpan">
 			<tr>
 				<td class="demandLetterTableColLabel"><span>Flat No</span></td>
 				<td class="demandLetterTableCol"><span id="unitnumber" data-dojo-attach-point="unitnumber"></span></td>

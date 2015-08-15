@@ -59,6 +59,27 @@ define([
 		postCreate:function () {
 			this.inherited(arguments);
         	this.setDataToDropdown('../rest/json/data/inventory/projectphase/get/byproject?projectId=' + this.projectId, this.projectphase);
+        },
+        
+        validate: function() {
+        	var isValid = this.inherited(arguments);
+        	
+        	if (isValid) {
+        		 var d1 = this.planapprovaldate.get("value");
+        		 var d2 = this.expectedcompletiondate.get("value");
+        		 
+        		 if (d1 != "" && d2 != "") {
+        			 var dt1 = new Date(d1);
+        			 var dt2 = new Date(d1);
+        			 
+        			 if (d2 <= d1) {
+        				 this.messageNode.innerHTML = "Expected completion date should be after plan approval date.";
+                 		 return false
+        			 }
+        		 }
+        	}
+        	
+        	return isValid;
         }
     });
 });

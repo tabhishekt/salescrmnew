@@ -129,7 +129,7 @@ define(
             		}
             	} else if (this.page == "unitbooking") {
             		if (this.userData) {
-    	   	   			return {style : "width:100%"}
+    	   	   			return {style : "width:98%"}
     	   	   		} else {
     	   	   			return {style : "width:20%"};
     	   	   		}
@@ -232,7 +232,8 @@ define(
       	   	   			           ["cancelbooking", "Cancel Booking", "NewPage"],
       	   	   			           ["unitmodificationrequest", "Unit Modification Request", "NewPage"],
       	   	   			           ["printbookingform", "Print Booking Form", "NewPage"],
-      	   	   			           ["printdemandletter", "Print Demand Letter", "NewPage"],
+      	   	   			           ["printdemandletterwithoutinterest", "Print Demand Letter without Interest", "NewPage"],
+      	   	   			           ["printdemandletterwithinterest", "Print Demand Letter with Interest", "NewPage"],
       	   	   			           ["refresh", "Refresh", "NewPage"]
       	   	   			       ];
             			} else {
@@ -241,7 +242,8 @@ define(
       	   	   			           ["cancelbooking", "Cancel Booking", "NewPage"],
       	   	   			           ["unitmodificationrequest", "Unit Modification Request", "NewPage"],
       	   	   			           ["printbookingform", "Print Booking Form", "NewPage"],
-      	   	   			           ["printdemandletter", "Print Demand Letter", "NewPage"],
+      	   	   			           ["printdemandletterwithoutinterest", "Print Demand Letter without Interest", "NewPage"],
+      	   	   			           ["printdemandletterwithinterest", "Print Demand Letter with Interest", "NewPage"],
       	   	   			           ["refresh", "Refresh", "NewPage"]
       	   	   			       ];
             			}
