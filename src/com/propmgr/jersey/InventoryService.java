@@ -83,6 +83,7 @@ import com.propmgr.dao.Unitpricepolicy;
 import com.propmgr.dao.UnitpricepolicyDAO;
 import com.propmgr.dao.Unittype;
 import com.propmgr.dao.Usermaster;
+import com.propmgr.hibernate.DAOException;
 import com.propmgr.hibernate.HibernateConnection;
 import com.propmgr.resource.BankBranchResource;
 import com.propmgr.resource.CodeTableResource;
@@ -178,6 +179,13 @@ public class InventoryService {
 			logger.error("", cve);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new 
 					ApplicationException("Record could not be deleted as it is being referenced by other data present on system. " + cve.getMessage())).build();
+		} catch (DAOException de) {
+			logger.error("", de);
+			if (de.getCause().toString().startsWith("org.hibernate.exception.ConstraintViolationException")) {
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new 
+						ApplicationException("Record could not be deleted as it is being referenced by other data present on system. " + de.getMessage())).build();
+			}
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(de.getMessage())).build();
 		} catch (Exception e) {
 			logger.error("", e);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
@@ -299,6 +307,13 @@ public class InventoryService {
 			logger.error("", cve);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new 
 					ApplicationException("Record could not be deleted as it is being referenced by other data present on system. " + cve.getMessage())).build();
+		} catch (DAOException de) {
+			logger.error("", de);
+			if (de.getCause().toString().startsWith("org.hibernate.exception.ConstraintViolationException")) {
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new 
+						ApplicationException("Record could not be deleted as it is being referenced by other data present on system. " + de.getMessage())).build();
+			}
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(de.getMessage())).build();
 		} catch (Exception e) {
 			logger.error("", e);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
@@ -405,6 +420,13 @@ public class InventoryService {
 			logger.error("", cve);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new 
 					ApplicationException("Record could not be deleted as it is being referenced by other data present on system. " + cve.getMessage())).build();
+		} catch (DAOException de) {
+			logger.error("", de);
+			if (de.getCause().toString().startsWith("org.hibernate.exception.ConstraintViolationException")) {
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new 
+						ApplicationException("Record could not be deleted as it is being referenced by other data present on system. " + de.getMessage())).build();
+			}
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(de.getMessage())).build();
 		} catch (Exception e) {
 			logger.error("", e);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
@@ -528,6 +550,13 @@ public class InventoryService {
 			logger.error("", cve);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new 
 					ApplicationException("Record could not be deleted as it is being referenced by other data present on system. " + cve.getMessage())).build();
+		} catch (DAOException de) {
+			logger.error("", de);
+			if (de.getCause().toString().startsWith("org.hibernate.exception.ConstraintViolationException")) {
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new 
+						ApplicationException("Record could not be deleted as it is being referenced by other data present on system. " + de.getMessage())).build();
+			}
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(de.getMessage())).build();
 		} catch (Exception e) {
 			logger.error("", e);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
@@ -626,6 +655,13 @@ public class InventoryService {
 			logger.error("", cve);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new 
 					ApplicationException("Record could not be deleted as it is being referenced by other data present on system. " + cve.getMessage())).build();
+		} catch (DAOException de) {
+			logger.error("", de);
+			if (de.getCause().toString().startsWith("org.hibernate.exception.ConstraintViolationException")) {
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new 
+						ApplicationException("Record could not be deleted as it is being referenced by other data present on system. " + de.getMessage())).build();
+			}
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(de.getMessage())).build();
 		} catch (Exception e) {
 			logger.error("", e);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
@@ -923,6 +959,13 @@ public class InventoryService {
 			logger.error("", cve);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new 
 					ApplicationException("Record could not be deleted as it is being referenced by other data present on system. " + cve.getMessage())).build();
+		} catch (DAOException de) {
+			logger.error("", de);
+			if (de.getCause().toString().startsWith("org.hibernate.exception.ConstraintViolationException")) {
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new 
+						ApplicationException("Record could not be deleted as it is being referenced by other data present on system. " + de.getMessage())).build();
+			}
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(de.getMessage())).build();
 		} catch (Exception e) {
 			logger.error("", e);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
@@ -1303,6 +1346,13 @@ public class InventoryService {
 			logger.error("", cve);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new 
 					ApplicationException("Record could not be deleted as it is being referenced by other data present on system. " + cve.getMessage())).build();
+		} catch (DAOException de) {
+			logger.error("", de);
+			if (de.getCause().toString().startsWith("org.hibernate.exception.ConstraintViolationException")) {
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new 
+						ApplicationException("Record could not be deleted as it is being referenced by other data present on system. " + de.getMessage())).build();
+			}
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(de.getMessage())).build();
 		} catch (Exception e) {
 			logger.error("", e);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
@@ -1456,6 +1506,13 @@ public class InventoryService {
 			logger.error("", cve);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new 
 					ApplicationException("Record could not be deleted as it is being referenced by other data present on system. " + cve.getMessage())).build();
+		} catch (DAOException de) {
+			logger.error("", de);
+			if (de.getCause().toString().startsWith("org.hibernate.exception.ConstraintViolationException")) {
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new 
+						ApplicationException("Record could not be deleted as it is being referenced by other data present on system. " + de.getMessage())).build();
+			}
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(de.getMessage())).build();
 		} catch (Exception e) {
 			logger.error("", e);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
@@ -1561,6 +1618,13 @@ public class InventoryService {
 			logger.error("", cve);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new 
 					ApplicationException("Record could not be deleted as it is being referenced by other data present on system. " + cve.getMessage())).build();
+		} catch (DAOException de) {
+			logger.error("", de);
+			if (de.getCause().toString().startsWith("org.hibernate.exception.ConstraintViolationException")) {
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new 
+						ApplicationException("Record could not be deleted as it is being referenced by other data present on system. " + de.getMessage())).build();
+			}
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(de.getMessage())).build();
 		} catch (Exception e) {
 			logger.error("", e);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
@@ -1838,6 +1902,13 @@ public class InventoryService {
 			logger.error("", cve);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new 
 					ApplicationException("Record could not be deleted as it is being referenced by other data present on system. " + cve.getMessage())).build();
+		} catch (DAOException de) {
+			logger.error("", de);
+			if (de.getCause().toString().startsWith("org.hibernate.exception.ConstraintViolationException")) {
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new 
+						ApplicationException("Record could not be deleted as it is being referenced by other data present on system. " + de.getMessage())).build();
+			}
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(de.getMessage())).build();
 		} catch (Exception e) {
 			logger.error("", e);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
@@ -2245,6 +2316,13 @@ public class InventoryService {
 			logger.error("", cve);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new 
 					ApplicationException("Record could not be deleted as it is being referenced by other data present on system. " + cve.getMessage())).build();
+		} catch (DAOException de) {
+			logger.error("", de);
+			if (de.getCause().toString().startsWith("org.hibernate.exception.ConstraintViolationException")) {
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new 
+						ApplicationException("Record could not be deleted as it is being referenced by other data present on system. " + de.getMessage())).build();
+			}
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(de.getMessage())).build();
 		} catch (Exception e) {
 			logger.error("", e);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
@@ -2479,6 +2557,13 @@ public class InventoryService {
 			logger.error("", cve);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new 
 					ApplicationException("Record could not be deleted as it is being referenced by other data present on system. " + cve.getMessage())).build();
+		} catch (DAOException de) {
+			logger.error("", de);
+			if (de.getCause().toString().startsWith("org.hibernate.exception.ConstraintViolationException")) {
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new 
+						ApplicationException("Record could not be deleted as it is being referenced by other data present on system. " + de.getMessage())).build();
+			}
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(de.getMessage())).build();
 		} catch (Exception e) {
 			logger.error("", e);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();

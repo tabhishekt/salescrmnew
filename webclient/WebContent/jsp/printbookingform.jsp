@@ -317,12 +317,19 @@
 					td8 = domConstruct.create("td", {"align": "center"}, tr);
 					td9 = domConstruct.create("td", {"align": "center"}, tr);
 					
-					this.createSpan(td1, payment.bankName);
-					this.createSpan(td2, payment.bankBranch);
-					if (payment.chequeNumber) {
+					if (payment.bankBranch && payment.bankBranch != null) {
+						this.createSpan(td1, payment.bankBranch.bankName);
+						this.createSpan(td2, payment.bankBranch.branchName);
+					} else {
+						this.createSpan(td1, "Not available");
+						this.createSpan(td2, "Not available");	
+					}
+					if (payment.chequeNumber && payment.chequeNumber != null) {
 						this.createSpan(td3, payment.chequeNumber);
-	            	} else if (payment.utrNumber) {
+	            	} else if (payment.utrNumber && payment.utrNumber != null) {
 	            		this.createSpan(td3, payment.utrNumber);
+	            	} else {
+	            		this.createSpan(td3, "Not available");
 	            	}
 					this.createSpan(td4, this.formatDate(payment.chequeDate));
 					this.createSpan(td5, payment.receiptNumber);

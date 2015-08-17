@@ -68,7 +68,7 @@ define([
         		 var d1 = this.planapprovaldate.get("value");
         		 var d2 = this.expectedcompletiondate.get("value");
         		 
-        		 if (d1 != "" && d2 != "") {
+        		 if (d1 != null && d1 != "" && d2 != null && d2 != "") {
         			 var dt1 = new Date(d1);
         			 var dt2 = new Date(d1);
         			 

@@ -28,6 +28,7 @@ import com.propmgr.dao.Usermaster;
 import com.propmgr.dao.UsermasterDAO;
 import com.propmgr.dao.Userrole;
 import com.propmgr.dao.UserroleDAO;
+import com.propmgr.hibernate.DAOException;
 import com.propmgr.resource.AddressResource;
 import com.propmgr.resource.CustomerResource;
 import com.propmgr.resource.PersonResource;
@@ -106,6 +107,13 @@ public class PersonService {
 			logger.error("", cve);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new 
 					ApplicationException("Record could not be deleted as it is being referenced by other data present on system. " + cve.getMessage())).build();
+		} catch (DAOException de) {
+			logger.error("", de);
+			if (de.getCause().toString().startsWith("org.hibernate.exception.ConstraintViolationException")) {
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new 
+						ApplicationException("Record could not be deleted as it is being referenced by other data present on system. " + de.getMessage())).build();
+			}
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(de.getMessage())).build();
 		} catch (Exception e) {
 			logger.error("", e);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();
@@ -282,6 +290,13 @@ public class PersonService {
 			logger.error("", cve);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new 
 					ApplicationException("Record could not be deleted as it is being referenced by other data present on system. " + cve.getMessage())).build();
+		} catch (DAOException de) {
+			logger.error("", de);
+			if (de.getCause().toString().startsWith("org.hibernate.exception.ConstraintViolationException")) {
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new 
+						ApplicationException("Record could not be deleted as it is being referenced by other data present on system. " + de.getMessage())).build();
+			}
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(de.getMessage())).build();
 		} catch (Exception e) {
 			logger.error("", e);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApplicationException(e.getMessage())).build();

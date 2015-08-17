@@ -64,9 +64,13 @@
             		this.chequenumber.innerHTML = data.paymentInformation.utrNumber;
             	}
             	
-            	this.bankname.innerHTML = data.paymentInformation.bankBranch.bankName;
-            	this.bankbranch.innerHTML = data.paymentInformation.bankBranch.branchName;
-            	this.chequedate.innerHTML = this.formatDate(data.paymentInformation.chequeDate);
+            	if (data.paymentInformation.bankBranch != null) {
+            		this.bankname.innerHTML = data.paymentInformation.bankBranch.bankName;
+                	this.bankbranch.innerHTML = data.paymentInformation.bankBranch.branchName;	
+            	}
+            	if (data.paymentInformation.chequeDate != null) {
+            		this.chequedate.innerHTML = this.formatDate(data.paymentInformation.chequeDate);	
+            	}
             	this.projectname.innerHTML = data.project.name;
             	this.unitnumber.innerHTML = data.unit.unitNumber;
             	this.buildingname.innerHTML = data.buildingName;
