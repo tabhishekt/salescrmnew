@@ -755,11 +755,17 @@ public class ResourceUtil {
 			if (demandLetterGenerationDate == null) {
 				demandLetterGenerationDate = Calendar.getInstance().getTime();
 			}
+			if (dueDateForCurrentStatus.after(demandLetterGenerationDate)) {
+				return interestAmountDue;
+			}
 			if (planApprovalDate != null && 
 					planApprovalDate.before(dueDateForCurrentStatus)) {
-				long interestApplicableForDays = (demandLetterGenerationDate.getTime() - dueDateForCurrentStatus.getTime()) / (24 * 60 * 60 * 1000);
+				double interestApplicableForDays = demandLetterGenerationDate.getTime() - dueDateForCurrentStatus.getTime();
+				interestApplicableForDays = interestApplicableForDays / 86400000;
 				interestApplicableForDays = interestApplicableForDays - gracePeriod;
-				interestAmountDue = (balancePaymentForCurrentStatus * interestRate * interestApplicableForDays);
+				double timeInYears = interestApplicableForDays / 365; 
+				interestAmountDue = (balancePaymentForCurrentStatus * (interestRate / 100) * timeInYears);
+				interestAmountDue = Math.round(interestAmountDue*100)/100;
 			}
 		}
 		return interestAmountDue;
