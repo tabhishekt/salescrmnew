@@ -1067,8 +1067,8 @@ public class InventoryService {
 					// Check if we can discount from booking
 					Unitbooking unitbooking = unitbookingDAO.findByUnit(unit);
 					if (unitbooking != null) {
-						bookingDiscount = unitbooking.getBookingdiscount();
-						parkingTypeReadyReckoner = unitbooking.getParkingtype();
+						bookingDiscount = (unitbooking.getBookingdiscount() != null) ? unitbooking.getBookingdiscount() : 0;
+						parkingTypeReadyReckoner = (unitbooking.getParkingtype() != null) ? unitbooking.getParkingtype() : 0;
 					}
 				}
 				result = ResourceUtil.getUnitPriceDetailResource(unit, bookingDiscount, Double.parseDouble(deductiononothercharges), parkingTypeReadyReckoner);
