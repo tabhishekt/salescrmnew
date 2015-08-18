@@ -762,7 +762,11 @@ public class ResourceUtil {
 					planApprovalDate.before(dueDateForCurrentStatus)) {
 				double interestApplicableForDays = demandLetterGenerationDate.getTime() - dueDateForCurrentStatus.getTime();
 				interestApplicableForDays = interestApplicableForDays / 86400000;
-				interestApplicableForDays = interestApplicableForDays - gracePeriod;
+				if (interestApplicableForDays > gracePeriod) {
+					interestApplicableForDays = interestApplicableForDays - gracePeriod;
+				} else {
+					interestApplicableForDays = 0;
+				}
 				double timeInYears = interestApplicableForDays / 365; 
 				interestAmountDue = (balancePaymentForCurrentStatus * (interestRate / 100) * timeInYears);
 				interestAmountDue = Math.round(interestAmountDue*100)/100;
