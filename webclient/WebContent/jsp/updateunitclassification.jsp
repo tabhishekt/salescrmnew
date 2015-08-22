@@ -148,7 +148,11 @@
      					this.unitGridHandler.refreshGrid();
      				},
      				function(error) {
-     					this.unitGridHandler.updateMessage(error.response.data.message, "error");
+     					if (error.message == "Timeout exceeded") {
+     						this.unitGridHandler.updateMessage("Record update error: " + error.message + " in getting response from server.", "error");
+     					} else {
+     						this.unitGridHandler.updateMessage("Record update error: " + error.response.data.message, "error");	
+     					}
      				}
      			);
    			};

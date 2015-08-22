@@ -226,7 +226,11 @@
      					this.openBookingResultDialog("Booking with reference number " + response.data.bookingFormNumber + " created successfully.", "success");
      				},
      				function(error) {
-     					this.openBookingResultDialog(error.response.data.message, "error");
+     					if (error.message == "Timeout exceeded") {
+     						this.openBookingResultDialog("Create booking error: " + error.message + " in getting response from server.", "error");
+     					} else {
+     						this.openBookingResultDialog("Create booking error: " + error.response.data.message, "error");	
+     					}
      				}
      			);
             };
