@@ -9,17 +9,15 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.Logger;
 
 import com.propmgr.hibernate.HibernateConnection;
 
 
 public class SecurityFilter implements Filter {
-   private final static Logger logger = Logger.getLogger(SecurityFilter.class);
+	public final static Logger logger = (Logger)LogManager.getLogger(SecurityFilter.class);
    private ServletContext servletContext = null;
 
     public void init(FilterConfig cfg) throws ServletException {

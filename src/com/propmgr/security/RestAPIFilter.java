@@ -9,15 +9,15 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.Logger;
 
 import com.propmgr.hibernate.HibernateConnection;
-import com.propmgr.security.SecurityFilter;
 
 
 public class RestAPIFilter implements Filter {
 	
-	private final static Logger logger = Logger.getLogger(SecurityFilter.class);
+	public final static Logger logger = (Logger)LogManager.getLogger(RestAPIFilter.class);
 	
 	public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain) throws IOException, ServletException {

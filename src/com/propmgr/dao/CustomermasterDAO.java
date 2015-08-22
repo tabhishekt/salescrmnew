@@ -85,6 +85,52 @@ public class CustomermasterDAO extends SuperDAO {
 		return false;
 	}
 	
+	public List<Customermaster> findByPhone(String phoneNumber, String mobileNumber) {
+		Session hbmSession = getSession();
+		List<Customermaster> resultList = null;
+		
+		try {
+			String queryString = "from Customermaster u where ";
+			
+			if (phoneNumber != null && phoneNumber.length() > 0) {
+				queryString += "u.personByPersondetail.contactinfo.phonenumber = '" + phoneNumber + "'";
+			} else { 
+				if (mobileNumber != null && mobileNumber.length() > 0) {
+					queryString += "u.personByPersondetail.contactinfo.mobilenumber = '" + mobileNumber + "'";
+				} else {
+					return null;
+				}
+			}
+			
+			Query query = hbmSession.createQuery(queryString);
+			resultList = query.list ();
+			
+			return resultList;
+		} catch (Exception e) {
+			log.error ("", e);
+		}
+		
+		return null;
+	}
+	
+	public boolean isPersonACustomer(long personId) {
+		Session hbmSession = getSession();
+		List<Customermaster> resultList = null;
+		
+		try {
+			String queryString = "from Customermaster u where u.personByPersondetail.personid = " + personId;
+			Query query = hbmSession.createQuery(queryString);
+			resultList = query.list ();
+			if (resultList.size() > 0) {
+				return true;
+			}
+		} catch (Exception e) {
+			log.error ("", e);
+		}
+		
+		return false;
+	}
+	
 	@Override
 	protected Object getPojoObj() {
 		return new Customermaster();

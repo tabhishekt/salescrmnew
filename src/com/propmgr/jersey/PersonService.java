@@ -15,7 +15,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.Logger;
 import org.hibernate.exception.ConstraintViolationException;
 
 import com.propmgr.dao.Address;
@@ -23,6 +24,7 @@ import com.propmgr.dao.Contactinfo;
 import com.propmgr.dao.Customermaster;
 import com.propmgr.dao.CustomermasterDAO;
 import com.propmgr.dao.Person;
+import com.propmgr.dao.PersonDAO;
 import com.propmgr.dao.Rolemaster;
 import com.propmgr.dao.Usermaster;
 import com.propmgr.dao.UsermasterDAO;
@@ -39,7 +41,7 @@ import com.propmgr.resource.UserResource;
  
 @Path("/json/data/person")
 public class PersonService {
-	private final static Logger logger = Logger.getLogger(PersonService.class);
+	public final static Logger logger = (Logger)LogManager.getLogger(PersonService.class);
 	
 	@GET
 	@Path("/customer/get/all")
@@ -128,6 +130,7 @@ public class PersonService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response modifyCustomer(MultivaluedMap<String, String> formData) {
 		CustomermasterDAO customermasterDAO = new CustomermasterDAO();
+		PersonDAO personDAO = new PersonDAO();
 		Customermaster customer = new Customermaster();
 		Address address = new Address();
 		Person person = new Person();
@@ -154,15 +157,18 @@ public class PersonService {
 				String firstName = ResourceUtil.getFormDataValue(formData, "firstname");
 				String middleName = ResourceUtil.getFormDataValue(formData, "middlename");
 				String lastName = ResourceUtil.getFormDataValue(formData, "lastname");
-				String emailID = ResourceUtil.getFormDataValue(formData, "personemailid");
 				String phoneNumber = ResourceUtil.getFormDataValue(formData, "personphone");
 				String mobileNumber = ResourceUtil.getFormDataValue(formData, "personmobile");
-				
-				if (customermasterDAO.isDuplicateCustomer(firstName, middleName, lastName, emailID, phoneNumber, mobileNumber)) {
-					return Response.status(Response.Status.NOT_IMPLEMENTED).entity(new ApplicationException("No updates has been made. "
-							+ "Customer with same name, email and phone alredy exists.")).build();
+
+				List<Person> personList = personDAO.findByNameAndPhone(firstName, middleName, lastName, phoneNumber, mobileNumber);
+				if (personList != null) {
+					for (Person existingPerson : personList) {
+						if (customermasterDAO.isPersonACustomer(existingPerson.getPersonid())) {
+							return Response.status(Response.Status.NOT_IMPLEMENTED).entity(new ApplicationException("No updates has been made. "
+									+ "Customer with same name and phone alredy exists.")).build();
+						}
+					}
 				}
-				
 				customer.setUsermaster(user);
 			}
 			

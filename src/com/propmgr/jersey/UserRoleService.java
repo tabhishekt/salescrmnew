@@ -19,7 +19,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.Logger;
 import org.hibernate.exception.ConstraintViolationException;
 
 import com.propmgr.dao.Person;
@@ -35,7 +36,7 @@ import com.propmgr.resource.RoleResource;
  
 @Path("/json/data/userrole")
 public class UserRoleService {
-	private final static Logger logger = Logger.getLogger(UserRoleService.class);
+	public final static Logger logger = (Logger)LogManager.getLogger(UserRoleService.class);
 	
 	@GET
 	@Path("/validuser/get")

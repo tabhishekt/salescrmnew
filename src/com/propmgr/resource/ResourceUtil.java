@@ -20,7 +20,8 @@ import java.util.StringTokenizer;
 import javax.sql.rowset.serial.SerialClob;
 import javax.ws.rs.core.MultivaluedMap;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.Logger;
 
 import com.propmgr.dao.Address;
 import com.propmgr.dao.AddressDAO;
@@ -92,7 +93,7 @@ import com.propmgr.dao.Usermaster;
 import com.propmgr.dao.UsermasterDAO;
 
 public class ResourceUtil {
-	private final static Logger logger = Logger.getLogger(ResourceUtil.class);
+	public final static Logger logger = (Logger)LogManager.getLogger(ResourceUtil.class);
 	private static final int MAX_REGISTRATION_CHARGE = 30000;
 	
 	public static OrganizationResource getOrganizationFromDAO(Organization org)  throws SQLException, IOException {
@@ -832,6 +833,26 @@ public class ResourceUtil {
 		String firstName = person.getFirstName();
 		String middleName = person.getMiddleName(); 
 		String lastName = person.getLastName();
+		
+		if (firstName != null && firstName.length() > 0) {
+			displayName.append(firstName);
+		}
+		
+		if (middleName != null && middleName.length() > 0) {
+			displayName.append(", ");
+			displayName.append(middleName);
+		}
+		
+		if (lastName != null && lastName.length() > 0) {
+			displayName.append(", ");
+			displayName.append(lastName);
+		}
+		
+		return displayName.toString(); 
+	}
+	
+	public static String getDisplayName(String firstName, String middleName, String lastName) {
+		StringBuffer displayName = new StringBuffer();
 		
 		if (firstName != null && firstName.length() > 0) {
 			displayName.append(firstName);

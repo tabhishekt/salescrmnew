@@ -34,7 +34,6 @@
 	<classpathentry kind="lib" path="webclient/WebContent/WEB-INF/lib/jersey-container-servlet.jar"/>
 	<classpathentry kind="lib" path="webclient/WebContent/WEB-INF/lib/jersey-guava-2.13.jar"/>
 	<classpathentry kind="lib" path="webclient/WebContent/WEB-INF/lib/jersey-server.jar"/>
-	<classpathentry kind="lib" path="webclient/WebContent/WEB-INF/lib/log4j-1.2.15.jar"/>
 	<classpathentry kind="lib" path="webclient/WebContent/WEB-INF/lib/org.osgi.core-4.2.0.jar"/>
 	<classpathentry kind="lib" path="webclient/WebContent/WEB-INF/lib/osgi-resource-locator-1.0.1.jar"/>
 	<classpathentry kind="lib" path="webclient/WebContent/WEB-INF/lib/persistence-api-1.0.jar"/>
@@ -50,5 +49,7 @@
 	<classpathentry kind="lib" path="webclient/WebContent/WEB-INF/lib/jasperreports-6.0.0.jar"/>
 	<classpathentry kind="lib" path="webclient/WebContent/WEB-INF/lib/jasperreports-javaflow-6.1.0.jar"/>
 	<classpathentry kind="lib" path="webclient/WebContent/WEB-INF/lib/jnp-client.jar"/>
+	<classpathentry kind="lib" path="webclient/WebContent/WEB-INF/lib/log4j-api-2.3.jar"/>
+	<classpathentry kind="lib" path="webclient/WebContent/WEB-INF/lib/log4j-core-2.3.jar"/>
 	<classpathentry kind="output" path="webclient/WebContent/WEB-INF/classes"/>
 </classpath>

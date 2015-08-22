@@ -14,7 +14,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.Logger;
 import org.hibernate.exception.ConstraintViolationException;
 
 import com.propmgr.dao.Amenity;
@@ -42,8 +43,7 @@ import com.propmgr.resource.ResourceUtil;
  
 @Path("/json/data/codetable")
 public class CodeTableService {
-	private final static Logger logger = Logger.getLogger(CodeTableService.class);
-	
+	public final static Logger logger = (Logger)LogManager.getLogger(CodeTableService.class);
 	@GET
 	@Path("/city/get/all")
 	@Produces(MediaType.APPLICATION_JSON)

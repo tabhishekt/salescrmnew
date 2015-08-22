@@ -5,6 +5,8 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.criterion.Example;
 
 import com.propmgr.hibernate.SuperDAO;
@@ -50,6 +52,34 @@ public class PersonDAO extends SuperDAO {
 		}
 	}
 
+	public List<Person> findByNameAndPhone(String firstName, String middleName, String lastName, String phoneNumber, String mobileNumber) {
+		Session hbmSession = getSession();
+		List<Person> resultList = null;
+		
+		try {
+			String queryString = "from Person u where lower(u.firstname) = lower('" + firstName + "')" +
+					" and lower(u.middlename) = lower('" + middleName + "') and lower(u.lastname) = lower('" + lastName + "')";
+			
+			if (phoneNumber != null && phoneNumber.length() > 0) {
+				queryString += " and u.contactinfo.phonenumber = '" + phoneNumber + "'";
+			} else { 
+				if (mobileNumber != null && mobileNumber.length() > 0) {
+					queryString += " and u.contactinfo.mobilenumber = '" + mobileNumber + "'";
+				} else {
+					return null;
+				}
+			}
+			
+			Query query = hbmSession.createQuery(queryString);
+			resultList = query.list ();
+			
+			return resultList;
+		} catch (Exception e) {
+			log.error ("", e);
+		}
+		
+		return null;
+	}
 	@Override
 	protected Object getPojoObj() {
 		return new Person();

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+  <Appenders>
+    <Console name="STDOUT" target="SYSTEM_OUT">
+      <PatternLayout pattern="[%d{HH:mm:ss}] [%-5p] [%-30c{1}] %m%n"/>
+    </Console>
+     <File name="File" fileName="C:/dev/logs/SalesCRM.log" append="false">
+      <PatternLayout pattern="[%-5p] [%d{dd MMM yyyy HH:mm:ss}] [%c] - %m%n"/>
+    </File>
+  </Appenders>
+  <Loggers>
+    <Root level="INFO">
+      <AppenderRef ref="File"/>
+    </Root>
+  </Loggers>
+</Configuration>

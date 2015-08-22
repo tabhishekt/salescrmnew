@@ -1,22 +1,31 @@
 package com.propmgr.jersey;
 
-import net.sf.jasperreports.engine.*;
-import net.sf.jasperreports.engine.design.JasperDesign;
-import net.sf.jasperreports.engine.xml.JRXmlLoader;
-import org.apache.log4j.Logger;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.HashMap;
 
-import javax.jws.WebMethod;
 import javax.servlet.ServletContext;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.StreamingOutput;
 import javax.xml.ws.WebServiceException;
-import java.io.*;
-import java.util.HashMap;
+
+import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.Logger;
 
 /**
  * API to handle requests to generate reports
@@ -24,7 +33,7 @@ import java.util.HashMap;
 @Path("/report")
 public class ReportService {
     //The logger instance
-    private final static Logger logger = Logger.getLogger(ReportService.class);
+	public final static Logger logger = (Logger)LogManager.getLogger(ReportService.class);
     //The folder name where the report templates are placed
     private final static String REPORTS_TEMPLATE_FOLDER = "/report";
     /////////////////***The report template names****/////////////////////////////////////////
