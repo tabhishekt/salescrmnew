@@ -154,7 +154,7 @@ public class PersonService {
 					coOwnerContactinfo = coOwner.getContactinfo();
 				}
 			} else {
-				String firstName = ResourceUtil.getFormDataValue(formData, "firstname");
+				/*String firstName = ResourceUtil.getFormDataValue(formData, "firstname");
 				String middleName = ResourceUtil.getFormDataValue(formData, "middlename");
 				String lastName = ResourceUtil.getFormDataValue(formData, "lastname");
 				String phoneNumber = ResourceUtil.getFormDataValue(formData, "personphone");
@@ -168,7 +168,7 @@ public class PersonService {
 									+ "Customer with same name and phone alredy exists.")).build();
 						}
 					}
-				}
+				} */
 				customer.setUsermaster(user);
 			}
 			
