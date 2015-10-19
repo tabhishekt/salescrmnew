@@ -13,7 +13,7 @@ public class PaymentResource {
 	private CodeTableResource paymentType;
 	private String paymentTypeName;
 	private long receiptNumber;
-	private long altReceiptNumber;
+	private String altReceiptNumber;
 	private double receiptAmount;
 	private String description;
 	private String receiptDate;
@@ -36,7 +36,7 @@ public class PaymentResource {
 	public PaymentResource(long id, long userId, String userDisplayName,
 			long unitbookingId, long bookingFormNumber,
 			CodeTableResource paymentType, String paymentTypeName,
-			long receiptNumber, long altReceiptNumber, double receiptAmount, String description,
+			long receiptNumber, String altReceiptNumber, double receiptAmount, String description,
 			String receiptDate, String displayBankName, BankBranchResource bankBranch,
 			String chequeNumber, String chequeDate, String utrNumber, String cardNumber,
 			String cardExpiryDate, String cardHolderName, String cardType, String displayPaymentStatus,
@@ -104,7 +104,7 @@ public class PaymentResource {
 		return receiptNumber;
 	}
 	
-	public long getAltReceiptNumber() {
+	public String getAltReceiptNumber() {
 		return altReceiptNumber;
 	}
 

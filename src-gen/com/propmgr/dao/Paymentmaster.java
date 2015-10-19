@@ -1,6 +1,6 @@
 package com.propmgr.dao;
 
-// Generated Aug 3, 2015 11:44:40 PM by Hibernate Tools 3.4.0.CR1
+// Generated Oct 19, 2015 11:52:27 AM by Hibernate Tools 3.4.0.CR1
 
 import java.sql.Clob;
 import java.util.Date;
@@ -18,7 +18,7 @@ public class Paymentmaster implements java.io.Serializable {
 	private Paymenttype paymenttype;
 	private Bankbranch bankbranch;
 	private long receiptnumber;
-	private Long altreceiptnumber;
+	private String altreceiptnumber;
 	private double paymentamount;
 	private Clob paymentdescription;
 	private Date paymentreceiveddate;
@@ -50,7 +50,7 @@ public class Paymentmaster implements java.io.Serializable {
 
 	public Paymentmaster(Usermaster usermaster, Unitbooking unitbooking,
 			Paymenttype paymenttype, Bankbranch bankbranch, long receiptnumber,
-			Long altreceiptnumber, double paymentamount,
+			String altreceiptnumber, double paymentamount,
 			Clob paymentdescription, Date paymentreceiveddate,
 			String chequenumber, Date chequedate, String cardnumber,
 			String cardexpirydate, String cardholdername, String cardtype,
@@ -126,11 +126,11 @@ public class Paymentmaster implements java.io.Serializable {
 		this.receiptnumber = receiptnumber;
 	}
 
-	public Long getAltreceiptnumber() {
+	public String getAltreceiptnumber() {
 		return this.altreceiptnumber;
 	}
 
-	public void setAltreceiptnumber(Long altreceiptnumber) {
+	public void setAltreceiptnumber(String altreceiptnumber) {
 		this.altreceiptnumber = altreceiptnumber;
 	}
 

@@ -1,6 +1,6 @@
 package com.propmgr.dao;
 
-// Generated Aug 3, 2015 11:44:40 PM by Hibernate Tools 3.4.0.CR1
+// Generated Oct 19, 2015 11:52:27 AM by Hibernate Tools 3.4.0.CR1
 
 import java.sql.Clob;
 import java.util.HashSet;

@@ -2378,7 +2378,7 @@ public class InventoryService {
 			payment.setUsermaster(user);
 			
 			payment.setReceiptnumber(ResourceUtil.getFormDataValueAsLong(formData, "receiptnumber"));
-			payment.setAltreceiptnumber(ResourceUtil.getFormDataValueAsLong(formData, "altreceiptnumber"));
+			payment.setAltreceiptnumber(ResourceUtil.getFormDataValue(formData, "altreceiptnumber"));
 			payment.setPaymentamount(ResourceUtil.getFormDataValueAsDouble(formData, "receiptamount"));
 			payment.setPaymentdescription(ResourceUtil.getFormDataValueAsClob(formData, "description"));
 			payment.setPaymentreceiveddate(ResourceUtil.getFormDataValueAsDate(formData, "receiptdate"));
