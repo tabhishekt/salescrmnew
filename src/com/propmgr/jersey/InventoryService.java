@@ -2350,6 +2350,7 @@ public class InventoryService {
 			Paymenttype paymenttype = ResourceUtil.getPaymenttypePOJO(formData);
 			Bankbranch bankbranch = ResourceUtil.getBankbranchPOJO(formData);
 			String chequeNumber = ResourceUtil.getFormDataValue(formData, "chequenumber");
+			String altReceiptNumber = ResourceUtil.getFormDataValue(formData, "altreceiptnumber");
 			
 			if (rowId != null && rowId.length() > 0) {
 				payment = paymentmasterDAO.findById(Long.parseLong(rowId));
@@ -2358,7 +2359,6 @@ public class InventoryService {
 				}
 			} else {
 				long projectId = unitbooking.getUnitmaster().getProjectbuilding().getProjectphase().getProjectmaster().getProjectid();
-				long altReceiptNumber = ResourceUtil.getFormDataValueAsLong(formData, "altreceiptnumber");
 				if (paymentmasterDAO.isDuplicateAltReceiptNumber(altReceiptNumber, projectId)) {
 					return Response.status(Response.Status.NOT_FOUND).entity(new ApplicationException("Payment already exists with altername "
 							+ "receipt number " + altReceiptNumber)).build();
@@ -2378,7 +2378,7 @@ public class InventoryService {
 			payment.setUsermaster(user);
 			
 			payment.setReceiptnumber(ResourceUtil.getFormDataValueAsLong(formData, "receiptnumber"));
-			payment.setAltreceiptnumber(ResourceUtil.getFormDataValue(formData, "altreceiptnumber"));
+			payment.setAltreceiptnumber(altReceiptNumber);
 			payment.setPaymentamount(ResourceUtil.getFormDataValueAsDouble(formData, "receiptamount"));
 			payment.setPaymentdescription(ResourceUtil.getFormDataValueAsClob(formData, "description"));
 			payment.setPaymentreceiveddate(ResourceUtil.getFormDataValueAsDate(formData, "receiptdate"));

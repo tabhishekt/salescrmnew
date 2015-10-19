@@ -117,7 +117,7 @@ public class PaymentmasterDAO extends SuperDAO {
 		return false;
 	}
 	
-	public boolean isDuplicateAltReceiptNumber(long altReceiptNumber, long projectId) {
+	public boolean isDuplicateAltReceiptNumber(String altReceiptNumber, long projectId) {
 		Session hbmSession = getSession();
 		List<Paymentmaster> resultList = null;
 		PaymentstatusDAO paymentstatusDAO = new PaymentstatusDAO();
@@ -125,8 +125,8 @@ public class PaymentmasterDAO extends SuperDAO {
 		Paymentstatus paymentstatus = null;
 		
 		try {
-			String queryString = "from Paymentmaster u where u.altreceiptnumber = " 
-				+ altReceiptNumber + " and u.project = " + projectId;
+			String queryString = "from Paymentmaster u where u.altreceiptnumber = '" 
+				+ altReceiptNumber + "' and u.project = " + projectId;
 			Query query = hbmSession.createQuery(queryString);
 			resultList = query.list ();
 			if (resultList.size() > 0) {
