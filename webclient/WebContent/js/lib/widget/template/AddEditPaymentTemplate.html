@@ -48,7 +48,7 @@
 										<tr><td><input id="altreceiptnumber" name="altreceiptnumber"
 												data-dojo-type='dijit/form/ValidationTextBox'
 												data-dojo-attach-point='altreceiptnumber'
-												data-dojo-props="required:true, regExp:'\\d{1,8}', invalidMessage:'Enter upto eight digit number only.'"
+												data-dojo-props="regExp:'^([a-zA-Z0-9_-]){3,10}$', invalidMessage:'Alternate Receipt number should be min 3 and max 10 digit alphanumeric string.'"
 												type="text" /></td></tr>
 									</table>
 								</td></tr>
