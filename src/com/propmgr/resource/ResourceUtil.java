@@ -1385,11 +1385,11 @@ public class ResourceUtil {
 			 double parkingChargesReadyReckoner) throws SQLException {
 		 double agreementValue = basicCostReadyReckoner;
 		 
-		 if (floorNumber > 5 && floorNumber <= 10) {
+		 if (floorNumber >= 5 && floorNumber <= 10) {
 			 agreementValue += agreementValue*0.05;
-		 } else if (floorNumber > 10 && floorNumber <= 20) {
+		 } else if (floorNumber >= 11 && floorNumber <= 20) {
 			 agreementValue += agreementValue*0.10;
-		 } else if (floorNumber > 20) {
+		 } else if (floorNumber >= 21) {
 			 agreementValue += agreementValue*0.15;
 		 }
 		 
